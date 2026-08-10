@@ -917,6 +917,35 @@ let GreatBuildings = {
 
 
     /**
+     * Inline style attribute for the contribution boost piggy bank icon in the table
+     * header matching the building tier (copper/silver/gold). Tier variants missing in
+     * the ForgeHX file index (e.g. no _copper/_silver on beta) fall back to the classic
+     * game piggy bank, without any game asset the bundled icon from the CSS is kept.
+     *
+     * @param Tier GreatBuildingTier enum, e.g. {value: 'copper'}
+     * @returns {string} ` style="…"` or empty string
+     */
+    ContributionBoostIconStyle: (Tier) => {
+        const TierValue = Tier?.value,
+            Candidates = [];
+
+        if (TierValue === 'copper' || TierValue === 'silver' || TierValue === 'gold') {
+            Candidates.push(`/city/gui/great_building_bonus_icons/great_building_bonus_contribution_boost_${TierValue}.png`);
+        }
+        Candidates.push('/city/gui/great_building_bonus_icons/great_building_bonus_contribution_boost.png');
+
+        for (let file of Candidates) {
+            const link = srcLinks.get(file, true, true);
+            if (!link.includes('antiquedealer_flag') && !link.includes('-undefined.')) {
+                return ` style="background-image:url('${link}')"`;
+            }
+        }
+
+        return '';
+    },
+
+
+    /**
      * Formats a blueprint reward split by tier (e.g. "40 [copper icon] 11 [silver icon]")
      * for the ranking tables. Falls back to the plain total if no per-tier data
      * or icons are available (old servers, ForgeHX index not loaded).

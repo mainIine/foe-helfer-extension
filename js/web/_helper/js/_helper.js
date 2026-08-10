@@ -870,6 +870,7 @@ let HTML = {
 								<link rel="stylesheet" href="${extUrl}css/web/variables.css">
 								<link rel="stylesheet" href="${extUrl}css/web/boxes.css">
 								<link rel="stylesheet" href="${extUrl}css/web/goods.css">
+								<style id="goods-sprite-css">${localStorage.getItem('GoodsSpriteCSS') || ''}</style>
 							</head>
 							<body id="popout-${id}-body"></body>
 						</html>`;

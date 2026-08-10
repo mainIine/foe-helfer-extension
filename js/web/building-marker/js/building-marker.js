@@ -487,7 +487,9 @@ let BuildingMarker = {
 	 *
 	 * Entity markers are re-read every frame, so the arrow follows a building
 	 * that gets moved and disappears when it is sold. Plain grid markers get
-	 * a one tile footprint centered on their position.
+	 * a one tile footprint centered on their position. The game omits
+	 * zero-valued coordinates in its payload, so a missing x/y means 0
+	 * (buildings on the two map edges next to the grid origin).
 	 *
 	 * @param {object} marker Marker definition ({entityId} or {x, y})
 	 * @returns {{x: number, y: number, width: number, length: number}|null} Grid footprint
@@ -503,7 +505,7 @@ let BuildingMarker = {
 
 		const entity = MainParser.CityMapData ? MainParser.CityMapData[marker.entityId] : null;
 
-		if (!entity || entity.x === undefined) {
+		if (!entity) {
 			return null;
 		}
 
@@ -516,7 +518,7 @@ let BuildingMarker = {
 			length = size.ysize || 1;
 		}
 
-		return { x: entity.x, y: entity.y, width: width, length: length };
+		return { x: entity.x || 0, y: entity.y || 0, width: width, length: length };
 	},
 
 
@@ -755,21 +757,29 @@ let BuildingMarker = {
 		for (const marker of BuildingMarker._markers) {
 			let position = null;
 
-			if (rect && marker.provinceId !== undefined) {
-				if (mapView) {
-					const projected = BuildingMarker._projectProvince(mapView, marker.provinceId);
+			// a broken projection of one marker must not kill the loop for the others
+			try {
+				if (rect && marker.provinceId !== undefined) {
+					if (mapView) {
+						const projected = BuildingMarker._projectProvince(mapView, marker.provinceId);
 
-					if (projected) {
-						position = { x: projected.x, y: projected.y, scale: Math.min(1.2, Math.max(0.5, projected.scale)) };
+						if (projected) {
+							position = { x: projected.x, y: projected.y, scale: Math.min(1.2, Math.max(0.5, projected.scale)) };
+						}
 					}
 				}
-			}
-			else if (rect && scene) {
-				const footprint = BuildingMarker._resolveFootprint(marker);
+				else if (rect && scene) {
+					const footprint = BuildingMarker._resolveFootprint(marker);
 
-				if (footprint) {
-					const point = scene.isoToScreen(footprint.x + footprint.width / 2, footprint.y + footprint.length / 2);
-					position = { x: point.x, y: point.y, scale: Math.max(0.5, scene._zoomFactor || 1) };
+					if (footprint) {
+						const point = scene.isoToScreen(footprint.x + footprint.width / 2, footprint.y + footprint.length / 2);
+						position = { x: point.x, y: point.y, scale: Math.max(0.5, scene._zoomFactor || 1) };
+					}
+				}
+			} catch (e) {
+				if (!marker.projectionWarned) {
+					marker.projectionWarned = true;
+					console.warn('[BuildingMarker] Marker projection failed', marker, e);
 				}
 			}
 

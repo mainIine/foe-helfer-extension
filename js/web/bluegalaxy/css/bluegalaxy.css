@@ -16,7 +16,7 @@
 #bluegalaxy {
     top: 30%;
     right: 15%;
-    width: 450px;
+    width: 490px;
     height: 500px;
 }
 
@@ -45,6 +45,17 @@
 #bluegalaxy .header {
     margin-bottom: 2px;
     padding: 1em 0;
+}
+
+/* remaining double collections, clearly visible above the goods ratings */
+#bluegalaxy .header .collections-left {
+    font-size: 135%;
+    color: var(--sunflower);
+    margin: 4px 0 8px;
+}
+
+#bluegalaxy .header .collections-left strong {
+    font-size: 115%;
 }
 
 #bluegalaxy table th.icon span {
@@ -88,6 +99,10 @@
 
 #bluegalaxy table th.icon.old_goods span::before  {
     background-position: -524px 3px;
+}
+
+#bluegalaxy table th.icon.next_goods span::before  {
+    background-position: -838px 3px;
 }
 
 #bluegalaxy table th.icon.fragments span  {

@@ -26,6 +26,11 @@ FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
 	Technologies.UnlockedTechnologies = data.responseData;
 });
 
+// pick up eras the game client already knows but the extension does not yet
+FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {
+	Technologies.DetectGameEras();
+});
+
 FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
 	let era = data.responseData.technology.era;
 
@@ -88,117 +93,34 @@ let Technologies = {
     IgnorePrevEra: null,
     IgnoreCurrentEraOptional: null,
 
-    Eras: {
-        AllAge: 0,
-        NoAge: 0,
-        StoneAge: 1,
-        BronzeAge: 2,
-        IronAge: 3,
-        EarlyMiddleAge: 4,
-        HighMiddleAge: 5,
-        LateMiddleAge: 6,
-        ColonialAge: 7,
-        IndustrialAge: 8,
-        ProgressiveEra: 9,
-        ModernEra: 10,
-        PostModernEra: 11,
-        ContemporaryEra: 12,
-        TomorrowEra: 13,
-        FutureEra: 14,
-        ArcticFuture: 15,
-        OceanicFuture: 16,
-        VirtualFuture: 17,
-        SpaceAgeMars: 18,
-        SpaceAgeAsteroidBelt: 19,
-        SpaceAgeVenus: 20,
-        SpaceAgeJupiterMoon: 21,
-        SpaceAgeTitan: 22,
-        SpaceAgeSpaceHub: 23,
-        NextEra: 24,
-    },
+    /**
+     * Ordered list of playable era ids, oldest first. Mirrors the game
+     * client's EraConstants.ERA_IDS and acts as the single source for all
+     * era lookup maps. DetectGameEras() extends it at runtime with eras the
+     * game client knows but this list does not yet.
+     * @type {string[]}
+     */
+    EraList: [
+        'StoneAge', 'BronzeAge', 'IronAge', 'EarlyMiddleAge', 'HighMiddleAge',
+        'LateMiddleAge', 'ColonialAge', 'IndustrialAge', 'ProgressiveEra',
+        'ModernEra', 'PostModernEra', 'ContemporaryEra', 'TomorrowEra',
+        'FutureEra', 'ArcticFuture', 'OceanicFuture', 'VirtualFuture',
+        'SpaceAgeMars', 'SpaceAgeAsteroidBelt', 'SpaceAgeVenus',
+        'SpaceAgeJupiterMoon', 'SpaceAgeTitan', 'SpaceAgeSpaceHub'
+    ],
 
-    // need this for identities
-    InnoEras: {
-        StoneAge: 0,
-        BronzeAge: 1,
-        IronAge: 2,
-        EarlyMiddleAge: 3,
-        HighMiddleAge: 4,
-        LateMiddleAge: 5,
-        ColonialAge: 6,
-        IndustrialAge: 7,
-        ProgressiveEra: 8,
-        ModernEra: 9,
-        PostModernEra: 10,
-        ContemporaryEra: 11,
-        TomorrowEra: 12,
-        FutureEra: 13,
-        ArcticFuture: 14,
-        OceanicFuture: 15,
-        VirtualFuture: 16,
-        SpaceAgeMars: 17,
-        SpaceAgeAsteroidBelt: 18,
-        SpaceAgeVenus: 19,
-        SpaceAgeJupiterMoon: 20,
-        SpaceAgeTitan: 21,
-        SpaceAgeSpaceHub: 22,
-        NextEra: 23,
-    },
+    /** @type {Object<string,number>} Era name -> era id (NoAge/AllAge = 0), built from EraList */
+    Eras: null,
 
+    /** @type {Object<string,number>} Era name -> Inno era id (StoneAge = 0), need this for identities */
+    InnoEras: null,
 
-    EraNames: {
-        0: 'NoAge',
-        1: 'StoneAge',
-        2: 'BronzeAge',
-        3: 'IronAge',
-        4: 'EarlyMiddleAge',
-        5: 'HighMiddleAge',
-        6: 'LateMiddleAge',
-        7: 'ColonialAge',
-        8: 'IndustrialAge',
-        9: 'ProgressiveEra',
-        10: 'ModernEra',
-        11: 'PostModernEra',
-        12: 'ContemporaryEra',
-        13: 'TomorrowEra',
-        14: 'FutureEra',
-        15: 'ArcticFuture',
-        16: 'OceanicFuture',
-        17: 'VirtualFuture',
-        18: 'SpaceAgeMars',
-        19: 'SpaceAgeAsteroidBelt',
-        20: 'SpaceAgeVenus',
-        21: 'SpaceAgeJupiterMoon',
-        22: 'SpaceAgeTitan',
-        23: 'SpaceAgeSpaceHub'
-    },
+    /** @type {Object<number,string>} Era id -> era name */
+    EraNames: null,
 
-    // need this for cityentities
-    InnoEraNames: {
-        0: 'StoneAge',
-        1: 'BronzeAge',
-        2: 'IronAge',
-        3: 'EarlyMiddleAge',
-        4: 'HighMiddleAge',
-        5: 'LateMiddleAge',
-        6: 'ColonialAge',
-        7: 'IndustrialAge',
-        8: 'ProgressiveEra',
-        9: 'ModernEra',
-        10: 'PostModernEra',
-        11: 'ContemporaryEra',
-        12: 'TomorrowEra',
-        13: 'FutureEra',
-        14: 'ArcticFuture',
-        15: 'OceanicFuture',
-        16: 'VirtualFuture',
-        17: 'SpaceAgeMars',
-        18: 'SpaceAgeAsteroidBelt',
-        19: 'SpaceAgeVenus',
-        20: 'SpaceAgeJupiterMoon',
-        21: 'SpaceAgeTitan',
-        22: 'SpaceAgeSpaceHub'
-    },
+    /** @type {Object<number,string>} Inno era id -> era name, need this for cityentities */
+    InnoEraNames: null,
+
     maxEra:null,
 
 
@@ -215,6 +137,120 @@ let Technologies = {
             Technologies.maxEra = Math.max(...Object.values(MainParser.CityEntities).filter(x => x.type === "greatbuilding").map(x => Technologies.Eras[x.requirements.min_era]));
         }
         return Technologies.maxEra;
+    },
+
+
+    /**
+     * (Re)builds the four era lookup maps (Eras, InnoEras, EraNames,
+     * InnoEraNames) from the ordered EraList.
+     */
+    BuildEraMaps: () => {
+        const eras = { AllAge: 0, NoAge: 0 },
+            innoEras = {},
+            eraNames = { 0: 'NoAge' },
+            innoEraNames = {};
+
+        Technologies.EraList.forEach((name, i) => {
+            eras[name] = i + 1;
+            innoEras[name] = i;
+            eraNames[i + 1] = name;
+            innoEraNames[i] = name;
+        });
+
+        eras.NextEra = Technologies.EraList.length + 1;
+        innoEras.NextEra = Technologies.EraList.length;
+
+        Technologies.Eras = eras;
+        Technologies.InnoEras = innoEras;
+        Technologies.EraNames = eraNames;
+        Technologies.InnoEraNames = innoEraNames;
+    },
+
+
+    /**
+     * Reads the era constants straight from the game client so new eras work
+     * without an extension update: fetches the ForgeHX client script (served
+     * from the browser cache, parsed once per client version) and extracts
+     * the ordered era id list plus the gettext key and short code of every
+     * era name. Newly discovered eras are appended to EraList, the lookup
+     * maps are rebuilt and i18n fallbacks are registered.
+     */
+    DetectGameEras: async (retries = 60) => {
+        try {
+            if (!i18n_loaded) { // translations must be loaded before missing era names can be detected
+                if (retries > 0) setTimeout(() => Technologies.DetectGameEras(retries - 1), 1000);
+                return;
+            }
+
+            const src = [...document.scripts].map(s => s.src).find(s => /ForgeHX.*\.js/.test(s));
+            if (!src) return;
+
+            let cache = JSON.parse(localStorage.getItem('TechnologiesGameEras') || 'null');
+
+            if (!cache || cache.src !== src) {
+                const js = await fetch(src).then(r => r.text());
+
+                // EraConstants.ERA_IDS, e.g. ERA_IDS="StoneAge BronzeAge ... SpaceAgeSpaceHub StellarAgeDiscovery"
+                const idsMatch = js.match(/\bERA_IDS="([A-Za-z ]+)"/);
+                if (!idsMatch) return;
+
+                // EraNames lookup entries, e.g. new xl(t.gettext("STEL|Stellar Age Discovery"),"stel",23);a.h.StellarAgeDiscovery=b
+                const names = {};
+                for (const m of js.matchAll(/new [\w$]+\([\w$]+\.gettext\("([^"]+)"\),\s*"([a-z]+)",\d+\);[\w$]+\.h\.(\w+)=/g)) {
+                    names[m[3]] = { key: m[1], code: m[2] };
+                }
+
+                cache = { src: src, eraIds: idsMatch[1].split(' '), names: names };
+                localStorage.setItem('TechnologiesGameEras', JSON.stringify(cache));
+            }
+
+            // accept the game's list only if it extends the known one (placeholder eras excluded)
+            const gameList = cache.eraIds.filter(id => id !== 'TheUnknownEra');
+            if (!Technologies.EraList.every((id, i) => gameList[i] === id)) return;
+
+            if (gameList.length > Technologies.EraList.length) {
+                Technologies.EraList = gameList;
+                Technologies.BuildEraMaps();
+            }
+
+            Technologies.AddEraTranslations(cache.names || {});
+        }
+        catch (err) {
+            console.warn('DetectGameEras failed:', err);
+        }
+    },
+
+
+    /**
+     * Registers i18n fallbacks (full and short era name) for eras the
+     * extension's language files do not cover yet. Full names are resolved
+     * through the game's own translation catalog (window.gettextCatalog),
+     * so they appear in the game language.
+     * @param {Object<string,{key:string,code:string}>} names Era name data extracted from the client script
+     */
+    AddEraTranslations: (names) => {
+        const catalog = window.gettextCatalog?.strings,
+            strings = catalog?.h || catalog || {},
+            values = {};
+
+        for (const [eraName, data] of Object.entries(names)) {
+            const eraId = Technologies.Eras[eraName];
+            if (eraId === undefined) continue;
+
+            if (i18n('Eras.' + eraId) === 'Eras.' + eraId) {
+                let translated = strings[data.key];
+                translated = (Array.isArray(translated) ? translated[0] : translated) || data.key;
+                values['Eras.' + eraId] = String(translated).split('|').pop(); // cut off gettext context prefix
+            }
+
+            if (i18n('Eras.' + eraId + '.short') === 'Eras.' + eraId + '.short') {
+                values['Eras.' + eraId + '.short'] = data.code.toUpperCase();
+            }
+        }
+
+        if (Object.keys(values).length > 0) {
+            i18n.translator.add({ values: values });
+        }
     },
 
 
@@ -588,41 +624,25 @@ let Technologies = {
             // Welche Güter werden gerade aktiv produziert?
             let ActiveProductionGoods = Technologies.GetActiveProductionGoods();
 
-            // Reihenfolge der Ausgabe generieren
-            let OutputList = ['strategy_points', 'money', 'supplies'];
-            for (let i = 0; i < 70; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
+            // special era resources grouped by era, taken from the game's resource definitions
+            let SpecialsByEra = {};
+            for (let Resource of FHResourcesList) {
+                if (Resource['abilities']?.['specialResource']?.['type'] === 'specialResource' && Resource['era']) {
+                    (SpecialsByEra[Resource['era']] = SpecialsByEra[Resource['era']] || []).push(Resource['id']);
+                }
             }
-            OutputList[OutputList.length] = 'promethium';
-            for (let i = 70; i < 75; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
-            }
-            OutputList[OutputList.length] = 'orichalcum';
-            for (let i = 75; i < 80; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
-            }
-            OutputList[OutputList.length] = 'mars_ore';
-            for (let i = 80; i < 85; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
-            }
-            OutputList[OutputList.length] = 'asteroid_ice';
-            for (let i = 85; i < 90; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
-            }
-            OutputList[OutputList.length] = 'venus_carbon';
-            for (let i = 90; i < 95; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
-            }
-            OutputList[OutputList.length] = 'unknown_dna';
-            for (let i = 95; i < 100; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
-            }
-            OutputList[OutputList.length] = 'crystallized_hydrocarbons';
-            for (let i = 100; i < 105; i++) {
-                OutputList[OutputList.length] = GoodsList[i]['id'];
-            }
-            OutputList[OutputList.length] = 'dark_matter';
-            for (let i = 105; i < GoodsList.length; i++) {
+
+            // output order: era by era the special resource (research gate) first, then the era's goods
+            let OutputList = ['strategy_points', 'money', 'supplies'],
+                LastEra = null;
+            for (let i = 0; i < GoodsList.length; i++) {
+                let Era = GoodsList[i]['era'];
+
+                if (Era !== LastEra) {
+                    OutputList.push(...(SpecialsByEra[Era] || []));
+                    LastEra = Era;
+                }
+
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
 
@@ -1038,3 +1058,5 @@ let Technologies = {
         return activeGoods;
     },
 };
+
+Technologies.BuildEraMaps();

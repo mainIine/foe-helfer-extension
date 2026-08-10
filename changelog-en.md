@@ -1,5 +1,49 @@
 ## Extension Changelog
 
+##### 4.7.1.0
+**New**
+
+- GB Bonus Overview:
+    - New module: every great building with its bonuses per prestige tier (copper/silver/gold) and the bonus values at the level breakpoints in one box — filterable by name, built/not built and bonus type
+    - Your own GBs additionally show the current level, the unlocked levels with a progress bar and the currently active bonus values
+
+**Update**
+
+- GB Cost Calculator:
+    - New piggy bank column shows the extra FP granted by your contribution boost, just like in the game; the icon matches the building's tier (copper/silver/gold) and the column can be hidden in the settings
+
+- Blue Galaxy:
+    - New sortable column for goods from the next age (icon with the green arrow); with its own adjustable rating that feeds into the default sorting — if you don't need it, hide it in the settings
+    - Productions like “random good of the next age” or goods chests are now counted as well — such buildings previously did not always show up in the list at all
+
+- Negotiation Helper:
+    - Deviating from the suggestion no longer ends with ‘Wrong goods selected’ — the helper understands every move and keeps calculating exactly
+    - More than 5 rounds (e.g. extra turns from the tavern) are now fully supported instead of capped; even after the planned rounds are used up, the helper keeps suggesting the most likely assignment for extra turns
+    - Negotiations with more than 10 goods now work as well (previously an error message)
+    - In some endgames the negotiation helper provably plays better than before; the displayed win chance always matches the strategy actually played
+
+- General:
+    - The browser tab now shows the world abbreviation in its title (e.g. “de11 - Forge of Empires”) — with several worlds open you can instantly tell which tab belongs to which world
+    - Goods graphics now come straight from the game and update automatically with new eras — new goods instantly show up with the correct icon
+    - New eras are now detected automatically from the game — era list, names and special goods are correct the moment a new era launches, without waiting for an update
+    - On the beta server the goods graphics did not load (wrong server requested) — fixed
+
+- Event assistants:
+    - The merge game task warning (“Collect task!” overlay and sound) now has its own toggle in the settings and works even without the merge game box
+    - Overlay and sound can be toggled individually right there (previously in the merge game box's gear menu)
+    - The event assistant list is now grouped per event and easier to read
+
+**Bugfixes**
+
+- After the game's GB update, the bonuses of your own great buildings are taken into account everywhere again (efficiency rating, boost overview, happiness/population, contribution boost)
+
+- Blue Galaxy:
+    - A manually opened box no longer closes itself while collecting — only an automatically opened box still closes once all double collections are used up
+
+- Building Marker: The golden arrows now also appear for buildings right at the map edge
+
+---
+
 ##### 4.6.0.0
 
 **New**
@@ -10,9 +54,9 @@
 	- New internal module that marks buildings in the city with floating golden arrows — the arrows follow the map in real time as you zoom and pan; clicking on a marked building removes its arrow, whilst the close cross beneath the diamonds removes all
 	- The eye buttons in ‘Productions’, ‘Efficiency Rating’, ‘Blue Galaxy’ and ‘Historical Allies’ now highlight the building directly in the city rather than in the city map box; if highlighting is not available (e.g. in Firefox), the city map opens as before
 
-- Gildengefechte:
-	- Neuer Pfeil-Button in den Sektor-Zeilen der Live-Box (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
-	- Die Einstellungen der Live-Box sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
+- Guild Battles:
+	- New arrow button in the sector rows of the Live Box (can be disabled in the settings) — marks the sector with a floating arrow directly on the battleground map; the same button, a click on the sector or the close cross removes it again
+	- The Live Box settings are now organised in tabs (Display, Copy, Time & Alarm, Send)
 
 **Update**
 - Blue Galaxy:
@@ -22,9 +66,19 @@
 	- Buildings for which no space could be found no longer disappear silently from the map — they are now listed in their own movable box
 	- New loading display with background panel, progress bar and percentage while the layout is being calculated
 	- Road balance in the top left corner of the map: road tiles of the current city, road tiles of the plan and the savings in per cent
+	- New "Names" option: shows the building names directly on the map — aligned with the building direction, wrapped onto several lines on larger buildings and readable at any zoom level
+	- New "Tooltips" option: the building tooltips shown when hovering over the map can be switched off temporarily
+	- New remove mode: enable it and click buildings on the map to take them out of the plan — they move into the unplaced buildings box and can be restored there for the next calculation
+	- New "Recalculate" button: plans the city again without planning the removed buildings back in — like all features it also works in the pop-out window
+	- New variant picker: the calculation keeps up to 9 distinct city layouts — guaranteed to include the best variant of every building strategy (bands, vertical bands, organic) — and ‹ › switches between them instantly; the label names the strategy and the road balance shows the numbers per variant
 
 - Guild battles:
 	- The automatic Discord notification feature now excludes sectors with an excessively high chance of attrition — the threshold can be selected in the settings (default: 100 per cent); this is checked at the time of sending
+
+- Inventory Overview:
+	- Selection kits now reveal their contents — the tooltip lists all contained buildings, and searching for a building also surfaces the kits it can be taken from
+	- New kind filter: buildings, fragments, kits or other items
+	- With an active property filter, selection kits show the best value among their contained buildings
 
 **Bugfix**
 - City Builder:

@@ -269,6 +269,11 @@ GetFights = () =>{
 		// Player-ID, Gilden-ID und Name setzen
 		MainParser.StartUp(data.responseData.user_data);
 
+		// prepend the world abbreviation to the tab title, e.g. "de11 - Forge of Empires"
+		if (!document.title.startsWith(ExtWorld)) {
+			document.title = `${ExtWorld} - ${document.title}`;
+		}
+
 		// check if DB exists
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
@@ -1726,8 +1731,11 @@ let MainParser = {
 	SetArkBonus2: () => {
 		let ArkBonus = 0;
 
-		for (let i of Object.values(MainParser.CityMapData).filter(x => x?.bonus?.type === "contribution_boost")) {
-			ArkBonus += i.bonus.value;
+		for (let i of Object.values(MainParser.CityMapData)) {
+			// classic single `bonus` field or `bonuses` array of the multi-tier rework
+			for (const bonus of (i?.bonuses || (i?.bonus ? [i.bonus] : []))) {
+				if (bonus.type === "contribution_boost") ArkBonus += bonus.value;
+			}
 		}
 
 		MainParser.updateArkBonus(ArkBonus,"City Map");

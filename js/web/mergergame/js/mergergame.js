@@ -331,7 +331,6 @@ let mergerGame = {
 				minimize: true,
 				resize : true,
 				ask: i18n('Boxes.MergerGame.HelpLink'),
-				settings: () => mergerGame.ShowSettingsButton(),
 			    active_maps:"main"
 			});
 
@@ -450,48 +449,9 @@ let mergerGame = {
 		
 		$('#mergerGameDialogBody').html(html);
 	},
-	ShowSettingsButton: () => {
-        let h = [];
-		h.push(`<table class="foe-table">`)
-        //h.push(`<tr><td>${i18n('Boxes.MergerGame.KeyValue.'+mergerGame.event)}</td>`);
-        //h.push(`<td><input type="Number" id="MGkeyValue" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.keyValue}"></td></tr>`);
-        //h.push(`<tr><td>${i18n('Boxes.MergerGame.availableCurrency.'+mergerGame.event)}</td>`);
-        //h.push(`<td><input type="Number" id="MGavailableCurrency" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.availableCurrency}"></td></tr>`);
-        //h.push(`<tr><td>${i18n('Boxes.MergerGame.targetProgress')}</td>`);
-        //h.push(`<td><input type="Number" id="MGtargetProgress" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.targetProgress}"></td></tr>`);
-        //h.push(`<tr><td>${i18n('Boxes.MergerGame.hideOverlay')}</td>`);
-        //h.push(`<td><input type="checkbox" id="MGhideOverlay" oninput="mergerGame.SaveSettings()"${mergerGame.settings.hideOverlay ? ' checked' : ''}></td></tr>`);
-        //h.push(`<tr><td>${i18n('Boxes.MergerGame.useAverage')}</td>`);
-        //h.push(`<td><input type="Number" id="MGuseAverage" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.useAverage || 0}"></td></tr>`);
-        h.push(`<tr><td>${i18n('Boxes.MergerGame.opticalTaskWarning')}</td>`);
-        h.push(`<td><input type="checkbox" id="opticalTaskWarning" oninput="mergerGame.SaveSettings()"${mergerGame.settings.opticalTaskWarning ? ' checked' : ''}></td></tr>`);
-        h.push(`<tr><td>${i18n('Boxes.MergerGame.audibleTaskWarning')}</td>`);
-        h.push(`<td><input type="checkbox" id="audibleTaskWarning" oninput="mergerGame.SaveSettings()"${mergerGame.settings.audibleTaskWarning ? ' checked' : ''}></td></tr>`);
-		h.push(`</table>`)
-        $('#mergerGameDialogSettingsBox').html(h.join(''));
-		/*
-		$("#mergerGameDialogSettingsBox input").keyup(function(event) {
-			if (event.keyCode === 13) {
-				$("#mergerGameDialogButtons .window-settings").trigger("click");
-			}
-		});*/
-    },
-	
-	SaveSettings: () => {
-        //mergerGame.settings["keyValue"] = Number($('#MGkeyValue').val()) || 1;
-		//mergerGame.settings["targetProgress"] = Number($('#MGtargetProgress').val()) || 3250;
-		//mergerGame.settings["availableCurrency"] = Number($('#MGavailableCurrency').val()) || 10500;
-		//mergerGame.settings["useAverage"] = Number($('#MGuseAverage').val()) || 0;
-		//mergerGame.settings["hideOverlay"] = $('#MGhideOverlay')[0].checked;
-		mergerGame.settings["opticalTaskWarning"] = $('#opticalTaskWarning')[0].checked;
-		mergerGame.settings["audibleTaskWarning"] = $('#audibleTaskWarning')[0].checked;
-
-		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
-        //mergerGame.updateDialog();
-    },
 	checkTaskProgress: (warn = true) => {
-		//Do not show window if deactivated in settings
-		if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperMerge') === undefined ? true : Settings.GetSetting('EventHelperMerge'))) {
+		//Task warning has its own setting, independent of the merger game box
+		if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperMergeBlocker') === undefined ? true : Settings.GetSetting('EventHelperMergeBlocker'))) {
 			return;
 		}
 		let raiseAlert = false;
@@ -507,10 +467,16 @@ let mergerGame = {
 				wcSum += slot.worldChallengeTokens || 0;
 			}
 		}
-		if (mergerGame.settings.audibleTaskWarning && warn && raiseAlert) {
+		// overlay/sound toggles moved to the main settings; fall back to the values formerly stored in the box settings
+		let optical = Settings.GetSetting('EventHelperMergeBlockerOptical');
+		if (optical === undefined) optical = mergerGame.settings.opticalTaskWarning;
+		let audible = Settings.GetSetting('EventHelperMergeBlockerAudible');
+		if (audible === undefined) audible = mergerGame.settings.audibleTaskWarning;
+		if (audible && warn && raiseAlert) {
 			helper.sounds.play("message");
 		}
-		if (mergerGame.settings.opticalTaskWarning && warn && raiseAlert && $('#mergerGameTaskWarning').length === 0) {
+		if (optical && warn && raiseAlert && $('#mergerGameTaskWarning').length === 0) {
+			HTML.AddCssFile('mergergame');
 			mergerGame.allowRemoveWarning = false;
 			setTimeout(() => {
 				mergerGame.allowRemoveWarning = true;

@@ -750,6 +750,7 @@ let Outposts = {
 								<link rel="stylesheet" href="${extUrl}css/web/variables.css">
 								<link rel="stylesheet" href="${extUrl}css/web/boxes.css">
 								<link rel="stylesheet" href="${extUrl}css/web/goods.css">
+								<style id="goods-sprite-css">${localStorage.getItem('GoodsSpriteCSS') || ''}</style>
 								<link rel="stylesheet" href="${extUrl}js/web/outposts/css/outposts.css">
 							</head>
 							<body class="popup-body" id="outpostConsumablesBody">${content}</body>

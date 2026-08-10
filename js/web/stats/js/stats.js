@@ -16,6 +16,11 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (d
 	Stats.HandlePlayerLeaderboard(data.responseData);
 });
 
+// derive the special era resources from the game's resource definitions
+FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
+	Stats.UpdateSpecialResources(data.responseData);
+});
+
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, postData) => {
 	if (data.responseData['stateId'] !== 'participating') {
 		Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
@@ -270,6 +275,26 @@ let Stats = {
 				}
 			}
 		}
+	},
+
+
+	/**
+	 * Rebuilds ResMap.special from the game's resource definitions: every resource
+	 * with the specialResource ability, ordered by era. New eras are picked up
+	 * automatically; the static list only remains as fallback.
+	 *
+	 * @param {Object[]} definitions resource definitions from ResourceService.getResourceDefinitions
+	 */
+	UpdateSpecialResources: (definitions) => {
+		const fromGame = (definitions || [])
+			.filter(r => r.abilities?.specialResource?.type === 'specialResource' && r.era)
+			.sort((a, b) => (Technologies.InnoEras[a.era] ?? 999) - (Technologies.InnoEras[b.era] ?? 999))
+			.map(r => r.id);
+
+		if (fromGame.length === 0) return;
+
+		// statically known ids the definitions may miss stay at the end
+		Stats.ResMap.special = [...new Set([...fromGame, ...Stats.ResMap.special])];
 	},
 
 

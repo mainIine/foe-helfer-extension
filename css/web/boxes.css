@@ -665,6 +665,11 @@ p {
 	background-image: url('../images/menu/greatbuildings.png');
 }
 
+[id$=gbBonuses-Btn] span {
+	background-image: url('../images/menu/greatbuildings.png');
+	filter: hue-rotate(180deg);
+}
+
 [id$=productions-Btn] span {
 	background-image: url('../images/menu/productions.png');
 }

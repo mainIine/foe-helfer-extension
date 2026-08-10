@@ -197,6 +197,18 @@
 	width: 32px;
 }
 
+#SettingsBoxBody .event-helper-group {
+	margin: 8px 0 16px;
+}
+
+#SettingsBoxBody .event-helper-group > div {
+	margin-top: 4px;
+}
+
+#SettingsBoxBody .event-helper-sub {
+	margin-left: 28px;
+}
+
 #SettingsBoxBody .info-box {
 	border: 1px solid var(--text-dark);
 	padding: 5px;

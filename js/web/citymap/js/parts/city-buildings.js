@@ -14,6 +14,18 @@
 let CityBuildings = {
 
 	/**
+	 * Returns the bonuses of a placed great building. Supports both the classic
+	 * single `bonus` field and the `bonuses` array of the multi-tier rework.
+	 *
+	 * @param {Object} data - The placed building entity.
+	 * @returns {Object[]} The bonus list, empty for buildings without bonuses.
+	 */
+	getGBBonuses(data) {
+		return data.bonuses || (data.bonus ? [data.bonus] : []);
+	},
+
+
+	/**
 	 * Determines the population value of a building: positive for provided
 	 * population (e.g. residential), negative for required population (e.g. military).
 	 *
@@ -33,7 +45,10 @@ let CityBuildings = {
 			}
 			else if (metaData.requirements?.cost) {
 				if (metaData.type === 'decoration') return 0;
-				if (metaData.type === 'greatbuilding' && data.bonus?.type === 'population') return data.bonus.value;
+				if (metaData.type === 'greatbuilding') {
+					const populationBonus = this.getGBBonuses(data).find(bonus => bonus.type === 'population');
+					if (populationBonus) return populationBonus.value;
+				}
 
 				return metaData.requirements.cost.resources.population * -1;
 			}
@@ -65,8 +80,9 @@ let CityBuildings = {
 				if (provided) return (data?.state?.__class__ === 'PolishedState' ? provided * 2 : provided);
 				return 0;
 			}
-			if (data.bonus) { // great building, e.g. Alcatraz
-				return (data.bonus.type === 'happiness' ? data.bonus.value : 0);
+			const gbBonuses = CityBuildings.getGBBonuses(data);
+			if (gbBonuses.length > 0) { // great building, e.g. Alcatraz
+				return (gbBonuses.find(bonus => bonus.type === 'happiness')?.value || 0);
 			}
 			if (metaData.provided_happiness) { // decorations etc.
 				return (isPolivated ? metaData.provided_happiness * 2 : metaData.provided_happiness);
@@ -306,8 +322,13 @@ let CityBuildings = {
 			});
 
 			if (metaData.type === 'greatbuilding') {
-				if (data.bonus?.type && data.bonus.type !== 'happiness_amount' && data.bonus.type !== 'population') {
-					boosts.push(mapBoost({ targetedFeature: 'all', type: data.bonus.type, value: data.bonus.value }));
+				// production bonuses (rework `bonuses` array) are covered by the
+				// production state and must not be counted as boosts
+				for (const gbBonus of this.getGBBonuses(data)) {
+					if (!gbBonus.type || gbBonus.type === 'happiness_amount' || gbBonus.type === 'population') continue;
+					if (gbBonus.bonusCategory?.value === 'productionBonus') continue;
+
+					boosts.push(mapBoost({ targetedFeature: 'all', type: gbBonus.type, value: gbBonus.value }));
 				}
 			}
 			else if (metaData.id.includes('CastleSystem')) {
@@ -902,39 +923,43 @@ let CityBuildings = {
 			if (metaData.__class__ !== 'GenericCityEntity') {
 				const currentProduct = data.state.current_product;
 				if (currentProduct) {
-					if (currentProduct.guildProduct) {
-						productions.push({
-							resources: currentProduct.guildProduct.resources,
-							type: 'guildResources',
-						});
-					}
-					if (currentProduct.clan_power) { // HoF
-						productions.push({
-							resources: { clan_power: currentProduct.clan_power },
-							type: 'guildResources',
-						});
-					}
-					if (currentProduct.product?.resources) {
-						productions.push({
-							resources: currentProduct.product.resources,
-							type: (currentProduct.name === 'special_goods' ? 'special_goods' : 'resources'), // space carrier produces special goods
-						});
-					}
-					if (currentProduct.goods && data.type === 'greatbuilding' && currentProduct.name === 'clan_goods') {
-						const resources = {};
-						currentProduct.goods.forEach(good => {
-							resources[good.good_id] = good.value;
-						});
-						productions.push({
-							resources: resources,
-							type: 'guildResources',
-						});
-					}
-					if (currentProduct.name === 'penal_unit') { // alcatraz
-						productions.push({
-							resources: { 'random': parseFloat(currentProduct.amount) },
-							type: 'unit',
-						});
+					// great buildings of the multi-tier rework carry a list of
+					// products, the classic format is a single product
+					for (const product of (currentProduct.products || [currentProduct])) {
+						if (product.guildProduct) {
+							productions.push({
+								resources: product.guildProduct.resources,
+								type: 'guildResources',
+							});
+						}
+						if (product.clan_power) { // HoF
+							productions.push({
+								resources: { clan_power: product.clan_power },
+								type: 'guildResources',
+							});
+						}
+						if (product.product?.resources) {
+							productions.push({
+								resources: product.product.resources,
+								type: (product.name === 'special_goods' ? 'special_goods' : 'resources'), // space carrier produces special goods
+							});
+						}
+						if (product.goods && data.type === 'greatbuilding' && product.name === 'clan_goods') {
+							const resources = {};
+							product.goods.forEach(good => {
+								resources[good.good_id] = good.value;
+							});
+							productions.push({
+								resources: resources,
+								type: 'guildResources',
+							});
+						}
+						if (product.name === 'penal_unit') { // alcatraz
+							productions.push({
+								resources: { 'random': parseFloat(product.amount) },
+								type: 'unit',
+							});
+						}
 					}
 					if (data.state.is_motivated) {
 						metaData.abilities.forEach(ability => { // random units are not in the data, they are in the metaData for some reason

@@ -133,14 +133,18 @@ let Boosts = {
     },
 
     InitLB: async (LBs) => {
-        
-        let boosts=LBs.filter(x=>x.bonus?.type && x.player_id == ExtPlayerID).map(x=>
-            ({
-                entityId: x.entityId||x.id,
-                origin: "greatBuilding",
-                type: x.bonus.type,
-                value: x.bonus.value || 0
-            })
+
+        // supports both the classic single `bonus` field and the `bonuses`
+        // array of the multi-tier rework (production bonuses are no boosts)
+        let boosts=LBs.filter(x=>x.player_id == ExtPlayerID).flatMap(x=>
+            (x.bonuses || (x.bonus ? [x.bonus] : []))
+                .filter(b=>b?.type && b.bonusCategory?.value !== 'productionBonus')
+                .map(b=>({
+                    entityId: x.entityId||x.id,
+                    origin: "greatBuilding",
+                    type: b.type,
+                    value: b.value || 0
+                }))
         )
         Boosts.Remove(boosts)
         Boosts.Add(boosts)
