@@ -77,6 +77,8 @@
     "Boxes.AllyList.ViewCompact": "Vue compacte",
     "Boxes.AllyList.ViewMatrix": "Matrice des boost",
     "Boxes.AllyList.XPMissing": "XP pour augmenter le niveau",
+    "Boxes.Ascended.ColBuilding": "Bâtiment",
+    "Boxes.Ascended.ColDuration": "temps de fonctionnement",
     "Boxes.AuctionSettings.Add": "Ajouter",
     "Boxes.AuctionSettings.Bid": "Offre",
     "Boxes.AuctionSettings.Factor": "Facteur",
