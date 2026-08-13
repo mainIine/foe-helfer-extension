@@ -25,6 +25,14 @@ solver play below every distillation cut) and compares it with the stored
 chance. Run this after any change to the solver or the book. It finishes in
 about 10 seconds and must report `all consistent`.
 
+```
+node tools/negotiation/tiebreak-test.js
+```
+
+Checks the probe tie-break: probes never repeat a good on a slot that
+already refused it unless the repeat is strictly the better move, and the
+avoidance never costs win probability. Must report `all consistent`.
+
 ## Regenerating the book
 
 The legacy tables (27 zips, ~2.7 MB, removed from the working tree) are
