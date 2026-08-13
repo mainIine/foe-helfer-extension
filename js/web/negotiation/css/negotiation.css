@@ -192,6 +192,13 @@
 #negotiationBox .suggestion {
 	height: 4.5em;
 }
+
+/* probe offer: cannot be the demanded good on its slot, only gathers information */
+#negotiationBox .suggestion td.probe .goods-sprite {
+	border: 2px dashed rgba(120, 180, 255, 0.85);
+	cursor: help;
+}
+
 #negotiationBox .numberIcon {
 	position: absolute;
 	bottom: 0.3em;

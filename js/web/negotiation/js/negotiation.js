@@ -355,8 +355,11 @@ let Negotiation = {
 			const slotSuggestion = nextRoundSuggestion[place];
 
 			if (slotSuggestion) {
-				h.push('<td class="text-center">');
-				h.push(`<span class="goods-sprite ${slotSuggestion.resourceId}"></span>`);
+				// probe offer: cannot be the demanded good on this slot, but the
+				// reaction to it narrows down the remaining possibilities
+				const isProbe = !slotSuggestion.canOccur.includes(place);
+				h.push(`<td class="text-center${isProbe ? ' probe' : ''}">`);
+				h.push(`<span class="goods-sprite ${slotSuggestion.resourceId}"${isProbe ? ` title="${i18n('Boxes.Negotiation.ProbeTooltip')}"` : ''}></span>`);
 				h.push(`<span class="numberIcon" title="${HTML.i18nReplacer(i18n('Boxes.Negotiation.KeyboardTooltip'), {place: place + 1, slot: (slotSuggestion.id + 1) % 10})}">${place + 1} ${(slotSuggestion.id + 1) % 10}</span>`);
 				h.push('</td>');
 			} else {
@@ -690,6 +693,19 @@ let Negotiation = {
 		// keep suggesting single-round guesses when extra turns go beyond plan
 		const R = Math.max(1, Negotiation.TryCount - Negotiation.CurrentTry + 1);
 
+		// per open slot: bitmask of goods this slot has already refused; probe
+		// offers repeating one of them are valid but read as nonsense, so they
+		// are only suggested when strictly better than every alternative
+		const refutedBySlot = new Array(Negotiation.PlaceCount).fill(0);
+		for (const guess of Negotiation.Guesses) {
+			guess.forEach((slotGuess, slot) => {
+				if (slotGuess.good !== null && slotGuess.match !== 0) {
+					refutedBySlot[slot] |= 1 << slotGuess.good.plannedPos;
+				}
+			});
+		}
+		const refutedLocal = Negotiation.OpenSlots.map(slot => refutedBySlot[slot]);
+
 		/** @type {number[]|null} offered good index per open slot position */
 		let offerLocal = null;
 
@@ -701,6 +717,12 @@ let Negotiation = {
 				const b = Negotiation.BookNode.gu[slot];
 				if (b === 255 || mapping.inv[b] === undefined) { valid = false; break; }
 				offerLocal.push(mapping.inv[b]);
+			}
+			// hand a book move that repeats a refused good over to the exact
+			// solver, which finds an equally good offer without the repeat
+			if (valid && Negotiation.Assigns !== null && Negotiation.Assigns.length <= Negotiation.LIVE_LIMIT
+				&& offerLocal.some((g, j) => refutedLocal[j] & (1 << g))) {
+				valid = false;
 			}
 			if (valid) {
 				const go = new Array(Negotiation.GoodCount);
@@ -714,11 +736,11 @@ let Negotiation = {
 
 		if (offerLocal === null && Negotiation.SolverObj && Negotiation.Assigns) {
 			if (Negotiation.Assigns.length <= Negotiation.LIVE_LIMIT) {
-				const res = Negotiation.SolverObj.evalState(Negotiation.Assigns, k, R);
+				const res = Negotiation.SolverObj.evalState(Negotiation.Assigns, k, R, refutedLocal);
 				offerLocal = res.offer;
 				Negotiation.View = {
 					c: res.p * 100,
-					go: Negotiation.SolverObj.consumption(Negotiation.Assigns, k, R)
+					go: Negotiation.SolverObj.consumption(Negotiation.Assigns, k, R, refutedLocal)
 				};
 			} else {
 				// too big for exact search (off-book opening): cover unknowns

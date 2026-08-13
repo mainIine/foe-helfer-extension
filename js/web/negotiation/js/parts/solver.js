@@ -24,7 +24,9 @@
  * with all feedback (the posterior is uniform over that set) and picks the
  * offer that maximizes the exact win probability via expectimax search.
  * Ties are broken in favor of cheap goods through the enumeration order
- * (good index = priority rank, lower = spend first).
+ * (good index = priority rank, lower = spend first). Probe offers that would
+ * repeat a good the slot already refused are enumerated last, so they are
+ * only suggested when no equally good offer without such a repeat exists.
  *
  * Assignments are encoded as integers with 4 bits per slot, which supports
  * up to 16 goods. Search is kept fast by:
@@ -120,11 +122,15 @@ const NegotiationSolver = (() => {
 		 * @param {Int32Array} assigns sorted consistent assignments over k open slots
 		 * @param {number} k open slot count
 		 * @param {number} R remaining rounds (including the one to offer now)
+		 * @param {number[]} [refutedMasks] per-slot bitmask of goods the slot has
+		 *        already refused; ties are broken towards offers avoiding such
+		 *        repeats, they are only suggested when strictly better
 		 * @returns {{p: number, offer: number[]|null}}
 		 */
-		evalState(assigns, k, R) {
+		evalState(assigns, k, R, refutedMasks) {
 			if (k === 0) return { p: 1, offer: null };
 			if (R === 0) return { p: 0, offer: null };
+			if (refutedMasks && !refutedMasks.some(m => m !== 0)) refutedMasks = undefined;
 
 			const total = assigns.length;
 
@@ -179,10 +185,11 @@ const NegotiationSolver = (() => {
 				cCand = perm.map(i => candMask[i]);
 			}
 
-			const key = this.hashKey(cAssigns, k, R);
+			const cRefuted = refutedMasks ? perm.map(i => refutedMasks[i]) : undefined;
+			const key = this.hashKey(cAssigns, k, R) + (cRefuted ? '|' + cRefuted.join('.') : '');
 			let best = this.memo.get(key);
 			if (!best) {
-				best = this.search(cAssigns, cDec, cCand, k, R);
+				best = this.search(cAssigns, cDec, cCand, k, R, cRefuted);
 				this.memo.set(key, best);
 			}
 
@@ -200,17 +207,20 @@ const NegotiationSolver = (() => {
 		 * @param {Int32Array} assigns sorted consistent assignments
 		 * @param {number} k open slot count
 		 * @param {number} R remaining rounds
+		 * @param {number[]} [refutedMasks] tie-break masks for the upcoming offer
+		 *        (see evalState); future rounds are predicted without them
 		 * @returns {number[]} expected offer count per good index
 		 */
-		consumption(assigns, k, R) {
+		consumption(assigns, k, R, refutedMasks) {
 			const vec = new Array(this.N).fill(0);
 			if (k === 0 || R === 0) return vec;
+			if (refutedMasks && !refutedMasks.some(m => m !== 0)) refutedMasks = undefined;
 
-			const key = this.hashKey(assigns, k, R);
+			const key = this.hashKey(assigns, k, R) + (refutedMasks ? '|' + refutedMasks.join('.') : '');
 			const hit = this.goMemo.get(key);
 			if (hit) return hit.slice();
 
-			const { offer } = this.evalState(assigns, k, R);
+			const { offer } = this.evalState(assigns, k, R, refutedMasks);
 			for (let i = 0; i < k; i++) vec[offer[i]]++;
 
 			if (R > 1) {
@@ -261,9 +271,10 @@ const NegotiationSolver = (() => {
 		 * @param {number[]} candMask per-slot candidate good bitmask
 		 * @param {number} k open slot count
 		 * @param {number} R remaining rounds
+		 * @param {number[]} [refutedMasks] per-slot bitmask of already refused goods
 		 * @returns {{p: number, offer: number[]}}
 		 */
-		search(assigns, dec, candMask, k, R) {
+		search(assigns, dec, candMask, k, R, refutedMasks) {
 			const total = assigns.length;
 			const N = this.N;
 
@@ -298,12 +309,19 @@ const NegotiationSolver = (() => {
 				nextClass++;
 			}
 
-			// iteration order per slot: real candidates first, probes last
+			// iteration order per slot: real candidates first, then probes,
+			// then probes repeating a good the slot already refused — those
+			// are only picked up when strictly better than everything else
 			const slotGoods = [];
 			for (let i = 0; i < k; i++) {
-				const cands = [], probes = [];
-				for (const g of alive) ((candMask[i] & (1 << g)) ? cands : probes).push(g);
-				slotGoods.push([...cands, ...probes]);
+				const refused = refutedMasks ? refutedMasks[i] : 0;
+				const cands = [], probes = [], repeats = [];
+				for (const g of alive) {
+					if (candMask[i] & (1 << g)) cands.push(g);
+					else if (refused & (1 << g)) repeats.push(g);
+					else probes.push(g);
+				}
+				slotGoods.push([...cands, ...probes, ...repeats]);
 			}
 
 			const self = this;
@@ -324,11 +342,17 @@ const NegotiationSolver = (() => {
 					const cls = classId[g];
 					const used = usedByClass.get(cls) || [];
 					if (!used.includes(g)) {
-						// only the cheapest unused member of a class is canonical
-						let canonical = -1;
+						// only one unused member of a class is canonical: the
+						// cheapest not yet refused on this slot, cheapest overall
+						// when the whole class was already refused here
+						const refused = refutedMasks ? refutedMasks[slot] : 0;
+						let canonical = -1, fallback = -1;
 						for (const h of alive) {
-							if (classId[h] === cls && !used.includes(h)) { canonical = h; break; }
+							if (classId[h] !== cls || used.includes(h)) continue;
+							if (fallback === -1) fallback = h;
+							if (!(refused & (1 << h))) { canonical = h; break; }
 						}
+						if (canonical === -1) canonical = fallback;
 						if (canonical !== g) continue;
 						usedByClass.set(cls, [...used, g]);
 						offer[slot] = g;

@@ -1052,6 +1052,7 @@
     "Boxes.Negotiation.GoodsLow": "ACHTUNG: Dein Gütervorrat ist knapp!",
     "Boxes.Negotiation.HelpLink": "https://foe-helper.com/docs/de/verhandlungsassistent/?lang=de",
     "Boxes.Negotiation.Person": "Person",
+    "Boxes.Negotiation.ProbeTooltip": "Testangebot: Dieses Gut kann hier nicht das richtige sein, aber die Reaktion darauf grenzt die verbleibenden Möglichkeiten ein.",
     "Boxes.Negotiation.Round": "Runde",
     "Boxes.Negotiation.SaveCurrentEraGoods": "Aktuelle Güter sparen?",
     "Boxes.Negotiation.SaveMedals": "Medaillen sparen?",

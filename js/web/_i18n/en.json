@@ -1054,6 +1054,7 @@
     "Boxes.Negotiation.HelpLink": "https://docs.foe-helper.com/english/module/negotiation",
     "Boxes.Negotiation.KeyboardTooltip": "Press __place__ and __slot__ on your keyboard to insert this suggestion.",
     "Boxes.Negotiation.Person": "Person",
+    "Boxes.Negotiation.ProbeTooltip": "Test offer: this good cannot be the right one here, but the reaction to it narrows down the remaining possibilities.",
     "Boxes.Negotiation.Round": "Round",
     "Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods?",
     "Boxes.Negotiation.SaveMedals": "Save medals?",

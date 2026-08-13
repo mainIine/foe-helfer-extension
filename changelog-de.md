@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.7.2.1
+**Bugfixes**
+
+- Verhandlungshelfer:
+    - Es wird kein Gut mehr vorgeschlagen, das dieselbe Person bereits abgelehnt hat
+    - Bewusste Testangebote — Güter, die bei dieser Person nicht das richtige sein können, deren Antwort aber die verbleibenden Möglichkeiten eingrenzt — sind jetzt mit gestricheltem Rahmen und Tooltip gekennzeichnet
+
+---
+
 ##### 4.7.2.0
 **Update**
 

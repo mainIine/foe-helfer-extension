@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.7.2.1
+**Bugfixes**
+
+- Negotiation helper:
+    - No longer suggests a good the same person has already refused as long as an equally good move without that repeat exists
+    - Deliberate test offers — goods that cannot be the right one for that person, but whose answer narrows down the remaining options — are now marked with a dashed border and a tooltip
+
+---
+
 ##### 4.7.2.0
 **Update**
 
