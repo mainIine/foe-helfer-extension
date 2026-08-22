@@ -602,9 +602,9 @@ let mergerGame = {
 	solve:() => {
 		let type1 = mergerGame.types[1],
 			type2 = mergerGame.types[0];
-		
+
 		let solved = {}
-		
+
 		for (let c of mergerGame.colors) {
 			let locked= {}
 			locked[type1]=[]
@@ -617,7 +617,7 @@ let mergerGame = {
 					free[t].push(mergerGame.state.unlocked[c][l][t])
 					if (t=="full"||t=="none") continue
 					locked[t].push(mergerGame.state.table[c][l][t]-mergerGame.state.unlocked[c][l][t]);
-					
+
 				}
 			}
 			solved[c] = mergerGame.solver(locked,free,c,true);
@@ -663,12 +663,12 @@ let mergerGame = {
 		keys.average = Math.round(keys.average *10)/10;
 		progress.average = Math.round(progress.average *10)/10;
 		return {keys:keys,progress:progress,value:value}
-	}, 
+	},
 
 	checkInconsistencies:(solved,c) => {
 		let best = window.structuredClone(solved);
 		for (let l of [1,2,3,4]) {
-			if (solved.free.none[l-1] == 0) continue 
+			if (solved.free.none[l-1] == 0) continue
 			let free = window.structuredClone(solved.free),
 				locked=window.structuredClone(solved.locked);
 			free["none"][l-1] -= 1;
@@ -679,26 +679,26 @@ let mergerGame = {
 			best.progress = solved.progress;
 		}
 		return best
-	}, 
+	},
 
 	solver: (locked,free,sim=false) =>{
 		let result1 = mergerGame.solver1(window.structuredClone(locked),window.structuredClone(free));
 		let result2 = mergerGame.solver2(window.structuredClone(locked),window.structuredClone(free));
 		let result = null
 
-		if (result1.keys*mergerGame.settings.keyValue+result1.progress>result2.keys*mergerGame.settings.keyValue+result2.progress) 
+		if (result1.keys*mergerGame.settings.keyValue+result1.progress>result2.keys*mergerGame.settings.keyValue+result2.progress)
 			result = result1
 		else
 			result = result2;
-		
+
 		if (sim) {
 			result = mergerGame.checkInconsistencies(result)
 		}
-		
+
 		return result;
-		
+
 	},
-	
+
 	solver1:(locked,free)=>{ //modified version of Moos solver - generally better but also has some oddities
 		let lockedO = window.structuredClone(locked),
 			freeO = window.structuredClone(free),
@@ -716,10 +716,10 @@ let mergerGame = {
 				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
 			}
 		}
-		
+
 		while (true) {
 			if (free.none[0] == 0) break;
-			
+
 			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
 				if (free.none[0] >= 2) {
 					free.none[0] -= 2
@@ -743,7 +743,7 @@ let mergerGame = {
 					pick = type2
 				else
 					pick = type1
-			}        
+			}
 			if (pick == type1) {
 				free.none[0] -= 1
 				free[type1][1] += 1
@@ -772,26 +772,26 @@ let mergerGame = {
 				free[type2][3] -= 1
 				locked[type1][3] -= 1
 				free.full[3] += 1
-			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] &&
 						locked[type2][3] > 0 && locked[type1][2]>0) {
 				locked[type2][3] -= 1
 				locked[type1][2] -= 1
 				free.none[2] -= 1
 				free.full[3] += 1
-			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] &&
 						locked[type1][3] > 0 && locked[type2][2]>0) {
 				locked[type2][2] -= 1
 				locked[type1][3] -= 1
 				free.none[2] -= 1
 				free.full[3] += 1
-			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] &&
 						locked[type2][2]+locked[type2][1]+locked[type2][0]>=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
 						locked[type2][3] > 0 && locked[type1][2]>0) {
 				locked[type2][3] -= 1
 				locked[type1][2] -= 1
 				free.none[2] -= 1
 				free.full[3] += 1
-			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] &&
 						locked[type2][2]+locked[type2][1]+locked[type2][0]<=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
 						locked[type1][3] > 0 && locked[type2][2]>0) {
 				locked[type2][2] -= 1
@@ -806,7 +806,7 @@ let mergerGame = {
 		let occupied1_3=0;
 		let occupied2_3=0;
 		while (true) {
-			
+
 			if (free.none[1] > free[type2][1] && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]-occupied2_3) > 0 && (total1_3<=total2_3 || locked[type2][1] == 0 )) {
 				free.none[1] -= 1;
 				locked[type1][1] -= 1;
@@ -836,17 +836,17 @@ let mergerGame = {
 				free[type1][1] -= 1
 				locked[type2][1] -= 1
 				free.full[2] += 1
-				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
-					occupied1_3 += 1 
-				else 
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3)
+					occupied1_3 += 1
+				else
 					occupied2_3 += 1;
 			} else if (free[type2][1]> 0 && locked[type1][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
 				free[type2][1] -= 1
 				locked[type1][1] -= 1
 				free.full[2] += 1
-				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
-					occupied1_3 += 1 
-				else 
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3)
+					occupied1_3 += 1
+				else
 					occupied2_3 += 1;
 			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
 				if (locked[type1][1] > 0) {
@@ -943,27 +943,27 @@ let mergerGame = {
 				free[type2][1] -= 2
 				free[type2][2] += 1
 			} else break
-		}      
+		}
 		let total1_4 = locked[type1][3] + free[type1][3];
 		let total2_4 = locked[type2][3] + free[type2][3];
 		let occupied1_4=0;
 		let occupied2_4=0;
 		while (true) {
-			
+
 			if (free.none[2] >= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2] + free["full"][2] && locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+ free["full"][2] > 0) {
 				free[type1][3] += locked[type1][2];
 				free[type1][3] += free[type1][2];
 				free[type2][3] += locked[type2][2];
 				free[type2][3] += free[type2][2];
 				free["full"][3] += free["full"][2];
-				
+
 				free.none[2] -= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+free["full"][2];
 				locked[type1][2] = 0;
 				free[type1][2] = 0;
 				locked[type2][2] = 0;
 				free[type2][2] = 0;
 				free["full"][2] = 0;
-				
+
 			} else if (free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3]+free[type2][3]-occupied2_4) > 0 && (total1_4<=total2_4 || locked[type2][2]==0)) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
@@ -1000,7 +1000,7 @@ let mergerGame = {
 				}
 				occupied1_4 += 2;
 				occupied2_4 += 2;
-				
+
 			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
 				free[type1][2] -= 1
 				locked[type2][2] -= 1
@@ -1019,21 +1019,21 @@ let mergerGame = {
 				free[type1][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
-				
+
 			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
 				free.none[2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
-				
+
 			} else if (free.none[2] > 0 && free[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free.none[2] -= 1
 				free[type1][2] -= 1
 				free[type1][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
-				
+
 			} else if (free.none[2] > 0 &&  free[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
 				free.none[2] -= 1
 				free[type2][2] -= 1
@@ -1047,14 +1047,14 @@ let mergerGame = {
 				free[type1][3] += 1
 				occupied1_4 += 1
 				occupied2_4 += 1
-			
+
 			} else if (free[type2][2] >0 && locked[type2][2]>0 && (locked[type1][3] + free[type1][3] - occupied1_4)>0) {
 				free[type2][2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
 				occupied1_4 += 1
 				occupied2_4 += 1
-			
+
 			} else if ((free.none[2]+locked[type1][2]+locked[type2][2] - free.full[2] > 1) && free.none[2]>1 && locked[type2][2]>0 && locked[type1][2]>0) {
 				free.none[2] -= 2
 				locked[type2][2] -= 1
@@ -1063,7 +1063,7 @@ let mergerGame = {
 				free[type1][3] += 1
 				occupied1_4 += 1
 				occupied2_4 += 1
-			
+
 			} else if (free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
 				if (locked[type2][2] > 0) {
 					free.full[2] -= 1
@@ -1151,7 +1151,7 @@ let mergerGame = {
 				free[type2][2] -= 2
 				free[type2][3] += 1
 			} else break
-		}            
+		}
 		total2_4 = locked[type2][3]
 		total1_4 = locked[type1][3]
 		while (true) {
@@ -1171,7 +1171,7 @@ let mergerGame = {
 				pick = null
 				if (total2_4 == total1_4) {
 					if (total2_ > total1_) {
-						if (locked[type1][3] > 0) 
+						if (locked[type1][3] > 0)
 							pick = type1
 						else
 							pick = type2
@@ -1182,7 +1182,7 @@ let mergerGame = {
 							pick = type1
 					}
 				} else if ( total2_4 > total1_4) {
-					if (locked[type1][3] > 0) 
+					if (locked[type1][3] > 0)
 						pick = type1
 					else
 						pick = type2
@@ -1191,7 +1191,7 @@ let mergerGame = {
 						pick = type2
 					else
 						pick = type1
-				}   
+				}
 				if (pick == type1) {
 					free.none[3] -= 1
 					free[type1][3] += 1
@@ -1227,7 +1227,7 @@ let mergerGame = {
 		for (let l of [3,4]) {
 			keys += free["full"][l-1]*mergerGame.keyValues[l]
 		}
-			
+
 		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
 	},
 	solver2:(locked,free)=>{ //Moo Original
@@ -1246,10 +1246,10 @@ let mergerGame = {
 				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
 			}
 		}
-		
+
 		while (true) {
 			if (free.none[0] == 0) break;
-			
+
 			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
 				if (free.none[0] >= 2) {
 					free.none[0] -= 2
@@ -1280,7 +1280,7 @@ let mergerGame = {
 					pick = type2
 				else
 					pick = type1
-			}        
+			}
 			if (pick == type1) {
 				free.none[0] -= 1
 				free[type1][1] += 1
@@ -1296,8 +1296,8 @@ let mergerGame = {
 		let total2_3 = locked[type2][2] + locked[type2][3];
 		let total1_3 = locked[type1][2] + locked[type1][3];
 		while (true) {
-			
-			
+
+
 			if (free.none[1] > 1 && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0)) {
 				if (locked[type1][1] > 0) {
 					free.none[1] -= 1
@@ -1391,11 +1391,11 @@ let mergerGame = {
 				free[type2][1] -= 2
 				free[type2][2] += 1
 			} else break
-		}      
+		}
 		let total2_4 = locked[type2][3]
 		let total1_4 = locked[type1][3]
 		while (true) {
-			
+
 			let numtopTrios = Math.min(free.none[3],locked[type1][3],locked[type2][3])
 			if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] - numtopTrios + free[type1][3] > 0) && (locked[type2][3] - numtopTrios + free[type2][3] > 0)) {
 				if (locked[type1][2] > 0) {
@@ -1523,7 +1523,7 @@ let mergerGame = {
 				free[type2][2] -= 2
 				free[type2][3] += 1
 			} else break
-		}            
+		}
 		total2_4 = locked[type2][3]
 		total1_4 = locked[type1][3]
 		while (true) {
@@ -1543,7 +1543,7 @@ let mergerGame = {
 				pick = null
 				if (total2_4 == total1_4) {
 					if (total2_ > total1_) {
-						if (locked[type1][3] > 0) 
+						if (locked[type1][3] > 0)
 							pick = type1
 						else
 							pick = type2
@@ -1554,7 +1554,7 @@ let mergerGame = {
 							pick = type1
 					}
 				} else if ( total2_4 > total1_4) {
-					if (locked[type1][3] > 0) 
+					if (locked[type1][3] > 0)
 						pick = type1
 					else
 						pick = type2
@@ -1563,7 +1563,7 @@ let mergerGame = {
 						pick = type2
 					else
 						pick = type1
-				}   
+				}
 				if (pick == type1) {
 					free.none[3] -= 1
 					free[type1][3] += 1
@@ -1587,7 +1587,7 @@ let mergerGame = {
 				}
 			} else break
 		}
-		
+
 		let endProgress = 0;
 		//Progress:
 		for (let t of [type1,type2]) {
@@ -1600,7 +1600,7 @@ let mergerGame = {
 		for (let l of [3,4]) {
 			keys += free["full"][l-1]*mergerGame.keyValues[l]
 		}
-			
+
 		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
 	},*/
 }

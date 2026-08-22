@@ -58,13 +58,13 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 });
 
 FoEproxy.addHandler('BattlefieldService', 'getArmyPreview', (data, postData) => {
-    
+
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
     if (data.responseData?.__class__=="Error") return;
-    
+
     $('#battleAssistArmyAdvice').remove();
     $('#battleAssistAddAdvice').remove();
-    
+
     let bonus = data.responseData[0].units[0]?.bonuses[0]?.value || 0;
     let wave1 = data.responseData[0].units.map((x) => x.unitTypeId);
     let fightType = data.responseData[0].fightType.value;
@@ -77,7 +77,7 @@ FoEproxy.addHandler('BattlefieldService', 'getArmyPreview', (data, postData) => 
 });
 
 FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
-    
+
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
     let bt=data.responseData?.battleType?.type;
     if (!bt || bt=="pvp" || bt=="campaign") return;
@@ -89,14 +89,14 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
         BattleAssist.processArmies(wave1,null,opponent.bonus,bt);
         opId = "pvp_arena%"+opponent.id;
     }
-    
+
 
     $('#battleAssistArmyAdvice').remove();
     if (!data.responseData.state.winnerBit) return;
     let HPstart=0;
     let HPcurrent=0;
     let unitsLost=0;
-        
+
     if (data.responseData.state.winnerBit==1) {
         let units = data.responseData.state.unitsOrder;
         units.forEach(x=>{
@@ -113,7 +113,7 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     if (data.responseData.state.winnerBit==2 && !BattleAssist.AASettings.battleLost) return;
     if (bt!="pvp_arena" && BattleAssist.armyAdvice[opId] && BattleAssist.armyAdvice[opId].bonus < BattleAssist.armyRecent[0]?.bonus) return;
     BattleAssist.ShowAddAdvice();
-    
+
 });
 
 FoEproxy.addHandler('BattlefieldService', 'surrender', (data, postData) => {
@@ -162,23 +162,23 @@ FoEproxy.addHandler('PVPArenaService', 'updateOpponents', (data, postData) => {
 });
 
 FoEproxy.addRequestHandler('ArmyUnitManagementService', 'getArmyInfo', (postData) => {
-    
+
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
-    
+
     if (postData.requestData?.[0]?.battleType=="pvp_arena") {
         setTimeout(()=>{
             if (!BattleAssist.SelectedOpponent) return;
             if (!BattleAssist.armyAdvice["pvp_arena%"+BattleAssist.SelectedOpponent?.id]) return;
             BattleAssist.ShowArmyAdvice(BattleAssist.armyAdvice["pvp_arena%"+BattleAssist.SelectedOpponent.id].advice);
         },50);
-    }   
-    
+    }
+
     if (postData.requestData?.[0]?.battleType!="guild_expedition") return;
-    
+
     $('#battleAssistArmyAdvice').remove();
     $('#battleAssistAddAdvice').remove();
     let encounter = BattleAssist.GEArmies[GExAttempts.state.GEprogress]
-    
+
     let bonus = encounter.armyWaves[0].units[0]?.bonuses[0]?.value || 0;
     let wave1 = encounter.armyWaves[0].units.map((x) => x.unitTypeId);
     let wave2 = null;
@@ -190,13 +190,13 @@ FoEproxy.addRequestHandler('ArmyUnitManagementService', 'getArmyInfo', (postData
 
 mouseActions.addAction([[97, 69, 'Center'],[152, 116, 'Center']],()=>{
     BattleAssist.SelectedOpponent = BattleAssist.ArenaOpponents["hard"];
-});  
+});
 mouseActions.addAction([[97, 144, 'Center'],[152, 191, 'Center']],()=>{
     BattleAssist.SelectedOpponent = BattleAssist.ArenaOpponents["medium"];
-});  
+});
 mouseActions.addAction([[97, 219, 'Center'],[152, 266, 'Center']],()=>{
     BattleAssist.SelectedOpponent = BattleAssist.ArenaOpponents["easy"];
-});  
+});
 
 
 /**
@@ -217,7 +217,7 @@ let BattleAssist = {
 	 * @constructor
 	 *
     ShowNextEraDialog: (nT=false) => {
-        
+
         HTML.Box({
             'id': 'battleAssistNextEraDialog',
             'title': i18n('Boxes.BattleAssist.Title'),
@@ -246,7 +246,7 @@ let BattleAssist = {
         //if (MainParser.ABTests["foe_abtest_army_ux"].group != "control_group") $('#battleAssistRogueDialog').addClass("ABnew")
         $('#battleAssistRogueDialogBody').html(`${i18n('Boxes.BattleAssist.Text.Rogue')}`);
     },
-    
+
     /**
 	 * Shows a box displaying advice
 	 *
@@ -302,9 +302,9 @@ let BattleAssist = {
 
         //remove Settings dialog of Box if opened via there
         $('#battleAssistArmyAdviceSettingsBox').remove();
-        
+
         $('#battleAssistAddAdvice').remove();
-        
+
         // Don't create a new box while another one is still open
         if ($('#battleAssistAAConfig').length === 0) {
             HTML.Box({
@@ -325,24 +325,24 @@ let BattleAssist = {
                 html += `<tr><td><div class="BattleWave">`
                 for (let unit of recent.wave1) {
                     html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
-                }            
+                }
                 html += `</div></td><td><div class="BattleWave">`
                 if (recent.wave2) {
                     for (let unit of recent.wave2) {
                         html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                     }
                 }
-                
+
                 let PlayerName = (/^pvp_arena%(.*?)#/.exec(recent.id)||[""])[1];
                 if (PlayerName) html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
-            
+
                 html += `</div></td><td>${recent.bonus}%`
                 let advice = BattleAssist.armyAdvice[recent.id]?.advice
                 let aBonus = BattleAssist.armyAdvice[recent.id]?.bonus;
                 let id = recent.id;
                 if (!advice) {//process neutral/old advice data
                     let tempId = recent.id.replace(/^(attack|defense)+%/,"");
-                    advice = BattleAssist.armyAdvice[tempId]?.advice 
+                    advice = BattleAssist.armyAdvice[tempId]?.advice
                     aBonus = BattleAssist.armyAdvice[tempId]?.bonus;
                     if (advice) id = tempId;
                 }
@@ -353,7 +353,7 @@ let BattleAssist = {
             html += `</table>`
         }
         html += `<h1>${i18n('Boxes.BattleAssistAAConfig.AllConfigs')}</h1>`;
-        
+
         if (Object.keys(BattleAssist.armyAdvice).length>0) {
             html += `<table class="foe-table"><tr><th>${i18n('Boxes.BattleAssistAAConfig.Wave1')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Wave2')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Threshold')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Advice')}</th></tr>`;
             for (let [id,advice] of Object.entries(BattleAssist.armyAdvice)) {
@@ -361,7 +361,7 @@ let BattleAssist = {
                 html += `<tr><td><div class="BattleWave">`
                 for (let unit of advice.wave1) {
                     html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
-                }            
+                }
                 html += `</div></td><td><div class="BattleWave">`
                 if (advice.wave2) {
                     for (let unit of advice.wave2) {
@@ -393,13 +393,13 @@ let BattleAssist = {
             $(elm).html(`<input type="Number" value="${BattleAssist.armyAdvice[id]?.bonus ? BattleAssist.armyAdvice[id]?.bonus:""}" onkeydown="BattleAssist.SetBonus(event)" onfocusout="BattleAssist.ShowArmyAdviceConfig()">`);
             $ (`.AASetBonus[data-id="${id}"] input`)[0].select();
         });
-        
+
         $('.AASetAdvice').on("click",(event)=>{
             let elm=event.target;
             let id = elm.dataset.id
             if (!id) return;
             BattleAssist.overrideId=null
-            
+
             $(elm).html(`
                 <textarea maxlength="180" onfocusout="BattleAssist.ShowArmyAdviceConfig()" onkeydown="BattleAssist.SetAdvice(event)">${BattleAssist.armyAdvice[id]?.advice || ""}</textarea>`);
             $ (`.AASetAdvice[data-id="${id}"] textarea`)[0].select();
@@ -412,15 +412,15 @@ let BattleAssist = {
             let type = $(event.target).parent().data("type")
             let overrideId = type + (type!=""?"%":"") + id.replace(/^(attack|defense)+%/,"");
             let oldAdvice = structuredClone(BattleAssist.armyAdvice[id])
-            delete BattleAssist.armyAdvice[id]; 
+            delete BattleAssist.armyAdvice[id];
             BattleAssist.armyAdvice[overrideId]=oldAdvice;
             tr.find(`.AASetAdvice[data-id="${id}"]`).attr("data-id",overrideId);
             tr.find(`.AASetBonus[data-id="${id}"]`).attr("data-id",overrideId);
             localStorage.setItem("BattleAssistArmyAdvice",JSON.stringify(BattleAssist.armyAdvice));
         })
-        
+
     },
-    
+
     SetBonus: (e) => {
         if (e.key=="Escape") {
             BattleAssist.ShowArmyAdviceConfig();
@@ -471,7 +471,7 @@ let BattleAssist = {
         } else {
             $(elem).html(i18n('Boxes.BattleAssistAAConfig.Explanation'));
         }
-        
+
     },
     ShowAASettingsButton: () => {
 
@@ -486,7 +486,7 @@ let BattleAssist = {
         h.push(`<input type="checkbox" id="AAbattleLost" oninput="BattleAssist.SaveAASettings()"${BattleAssist.AASettings.battleLost ? ' checked' : ''}></td></tr><tr><td>`);
         h.push(`${i18n('Boxes.BattleAssistAAConfig.battleSurrendered')}</td><td>`);
         h.push(`<input type="checkbox" id="AAbattleSurrendered" oninput="BattleAssist.SaveAASettings()"${BattleAssist.AASettings.battleSurrendered ? ' checked' : ''}></td></tr></table>`);
-         
+
 		$('#battleAssistAAConfigSettingsBox').html(h.join(''));
 		$("#battleAssistAAConfigSettingsBox input").keyup(function(event) {
 			if (event.keyCode === 13) {
@@ -519,7 +519,7 @@ let BattleAssist = {
             temp.sort((a,b)=> Technologies.Eras[a.era]-Technologies.Eras[b.era]);
             temp.forEach((x,i)=> BattleAssist.UnitOrder[x.id] = i);
         }
-        
+
         wave1.sort((a,b) => BattleAssist.UnitOrder[b] - BattleAssist.UnitOrder[a]);
         if (type!="pvp_arena") wave1.forEach(x => id+=x);
         if (wave2) {
@@ -542,12 +542,12 @@ let BattleAssist = {
         let advice = BattleAssist.armyAdvice[id]?.advice
         let aBonus = BattleAssist.armyAdvice[id]?.bonus;
         if (!advice) {//process old advice data
-            advice = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+%/,"")]?.advice 
+            advice = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+%/,"")]?.advice
             aBonus = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+%/,"")]?.bonus;
         }
-        if (advice && aBonus <= bonus && type != "pvp_arena") 
+        if (advice && aBonus <= bonus && type != "pvp_arena")
             BattleAssist.ShowArmyAdvice(advice);
-        
+
         if ($('#battleAssistAAConfig').length > 0) BattleAssist.ShowArmyAdviceConfig();
     }
 };

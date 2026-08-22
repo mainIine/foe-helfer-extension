@@ -75,10 +75,10 @@ let _menu_right = {
 
 			$('.hud-btn-up').removeClass('hud-btn-up-active');
 
-			if (_menu.SlideParts > 1) 
+			if (_menu.SlideParts > 1)
 				$('.hud-btn-down').addClass('hud-btn-down-active');
 			else // button not needed
-				$('.hud-btn-down').removeClass('hud-btn-down-active');	
+				$('.hud-btn-down').removeClass('hud-btn-down-active');
 		}
 	},
 
@@ -97,7 +97,7 @@ let _menu_right = {
 			$('#foe-helper-hud').remove();
 			_menu.CallSelectedMenu('Box')
 		}
-			
+
 		// has a length been set manually?
 		let MenuLength = localStorage.getItem('MenuLength');
 
@@ -251,8 +251,8 @@ let _menu_right = {
 		$('.hud-btn-up').removeClass('hasFocus');
 
 		_menu.ActiveSlide--;
-		
-		if (_menu.ActiveSlide == 1) 
+
+		if (_menu.ActiveSlide == 1)
 			_menu.MenuScrollTop = 0;
 		else
 			_menu.MenuScrollTop += _menu.HudHeight;

@@ -54,7 +54,7 @@ let mapTradeWarning = {
      */
     ShowMapDialog: () => {
         HTML.AddCssFile('maptradewarning');
-        
+
         HTML.Box({
             'id': 'mapTradeWarningDialog',
             'title': i18n('Boxes.mapTradeWarning.Title'),

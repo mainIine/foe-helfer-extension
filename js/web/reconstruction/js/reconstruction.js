@@ -36,11 +36,11 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
     for (let b of data.responseData) {
         let id = MainParser.CityMapData[b.entityId].cityentity_id + "#" + (MainParser.CityMapData[b.entityId].level||0)
         if (!reconstruction.count[id]) reconstruction.count[id] = {placed:0,stored:0}
-        if (b.position) 
+        if (b.position)
             reconstruction.count[id].placed++
         else {
-            reconstruction.count[id].stored++   
-            if (reconstruction.count[id].stored == 1) reconstruction.pageUpdate(id)   
+            reconstruction.count[id].stored++
+            if (reconstruction.count[id].stored == 1) reconstruction.pageUpdate(id)
         }
     }
 
@@ -87,9 +87,9 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
 
         reconstruction.draft[x.entityId] = x
         $('.reconstructionLine[data-page_id="'+id+'"] td:nth-child(2)').html("x"+reconstruction.count[id].stored)
-        if (reconstruction.count[id].stored > 0) 
+        if (reconstruction.count[id].stored > 0)
             $('.reconstructionLine[data-page_id="'+id+'"]').show();
-        else 
+        else
             $('.reconstructionLine[data-page_id="'+id+'"]').hide();
         if (pagesUpdated) reconstruction.updateTable();
     }
@@ -115,7 +115,7 @@ let reconstruction = {
     pages: null,
     rcIcons:null,
     roadIcons:null,
-    mapScale: 20,  
+    mapScale: 20,
     pageUpdate:(id)=>{
         let meta = MainParser.CityEntities[id.split("#")[0]]
         if (["friends_tavern",
@@ -152,8 +152,8 @@ let reconstruction = {
                 1:srcLinks.icons("road_required"),
                 2:srcLinks.icons("street_required")
             }
-        }             
-        
+        }
+
         if ( $('#ReconstructionList').length === 0 ) {
 
 			HTML.AddCssFile('reconstruction');
@@ -168,8 +168,8 @@ let reconstruction = {
                 map: () => reconstruction.showMap(),
 			    active_maps:"main"
 			});
-        }           
-        
+        }
+
         h =`<table class="sortable-table foe-table">
                 <thead class="sticky">
                     <tr class="sorter-header">
@@ -226,7 +226,7 @@ let reconstruction = {
             let startArea = area.width === 16 ? ' startarea' : '';
             c += `<span class="map-bg${startArea}" style="left:${area.x*reconstruction.mapScale||0}px;top:${area.y*reconstruction.mapScale||0}px;"></span>`
 		}
-        
+
         for (let item of Object.values(reconstruction.draft)) {
             c += reconstruction.placeBuildingOnMap(item);
         }
@@ -245,7 +245,7 @@ let reconstruction = {
         let street = needsStreet === 0 ? ' roadless' : '';
         let c = '';
         if (data.position !== undefined) {
-            c += `<span data-id="${data.entityId}" class="map-building ${meta.type}${street}" 
+            c += `<span data-id="${data.entityId}" class="map-building ${meta.type}${street}"
                     style="left:${data.position?.x*reconstruction.mapScale||0}px;top:${data.position?.y*reconstruction.mapScale||0}px;
                         width:${width*reconstruction.mapScale}px;height:${height*reconstruction.mapScale}px;">
                 </span>`;

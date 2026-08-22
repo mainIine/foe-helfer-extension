@@ -147,7 +147,7 @@ helper.sounds = {
 	},
 };
 
-helper.preloader = { 
+helper.preloader = {
 	show: function(id) {
 		$(id+' .loading-data').remove();
 		$(id).append('<div class="loading-data"><div class="loadericon"></div></div>');
@@ -184,7 +184,7 @@ let HTML = {
 	Box: (args) => {
 
 		let title = $('<span />').addClass('title').html(args['title']);
-		
+
 		if (args['onlyTitle'] !== true) {
 			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
@@ -194,7 +194,7 @@ let HTML = {
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append(head).append(body).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
-		
+
 		// close button
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close');
 
@@ -246,7 +246,7 @@ let HTML = {
 
 			$('#' + args['speaker']).addClass(localStorage.getItem(args['speaker']));
 		}
-		
+
 		// Position von beweglichen Fenstern initialisieren und Verhindern, dass Fenster außerhalb plaziert werden
 		if (args.dragdrop) div.css({"--x": "0px","--y": "0px","left":"calc(min(max(50vw + var(--x),0px),100vw - 60px))","top":"calc(min(max(50vh + var(--y),0px), 100vh - 60px))"});
 
@@ -254,7 +254,7 @@ let HTML = {
 		if (cords) {
 			c = null
 			if (cords.includes('|')) {
-				cords = cords.split('|') 
+				cords = cords.split('|')
 				cords = mouseActions.calcCoords([Number(cords[1]), Number(cords[0])], "Center")
 			} else {
 				cords = JSON.parse(cords)
@@ -465,7 +465,7 @@ let HTML = {
 
 		document.getElementById(el.id + "Header").removeEventListener("pointerdown", dragMouseDown);
 
-		let xStartM=0, yStartM=0, xStartEl=0, yStartEl=0;			
+		let xStartM=0, yStartM=0, xStartEl=0, yStartEl=0;
 
 		let id = el.id;
 
@@ -570,7 +570,7 @@ let HTML = {
 					let w= window.innerWidth-l-5;
 					$el.element.width(w);
 				}
-				
+
 				let size = w + '|' + h;
 
 				localStorage.setItem(id + 'Size', size);
@@ -899,7 +899,7 @@ let HTML = {
 			if ($(Table).find('.exportheader th').length > 0){
 				findBy = '.exportheader th';
 			}
-			
+
 			$(Table).find(findBy).each(function () {
 				let ColumnCount = $(this).attr('colspan');
 				if (ColumnCount) {
@@ -942,7 +942,7 @@ let HTML = {
 							if (Value === '-') Value = '0';
 							Value = HTML.ParseFloatLocalIfPossible(Value);
 						}
-						
+
 						CurrentRow[Key] = Value;
 					}
 

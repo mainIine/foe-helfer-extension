@@ -216,7 +216,7 @@ let Unit = {
 
 			let AttackBoost = Boosts['AttackAttackBoost'],
 				DefenseBoost = Boosts['AttackDefenseBoost']
-			
+
 			let Attack = MainParser.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
 				Defense = MainParser.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
@@ -392,7 +392,7 @@ let Unit = {
 			if(eras[era] === undefined){
 				eras[era] = [];
 			}
-						
+
 			eras[era].push({
 				id: c[i]['unitTypeId'],
 				name: d['name'],
@@ -462,7 +462,7 @@ let Unit = {
 		h.push( Unit.GetTabs() );
 		h.push( Unit.GetTabContent() );
 		h.push('</div>');
-		
+
 
 		$('#UnitOverview').find('#UnitOverviewBody').html( h.join('') ).promise().done(function(){
 			Unit.BuildTimer();
@@ -598,7 +598,7 @@ let Unit = {
 
 	/**
 	 * Updates the display for the Alcatraz production
-	 * 
+	 *
 	 */
 	UpdateAlcaLable:(countDownDate, intervalID)=>{
 		if(countDownDate.isValid())
@@ -833,7 +833,7 @@ let Unit = {
 		h.push(`<p><button onclick="Unit.SaveSettings()" id="unit-save-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
 		$('#UnitOverviewSettingsBox').html(h.join(''));
-		
+
 		$('#UnitOverviewSettingsBox').on('click', '.btn-set-value', function () {
 			let value = parseFloat($('#pictogramScaling').val()) + parseFloat($(this).data('value'));
 			if (value !== value) value = 1; //NaN => 1

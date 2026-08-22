@@ -63,7 +63,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
  * @type {{BonusTypes: [string, string, string, string, string], HideBonusSidebar: BonusService.HideBonusSidebar, SetBonusTypes: BonusService.SetBonusTypes, InitBonus: BonusService.InitBonus, Bonuses: [], CalcBonusData: BonusService.CalcBonusData, ShowBonusSidebar: BonusService.ShowBonusSidebar}}
  */
 let BonusService = {
-	
+
 	timeout:null,
 	Bonuses: [],
 	BonusTypes: [

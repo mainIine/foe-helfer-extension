@@ -17,7 +17,7 @@
     - Dazu der FP-Eigenanteil der nächsten Stufe (einstellbarer Mäzen-Bonus) und die neue Spalte „Ernten": wie viele Tages-Ernten deiner Stadt die Stufe kostet
     - Auf Welten mit dem LG-Update zeigt ein Schalter zusätzlich die neuen Stufen-Boni; die alten Bewertungs-Optionen entfallen
 
-- Merge-Game (Event-Helfer): 
+- Merge-Game (Event-Helfer):
     - Jede Farbe zeigt jetzt, wie viel Fortschritt in ihr noch gesperrt ist — also wie viele Punkte das Freischalten aller gesperrten Teile (z. B. per Essenz) bringen würde; die wertvollste Farbe wird hervorgehoben
 
 - Kostenrechner & Eigenanteilsrechner:
@@ -81,19 +81,19 @@
 ##### 4.6.0.0
 
 **Neu**
-- Erhabene Gebäude: 
+- Erhabene Gebäude:
   - Neues Modul mit allen zeitlich begrenzten (erhabenen) Gebäuden der Stadt in einer Box
-  
-- Gebäude-Markierung: 
+
+- Gebäude-Markierung:
   - Neues internes Modul, das Gebäude in der Stadt mit schwebenden goldenen Pfeilen markiert — die Pfeile folgen der Karte live bei Zoom und Verschiebung; ein Klick auf ein markiertes Gebäude entfernt dessen Pfeil, das Schließen-Kreuz unter den Diamanten alle
   - Die Auge-Buttons in Produktionen, Effizienzbewertung, Blaue Galaxie und Historische Verbündete markieren das Gebäude jetzt direkt in der Stadt statt in der Stadtkarten-Box; ist die Markierung nicht verfügbar (z.B. Firefox), öffnet sich wie bisher die Stadtkarte
 
-- Gildengefechte: 
+- Gildengefechte:
   - Neuer Pfeil-Button in den Sektor-Zeilen (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
   - Die Einstellungen sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
 
 **Update**
-- Blaue Galaxie: 
+- Blaue Galaxie:
   - Die Fragment-Spalte ist jetzt zweigeteilt — so kann getrennt nach Anzahl oder Name der Fragmente sortiert werden
 
 - City Builder:
@@ -106,7 +106,7 @@
     - Neuer Knopf „Neu berechnen“: plant die Stadt neu, ohne die entfernten Gebäude wieder einzuplanen — wie alle Funktionen auch im Pop-out-Fenster nutzbar
     - Neue Varianten-Auswahl: die Berechnung behält bis zu 9 unterschiedliche Stadt-Layouts — garantiert inklusive der besten Variante jeder Bau-Strategie (Bänder, vertikale Bänder, organisch) — und über ‹ › lässt sich sofort wechseln; die Anzeige nennt die Strategie und die Straßen-Bilanz zeigt die Werte je Variante
 
-- Gildengefechte: 
+- Gildengefechte:
   - Der automatische Discord-Versand lässt Sektoren mit zu hoher Zermürbungschance jetzt aus — die Schwelle ist in den Einstellungen wählbar (Standard: 100 %), geprüft wird zum Sendezeitpunkt
 
 - Inventar-Übersicht:
@@ -115,15 +115,15 @@
   - Bei aktivem Eigenschafts-Filter zeigen Auswahl-Kits den besten Wert der enthaltenen Gebäude
 
 **Bugfix**
-- City Builder: 
+- City Builder:
   - Einzelne Straßen wurden teilweise doppelt angelegt — die großzügig geplanten zweispurigen Doppelreihen und Trassen werden jetzt auf das nötige Minimum zurückgestutzt, der Rest wird einspurig und überflüssige Straßen entfernt; braucht nur ein Gebäude eine zweispurige Straße, bleibt genau ein 2x2-Stück direkt am Rathaus übrig
   - Zweispurige Straßen werden jetzt als ganze 2x2-Stücke geplant und mit sichtbarem Blockraster gezeichnet, damit sie von parallelen einspurigen Straßen unterscheidbar sind; Korridore ungerader Länge werden aufgefüllt, sodass der Plan im Spiel aus ganzen Stücken nachbaubar ist
   - Die Karte im Pop-out-Fenster lässt sich jetzt mit der Maus verschieben; der dort nutzlose Deckkraft-Regler wird im Pop-out ausgeblendet
   - Legendäre Gebäude konnten ohne Straßenanschluss eingemauert werden — das Rathaus und normale Gebäude besetzen jetzt nie mehr die letzte freie Nachbarkachel eines noch unangeschlossenen LG; Gebäude, die trotz allem keinen Anschluss bekommen können, erscheinen in der Box der nicht platzierten Gebäude statt als unbaubarer Plan auf der Karte
   - Ganze Straßenabschnitte konnten den Anschluss ans Rathaus verlieren — der Aufräum-Pass entfernte fälschlich die Ankerkachel eines Astes am Rathaus; jetzt erreicht garantiert jede Straßenkachel das Rathaus über das Netz
   - Gebäude ohne Straßenbedarf stehen jetzt als ein kompakter Block: Reihen einheitlicher Höhe, kleine Nischen dürfen geopfert werden statt Streifen zu hinterlassen, und eine Nachverdichtung schiebt alles lückenlos an die Stadt heran
-  
-- Gildengefechte: 
+
+- Gildengefechte:
   - Sektor-Alarme kamen zu spät — die Vorlaufzeit wird jetzt korrekt auf die lokale Uhr umgerechnet, ebenso die Countdowns in der Live-Box und die Sektor- und Antiquitätenhändler-Vorlagen im Alarm-Modul
   - Bei geöffnetem Spiel-Tab werden Sektor-Alarme jetzt sekundengenau ausgelöst
 
@@ -396,7 +396,7 @@
 **Update**
 
 - Forschungsbaum:
-	- Überarbeitung des Moduls, neue Spalte ergänzt. Diese zeigt ab dem nächsten unerforschtem ZA eine Spalte aller summierten fehlenden Elemente 
+	- Überarbeitung des Moduls, neue Spalte ergänzt. Diese zeigt ab dem nächsten unerforschtem ZA eine Spalte aller summierten fehlenden Elemente
 
 ---
 
@@ -428,7 +428,7 @@
 - Gebäude Effizienzberechnung: Die Ansicht öffnet sich per default mit absteigender Sortierung und wird sofort aktualisiert, sobald ein Gebäude entfernt, hinzugefügt oder ge-updated wird
 
 ---
- 
+
 
 ##### 4.2.1.1
 
@@ -477,7 +477,7 @@
 
 **Bugfix**
 - Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder
-- Verbündete: 
+- Verbündete:
 	- Die Summen waren nicht korrekt und die Boosts sind beim leveln explodiert
 	- Ein frisch zusammengesetzter Verbündeter tauchte doppelt in der Liste auf, wenn nach dem Zusammensetzen genau 0 Fragmente übrig waren
 	- Die Box wurde nicht geschlossen, wenn der Menüeintrag angeklickt wurde
@@ -492,11 +492,11 @@
 - Umbaumodus: es kann nun eine Karte angeschaltet werden, die sich beim Bauen aktualisiert, den Button dafür findet ihr in der Umbaumodusliste
 
 **Update**
-- Stadt Übersicht: 
+- Stadt Übersicht:
 	- Die Statistiken und Filter an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
 	- Die Filter wurden optisch angepasst und befinden sich nun am unteren Ende der Seitenleiste (Schau genau hin, du findest sie schon!)
 	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
-- Profil: 
+- Profil:
 	- QI Aktionskapazität hinzugefügt
 	- Das Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
 	- Man kann den mittleren teil nun markieren und dann kopieren, um seine Werte auch im Spien in Nachrichten teilen zu können
@@ -517,9 +517,9 @@
 ##### 4.0.2.0
 
 **Update**
-- Effizienzbewertung: 
+- Effizienzbewertung:
 	- Default-Werte angepasst
-	- Wenn die Option "zeige erhabene/eingeschränkte Gebäude" deaktiviert ist, wird für solche Gebäude, die aktuell in der Stadt sind, kein Inventarhaken angezeigt 
+	- Wenn die Option "zeige erhabene/eingeschränkte Gebäude" deaktiviert ist, wird für solche Gebäude, die aktuell in der Stadt sind, kein Inventarhaken angezeigt
 - Verbündetenboosts: an veränderte Datenübertragung angepasst
 
 **Bugfix**
@@ -553,7 +553,7 @@
  	- Öffnungszeiten werden nun beim Kopieren in Serverzeit umgewandelt
 	- Öffnungszeiten können per Einstellung in Serverzeit angegeben werden statt in lokaler Zeit
 - Spieler-Links
-	- Es kann nun zwischen foestats.com und scoredb.io gewählt werden in den allgemeinen Einstellungen 
+	- Es kann nun zwischen foestats.com und scoredb.io gewählt werden in den allgemeinen Einstellungen
 - Shop Assistent
 	- Spalte "Fehlend" gibt nun immer die Menge bis zum nächsten vollen Satz an
 - Siedlung
@@ -564,7 +564,7 @@
 
 **Bugfix**
 - Shop Assistent
-	- Alarme für alte Shop-Versionen wurden nicht korrekt gelöscht 
+	- Alarme für alte Shop-Versionen wurden nicht korrekt gelöscht
 - QI Aktionsberechnung
 	- Kapazitätsbonus wurde nicht korrekt beachtet
 - Effizienzübersicht
@@ -576,7 +576,7 @@
 
 **Update**
 - Allgemein
-	- Anpassung des Helfers an neues Ladeverhalten des Spiels 
+	- Anpassung des Helfers an neues Ladeverhalten des Spiels
 	- Einige Hud Elemente wurden "nicht auswählbar" gemacht
 	- Handling für Kettengebäude mit Spezialproduktion hinzugefügt
 - Power Leveln
@@ -589,7 +589,7 @@
 	- Filter für Shop Währungen hinzugefügt – wenn eine Währung ignoriert werden soll, einfach draufklicken
 	- Die Spalte "Ganz" wurde entfernt – dieser Wert ist nun sichtbar, wenn man mit der Maus auf die "Fehlend" Spalte zeigt
 	- Spalte "Max" hinzugefügt – zeigt an, wie viel mit der vorhandenen Währung gekauft werden kann
-	- Wenn man auf die "Max" Spalte zeigt, wird der Wert "Alle" angezeigt – also wie viel Währung nötig ist, um den Shop leer zu kaufen  
+	- Wenn man auf die "Max" Spalte zeigt, wird der Wert "Alle" angezeigt – also wie viel Währung nötig ist, um den Shop leer zu kaufen
 	- Tooltip für Verbündete hinzugefügt
 - Stadtübersicht
 	- QI: Hervorhebung für Euphorie Niveau hinzugefügt
@@ -602,11 +602,11 @@
 **Bugfix**
 - Effizienzübersicht
 	- QI Güter Bewertung hat nicht funktioniert
-- Verhandlungsfenster 
+- Verhandlungsfenster
 	- Schloss sich, wenn Tavernen update stattfand
-- Stadtübersicht 
+- Stadtübersicht
 	- Reihenfolge der Dimensionen im Tooltip korrigiert
-	- QI: Summenberechung korrigiert 
+	- QI: Summenberechung korrigiert
 
 ---
 
@@ -664,8 +664,8 @@
 	- Gesperrte Gegenstände können ausgeblendet werden
 	- Es kann für die Angebote ein Alarm gesetzt werden - sobald genug Währung für den Gegenstand verfügbar ist, erscheint eine Meldung
 
-**Update** 
-- Design des Helpers wurde an einigen Stellen überarbeitet 
+**Update**
+- Design des Helpers wurde an einigen Stellen überarbeitet
 	- Boxen können nicht mehr größer sein, als das Browserfenster
 
 - Effizienzübersicht
@@ -688,7 +688,7 @@
 	- wurde reaktiviert
 
 - Armee Empfehlungen
-	- kann nun auch in der PvP Arena genutzt werden 
+	- kann nun auch in der PvP Arena genutzt werden
 
 **Bugfix**
 - Popgame
@@ -720,7 +720,7 @@
 	- Kettengebäude mit zeitalter abhängigen Werten werden nun korrekt ausgewertet
 
 - QI Aktionspunkterechner:
-	- Kapazitätserhöhung sollte nun mit beachtet werden 
+	- Kapazitätserhöhung sollte nun mit beachtet werden
 
 - Gildenmitglieder Übersicht:
 	- Gildengüterproduktion zu Export hinzugefügt
@@ -802,7 +802,7 @@
 - Spielerprofil
 	- enthält nun noch mehr Daten
 
-- Belohnungsliste 
+- Belohnungsliste
 	- wird nun auch in der GE angezeigt
 
 - Boxen
@@ -833,7 +833,7 @@
 ##### 3.11.1.0
 
 **Neu**
-- GG Belohnungsliste 
+- GG Belohnungsliste
 	- über dem Belohnungsbalken wird ausgegeben, welche Belohnung erhalten wurde
 
 **Update**
@@ -886,7 +886,7 @@
 
 **BugFix**
 - Alarme gingen immer noch nicht
-- Effizienz 
+- Effizienz
 	- Gebäude mit Verbündeten zeigten falsche Anzahl
 - Markt Übersicht
 	- Filterliste überlagerte Tabellenkopf
@@ -921,23 +921,23 @@
 
 **Update**
 - Tooltip: Design der Gebäude-Tooltips angepasst
-- Gebäude-Effizienz: 
+- Gebäude-Effizienz:
 	- Gebäude-Tooltips hinzugefügt
 	- Ergebnisseite wird nun zuerst angezeigt
 	- Itemliste versteckt
 - Menü: Von unten nach rechts verschoben, weil die möglichen Einstellungen gerne übersehen werden
-- Gefechte: 
+- Gefechte:
 	- Symbole für blauen/roten Angriff in die Countdown-Liste hinzugefügt
 	- Angriffsfarben zur Karte hinzugefügt
 	- Neue Kartenansicht, die die Angriffsfarben besser sichtbar macht
 - GG Aktive Spieler:
-	- Modul entfernt auf Anfrage durch Inno 
+	- Modul entfernt auf Anfrage durch Inno
 
 **BugFix**
-- Tooltip: 
+- Tooltip:
 	- manche Browser haben nicht das korrekte Design verwendet
 	- konnte offen bleiben, obwohl zugehöriges Fenster geschlossen wurde
-- Umbau-Liste: 
+- Umbau-Liste:
 	- Standardhöhe gesetzt
 	- Umplatzieren von Gebäuden verringerte den Zähler
 - Gebäude-Effizienz:
@@ -961,7 +961,7 @@
 - Einstellung "Lade aktuelle Beta" angepasst
 
 **BugFix**
-- Gebäude-Effizienz: 
+- Gebäude-Effizienz:
 	- Ist wegen eines Spiel-Updates kaputt gegangen
 	- Gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt
 - Produktionsübersicht:
@@ -1045,7 +1045,7 @@
 **Neu**
 - Tränke Übersicht hinzugefügt in der oberen rechten Ecke um
 	- die Laufzeit des Tranks mit kürzesten verbliebenen Laufzeit anzuzeigen (Tränke die für das aktuell gewählte Feature nicht relevant sind, werden ignoriert)
-	- alle aktuell aktiven Tränke in einem Mouse-Over Pop-Up anzuzeigen 
+	- alle aktuell aktiven Tränke in einem Mouse-Over Pop-Up anzuzeigen
 	- alle im Inventar verfügbaren Tränke in einem Mouse-Over Pop-Up anzuzeigen
 
 **Update**
@@ -1264,7 +1264,7 @@
 **New**
 - PvP Arena Protokoll (thanks to dersiedler1)
 	- Es muss nicht durch protokoll geklickt werden
-	- Protokolleinträge kategorisiert 
+	- Protokolleinträge kategorisiert
 	- kann in den Einstellungen aktiviert werden, damit es beim Öffnen der Arena aufpoppt
 
 - Armee Empfehlung
@@ -1331,7 +1331,7 @@
 **Update**
 - Sets/Kits:
 	- Gebäude Stand Halloween 2023 hinzugefügt
-	
+
 - Allgemein:
 	- wenn ein beschränktes Gebäude verfällt, wird nun ein Alarm ausgegeben
 
@@ -1341,7 +1341,7 @@
 **Update**
 - Produktionen (Dank an bencptest/apophis):
 	- Fragmente Tab wurde ergänzt - hier werden alle Fragmente angezeigt die aktuell produziert werden (unmotivierte Produktionen werden ignoriert)
-	
+
 - Idle Game:
 	- wenn der Markt (Festival/Bankett) eine höhere Produktion hat als die anderen Gebäude, wird nun in einem Tooltip über der Zeit für die Produktion der Upgrade-Kosten die Zeit angegeben unter der Annahme, dass kein Engpass vorliegt (z.B. wenn an den Zwischenlagern genug Vorrat anliegt)
 
@@ -1368,13 +1368,13 @@
 ##### 3.2.6.0
 
 **Update**
-- GvG Übersicht: 
+- GvG Übersicht:
   - Man kann jetzt in der GvG Übersicht ebenfalls auf den orange farbenen Button klickt, um die gesamte Macht und alle Gilden inklusive Daten einzelner Karten zu sehen. Bitte einmal alle Karten durchklicken, damit die Gilden und Sektoren erfasst werden können.
 
 - Merger Game:
 	- tägliche Übersicht hinzugefügt - es kann zwischen der Übersicht für den Tag und das aktuelle Spiel durch Klick auf den Kopf der zweiten Spalte gewechselt werden
 	- Position des Blockers korrigiert
-	- Es wurde eine Option hinzugefügt, die es erlaubt einen spezifischen Wert für die Rücksetz-Kosten (Reset) anzugeben der statt der tatsächlichen verwendet werden soll 
+	- Es wurde eine Option hinzugefügt, die es erlaubt einen spezifischen Wert für die Rücksetz-Kosten (Reset) anzugeben der statt der tatsächlichen verwendet werden soll
 		- es sollte der Mittelwert der zu erwartenden Rücksetz-Kosten eingetragen werden (z.B.: 3 Spiele pro Tag --> 20, 4 Spiele pro Tag --> 35)
 		- dies hilft dabei, die Effizienz eines Spiels besser abzuschätzen, da diese nicht mehr durch die Reset-Kosten beeinflusst wird
 
@@ -1415,7 +1415,7 @@
 **BugFix**
 - Produktionsübersicht:
 	- FP Boost wurde auch auf LB angewandt
-  
+
 - Idle Game:
 	- Wecker/Timer werden nun korrekt gesetzt - beschränkt auf zeiten geringer als 24 Stunden
 
@@ -1523,7 +1523,7 @@
 
 - FP-Einsammlungen:
 	- Geburtstags-Event ergänzt
-	
+
 ---
 
 ##### 3.2.0.0
@@ -1537,7 +1537,7 @@
 	- neuer Track hinzugefügt (aktuell nur auf Beta-Server verfügbar)
 
 - Event-Kosten Rechner:
-	- zweite Kostenspalte am Ende der Tabelle eingefügt 
+	- zweite Kostenspalte am Ende der Tabelle eingefügt
 	- Hervorheben der günstigsten Option erfolgt jetzt zusätzlich in der entsprechenden Kostenspalte
 
 - Kits:
@@ -1619,6 +1619,6 @@
   - neue Funktionen werden folgen...
 
 **BugFix**
-- Notizfunktion: 
+- Notizfunktion:
   	- Box wurde wegen eines fehlerhaften Avatar links nicht angezeigt
 

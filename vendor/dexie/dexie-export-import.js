@@ -1,4 +1,4 @@
-/* ========================================================================== 
+/* ==========================================================================
  *                           dexie-export-import.js
  * ==========================================================================
  *
@@ -13,7 +13,7 @@
  * http://dexie.org
  *
  * Apache License Version 2.0, January 2004, http://www.apache.org/licenses/
- * 
+ *
  */
 
 (function (global, factory) {
@@ -403,7 +403,7 @@
                           //     ...
                           //     data: [
                           // 123456<---- here
-                          //     ] 
+                          //     ]
                           //   ]
                           // }
                           emptyTableExportJson = emptyTableExportJson.split('\n').join('\n    ');
@@ -704,7 +704,7 @@
 
         a: 0x61,     // a
         b: 0x62,     // b
-        e: 0x65,     // e 
+        e: 0x65,     // e
         f: 0x66,     // f
         l: 0x6C,     // l
         n: 0x6E,     // n
@@ -1662,7 +1662,7 @@
                 _i++;
                 return [3 /*break*/, 1];
               case 4:
-                // Avoid unnescessary loops in "for (const tableExport of dbExport.data)" 
+                // Avoid unnescessary loops in "for (const tableExport of dbExport.data)"
                 while (dbExport.data.length > 0 && dbExport.data[0].rows && !dbExport.data[0].rows.incomplete)
                 {
                   // We've already imported all rows from the first table. Delete its occurrence

@@ -130,7 +130,7 @@ let Settings = {
 					);
 
 					cs.append(b);
-				} 
+				}
 				if (status !== undefined) {
 					cs.append(
 						$('<span />').addClass('check '+(status ? '' : 'unchecked')).append(
@@ -236,7 +236,7 @@ let Settings = {
 
 
 	/**
-	 * Version number and Player Info 
+	 * Version number and Player Info
 	 *
 	 * @returns {string}
 	 */
@@ -249,7 +249,7 @@ let Settings = {
 					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
 				</dl>`;
 		return v;
-		
+
 	},
 
 
@@ -296,7 +296,7 @@ let Settings = {
 
 	/**
 	 * Relocation for Menu
-	 * 
+	 *
 	 * @returns {string}
 	 */
 	MenuSelected: () => {
@@ -358,7 +358,7 @@ let Settings = {
 
 
 	/**
-	 * General Information	 
+	 * General Information
 	 *
 	 * @returns {string}
 	 */
@@ -509,7 +509,7 @@ let Settings = {
 			min: 2
 		}),
 		value = localStorage.getItem('MenuLength');
-		
+
 		ip[0].defaultValue = ip[0].value = value;
 
 		if (null !== value) {
@@ -541,10 +541,10 @@ let Settings = {
 			max: 100
 		}),
 		value = JSON.parse(localStorage.getItem('GexStockWarningMin')||"100");
-		
+
 		ip[0].defaultValue = ip[0].value = value;
 		ip.val(value);
-	
+
 		$('#SettingsBox').on('keyup', '#GexStockWarningInput', function () {
 			let value = $(this).val();
 
@@ -558,7 +558,7 @@ let Settings = {
 
 		return ip;
 	},
-	
+
 	/**
 	 *	Erzeugt in Input Feld
 	 *
@@ -622,7 +622,7 @@ let Settings = {
 				let btnData = _menu.ItemsData.find(x => x.id === name);
 
 				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')" data-original-title='<b>${btnData?.title||""}</b><br>${btnData?.description||""}'></span>`);
-		
+
 				btnBG.append(btn);
 				bl.append(btnBG);
 			}

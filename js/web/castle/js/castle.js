@@ -199,7 +199,7 @@ FoEproxy.addHandler('CastleSystemService', 'all', (data, postData) => {
 
 });
 
-// Update SevenDayChallenge 
+// Update SevenDayChallenge
 FoEproxy.addHandler('ChallengeService', 'updateTaskProgress', (data, postData) => {
 
     if (!data || !data.responseData) { return; }
@@ -459,7 +459,7 @@ let Castle = {
         if (d.nextCastlePoints)
         {
             let n = d.nextCastlePoints;
-            
+
             // reset battle/negotiation points if new day started
             if (Castle.startOfDay !== startOfDay)
             {
@@ -565,7 +565,7 @@ let Castle = {
             date: startOfDay
         });
 
-        // Daily negotiation reward   
+        // Daily negotiation reward
         for (let i = Castle.DailyNegotiationsReward; i > Castle.NextNegotiationPoints; i -= 2)
         {
             negotiationPointReward += i;
@@ -1017,7 +1017,7 @@ let Castle = {
             CastlePointLog = JSON.parse(localStorage.getItem('CastlePointLog') || '[]');
         }
 
-        // remove requestIds from log 
+        // remove requestIds from log
         CastlePointLog = CastlePointLog.map(e => {
             delete e.rid
             return e

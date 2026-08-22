@@ -99,7 +99,7 @@
 #technologies #technologiesBody .diplomacy-ask:hover .diplomacy-tip {
 	display: block;
 }
-#technologies #technologiesBody td.goods-image { 
+#technologies #technologiesBody td.goods-image {
 	padding: 0;
 	background-color: var(--black-50);
 }

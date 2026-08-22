@@ -35,12 +35,12 @@ let _menu_bottom = {
 		hud.append(btnUp);
 		hud.append(hudWrapper)
 		hud.append(btnDown);
-		
+
 		// If the window size changes, recalculate
 		window.onresize = function(event) {
 			if (event.target == window) _menu_bottom.SetMenuWidth(true);
 		};
-		
+
 		$('body').append(hud).promise().done(async function(){
 
 			// Insert buttons
@@ -87,7 +87,7 @@ let _menu_bottom = {
 
 		if (reset) {
 			// Slider nach links resetten
-			$('#foe-helper-hud-slider').css({ 
+			$('#foe-helper-hud-slider').css({
 				left: 0
 			});
 
@@ -121,8 +121,8 @@ let _menu_bottom = {
 			window.onresize = function(){};
 			_menu.CallSelectedMenu('Box');
 			return;
-		} 
-			
+		}
+
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
@@ -138,7 +138,7 @@ let _menu_bottom = {
 		$('#foe-helper-hud-wrapper').width(_menu.HudWidth);
 		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
 	},
-	
+
 
 	/**
 	 * Panel scrollbar machen
@@ -280,8 +280,8 @@ let _menu_bottom = {
 		$('.hud-btn-left').removeClass('hasFocus');
 
 		_menu.ActiveSlide--;
-		
-		if (_menu.ActiveSlide == 1) 
+
+		if (_menu.ActiveSlide == 1)
 			_menu.MenuScrollLeft = 0;
 		else
 			_menu.MenuScrollLeft += _menu.HudWidth;

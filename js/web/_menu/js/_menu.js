@@ -27,7 +27,7 @@ let _menu = {
 	TopOffset: 0,
 
 	MenuOptions: ['BottomBar', 'RightBar', 'Box'],
-	
+
 	Items: [
 		//'calculator',
 		'gbBonuses',
@@ -77,7 +77,7 @@ let _menu = {
 	 * Create the div holders and put them to the DOM
 	 */
 	CallSelectedMenu: (selMenu = 'RightBar') => {
-	
+
 		window.onresize = (function(event){
 			if (event.target == window) _menu.OverflowCheck()
 		})
@@ -102,12 +102,12 @@ let _menu = {
 		if (Settings.GetSetting('AutoOpenCloseBox')) {
 			CloseBox.BuildBox();
 		}
-		
+
 		_menu.OverflowCheck(_menu.selectedMenu, true);
 	},
 
 	OverflowCheck: (selMenu='Box', flag) => {
-		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {			
+		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {
 			$('#menu_box').remove();
 			$('.tooltip').remove();
 			_menu.CallSelectedMenu(MainParser.SelectedMenu);
@@ -135,7 +135,7 @@ let _menu = {
 		}
 	},
 
-	
+
 	toolTipp: (btn, title, desc) => {
 		$(btn).attr('title', desc);
 		let pos = (_menu.selectedMenu === 'RightBar' ? 'left' : 'top');
@@ -260,7 +260,7 @@ let _menu = {
 
 			_menu.HiddenItems.push(name);
 		}
-		
+
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
 
 		// refresh the Menü after setting-toggle
@@ -297,14 +297,14 @@ let _menu = {
 			`${slug}-btn`
 		);
 
-		if (red) 
+		if (red)
 			btn.addClass('hud-btn-red');
 
 		return btn;
 	},
 
 	/*----------------------------------------------------------------------------------------------------------------*/
-	
+
 	ItemsData: [
 		{ id: 'partCalc', title: i18n('Menu.OwnpartCalculator.Title'), description: i18n('Menu.OwnpartCalculator.Desc'), warning: '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>'},
 		{ id: 'unit', title: i18n('Menu.Unit.Title'), description: i18n('Menu.Unit.Desc'), warning: '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>'},
@@ -383,7 +383,7 @@ let _menu = {
 	 */
 	outpost_Btn: () => {
 		let red = false;
-		if (Outposts.OutpostData === null || localStorage.getItem('OutpostBuildings') === null) 
+		if (Outposts.OutpostData === null || localStorage.getItem('OutpostBuildings') === null)
 			red = true;
 
 		let btn = _menu.MakeButton('outpost', red);
@@ -404,7 +404,7 @@ let _menu = {
 	 */
 	shopAssist_Btn: () => {
 		let red = true;
-		if (shopAssist.storeId !== null) 
+		if (shopAssist.storeId !== null)
 			red = false;
 
 		let btn = _menu.MakeButton('shopAssist', red);
@@ -505,7 +505,7 @@ let _menu = {
 	},
 
 	/**
-	 * InfoBox 
+	 * InfoBox
 	 */
 	infobox_Btn: () => {
 		let btn = _menu.MakeButton('infobox');
@@ -726,7 +726,7 @@ let _menu = {
 
 		return btn.append(btn_sp, $('<span id="hidden-blue-galaxy-count" class="hud-counter">0</span>'));
 	},
-	
+
 	/**
 	 * Moppelassistent
 	 * */
@@ -867,7 +867,7 @@ let _menu = {
 				betterMusic.CloseBox();
 			} else {
 				betterMusic.ShowDialog();
-			}		
+			}
 
 		});
 

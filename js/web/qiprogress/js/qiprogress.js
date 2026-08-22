@@ -94,7 +94,7 @@ let QiProgress = {
 			});
 			HTML.AddCssFile('qiprogress');
 		}
-			
+
 		if (Settings.GetSetting('ShowQIPlayerInfo') == false) {
 			$('#QiProgressList').css({'display': 'none'})
 		}
@@ -184,15 +184,15 @@ let QiProgress = {
 			}
 
 			if ((change === true || newRound === true) && QiProgress.HistoryView === false) {
-				await QiProgress.UpdateDB('player', { 
-						qiRound: QiProgress.CurrentQISeason, 
-						player_id: playerNew.player_id, 
-						name: playerNew.name, 
-						actions: playerNew.actions, 
-						progress: playerNew.progress, 
+				await QiProgress.UpdateDB('player', {
+						qiRound: QiProgress.CurrentQISeason,
+						player_id: playerNew.player_id,
+						name: playerNew.name,
+						actions: playerNew.actions,
+						progress: playerNew.progress,
 						diffActions: diffActions,
 						diffProgress: diffProgress,
-						time: moment().unix() 
+						time: moment().unix()
 					});
 				updateDetailView = true;
 			}
@@ -284,7 +284,7 @@ let QiProgress = {
 		}
 	},
 
-    
+
 	ProgressListSettingsSaveValues: () => {
 		QiProgress.ProgressSettings.showRoundSelector = $("#gf_showRoundSelector").is(':checked') ? 1 : 0;
 		QiProgress.ProgressSettings.showProgressFilter = $("#gf_showProgressFilter").is(':checked') ? 1 : 0;
@@ -349,8 +349,8 @@ let QiProgress = {
 
 		QiProgress.BuildPlayerDetailContent(d);
 	},
-    
-    
+
+
     BuildPlayerDetailContent: async (d) => {
 		let player_id = d.player_id ? d.player_id : null,
 			content = d.content ? d.content : 'player',
@@ -651,9 +651,9 @@ let QiProgress = {
 	 */
 	UpdateDB: async (content, data) => {
 		if (content === 'history') {
-			await QiProgress.db.history.put({ 
-                qiround: QiProgress.CurrentQISeason, 
-                actions: data.actions, 
+			await QiProgress.db.history.put({
+                qiround: QiProgress.CurrentQISeason,
+                actions: data.actions,
                 progress: data.progress,
 				participation: data.participation
             });

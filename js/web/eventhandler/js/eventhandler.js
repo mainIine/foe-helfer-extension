@@ -31,11 +31,11 @@ let EventHandler = {
 	EventIDs: {},
 
 	db: null,
-	dbLoaded: new Promise(resolve => 
+	dbLoaded: new Promise(resolve =>
 		window.addEventListener('foe-helper#eventDBloaded', resolve, {capture: false, once: true, passive: true})),
 
 	CurrentPlayerGroup: null,
-	
+
 	FilterMoppelEvents: true,
 	FilterTavernVisits: false,
 	FilterAttacks: false,
@@ -58,7 +58,7 @@ let EventHandler = {
 	MaxVisitCount : 7,
 
 	/**
-	 * Initialize EventHandler 
+	 * Initialize EventHandler
 	 */
 	Init: () => {
 		// Keys not saved in the local storage are added from the attribute
@@ -377,10 +377,10 @@ let EventHandler = {
 			// Choose Neighbors/Guildmembers/Friends
 			$('#moppelhelper').on('click', '.toggle-players', function () {
 				EventHandler.CurrentPlayerGroup = $(this).data('value');
-				
+
 				EventHandler.CalcMoppelHelperBody();
 			});
-						
+
 			EventHandler.CalcMoppelHelperBody();
 
 		} else {
@@ -417,19 +417,19 @@ let EventHandler = {
 		h.push('<div class="dropdown" style="float:right">');
 		h.push('<input type="checkbox" class="dropdown-checkbox" id="event-checkbox-toggle"><label class="dropdown-label game-cursor" for="event-checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
         h.push('<ul>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filtermoppelevents game-cursor" ' 
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filtermoppelevents game-cursor" '
 			+ (EventHandler.FilterMoppelEvents ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filtertavernvisits game-cursor" ' 
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filtertavernvisits game-cursor" '
 			+ (EventHandler.FilterTavernVisits ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filterattacks game-cursor" ' 
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filterattacks game-cursor" '
 			+ (EventHandler.FilterAttacks ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Attacks') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filterplunders game-cursor" ' 
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filterplunders game-cursor" '
 			+ (EventHandler.FilterPlunders ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Plunders') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filtertrades game-cursor" ' 
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filtertrades game-cursor" '
 			+ (EventHandler.FilterTrades ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Trades') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filtergbs game-cursor" ' 
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filtergbs game-cursor" '
 			+ (EventHandler.FilterGBs ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.GBs') + '</label></li>');
-        /*h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filterothers game-cursor" ' 
+        /*h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filterothers game-cursor" '
 			+ (EventHandler.FilterOthers ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Others') + '</label></li>');*/
         h.push('</ul>');
 		h.push('</div>');
@@ -446,13 +446,13 @@ let EventHandler = {
 				case "Era": DropdownItemLabel = i18n("Boxes.MoppelHelper.Era"); DropdownItemClass = "col-visibility-era"; break;
 				case "Points": DropdownItemLabel = i18n("Boxes.MoppelHelper.Points"); DropdownItemClass = "col-visibility-points"; break;
 			}
-			h.push('<li><label class="game-cursor"><input type="checkbox" class="' + DropdownItemClass + ' game-cursor" ' 
+			h.push('<li><label class="game-cursor"><input type="checkbox" class="' + DropdownItemClass + ' game-cursor" '
 				+ (EventHandler.ShowHideColumns[iColumn] ? 'checked' : '') + '> ' + DropdownItemLabel + '</label></li>'
 			);
 		}
         h.push('</ul>');
 		h.push('</div>');
-		
+
 		h.push('<div class="tabs"><ul class="horizontal">');
 
 		h.push('<li class="' + (!PlayerDictNeighborsUpdated ? 'disabled' : '') + ' ' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
@@ -461,8 +461,8 @@ let EventHandler = {
 
 		h.push('</ul></div></div>');
 
-		h.push('<table id="moppelhelperTable" class="foe-table sortable-table exportable">');		
-		h.push('</table>');	
+		h.push('<table id="moppelhelperTable" class="foe-table sortable-table exportable">');
+		h.push('</table>');
 
 		await $('#moppelhelperBody').html(h.join(''))
 		EventHandler.CalcMoppelHelperTable();
@@ -571,15 +571,15 @@ let EventHandler = {
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
 			});
-			
+
 			h.push('<tr>');
-			
+
 			// Rank column
 			h.push('<td class="is-number" data-number="' + (i + 1) + '">#' + (i + 1) + '</td>');
 
 			// Portrait column
 			h.push(`<td><img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"></td>`);
-			
+
 			// Player Name column
 			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + helper.str.cleanup(Player['PlayerName']) + '">');
 

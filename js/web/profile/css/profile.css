@@ -366,7 +366,7 @@
     margin-bottom: -4px;
 }
 
-.playerprofile .aAtt::after, .playerprofile .aDef::before, .playerprofile .dAtt::after, .playerprofile .dDef::before, 
+.playerprofile .aAtt::after, .playerprofile .aDef::before, .playerprofile .dAtt::after, .playerprofile .dDef::before,
 .playerprofile .qiactions::before, .playerprofile .qicoins::before, .playerprofile .qicoins_start::before, .playerprofile .qisupplies::before, .playerprofile .qisupplies_start::before, .playerprofile .qigoods_start::before, .playerprofile .qiunits_start::before {
     content: '';
     position: relative;

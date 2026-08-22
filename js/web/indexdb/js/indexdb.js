@@ -170,7 +170,7 @@ let IndexDB = {
         const betaDBName = 'FoeHelper_' + playerId;
         if (await Dexie.exists(betaDBName)) {
             betaDB = new Dexie(betaDBName);
-            
+
             betaDB.version(1).stores({
                 players: 'id,date',
                 actions: '++id,playerId,date,type',
