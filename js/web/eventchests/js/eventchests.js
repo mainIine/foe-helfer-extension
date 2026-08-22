@@ -147,12 +147,12 @@ let EventPresents = {
                     asset =  present.reward.iconAssetName
                 }
                 if (asset == "icon_fragment") {
-                    if (present.reward.assembledReward.type=="building") 
+                    if (present.reward.assembledReward.type=="building")
                         asset = MainParser.CityEntities[present.reward.assembledReward.subType].asset_id
-                    else 
+                    else
                         asset = present.reward.assembledReward.iconAssetName
                     frag = '<span class="fragment">'+srcLinks.icons("icon_tooltip_fragment")+'</span>';
-                }  
+                }
                 icon = `<img src="${srcLinks.getReward(asset)}" alt="">`;
 
                 h.push('<td class="icon">'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + frag + '</td>');

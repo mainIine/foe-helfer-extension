@@ -131,7 +131,7 @@ let DBExport = {
 
                 data.localStorage = localSettings.length ? true : false;
 
-                if (!data.indexdb && !data.localStorage) 
+                if (!data.indexdb && !data.localStorage)
                 {
                     DBExport.hidePreloader();
                     return;

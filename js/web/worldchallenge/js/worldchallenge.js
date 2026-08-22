@@ -39,5 +39,5 @@ let worldChallenge = {
 	//count: undefined,
 	//leaguepoints:0,
 	currentPoints:0,
-	requiredPoints:12,	
+	requiredPoints:12,
 }

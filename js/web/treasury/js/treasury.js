@@ -54,8 +54,8 @@ let Treasury = {
             x.createdAt = date||x.createdAt
             return x
         });
-        Treasury.Logs = Treasury.Logs.concat(LogArray);           
-                
+        Treasury.Logs = Treasury.Logs.concat(LogArray);
+
         Treasury.CalcBody();
     },
 

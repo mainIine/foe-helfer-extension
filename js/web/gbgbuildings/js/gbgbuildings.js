@@ -22,7 +22,7 @@ FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, p
 	data.responseData.availableBuildings.forEach(x => GBGBuildings.costs[x.buildingId] = x.costs.resources);
 	GBGBuildings.buildings = data.responseData.placedBuildings.map(x=>x.id).sort((a,b)=> (GBGBuildings.block[b]||0) - (GBGBuildings.block[a]||0));
 	let free=data.responseData.freeSlots||0;
-	
+
 	for (let i=0;i<free;i++) {
 		GBGBuildings.buildings.push("free")
 	}
@@ -31,7 +31,7 @@ FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, p
 		GBGBuildings.calc()
 		return
 	}
-	
+
 	GBGBuildings.Timeout.B = setTimeout(() => {
 		GBGBuildings.clearTO("B")
 	}, 500);
@@ -47,7 +47,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 		GBGBuildings.calc()
 		return
 	}
-	
+
 	GBGBuildings.Timeout.T = setTimeout(() => {
 		GBGBuildings.clearTO("T")
 	}, 350);
@@ -59,7 +59,7 @@ FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
 		GBGBuildings.calc()
 		return
 	}
-	
+
 	GBGBuildings.Timeout.T = setTimeout(() => {
 		GBGBuildings.clearTO("T")
 	}, 350);
@@ -139,7 +139,7 @@ let GBGBuildings = {
 		GBGBuildings.clearTO("B");
 		let sets = GBGBuildings.createSets();
 		if (sets.length==0) return;
-		
+
 		for (s of sets) {
 			let needed = [...s.all];
 			let costs = {};
@@ -150,7 +150,7 @@ let GBGBuildings = {
 				if (i>=0) {
 					needed.splice(i,1);
 					keep.push(b)
-				} else 
+				} else
 				if (b!="free") leftStanding.push(b);
 			}
 			if (leftStanding.length > 0) {
@@ -199,7 +199,7 @@ let GBGBuildings = {
 			let r = a.maxCosts/b.maxCosts * a.absCosts/b.absCosts;
 			if (r>1) return 1;
 			if (r<1) return -1;
-			return 0; 
+			return 0;
 		})
 		sets.sort((a,b)=> b.block-a.block)
 
@@ -216,13 +216,13 @@ let GBGBuildings = {
 				let jAll=[...sets[j].all];
 				for (b of jAll) {
 					let idx = iAll.findIndex(x => x==b);
-					if (idx >= 0) 
+					if (idx >= 0)
 						iAll.splice(idx,1);
 				}
 				if (iAll.length==0) sets[j].ignore = true;
-			}	
+			}
 		}
-		
+
 		//console.log(sets)
 
 		// Don't create a new box while another one is still open
@@ -269,7 +269,7 @@ let GBGBuildings = {
 				lastBlock = s.block;
 				highlight = "cost";
 			}
-			
+
 			h+=`<tr ${highlight=="chance"?'class="breakline"':''}><td >`
 			for (let b of s.needed) {
 				if (b=="free") continue;
@@ -304,7 +304,7 @@ let GBGBuildings = {
 		if (num >=3) {
 			two.forEach(x => {b.forEach(y => {three.push([x,y].flat())})})
 		}
-		
+
 		let all = num==1 ? one : num==2 ? two : three;
 		let sortOrder = Object.keys(GBGBuildings.block)
 		all.forEach( x => {
@@ -321,7 +321,7 @@ let GBGBuildings = {
 			if (t>=GBGBuildings.settings.max) t=GBGBuildings.settings.max;
 			if (t > current && ignore == false) sets[JSON.stringify(x)] = {all: x,block:t}
 		})
-		
+
 		return Object.values(sets);
 	},
 

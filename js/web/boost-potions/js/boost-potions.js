@@ -29,7 +29,7 @@ FoEproxy.addHandler('BoostService', 'addBoost', (data)=> {
 });
 
 /**
- * 
+ *
  */
 let BoostPotions = {
 	delay:null,
@@ -63,7 +63,7 @@ let BoostPotions = {
 			clearInterval(BoostPotions.delay);
 			BoostPotions.delay = null;
 			return;
-		} 
+		}
 		if( $('#BoostPotions').length < 1 ){
 			let div = $('<div />').attr({
 				id: 'BoostPotions',
@@ -72,7 +72,7 @@ let BoostPotions = {
 
 			$('body').append(div);
 		}
-		
+
 		let shortest=`<img src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_boost_attack_medium.png",true)}">`;
 		$('#BoostPotions .shortest').html(shortest);
 		let active=``;
@@ -86,8 +86,8 @@ let BoostPotions = {
 				continue;
 			}
 			[h,m,s]=[duration.hours(),duration.minutes(),duration.seconds()];
-			let all= BoostPotions.active[b].target == undefined || BoostPotions.active[b].target == "all"; 
-			active += `<span>${all ? "":`<img src="${srcLinks.get(`/shared/icons/booster_target_${BoostPotions.active[b].target}.png`,true)}">`}<img src="${srcLinks.get(`/shared/icons/${b}.png`,true)}">${BoostPotions.active[b].value}% - ${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}</span>`; 
+			let all= BoostPotions.active[b].target == undefined || BoostPotions.active[b].target == "all";
+			active += `<span>${all ? "":`<img src="${srcLinks.get(`/shared/icons/booster_target_${BoostPotions.active[b].target}.png`,true)}">`}<img src="${srcLinks.get(`/shared/icons/${b}.png`,true)}">${BoostPotions.active[b].value}% - ${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}</span>`;
 			a=true;
 			let e=BoostPotions.active[b].expire;
 			if ((d<e && d!=null) || !e) continue;
@@ -97,7 +97,7 @@ let BoostPotions = {
 		}
 
 		$('#BoostPotions .active').html(active);
-		
+
 		if (!a) {
 			clearInterval(BoostPotions.delay);
 			BoostPotions.delay=null;
@@ -118,7 +118,7 @@ let BoostPotions = {
 			clearInterval(BoostPotions.delay);
 			BoostPotions.delay = null;
 			return;
-		} 
+		}
 		BoostPotions.list = {
 			att_boost_attacker: {},
 			def_boost_attacker: {},
@@ -160,10 +160,10 @@ let BoostPotions = {
 				}).join(`\n`);
 				table += `</td>`
 			}
-			table += `</tr>`		
+			table += `</tr>`
 		}
 		table += `</table>`
-		
+
 		if( $('#BoostPotions').length < 1 ){
 			BoostPotions.Show();
 		}

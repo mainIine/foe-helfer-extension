@@ -46,12 +46,12 @@ Object.assign(Productions, {
 				boosts = {}
 				building.boosts.forEach(boost => {
 					if (boost.type.find(x => x.includes('guild_raids_'))) {
-						if (boosts[boost.type[0]] === undefined) 
+						if (boosts[boost.type[0]] === undefined)
 							boosts[boost.type[0]] = parseInt(boost.value)
 						else
 							boosts[boost.type[0]] += parseInt(boost.value)
 
-						if (boostCounter[boost.type[0]] === undefined) 
+						if (boostCounter[boost.type[0]] === undefined)
 							boostCounter[boost.type[0]] = parseInt(boost.value)
 						else
 						boostCounter[boost.type[0]] += parseInt(boost.value)
@@ -108,7 +108,7 @@ Object.assign(Productions, {
 		else {
 			table.push('<div class="empty-list">'+i18n('Boxes.Productions.EmptyList')+'</div>')
 		}
-		
+
 		return table.join('') + tableGr.join('')
 	},
 
@@ -181,19 +181,19 @@ Object.assign(Productions, {
 							}
 
 							rowA.push('<td data-number="'+amount+'" exportvalue="'+amount+'" class="textright">')
-							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount)) 
-							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount)) 
+							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount))
+							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount))
 
 							if (generalProductionByCategory.units.length>0 || currentProductionByCategory.units.length>0) {
-								if (currentProductionByCategory.units.length > 0) 
+								if (currentProductionByCategory.units.length > 0)
 									rowA.push(currentProductionByCategory.units.map(x=>`${x.amount}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
-								else 
+								else
 									rowA.push(" - ")
 									rowA.push(" / ")
 
-								if (generalProductionByCategory.units.length > 0) 
+								if (generalProductionByCategory.units.length > 0)
 									rowA.push(generalProductionByCategory.units.map(x=>`${x.amount?x.amount:""}${x.amount && x. random ? "+":""}${x.random ? "Ø"+x.random:""}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
-								else 
+								else
 									rowA.push(" - ")
 							} else {
 
@@ -222,7 +222,7 @@ Object.assign(Productions, {
 										Sum[n].theory=u
 									} else {
 									Sum[n].theory.amount += u.amount || 0
-									Sum[n].theory.random += u.random || 0	
+									Sum[n].theory.random += u.random || 0
 									}
 								} else {
 									Sum[n] = {current:null,theory:u}
@@ -324,7 +324,7 @@ Object.assign(Productions, {
 								time = moment.unix(building.state.times?.at).format('LTS')
 							else {
 								if (building.state.times?.at <= inADay)
-									time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
+									time = moment.unix(building.state.times?.at).format('HH:mm:ss')
 								else
 									time = moment.unix(building.state.times?.at).format('dddd, HH:mm')
 							}
@@ -374,7 +374,7 @@ Object.assign(Productions, {
 				table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
 				table.push('<th class="ascending" data-type="prodlist'+type+'" data-export="' + i18n('Boxes.BlueGalaxy.Building') + '">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 
-				if (!type.includes('att') && !type.includes('def')) 
+				if (!type.includes('att') && !type.includes('def'))
 					table.push('<th data-type="prodlist'+type+'" class="is-number" data-export="' + i18n('Boxes.Productions.Headings.number') + '">' + i18n('Boxes.Productions.Headings.number') + '</th>')
 				else {
 					table.push('<th class="boost '+type+' is-number text-center" data-type="prodlist'+type+'" data-export="'+boostCounter[type].all+'"><span></span>'+boostCounter[type].all+'</th>')
@@ -408,7 +408,7 @@ Object.assign(Productions, {
 			if (type === 'clan_goods')
 				content = Productions.buildGuildGoodsTable(buildingIds, type)
 			if (type === 'guild_raids')
-				content = Productions.buildQITable(type) 
+				content = Productions.buildQITable(type)
 
 			return content
 	},
@@ -426,7 +426,7 @@ Object.assign(Productions, {
 		for (const b of buildingIds) {
 			let building = CityBuildings.getBuildingById(b.id);
 			if (building.player_id !== ExtPlayerID) continue;
-			
+
 			let allGoods = {};
 			if (guildGoods)
 				allGoods = CityBuildings.getBuildingGuildGoodsByEra(false, building, true);
@@ -441,7 +441,7 @@ Object.assign(Productions, {
 					eras.push(parseInt(era));
 			}
 		}
-		
+
 		// sort by the most advanced era first
 		eras.sort((a, b) => {
 			if (a < b) return 1;
@@ -546,7 +546,7 @@ Object.assign(Productions, {
 					time = moment.unix(building.state.times?.at).format('LTS')
 				else {
 					if (building.state.times?.at <= inADay)
-						time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
+						time = moment.unix(building.state.times?.at).format('HH:mm:ss')
 					else
 						time = moment.unix(building.state.times?.at).format('dddd, HH:mm')
 				}
@@ -656,7 +656,7 @@ Object.assign(Productions, {
 		// single view table content
 		for (const b of buildingIds) {
 			let building = CityBuildings.getBuildingById(b.id)
-			if (building.player_id !== ExtPlayerID) continue; 
+			if (building.player_id !== ExtPlayerID) continue;
 
 			rowA.push('<tr>')
 			rowA.push('<td>')
@@ -717,7 +717,7 @@ Object.assign(Productions, {
 					time = moment.unix(building.state.times?.at).format('LTS')
 				else {
 					if (building.state.times?.at <= inADay)
-						time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
+						time = moment.unix(building.state.times?.at).format('HH:mm:ss')
 					else
 						time = moment.unix(building.state.times?.at).format('dddd, HH:mm')
 				}
@@ -792,7 +792,7 @@ Object.assign(Productions, {
 		return table.join('')
 	},
 
-	
+
 	/**
 	 * Builds and returns an HTML table displaying grouped production data.
 	 *
@@ -837,7 +837,7 @@ Object.assign(Productions, {
 					rowB.push('<td colspan="4">'+Productions.showBuildingItems(false, building.building)[0]+'</td>')
 				}
 				else {
-					if (building.currentValues === building.values) 
+					if (building.currentValues === building.values)
 						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'</td>')
 					else {
 						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+(groupedBuildings.hasRandomProductions ? 'Ø' : '')+HTML.Format(building.values)+'</td>')
@@ -885,15 +885,15 @@ Object.assign(Productions, {
 		table.push('<tbody>')
 		for (e of elements) {
 			if (type === "items") {
-				let amount = (e.amount ? parseFloat(Math.round(e.amount*100)/100) : "") 
-							+ (e.random && e.amount ? " + " : "") 
+				let amount = (e.amount ? parseFloat(Math.round(e.amount*100)/100) : "")
+							+ (e.random && e.amount ? " + " : "")
 							+ (e.random ? "Ø " + parseFloat(Math.round(e.random*100)/100) : "")
 				table.push (`<tr><td class="text-right">${amount}</td><td>${(e.fragment ? "🧩 " : "" )}</td><td colspan="5">${e.name}</td></tr>`)
 			} else {//units
 				let currentamount = (e.current?.amount ? parseFloat(Math.round(e.current.amount*100)/100) : (e.theory?.type !== "random" ? "0" :""))
 
-				let theoryamount =  (e.theory?.amount ? parseFloat(Math.round(e.theory.amount*100)/100) : "") 
-							+ (e.theory?.random && e.theory?.amount ? " + " : "") 
+				let theoryamount =  (e.theory?.amount ? parseFloat(Math.round(e.theory.amount*100)/100) : "")
+							+ (e.theory?.random && e.theory?.amount ? " + " : "")
 							+ (e.theory?.random ? "Ø " + parseFloat(Math.round(e.theory.random*100)/100) : "")
 				theoryamount = (currentamount !== "" && currentamount !== 0 && theoryamount !== "" ? "/ ":"") + theoryamount
 				table.push (`<tr><td colspan="2">${currentamount} ${theoryamount}</td><td colspan="6"><span class="unit_skill ${(e.theory?.type||e.current.type).replace(/next./,"")}" title="${i18n("Boxes.Units." + (e.theory?.type||e.current.type).replace(/next./,"") )}"></span> <span>${(e.theory?.era===0 ||e.current?.era===0)? "" : i18n('Eras.'+(e.theory?.era||e.current?.era))}</span></td></tr>`)

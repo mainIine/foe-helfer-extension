@@ -51,7 +51,7 @@
     width: 160px;
 }
 
-#Market #MarketBody td.goods-image { 
+#Market #MarketBody td.goods-image {
 	padding: 0;
 	background-color: var(--black-50);
 }
@@ -62,7 +62,7 @@
 	text-align: center;
 }
 
-#Market #MarketBody .sprite-35::before { 
+#Market #MarketBody .sprite-35::before {
 	overflow: hidden;
 	/*position: static;*/
 	display: inline-block;

@@ -21,9 +21,9 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
 
     let resp = JSON.parse(data['response']);
     let castlebonus = 1;
-        
+
     for (let l of resp) {
-        if(!l['level']) 
+        if(!l['level'])
 			continue;
 
         for (let boost of l.permanentRewards.BronzeAge) {
@@ -32,13 +32,13 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
 
             castlebonus = 1 - boost.amount/100;
         }
-    
+
 		scoutingTimes.castleBonuses[l['level']] = castlebonus;
     }
 });
 
 FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
-       
+
     // Is the box enabled in the settings?
     if (!Settings.GetSetting('ShowScoutingTimes')) {
         return;
@@ -48,7 +48,7 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
         if (province.provinceType=="ship") province.parentIds=province.parentIds.concat([...Array(maxShip - province.id/100).keys()].map(x=>(x+province.id/100+1)*100))
         scoutingTimes.Provinces[province.id||0] = province;
     }
-    
+
     scoutingTimes.scoutPosition = data.responseData.scout?.current_province|0;
     scoutingTimes.scoutTarget = data.responseData.scout?.path[data.responseData.scout?.path?.length-1]|0;
     scoutingTimes.scoutTraveltime = data.responseData.scout.time_to_target;
@@ -57,33 +57,33 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
 });
 
 FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
-       
+
     return scoutingTimes.CheckSectors(data);
 });
 FoEproxy.addHandler('CampaignService', 'buySector', (data, postData) => {
-       
+
     return scoutingTimes.CheckSectors(data);
 });
 
 FoEproxy.addHandler('CampaignService', 'buyInstantScout', (data, postData) => {
-       
+
     // Is the box enabled in the settings?
     if (!Settings.GetSetting('ShowScoutingTimes')) {
         return;
     }
-    
+
     scoutingTimes.Provinces[data.responseData.province.id].isScouted = true;
 
     return scoutingTimes.ShowDialog();
 });
 
 FoEproxy.addHandler('CampaignService', 'moveScoutToProvince', (data, postData) => {
-       
+
     // Is the box enabled in the settings?
     if (!Settings.GetSetting('ShowScoutingTimes')) {
         return;
     }
-    
+
     for (resp of postData) {
         if (resp.requestMethod === 'moveScoutToProvince') {
             scoutingTimes.scoutTarget = resp.requestData[0][resp.requestData[0].length - 1];
@@ -112,14 +112,14 @@ let scoutingTimes = {
 
         //let Provinces = {};
         let toscout = [];
-        
+
         let castlebonus = 1;
         if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
 
         for (const p in scoutingTimes.Provinces) {
             if (Object.hasOwnProperty.call(scoutingTimes.Provinces, p)) {
                 const province = scoutingTimes.Provinces[p];
-                
+
                 if (!(province.isPlayerOwned)) {
                     continue;
                 }
@@ -143,7 +143,7 @@ let scoutingTimes = {
                                 scoutingTimes.Provinces[child.id].fromCurrent = true;
                             }
                             scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(scoutingTimes.scoutPosition,child.id) - 1, 0)) * 600) * castlebonus;
-                        } 
+                        }
 
                         if (scoutingTimes.scoutTarget === child.id) {
                             scoutingTimes.Provinces[child.id].travelTime = scoutingTimes.scoutTraveltime;
@@ -161,13 +161,13 @@ let scoutingTimes = {
 
                     if (!mayScout) continue;
                     toscout.push(child.id);
-                }  
-            }  
+                }
+            }
         }
 
         let i = 0;
         let htmltext = `<table class="foe-table"><tr><th>${i18n('Boxes.scoutingTimes.ProvinceName')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingCost')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingTime')}</th></tr>`;
-        
+
         while (toscout.length > 0) {
             let p = toscout.pop();
             let province = scoutingTimes.Provinces[p];
@@ -184,14 +184,14 @@ let scoutingTimes = {
                 htmltext += `</td></tr>`;
             }
         }
-       
+
         htmltext += `</table>`;
         //htmltext += `<div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
-        
+
         if (i > 0) {
             if ($('#mapScoutingTimesDialog').length === 0) {
                 HTML.AddCssFile('scoutingtimes');
-        
+
                 HTML.Box({
                     id: 'mapScoutingTimesDialog',
                     title: i18n('Boxes.scoutingTimes.Title'),
@@ -202,7 +202,7 @@ let scoutingTimes = {
                     settings: () => scoutingTimes.ShowSettings(),
                 });
             }
-        
+
             $('#mapScoutingTimesDialogBody').html(htmltext);
         }
     },
@@ -225,7 +225,7 @@ let scoutingTimes = {
     numberWithCommas: (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-    
+
     distance: (StartId, GoalId) => {
         let limit = Math.floor(Math.min(StartId/100,GoalId/100)) * 100;
         let StartDist = scoutingTimes.GetDistances(StartId,limit);
@@ -233,7 +233,7 @@ let scoutingTimes = {
 
         let Distance = 1000;
         for (let index in GoalDist) {
-            
+
             if (StartDist[index]) {
                 let DistanceNew = GoalDist[index].dist+StartDist[index].dist;
                 if (DistanceNew<Distance) Distance = DistanceNew;
@@ -266,7 +266,7 @@ let scoutingTimes = {
             for (let parent of scoutingTimes.Provinces[Province[0]].parentIds) {
                 temp.push([parent,Province[1]+1]);
             }
-            
+
         }
         return distx;
     },
@@ -286,12 +286,12 @@ let scoutingTimes = {
         }
 
         if (!istaken) return;
-                    
+
         scoutingTimes.Provinces[Id].isPlayerOwned = true;
 
         return scoutingTimes.ShowDialog();
     },
-    
+
      ShowSettings: () => {
 		let autoOpen = Settings.GetSetting('ShowScoutingTimes');
 

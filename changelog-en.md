@@ -439,7 +439,7 @@
 - Building efficiency calculation: The view opens by default sorted in descending order and is updated immediately whenever a building is removed, added or updated
 
 ---
- 
+
 
 ##### 4.2.1.1
 
@@ -482,12 +482,12 @@
 - Productions: Added a list for special productions
 - Settings: Removed some "open automatically" settings if they are already available in the modules windows settings
 - QI city: The title changes with the difficulty level now
-- Ownpart Calculator/GB Cost Calculator: the FP values can now be clicked - the value is written directly to the input field or at least copied to the clipboard	
+- Ownpart Calculator/GB Cost Calculator: the FP values can now be clicked - the value is written directly to the input field or at least copied to the clipboard
 - Ownpart Calculator: added an Option to in-/exclude initial FP in given sum values
 
 **Bugfix**
 - Copy city data: data format was slightly off by accident, works like before now
-- Allies: 
+- Allies:
 	- The sums weren't correct and boosts were *slightly* off after leveling allies
 	- A freshly assembled Ally was listed twice, when the amount of fragments was exactly 0 after assembly
 	- the Box did not close when already open upon menu click
@@ -501,11 +501,11 @@
 - Reconstruction mode: there is now a map that updates live. You can access it via a button in the reconstruction list
 
 **Update**
-- City Map: 
+- City Map:
 	- Sidebar stats have been reworked: more interesting facts about buildings in the city were added
 	- Filters have been revamped and are now in the bottom area of the sidebar (you will find them if you look hard enough)
 	- Available area for other players cities has been added
-- Profile: 
+- Profile:
 	- QI capacity added
 	- The mini icon on the top left corner blocked the ingame research button, so it was moved a bit
 	- Main part can now be selected and copied, so you can share your most impartant stats ingame more easily
@@ -527,7 +527,7 @@
 ##### 4.0.2.0
 
 **Update**
-- Efficiency: 
+- Efficiency:
 	- Changed default values
 	- When the option "show ascended/limited buildings" is active, lines with such buildings in your city will not show the inventory checkmark anymore
 - Ally Boosts: Adapted to changed data transmission
@@ -547,7 +547,7 @@
 	- as the server time is not transmitted consistently, server offset can now be set manually
 - General
 	- further improvements for loading behavior
-	
+
 ---
 
 ##### 4.0.0.0
@@ -563,11 +563,11 @@
  	- Unlock times are now converted to server time when copied
 	- To also display the unlock-times in server time, check the settings
 - Player Links
-	- you can now select between foestats.com and scoredb.io in the main settings 
+	- you can now select between foestats.com and scoredb.io in the main settings
 - Shop Assistant
 	- Column "Missing" now always gives the amount until the next complete set
 - Settlements
-	- Added goods for pirate settlement 
+	- Added goods for pirate settlement
 - Player profiles:
 	- Now available for other players: visit them and click in the top left corner
 
@@ -671,8 +671,8 @@
 	- locked offers can be hidden from the list
 	- an alert can be set for offers - it will go off when enough currency is available to buy the offer
 
-**Update** 
-- Helper design was reworked in some places 
+**Update**
+- Helper design was reworked in some places
 	- boxes are now limited in size to browser window size
 
 - Efficiency overview
@@ -695,7 +695,7 @@
 	- reactivated
 
 - Army Advice
-	- can now be used as well in PvP Arena 
+	- can now be used as well in PvP Arena
 
 **Bugfix**
 - Popgame
@@ -727,7 +727,7 @@
 	- Chain buildings with Era-dependent values are now properly evaluated
 
 - QI action points calculator:
-	- capacity increase should now be handled 
+	- capacity increase should now be handled
 
 - Guild member overview:
 	- added guild goods production to export
@@ -855,7 +855,7 @@
 
 **New**
 - Player Profile
-	- After opening the profile, an icon to show the player profile will appear next to your city name 
+	- After opening the profile, an icon to show the player profile will appear next to your city name
 - Settings
 	- Disable QI and GBG pop ups
 - Ally Overview
@@ -889,7 +889,7 @@
 
 **BugFix**
 - Alerts still did not work
-- Efficiency 
+- Efficiency
 	- fix count for buildings with allies
 - Market Overview
 	- filter overlapped by table header
@@ -920,12 +920,12 @@
 
 **Update**
 - Tooltip: made design similar to original FoE tooltips
-- Building Efficiency: 
+- Building Efficiency:
 	- Added building tooltips
 	- Results will now be shown first
 	- Item list hidden to make the table less crowded
 - Menu: Moved it back to the right (default was bottom), because of a game update and y'all do not look at settings
-- GBG: 
+- GBG:
 	- Added symbols for the battle type (red/blue) to the countdown list
 	- Added attack colors to the map
 	- Added map view to highlight attack colors better
@@ -933,10 +933,10 @@
 	- removed the module on Innos request
 
 **BugFix**
-- Tooltip: 
+- Tooltip:
 	- Some browsers did not use the correct design
 	- Did sometimes not vanish when a box was closed
-- Reconstruction List: 
+- Reconstruction List:
 	- Set a default height
 	- Moving buildings reduced counter
 - Building Efficiency:
@@ -958,7 +958,7 @@
 - Changed settings entry "Load current beta"
 
 **BugFix**
-- Building efficiency: 
+- Building efficiency:
 	- Broke for some players due to a game update
 	- Same buildings with/without allies were not counted correctly
 - Porduction Overview:
@@ -1131,7 +1131,7 @@
 - Settlements:
 	- added images for polynesia
 - GvG:
-	removed the module	
+	removed the module
 - FP Bar:
 	- moved it to the left in QI
 	- now also shows in the main city when more than 999 FP in bar
@@ -1238,7 +1238,7 @@
 ##### 3.5.0.1
 **Update**
 - City Map
-	- Better visibility for highlighted buildings 
+	- Better visibility for highlighted buildings
 	- Added highlighting for buildings that do not require streets
     - Added a global sorting layout
 
@@ -1282,7 +1282,7 @@
 
 **BugFix**
 - Moppelhelper:
-	- fix era sorting 
+	- fix era sorting
 
 - GBG
 	- some own provinces were not shown in the "locked" list
@@ -1318,7 +1318,7 @@
 **Update**
 - Sets/Kits:
 	- added buildings until Halloween 2023
-	
+
 - General:
 	- when a limited building expires, an Alert is triggert
 
@@ -1359,7 +1359,7 @@
 - Merger Game:
 	- added a daily overview - you can switch between current game status and daily status by clicking the second column head
 	- fixed blocker position
-	- An optioon was added to set a specific reset cost to be used instead of the correct one 
+	- An optioon was added to set a specific reset cost to be used instead of the correct one
 		- you should enter the average of the epected reset costs here (e.g.: 3 games per day --> 20, 4 games per day --> 35)
 		- this should help to improve the efficiency evaluation as they are not influenced by the reset costs anymore
 
@@ -1371,7 +1371,7 @@
 
 **BugFix**
 - Discord Invite links were broken, so we replaced them
-- 
+-
 ---
 ##### 3.2.5.0
 
@@ -1399,7 +1399,7 @@
 **BugFix**
 - Production Overview:
 	- FP Boost was applied to Great Buildings
-  
+
 - Idle Game:
 	- setting timers now works properly - limited to times below 24 hours
 
@@ -1409,7 +1409,7 @@
 **Update**
 - Idle Game:
 	- now also works with Fellowship event
-	- added Strategy-Tasklist 
+	- added Strategy-Tasklist
 		- if you like mooing cats strategy guides, this will help you to implement them without the need to permanently check the guide from another source
 		- the guide tasks can be added manually within the dialogue body and will be saved independently for every variation of run through. Format:
 			- ...Description Text...#condition1#condition2#condition3
@@ -1462,7 +1462,7 @@
 **BugFix**
 - external images:
 	- when the game file was not in cache, it could happen that images from Innogames were not loaded properly
-  
+
 - GB-Calculator:
 	- if the Infobox was open before the GB Calculator, it could happen that by clicking the filter in the Infobox, the settings of the GB Calculator were opened
 ---
@@ -1509,7 +1509,7 @@
 
 - FP-Collector:
 	- added Anniversary-Event
-	
+
 ---
 
 ##### 3.2.0.0
@@ -1523,7 +1523,7 @@
 	- added new Track (will be available on live latest with the anniversary event, currently only available on beta)
 
 - Event cost calculator:
-	- second cost column added to the right side of table 
+	- second cost column added to the right side of table
 	- highlighting of the most efficient option now also is in the respective cost column
 
 - Kits:

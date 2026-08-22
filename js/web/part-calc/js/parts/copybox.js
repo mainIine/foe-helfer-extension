@@ -29,7 +29,7 @@ Object.assign(Parts, {
 		$OwnPartBox.find('.OwnPartBoxBackgroundBody').remove();
 
 		let isOpen = false;
-		if($('#OwnPartBox').hasClass('gbSettingsOpen')) 
+		if($('#OwnPartBox').hasClass('gbSettingsOpen'))
 			isOpen = true;
 
 		if (SavedBuildingName !== null) {
@@ -146,7 +146,7 @@ Object.assign(Parts, {
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
 		Parts.CopyString = Parts.GetCopyString();
 		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
-		
+
 		h.push('</section>');
 
 		h.push('<section class="p2">');
@@ -200,8 +200,8 @@ Object.assign(Parts, {
 		h.push('</section>')
 		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
 		h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
-		if (Parts.CurrentGB.Entity['player_id'] === ExtPlayerID) 
-			h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); 
+		if (Parts.CurrentGB.Entity['player_id'] === ExtPlayerID)
+			h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 		h.push('</div>');
 
 		$OwnPartBox.append( $('<div class="OwnPartBoxBackgroundBody settingsbox-wrapper" />').append(h.join('')) );
@@ -264,7 +264,7 @@ Object.assign(Parts, {
 
 				if (!Places[Place]) continue;
 				if (PlaceAll && Maezens[Place] === 0) continue;
-				
+
 				if (Parts.CopyIncludeFP) {
 					Ret.push((Parts.CopyPreP ? 'P' : '') + (Place + 1) + '(' + Maezens[Place] + ')');
 				}
@@ -281,7 +281,7 @@ Object.assign(Parts, {
 		else if (PlaceAutoUnsafe) {
 			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceAvailable'));
 		}
-		
+
 		if (Parts.CopyIncludeOwnPart) Ret.push(i18n('Boxes.OwnpartCalculator.OwnPartShort') + '(' + OwnPart + ')');
 
 		return Ret.join(' ');
@@ -298,7 +298,7 @@ Object.assign(Parts, {
 	 */
 	CopyFunction: (Event, Action) => {
 		let CopyString = $('#copystring').val();
-	
+
 		$(Event).removeClass('btn-green');
 
 		$('.OwnPartBoxBackgroundBody').fadeToggle();

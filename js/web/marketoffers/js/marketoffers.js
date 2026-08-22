@@ -160,7 +160,7 @@ let MarketOffers = {
             h.push('<td class="is-number" data-number="' + NeedSum + '">' + (NeedCount > 0 ? '<button class="btn btn-filter-need" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(NeedSum) + ' (' + NeedCount + ')' + '</button>' : '-') + '</td>');
             h.push('<td class="is-number" data-number="' + (Inventory + OfferSum) + '">' + HTML.Format(Inventory + OfferSum) + '</td>');
             h.push('<td class="is-number" data-number="' + NeedSum + '">' + HTML.Format(Inventory + NeedSum) + '</td>');
-            
+
             h.push('</tr>');
         }
         h.push('</tbody>');
@@ -171,7 +171,7 @@ let MarketOffers = {
 
 
     /**
-     * 
+     *
      * */
     CalcTradeSums: () => {
         OfferCounts = [];
@@ -238,7 +238,7 @@ let MarketOffers = {
         else if (!event) {
             HTML.CloseOpenBox('MarketOffersEvents');
             return;
-        }              
+        }
 
         // Choose Neighbors/Guildmembers/Friends
         $('#MarketOffersEvents').on('click', '.toggle-tabs', function () {
@@ -362,8 +362,8 @@ let MarketOffers = {
         h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'csv', 'MarketOffersEvents')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
         h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'json', 'MarketOffersEvents')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
-        h.push(i18n('Boxes.MarketOffersEvents.OptionalColumns') + ':');       
-       
+        h.push(i18n('Boxes.MarketOffersEvents.OptionalColumns') + ':');
+
         $('#MarketOffersEventsSettingsBox').html(h.join(''));
     },
 };

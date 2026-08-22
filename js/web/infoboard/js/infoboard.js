@@ -53,7 +53,7 @@ let Infoboard = {
     Show: () => {
         let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
-        if (MainParser.Conversations.length === 0 && StorageHeader !== null) 
+        if (MainParser.Conversations.length === 0 && StorageHeader !== null)
             MainParser.Conversations = JSON.parse(StorageHeader);
 
         Infoboard.Box();
@@ -71,9 +71,9 @@ let Infoboard = {
                 localStorage.setItem('infoboxTone', 'deactivated');
                 Infoboard.PlayInfoSound = false;
 
-            } else 
+            } else
                 Infoboard.PlayInfoSound = (spk !== 'deactivated');
-            
+
             if (localStorage.getItem("infoboxSavedFilter") === null)
                 localStorage.setItem("infoboxSavedFilter", JSON.stringify(Infoboard.SavedFilter));
             else
@@ -154,9 +154,9 @@ let Infoboard = {
             localStorage.setItem('infoboxTone', (disabled ? '' : 'deactivated'));
             Infoboard.PlayInfoSound = !!disabled;
 
-            if (disabled === true) 
+            if (disabled === true)
                 $('#infoboxTone').removeClass('deactivated');
-            else 
+            else
                 $('#infoboxTone').addClass('deactivated');
         });
 
@@ -176,7 +176,7 @@ let Infoboard = {
 
             $('[data-id="'+id+'"] .fav').toggleClass('active')
 
-            if (!favFound) 
+            if (!favFound)
                 favorites.push(id);
             else
                 favorites.splice(favorites.indexOf(id), 1);
@@ -214,9 +214,9 @@ let Infoboard = {
         if ($('#BackgroundInfo').length === 0 || bd.class === 'welcome' && Infoboard.History.length > 0) return;
 
         if(bd.class !== 'welcome' && add) {
-            if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries) 
+            if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries)
                 Infoboard.History.shift();
-            
+
             Infoboard.History.push(bd);
         }
 
@@ -236,7 +236,7 @@ let Infoboard = {
             favActive = 'active';
 
         if (favoritesOnly) {
-            if (favFound == undefined) 
+            if (favFound == undefined)
                 hidden = ' display:none';
         }
 
@@ -245,7 +245,7 @@ let Infoboard = {
                     <div class="main">
                         <small><em>${moment(bd.date).format('HH:mm:ss')}</em></small>
                         <div>${msg}</div>
-                        <span class="clickable fav ${favActive !== false ? favActive : ''}" 
+                        <span class="clickable fav ${favActive !== false ? favActive : ''}"
                             data-original-title="${favActive !== false ? 'Remove from favorites' : 'Add to favorites'}">
                             ${favActive !== false ? '★' : '☆'}
                         </span>
@@ -266,7 +266,7 @@ let Infoboard = {
         if (Infoboard.PlayInfoSound && status && filterStatus) {
             helper.sounds.play("ping");
         }
-        
+
     },
 
 
@@ -297,18 +297,18 @@ let Infoboard = {
                 let li = $(this),
                     textfilter = $('input[data-type="text"]').val().split("|"),
                     type = li.attr('class');
-   
-                if (active.some(e => type.startsWith(e)) && textfilter.some(e => $(li.children()[1]).html().toLowerCase().includes(e.toLowerCase()))) 
+
+                if (active.some(e => type.startsWith(e)) && textfilter.some(e => $(li.children()[1]).html().toLowerCase().includes(e.toLowerCase())))
                     li.show();
-                else 
+                else
                     li.hide();
-                
+
                 if ($('input[data-type="favorites"]').prop('checked')) {
                     if (favorites.find(x => x == li.data('id')))
                         li.show();
-                    else 
+                    else
                         li.hide();
-                } 
+                }
 
                 if (li.hasClass('welcome')) li.show();
             });
@@ -326,7 +326,7 @@ let Infoboard = {
             Infoboard.History = [];
         });
     },
-    
+
 
 	ShowSettings: () => {
 		let autoOpen = Settings.GetSetting('AutoOpenInfoBox');
@@ -599,7 +599,7 @@ let Info = {
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
         let newFP = -1;
-        if (d['rank'] >= 6) 
+        if (d['rank'] >= 6)
             newFP = 0;
         else {
             let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === d['great_building_name']));

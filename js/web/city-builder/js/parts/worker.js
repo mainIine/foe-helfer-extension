@@ -39,7 +39,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
 
                 this.processData(mapData, buildingsData);
             }
-    
+
             processData(rawMap, rawBuildings) {
                 if (!rawMap) {
                     console.error("Worker: rawMap ist leer/null");
@@ -47,7 +47,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 }
                 const validTiles = new Set();
                 const mapArray = Array.isArray(rawMap) ? rawMap : Object.values(rawMap || {});
-    
+
                 mapArray.forEach(area => {
                     let ax = area.x || 0;
                     let ay = area.y || 0;
@@ -59,26 +59,26 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     this.mapBounds.maxX = Math.max(this.mapBounds.maxX, ax + aw);
                     this.mapBounds.minY = Math.min(this.mapBounds.minY, ay);
                     this.mapBounds.maxY = Math.max(this.mapBounds.maxY, ay + al);
-    
+
                     for (let i = ax; i < ax + aw; i++) {
                         for (let j = ay; j < ay + al; j++) {
                             validTiles.add(i + ',' + j);
                         }
                     }
                 });
-    
+
                 for (let x = this.mapBounds.minX; x < this.mapBounds.maxX; x++) {
                     for (let y = this.mapBounds.minY; y < this.mapBounds.maxY; y++) {
                         this.grid.set(x + ',' + y, validTiles.has(x + ',' + y) ? 0 : -1);
                     }
                 }
-    
+
                 const ignore = ["Hafen", "Terminal", "Hub", "Außenposten"];
                 rawBuildings.forEach(b => {
                     if ((b.width || 0) <= 0) return;
                     if (['hub_main', 'hub_part', 'off_grid'].includes(b.type)) return;
                     if (ignore.some(ig => b.name.includes(ig))) return;
-    
+
                     const bCopy = { ...b, street_level: b.street_level || 0 };
                     if (this.transposed) {
                         const w = bCopy.width;
@@ -638,7 +638,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     }
                 }
             }
-    
+
             placeRoadTile(x, y, level) {
                 const key = x + ',' + y;
                 const lvl = level || 1;
@@ -655,7 +655,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 }
                 return false;
             }
-    
+
             canPlace(x, y, w, h) {
                 for (let i = x; i < x + w; i++) {
                     for (let j = y; j < y + h; j++) {
@@ -664,7 +664,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 }
                 return true;
             }
-    
+
             placeEntity(item, x, y, etype = 1) {
                 for (let i = x; i < x + item.width; i++) {
                     for (let j = y; j < y + item.height; j++) {
@@ -675,7 +675,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 }
                 this.placedBuildings.push({ ...item, x: x, y: y });
             }
-    
+
             isConnectedToRoad(x, y, w, h) {
                 for (let i = x; i < x + w; i++) if (this.grid.get(i + ',' + (y - 1)) === 2) return true;
                 for (let i = x; i < x + w; i++) if (this.grid.get(i + ',' + (y + h)) === 2) return true;
@@ -1276,7 +1276,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 }
                 return count;
             }
-    
+
             pruneRoadsSmart() {
                 // the town hall counts too: its last road tile must survive -
                 // chain composites only guard the road at their head member
@@ -1366,7 +1366,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     }
                 }
             }
-    
+
             generateExportData() {
                 const exportList = [];
                 for (const b of this.placedBuildings) {
@@ -1408,7 +1408,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 }
                 return exportList;
             }
-    
+
             layoutBands(street) {
                 const minX = this.mapBounds.minX, maxX = this.mapBounds.maxX;
                 const minY = this.mapBounds.minY, maxY = this.mapBounds.maxY;
@@ -2040,7 +2040,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                         }
                     }
                 }
-    
+
                 // compaction: slide every roadless building up and left until it
                 // rests against the city - this closes the thin seams of free
                 // tiles the placement order leaves between the rows, so the
@@ -2178,7 +2178,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 };
             }
         }
-    
+
         self.onmessage = function(e) {
             try {
                 // time-boxed search: deterministic base variants first, then randomized

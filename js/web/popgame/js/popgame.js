@@ -17,11 +17,11 @@ FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
     if (!data?.responseData?.currentGame?.config?.height) return;
     if (!data?.responseData?.currentGame?.config?.width) return;
     if (!data?.responseData?.currentGame?.tiles) return;
-    
+
     Popgame.event = data.responseData.context.replace("_event","")
     Popgame.height=data?.responseData?.currentGame?.config?.height;
     Popgame.width=data?.responseData?.currentGame?.config?.width;
-    
+
     let arr = new Array(Popgame.width);
     for (var i = 0; i < Popgame.width; i++) {
         arr[i] = new Array(Popgame.height);
@@ -38,9 +38,9 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data, postData) => {
     if (!Array.isArray(data.responseData)) return;
     for (let G of data.responseData) {
         if (G.gains?.resources?.[`${Popgame.event}_pop_moves`]) {
-            Popgame.Show();        
+            Popgame.Show();
             return;
-        };              
+        };
     }
 });
 
@@ -53,12 +53,12 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
         $('#Popgame').removeClass("open");
         $('#Popgame').addClass("closed");
     };
-    
+
 });
 
 mouseActions.addAction([[-57, 151, 'Center'],[72, 173, 'Center']],()=>{
     Popgame.clearReward()
-})  
+})
 mouseActions.addAction([[284, 297, 'Center'],[-312, -337, 'Center'],false],()=>{
     Popgame.clearReward()
 })
@@ -85,8 +85,8 @@ FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
     if ($('#Popgame').length === 0) return;
     if (!data?.responseData?.changes) return;
     for (let change of data.responseData.changes) {
-        Popgame.updateTiles(change.newTiles); 
-        Popgame.updateTiles(change.updatedTiles); 
+        Popgame.updateTiles(change.newTiles);
+        Popgame.updateTiles(change.updatedTiles);
     }
     let x=Popgame.lastX;
     let y=Popgame.lastY;
@@ -105,7 +105,7 @@ $(window).mousemove( function(e){
     let offset= $('#PGwrapper').offset();
     let x=e.clientX;
     let y=e.clientY;
-    
+
     if ((y < offset.top) || (y > (offset.top + elem.clientHeight)) || (x < offset.left) || (x > (offset.left + elem.clientWidth))) {
         $('#PopgameBody .PGwrapper').hide();
         $('#Popgame').css('background-image','none');
@@ -160,7 +160,7 @@ let Popgame = {
                 body+=`<div id="PGfork" class="PGtool"></div>`;
             }
             body+=`</div><div id="PGwrapper" class="${Popgame.event}"><div class="PGwrapper"></div></div>`
-            
+
             $('#PopgameBody').html(body);
             Popgame.Update();
             $('.PGtool').on("click", (event)=>{
@@ -179,7 +179,7 @@ let Popgame = {
                 Popgame.minimized = !Popgame.minimized;
                 localStorage.setItem('PopgameMinimized', JSON.stringify(Popgame.minimized));
             });
-        } 
+        }
     },
 
     Close: () => {
@@ -197,15 +197,15 @@ let Popgame = {
             }
             table+='</div>';
         }
-        
+
         $('#PopgameBody .PGwrapper').html(table);
-        
+
     },
-    
+
     CoordsCheck: (x,y) => {
         if (Popgame.lastX==x && Popgame.lastY==y) return;
         if (x>Popgame.width-1 || y > Popgame.height-1 || x<0 || y<0) return;
-        
+
         Popgame.resetTempChest();
         Popgame.lastX=x;
         Popgame.lastY=y;
@@ -223,7 +223,7 @@ let Popgame = {
                 Popgame.hide.push(`PGcellX${x}Y${y}`);
             } else {
                 Popgame.CheckNeighbours(x,y);
-                if (Popgame.hide.length === 1) return;    
+                if (Popgame.hide.length === 1) return;
                 if (Popgame.hide.length > 4) {
                     $(`#PGcellX${x}Y${y}`).removeClass(`PG_${Popgame.event}_${Popgame.grid[x][y]}`);
                     Popgame.tempC = `PG_${Popgame.event}_${Popgame.grid[x][y]}_reward`;
@@ -274,7 +274,7 @@ let Popgame = {
             return last.hasClass("PGdroppable") ? last[0] : null;
         });
         drops.fadeOut('fast');
-        if (drops.length > 0) 
+        if (drops.length > 0)
             setTimeout(Popgame.hideDrops,250);
         },
 
@@ -286,7 +286,7 @@ let Popgame = {
             Popgame.tempC = null;
         }
         Popgame.lastX=null;
-        Popgame.lastY=null;   
+        Popgame.lastY=null;
     },
 
     updateTiles:(tiles)=>{
@@ -300,7 +300,7 @@ let Popgame = {
     clearReward:()=>{
         if ($('#Popgame').length === 0) return;
         if (Popgame.rewardactive==0) return;
-        
+
         if (Popgame.rewardactive > 0) Popgame.rewardactive -= 1;
         if ($('#Popgame.closed').length === 0) return;
         if (Popgame.rewardactive!==0) return;
@@ -325,7 +325,7 @@ let Popgame = {
                 grandPrize:0
             },
             leftOnBoard:{grandPrize:0}};
-        
+
         let save = localStorage.getItem("popgameTracking");
         if (save) {
             try {
@@ -334,14 +334,14 @@ let Popgame = {
             } catch {}
         }
     }
-  
+
 };
 Popgame.trackingInit();
 // Handlers for Tracking:
 FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
-   
+
     if (postData[0].requestMethod != "startGame") return;
-    
+
     for (let x of data.responseData.currentGame.tiles) {
         Popgame.tracking.start.total++;
         if (x.type=="grandPrize") Popgame.tracking.start.grandPrize++;

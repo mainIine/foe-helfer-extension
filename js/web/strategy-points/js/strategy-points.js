@@ -149,7 +149,7 @@ let StrategyPoints = {
 				$bar.append(`<span />`);
 				if (i === 9) { $('.fp-bar-main').addClass('full'); break; }
 			}
-			
+
 		}, 800);
 
 	},

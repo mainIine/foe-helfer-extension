@@ -57,7 +57,7 @@ let _menu_box = {
 	InsertMenuItem: (MenuItem) => {
 		$('#menu_boxBody').append(MenuItem);
 	},
-		
+
 
 	/**
 	 * Tooltips etc

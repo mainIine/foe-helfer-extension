@@ -99,7 +99,7 @@ let Productions = {
 		Productions.ReadData()
 	},
 
-	
+
 	/**
 	 * Processes city building data, calculates population and happiness sums, and shows the production box.
 	 */
@@ -118,11 +118,11 @@ let Productions = {
 		})
 
 		let ProdBonus = 0
-		if (Productions.HappinessSum < Productions.PopulationSum) 
+		if (Productions.HappinessSum < Productions.PopulationSum)
 			ProdBonus = -0.5
-		else if (Productions.HappinessSum < 1.4 * Productions.PopulationSum) 
+		else if (Productions.HappinessSum < 1.4 * Productions.PopulationSum)
 			ProdBonus = 0
-		else 
+		else
 			ProdBonus = 0.2
 
 		Productions.HappinessBoost = ProdBonus
@@ -163,7 +163,7 @@ let Productions = {
 		Productions.SwitchFunction()
 	},
 
-	
+
 	/**
 	 * Calculates and generates the content for the production overview box, including tabs and tables.
 	 */
@@ -180,7 +180,7 @@ let Productions = {
 			let saveBuilding = {id: building.id, entityId: building.entityId}
 
 			boosts.forEach(boost => {
-				Productions.getBoost(building, boost, function(result) { 
+				Productions.getBoost(building, boost, function(result) {
 					if (result !== undefined) {
 						if (Productions.BuildingsProducts[boost]) {
 							if (Productions.BuildingsProducts[boost].find(x => x.id === building.id) === undefined)
@@ -200,7 +200,7 @@ let Productions = {
 						if (Productions.BuildingsProducts.clan_goods.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts["clan_goods"].push(saveBuilding)
 					}
-					if (production.type === "unit") { 
+					if (production.type === "unit") {
 						if (Productions.BuildingsProducts.units.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts["units"].push(saveBuilding)
 					}
@@ -230,7 +230,7 @@ let Productions = {
 								if (Productions.BuildingsProducts.supplies.find(x => x.id === building.id) === undefined)
 									Productions.BuildingsProducts["supplies"].push(saveBuilding)
 							}
-							if (resource.type === "resources" && resource.subType === "medals") { 
+							if (resource.type === "resources" && resource.subType === "medals") {
 								if (Productions.BuildingsProducts.medals.find(x => x.id === building.id) === undefined)
 									Productions.BuildingsProducts["medals"].push(saveBuilding)
 							}
@@ -250,22 +250,22 @@ let Productions = {
 					}
 					if (production.type === "resources") {
 						let types = Object.keys(production.resources)
-						if (production.resources.money) { 
+						if (production.resources.money) {
 							if (Productions.BuildingsProducts.money.find(x => x.id === building.id) === undefined)
 								Productions.BuildingsProducts["money"].push(saveBuilding)
 						}
-						if (production.resources.supplies) { 
+						if (production.resources.supplies) {
 							if (Productions.BuildingsProducts.supplies.find(x => x.id === building.id) === undefined)
 								Productions.BuildingsProducts["supplies"].push(saveBuilding)
 						}
-						if (production.resources.medals) { 
+						if (production.resources.medals) {
 							if (Productions.BuildingsProducts.medals.find(x => x.id === building.id) === undefined)
 								Productions.BuildingsProducts["medals"].push(saveBuilding)
 						}
-						if (production.resources.premium) { 
+						if (production.resources.premium) {
 							Productions.BuildingsProducts["premium"].push(saveBuilding)
 						}
-						if (production.resources.strategy_points) { 
+						if (production.resources.strategy_points) {
 							if (Productions.BuildingsProducts.strategy_points.find(x => x.id === building.id) === undefined)
 								Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 						}
@@ -286,7 +286,7 @@ let Productions = {
 						if (Productions.BuildingsProducts.clan_goods.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.clan_goods.push(saveBuilding)
 					}
-					if (production.type === "unit") { 
+					if (production.type === "unit") {
 						if (Productions.BuildingsProducts.units.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.units.push(saveBuilding)
 					}
@@ -296,23 +296,23 @@ let Productions = {
 						}
 					}
 					if (production.type === "resources") {
-						if (production.resources.money) { 
+						if (production.resources.money) {
 							if (Productions.BuildingsProducts.money.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.money.push(saveBuilding)
 						}
-						if (production.resources.supplies) { 
+						if (production.resources.supplies) {
 							if (Productions.BuildingsProducts.supplies.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.supplies.push(saveBuilding)
 						}
-						if (production.resources.medals) { 
+						if (production.resources.medals) {
 							if (Productions.BuildingsProducts.medals.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.medals.push(saveBuilding)
 						}
-						if (production.resources.premium) { 
+						if (production.resources.premium) {
 							if (Productions.BuildingsProducts.premium.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.premium.push(saveBuilding)
 						}
-						if (production.resources.strategy_points) { 
+						if (production.resources.strategy_points) {
 							if (Productions.BuildingsProducts.strategy_points.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.strategy_points.push(saveBuilding)
 						}
@@ -391,8 +391,8 @@ let Productions = {
 
 			// extra functionality
 			$('.production-tabs').tabslet({ active: Productions.ActiveTab })
-			$('.TSinactive').tableSorter()					
-			$('.TSinactive').removeClass('TSinactive')					
+			$('.TSinactive').tableSorter()
+			$('.TSinactive').removeClass('TSinactive')
 			HTML.FilterTable('#Productions .filterCurrentList')
 
 			// mark a building in the city, fall back to the city map box if unsupported
@@ -426,7 +426,7 @@ let Productions = {
 					if (adjB) uniqueAdjacentEntities.add(adjB.entityId);
 				}
 				building.setBuilding.uniqueAdjacentCount = uniqueAdjacentEntities.size;
-			} 
+			}
 			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type === "start") {
 
 				let linkedBuildings = CityBuildings.hasLinks(building);
@@ -476,7 +476,7 @@ let Productions = {
 
 				if (production.type === 'random') {
 					production.resources.forEach(resource => {
-						if (resource.type+"s" === category) { // units 
+						if (resource.type+"s" === category) { // units
 							prod.amount += resource.amount * resource.dropChance
 							prod.hasRandomProductions = true
 							let Uera = Technologies.Eras[building.eraName]
@@ -484,9 +484,9 @@ let Productions = {
 							let Utype=resource.name
 							prod.units.push({type:Utype.replace(/next./,""),amount:0,random:resource.amount * resource.dropChance,era:Utype==="rogue"?0:Uera})
 						}
-						if (resource.type === "guild_goods" && category === "clan_goods" 
+						if (resource.type === "guild_goods" && category === "clan_goods"
 							|| resource.subType === "strategy_points" && category === "strategy_points"
-							|| resource.subType === "money" && category === "money" 
+							|| resource.subType === "money" && category === "money"
 							|| resource.subType === "supplies" && category === "supplies"
 							|| resource.subType === "medals" && category === "medals") {
 							prod.amount += resource.amount * resource.dropChance;
@@ -614,7 +614,7 @@ let Productions = {
 						for (let u of Object.keys(production.resources)) {
 							allUnits += production.resources[u] + "x " + `<img src='${srcLinks.get("/shared/icons/"+u.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
 						}
-					} 
+					}
 					if (production.resources?.type === "consumable") {
 						let itemId = production.resources.id.split('#')[1]
 						itemId = (itemId === undefined) ? '' : itemId
@@ -693,7 +693,7 @@ let Productions = {
 	SwitchFunction: ()=>{
 		$('#Productions').on('click', '.change-view', function() {
 			let activeTable = $(this).parents('table'),
-				hiddenTable = activeTable.next('table') 
+				hiddenTable = activeTable.next('table')
 
 			if (hiddenTable.length === 0) hiddenTable = activeTable.siblings('table').first();
 
@@ -928,7 +928,7 @@ let Productions = {
         h.push(`<input id="productionsShowAMPMTime" name="productionTime" value="1" type="radio" ${(showAMPMTime === true) ? ' checked="checked"' : ''} /> <label for="productionsShowAMPMTime">${i18n('Boxes.Productions.AMPMTime')}</label><br>`)
         h.push(`<input id="productionsShow24Time" name="productionTime" value="1" type="radio" ${(show24Time === true) ? ' checked="checked"' : ''} /> <label for="productionsShow24Time">${i18n('Boxes.Productions.Time24')}</label></p>`)
 		h.push(`<p><button onclick="Productions.SaveSettings()" id="save-productions-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`)
-		
+
 		let activeTable = $('#ProductionsBody .horizontal li.active').attr('id').replace('prod-','');
 
 		/* needs more thought put into it: only relevant on an unmotivated city, having to download so many tables is weird, without id you cannot create a large table from it etc
