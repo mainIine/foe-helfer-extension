@@ -16,7 +16,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
     //on startUp
     let first = false;
     if ($('#betterMusic1').length === 0) {
-        
+
         let newSound = document.createElement("audio");
         newSound.id = "betterMusic1";
         newSound.volume = 0;
@@ -24,7 +24,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic1")}
         $('#game_body').append(newSound);
         betterMusic.Ids.push(newSound.id);
-        
+
         let newSound2 = document.createElement("audio");
         newSound2.id = "betterMusic2";
         newSound2.volume = 0;
@@ -32,7 +32,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound2.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic2")}
         $('#game_body').append(newSound2);
         betterMusic.Ids.push(newSound2.id);
-        
+
         let newSound3 = document.createElement("audio");
         newSound3.id = "betterMusic3";
         newSound3.volume = 0;
@@ -40,32 +40,32 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound3.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic3")}
         $('#game_body').append(newSound3);
         betterMusic.Ids.push(newSound3.id);
-        
+
         betterMusic.loadSettings();
-        
+
         betterMusic.playStatus = betterMusic.Settings.PlayOnStart;
         if (!betterMusic.playStatus) betterMusic.pause();
-        
+
         betterMusic.buildlists();
         first = true;
 
-        
+
     }
-    
+
     if (!first) betterMusic.setScene("main");
 
 });
 
 FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
-       
+
     betterMusic.setScene("map");
-    
+
 });
 
 FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
-    
+
     if (!data.responseData?.gridId) return;
-    
+
     switch (data.responseData.gridId) {
         case "cultural_outpost":
             betterMusic.setScene("settlement");
@@ -74,67 +74,67 @@ FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
             betterMusic.setScene("colony");
             break;
     }
-   
+
 });
 
 FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
 
-    betterMusic.setScene("main");   
+    betterMusic.setScene("main");
 
 });
 
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
-       
+
     betterMusic.setScene("gbg");
-    
+
 });
 
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
-       
+
     betterMusic.setScene("ge");
-    
+
 });
 FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
     if (!data.responseData.map) return;
     betterMusic.setScene("battle");
-    
+
 });
 
 FoEproxy.addHandler('PVPArenaService', 'getOverview', (data, postData) => {
-       
+
     if (betterMusic.Settings.Pvp) betterMusic.setScene("foe_music_pvp_arena");
-    
+
 });
 
 FoEproxy.addHandler('GrandPrizeService', 'getGrandPrizes', (data, postData) => {
 
     Eventname = data.responseData[0].context;
-    
+
     if (!betterMusic.Settings.Events) return;
-    
+
     for (t in betterMusic.PossibleTracks) {
         if (betterMusic.PossibleTracks[t].Event != Eventname) continue;
         return betterMusic.setScene(t);
     };
-    
+
 });
 FoEproxy.addHandler('EventPassService', 'getPreview', (data, postData) => {
 
     Eventname = data.responseData?.teaserPrizes?.context;
-    
+
     if (!betterMusic.Settings.Events) return;
-    
+
     for (t in betterMusic.PossibleTracks) {
         if (betterMusic.PossibleTracks[t].Event != Eventname) continue;
         return betterMusic.setScene(t);
     };
-    
+
 });
 
 FoEproxy.addHandler('FriendsTavernService', 'getConfig', (data, postData) => {
-       
+
     if (betterMusic.Settings.Tavern) betterMusic.setScene("foe_music_tavern");
-    
+
 });
 
 $('#game_body').click(function () {
@@ -293,7 +293,7 @@ let betterMusic = {
         "foe_music_polynesia": {Volume:1, Name:"Polynesia Settlement", Settlement:"polynesia"},
     },
 
-    
+
     /**
      * Shows a box for testing sound playback
      *
@@ -301,12 +301,12 @@ let betterMusic = {
      */
     ShowDialog: () => {
 
-                
+
         let htmltext = `<div class="flex">`;
         htmltext += `<div id="musicSettingsGeneral" class="musicSettings"><h1>${i18n('Boxes.BetterMusic.GeneralSettings')}</h1>`;
         htmltext += `<label for="musicSettingsVolume">${i18n('Boxes.BetterMusic.Volume')} <input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"></label> <br>`;
         htmltext += `<input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">${i18n('Boxes.BetterMusic.Auto')}</label></div>`;
-        
+
         htmltext += `<div id="musicSettingsTitle" class="musicSettings"><h1>${i18n('Boxes.BetterMusic.TitleSettings')}</h1>`;
         htmltext += `<label for="musicSettingsTransitionTime">${i18n('Boxes.BetterMusic.Transition')} <input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"></label><br>`;
         htmltext += `<input id="musicSettingsFinish" type="checkbox" ${betterMusic.Settings.Finish ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Finish = this.checked"><label for="musicSettingsFinish">${i18n('Boxes.BetterMusic.Finish')}</label></div>`;
@@ -328,33 +328,33 @@ let betterMusic = {
         htmltext += `</div>`;
 
         htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">${i18n('Boxes.BetterMusic.Scenes')}</caption><thead class="sticky">><tr><th>${i18n('Boxes.BetterMusic.TitleName')}</th>`;
-        
+
         for (let scene in betterMusic.Scenes) {
             htmltext += `<th><span>${betterMusic.Scenes[scene].Name}</span></th>`;
         }
         htmltext += `</tr></thead>`;
-        
+
         for (let title in betterMusic.PossibleTracks) {
             htmltext += `<tr><td class="betterMusicTitle" onclick="betterMusic.switchTrack('${title}', 0)" onmouseout="betterMusic.pause(event)">${betterMusic.PossibleTracks[title].Name}</td>`;
             for (let scene in betterMusic.Scenes) {
                 htmltext += `<td class="betterMusicEntry ${betterMusic.testSettings(scene, title) ? 'betterMusicSelected' :'betterMusicNotSelected'}" data-scene="${scene}" data-title="${title}" onclick="betterMusic.setSceneTitle(event)"></td>`;
             }
             htmltext += `</tr>`;
-                
+
         }
-        
+
         htmltext += `</table>`;
-        
+
         if ($('#betterMusicDialog').length === 0) {
             HTML.AddCssFile('bettermusic');
-    
+
             HTML.Box({
                 id: 'betterMusicDialog',
                 title: i18n('Boxes.BetterMusic.Title'),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
-                resize: true,                
+                resize: true,
             });
 
             $('#betterMusicDialogclose').on('click', function() {
@@ -363,20 +363,20 @@ let betterMusic = {
 
             betterMusic.pause();
         }
-    
+
         $('#betterMusicDialogBody').html(htmltext);
     },
 
-    
+
     playRandom: (titles = Object.keys(betterMusic.PossibleTracks)) => {
-        
+
         if ((titles?.length|0) == 0 ) return;
-        
+
         let title = titles[Math.floor(titles.length * Math.random())];
-        
+
         betterMusic.switchTrack(title);
-        
-        
+
+
     },
 
 
@@ -385,21 +385,21 @@ let betterMusic = {
         let $SoundN = $(`#${betterMusic.Ids[0]}`);
         let path = srcLinks.get(betterMusic.PossibleTracks[newTrack].Path || '/sounds/shared/theme/'+ newTrack +'.ogg', true)
         if ($SoundC[0].src == path) {
-        
+
             betterMusic.Ids.unshift($SoundC[0].id);
             betterMusic.setEvent($SoundC[0].id, 0);
-        
+
         } else {
-            
+
             let elem = $(`#${betterMusic.Ids[1]}`)[0];
             if (!(!elem)) elem.pause();
-            
+
             betterMusic.Ids.push($SoundC[0].id);
             $SoundC.animate({volume: 0}, transition);
-            
+
             $SoundN[0].volume = 0;
             $SoundN[0].src = path;
-            
+
             clearTimeout(betterMusic.nextEvent);
             var playPromise = $SoundN[0].play();
 
@@ -429,7 +429,7 @@ let betterMusic = {
         clearTimeout(betterMusic.nextEvent);
         betterMusic.playStatus = false;
         $('#musicControl-Btn').addClass('musicmuted');
-        
+
         if (!(e?.relatedTarget?.classList.contains('betterMusicTitle'))) {
             let elem= $(`#${betterMusic.Ids[0]}`)[0];
             if (!elem) return;
@@ -441,8 +441,8 @@ let betterMusic = {
     TrackSelector: () => {
         if (!betterMusic.playStatus) return;
         $('#musicControl-Btn').removeClass('musicmuted');
-        
-        betterMusic.playRandom(betterMusic.Scenes[betterMusic.currentScene].TitleList);    
+
+        betterMusic.playRandom(betterMusic.Scenes[betterMusic.currentScene].TitleList);
     },
 
     setEvent: (id, transition = betterMusic.Settings.TransitionTime) => {
@@ -456,9 +456,9 @@ let betterMusic = {
     },
 
     setScene: (scene) => {
-        
+
         if (betterMusic.currentTitle == scene) return
-        
+
         if (!betterMusic.Scenes[scene]) {
             if (betterMusic.Settings.Finish) return;
             if (!betterMusic.playStatus) return;
@@ -471,7 +471,7 @@ let betterMusic = {
 
         betterMusic.currentScene = scene;
         if (betterMusic.Scenes[scene].TitleList.includes(betterMusic.currentTitle)) return;
-        
+
         if (betterMusic.Settings.Finish) return;
         betterMusic.TrackSelector();
     },
@@ -490,9 +490,9 @@ let betterMusic = {
     newVolume: (value) => {
         betterMusic.Settings.Volume = value;
         $(`#${betterMusic.Ids[0]}`)[0].volume = value;
-        
+
     },
-    
+
     loadSettings: ()=> {
 
 		tempSettings = JSON.parse(localStorage.getItem('betterMusicSettings') || '{}');
@@ -503,12 +503,12 @@ let betterMusic = {
         }
         betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings);
     },
-    
+
     saveSettings: ()=> {
         localStorage.setItem('betterMusicSettings', JSON.stringify(betterMusic.Settings));
         betterMusic.buildlists();
     },
-    
+
     update (obj/*, …*/) {
         for (var i=1; i<arguments.length; i++) {
             for (var prop in arguments[i]) {

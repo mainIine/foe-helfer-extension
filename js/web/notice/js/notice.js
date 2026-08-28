@@ -17,7 +17,7 @@
 let Notice = {
 
 	notes: null,
-	
+
 	/**
 	 * Toogle state for edit mode
 	 */
@@ -178,7 +178,7 @@ let Notice = {
 											<span class="clan-name"><em>#${player['PlayerID']}</em> ${player['ClanName'] ? '[' + player['ClanName'] + ']' : '&nbsp;'}</span>
 										</div>
 										<div class="info-text">
-											
+
 										</div>
 									</div>`);
 
@@ -418,7 +418,7 @@ let Notice = {
 
 		$('#notices-modalBody').append(inp);
 
-		
+
 		if(id !== 'new'){
 			let delBtn = $('<span />');
 

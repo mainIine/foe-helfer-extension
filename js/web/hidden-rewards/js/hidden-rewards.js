@@ -16,12 +16,12 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = HiddenRewards.prepareData(data.responseData.hiddenRewards);
 
     HiddenRewards.GEprogress = JSON.parse(localStorage.getItem('HiddenRewards.GEprogress')||'0');
-   
+
     HiddenRewards.RefreshGui(fromHandler);
-    if (HiddenRewards.FirstCycle) { //Timer setzen 
+    if (HiddenRewards.FirstCycle) { //Timer setzen
         HiddenRewards.FirstCycle = false;
         data.responseData.hiddenRewards.forEach(x=>{
-            if (x.startTime && x.startTime>GameTime.get()) 
+            if (x.startTime && x.startTime>GameTime.get())
                 setTimeout(HiddenRewards.RefreshGui, (x.startTime+5-GameTime.get())*1000)
         })
     }
@@ -55,7 +55,7 @@ let HiddenRewards = {
     FirstCycle: true,
     GEprogress:0,
     GElookup:[0,0,1,1,1,2,2,3,3,3],
-    
+
 	/**
 	 * Box in den DOM
 	 */
@@ -91,7 +91,7 @@ let HiddenRewards = {
 	 */
     prepareData: (Rewards) => {
         let data = [];
-        
+
         for (let idx in Rewards) {
             if (!Rewards.hasOwnProperty(idx)) continue;
 
@@ -143,14 +143,14 @@ let HiddenRewards = {
             return 0;
         });
 
-        return data;        
+        return data;
     },
 
     /**
      * Filtert den Cache erneut basierend auf aktueller Zeit + aktualisiert Counter/Liste falls nötig
-     * 
+     *
      */
-    RefreshGui: (fromHandler = false) => {       
+    RefreshGui: (fromHandler = false) => {
         HiddenRewards.FilteredCache = [];
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
 	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
@@ -166,17 +166,17 @@ let HiddenRewards = {
         HiddenRewards.SetCounter();
 
         if ($('#HiddenRewardBox').length >= 1) {
-            if(fromHandler && HiddenRewards.FilteredCache.length === 0 && $('#HiddenRewardBox').length) 
+            if(fromHandler && HiddenRewards.FilteredCache.length === 0 && $('#HiddenRewardBox').length)
             {
                 $('#HiddenRewardBox').fadeOut('500', function() {
                     $(this).remove();
                 });
             }
-            else 
+            else
             {
                 HiddenRewards.BuildBox();
             }
-        }  
+        }
     },
 
 
@@ -209,10 +209,10 @@ let HiddenRewards = {
                 if (!HiddenRewards.FilteredCache.hasOwnProperty(idx)) {
                     break;
                 }
-				
+
                 let hiddenReward = HiddenRewards.FilteredCache[idx];
-				
-		
+
+
                 h.push(`<tr ${!hiddenReward.isVis ? 'class="unavailable"':''}>`);
                 let img =  hiddenReward.type;
                 if (hiddenReward.type.indexOf('outpost') > -1) {
@@ -245,7 +245,7 @@ let HiddenRewards = {
         $('#hidden-reward-count').text(count).show();
         if (count === 0) $('#hidden-reward-count').hide();
 	},
-    
+
     ShowSettingsButton: () => {
         let CountRelics = JSON.parse(localStorage.getItem('CountRelics') || 0);
         let h = [];

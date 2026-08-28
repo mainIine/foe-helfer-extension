@@ -444,9 +444,9 @@ let Guild_fights = {
 		if (content === 'history') {
 			await Guild_fights.db.history.put({
 					gbground: Guild_fights.CurrentGBGRound,
-					sumNegotiations: data.sumNegotiations, 
-					sumBattles: data.sumBattles, 
-					participation: data.participation 
+					sumNegotiations: data.sumNegotiations,
+					sumBattles: data.sumBattles,
+					participation: data.participation
 				});
 		}
 
@@ -673,7 +673,7 @@ let Guild_fights = {
 	 * @param {string} id Tab id the pane belongs to
 	 * @param {string} content HTML content of the pane
 	 */
-	SetTabContent: (id, content) => {    
+	SetTabContent: (id, content) => {
 		let cls = Guild_fights.TabsContent.length > 0 ? ' class="hidden-tab"' : '';
     	Guild_fights.TabsContent.push('<div id="' + id + '"' + cls + '>' + content + '</div>');
 	},
@@ -1058,7 +1058,7 @@ let Guild_fights = {
 			});
 			HTML.AddCssFile('guild_fights');
 		}
-			
+
 		if (Settings.GetSetting('ShowGBGPlayerInfo') == false) {
 			$('#GildPlayers').css({'display': 'none'})
 		}
@@ -1199,15 +1199,15 @@ let Guild_fights = {
 			{
 				await Guild_fights.UpdateDB('player', {
 						gbground: Guild_fights.CurrentGBGRound,
-						player_id: playerNew['player_id'], 
-						name: playerNew['name'], 
-						battles: playerNew['battlesWon'], 
-						negotiations: playerNew['negotiationsWon'], 
-						attrition: playerNew['attrition'], 
-						diffbat: diffBattles, 
-						diffneg: diffNegotiations, 
+						player_id: playerNew['player_id'],
+						name: playerNew['name'],
+						battles: playerNew['battlesWon'],
+						negotiations: playerNew['negotiationsWon'],
+						attrition: playerNew['attrition'],
+						diffbat: diffBattles,
+						diffneg: diffNegotiations,
 						diffattr: diffAttr,
-						time: moment().unix() 
+						time: moment().unix()
 					});
 				updateDetailView = true;
 			}
@@ -1787,7 +1787,7 @@ let Guild_fights = {
 
 						if (Guild_fights.showGuildColumn)
 							progress.push(`<td>${gbgGuilds[x]['clan']['name']}</td>`);
-						
+
 						progress.push(`<td data-field="${id}-${mapdata[i]['ownerId']}" class="guild-progress">`);
 
 						for (let y in provinceProgress) {
@@ -1858,7 +1858,7 @@ let Guild_fights = {
 
 		if (Guild_fights.showGuildColumn)
 			nextup.push('<th>' + i18n('Boxes.GuildFights.Owner') + '</th>');
-		
+
 		nextup.push(`<th class="time-static w-small">${i18n('Boxes.GuildFights.Time')}</th>
 				<th class="time-dynamic w-small">${i18n('Boxes.GuildFights.Count')}</th>`);
 
@@ -1892,7 +1892,7 @@ let Guild_fights = {
 
 			let showCountdowns = true;
 			if (Guild_fights.showAdjacentSectors) {
-				if (!prov[x].hasOwnProperty('neighbor')) 
+				if (!prov[x].hasOwnProperty('neighbor'))
 					showCountdowns = false;
 				else
 					showCountdowns = (prov[x].neighbor.includes(own.participantId) || (prov[x].owner == own.clan.name && Guild_fights.showOwnSectors));
@@ -1906,12 +1906,12 @@ let Guild_fights = {
 						Guild_fights.UpdateCounter(countDownDate, intervalID, prov[x].id);
 					}, 1000);
 
-				
+
 				// look for connecting province timers
 				let connectionSecured = false;
 				for (const link of ProvinceMap.ProvinceData()[prov[x].id].connections) {
 					if (prov[x].owner == own.clan.name) continue;
-					
+
 					let ownNeighboringProvinces = mapdata.filter(x => x.id === link && x.ownerId === own.participantId);
 					for (const nProv of ownNeighboringProvinces) {
 						if (nProv.isSpawnSpot) {
@@ -1925,7 +1925,7 @@ let Guild_fights = {
 						break;
 					}
 				}
-				
+
 				nextup.push(`<tr id="timer-${prov[x].id}" class="timer ${connectionSecured ? 'secure' : ''}" data-tab="nextup" data-id=${prov[x].id} data-locked-until=${prov[x].lockedUntil}>
 					<td class="prov-name" data-original-title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x].owner}">
 					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span>
@@ -1978,7 +1978,7 @@ let Guild_fights = {
 		return nextup;
 	},
 
-	
+
 	/**
 	 * Builds the building slots tab: all own locked sectors with countdown,
 	 * slot usage and victory points. Sectors with empty slots that have not
@@ -2026,8 +2026,8 @@ let Guild_fights = {
 
 			content.push(`<tr id="time-${province.id}" class="time ${slotWarning}" data-tab="gbgowned" data-id=${province.id} data-locked-until=${province.lockedUntil}>
 				<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${province.owner}">
-					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> 
-					<b>${province.title}</b> 
+					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span>
+					<b>${province.title}</b>
 				</td>`);
 
 			Guild_fights.UpdateCounter(countDownDate, intervalID, province.id);
@@ -2046,7 +2046,7 @@ let Guild_fights = {
 
 			content.push('</tr>');
 		}
-		
+
 		content.push('</tbody>');
 		content.push('</table></div>');
 
@@ -2193,7 +2193,7 @@ let Guild_fights = {
 			if (Guild_fights.serverOffset && localStorage.getItem('Guildfights.TimeZoneWarningShown') === null) { // show warning only once
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.GuildFights.TimeZoneWarning.Title'),
-					text: i18n('Boxes.GuildFights.TimeZoneWarning.Desc'),		
+					text: i18n('Boxes.GuildFights.TimeZoneWarning.Desc'),
 					type: 'error',
 					hideAfter: 60000
 				});
@@ -2933,5 +2933,5 @@ let Guild_fights = {
 				Guild_fights.ShowGuildBox(true)
 			);
 		});
-	},	
+	},
 };

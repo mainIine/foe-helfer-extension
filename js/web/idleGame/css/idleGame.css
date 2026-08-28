@@ -85,11 +85,11 @@
     padding-left: 2px;
 }
 
-#idleGame_Next.hide td, 
-#idleGame_Tasks.hide td, 
-#idleGame_Tasks td.hide, 
-#idleGame_TasksActive.hide td, 
-#idleGame_TasksActive td.hide, 
+#idleGame_Next.hide td,
+#idleGame_Tasks.hide td,
+#idleGame_Tasks td.hide,
+#idleGame_TasksActive.hide td,
+#idleGame_TasksActive td.hide,
 #idleGame_Strategy.hide td {
     display: none;
 }

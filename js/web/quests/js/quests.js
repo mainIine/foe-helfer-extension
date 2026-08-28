@@ -30,7 +30,7 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#bonus-hud').length > 0) return;
 	if (!Settings.GetSetting('RivalSound')) return;
 	if (Quests.RivalInActive) return;
-	if (!MainParser.Quests) return; 
+	if (!MainParser.Quests) return;
 	for (let Quest of MainParser.Quests) {
 		if (Quest?.questGiver?.id.indexOf("rival") >=0 && Quest.state == 'collectReward') {
 			helper.sounds.play("message");

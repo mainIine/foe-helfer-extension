@@ -80,18 +80,18 @@
 #mergerGameDialog .toprightcorner{
     object-fit: none;
     object-position: top right;
-}   
+}
 #mergerGameDialog .bottomrightcorner{
     object-fit: none;
     object-position: bottom right;
-}   
+}
 
 #mergerGameDialog .toprightcorner.full,
 #mergerGameDialog .bottomrightcorner.full {
     width: 35px;
     height: 40px;
     zoom: 60%;
-}   
+}
 
 
 #mergerGameSolutionBody {
@@ -151,7 +151,7 @@
     overflow: hidden;
     color: var(--danger-red);
     animation: blink 1s infinite;
-    text-shadow: 0px 0px 2px black, 0px 0px 4px var(--red);    
+    text-shadow: 0px 0px 2px black, 0px 0px 4px var(--red);
 }
 .CurrencyOverflowWarning {
     top: 20px;

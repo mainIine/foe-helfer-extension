@@ -13,11 +13,11 @@
  */
 
 FoEproxy.addRequestHandler('GreatBuildingsService', 'contributeForgePoints', (postData) => {
-    
+
     let t = (Settings.GetSetting('doubleFPtimeout') || 0) * 1000;
-    
+
     if (t == 0) return;
-    if (postData.requestData[1]==ExtPlayerID) return; //only show box in other player GB 
+    if (postData.requestData[1]==ExtPlayerID) return; //only show box in other player GB
     doubleFPprevention.ShowBox();
     let x = setTimeout(doubleFPprevention.Close, t);
 });
@@ -34,7 +34,7 @@ let doubleFPprevention = {
      */
     ShowBox: () => {
         HTML.AddCssFile('doublefpprevention');
-        
+
         HTML.Box({
             'id': 'doubleFPprevention',
             'title': i18n('Boxes.doubleFPprevention.Title'),

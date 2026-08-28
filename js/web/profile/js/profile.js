@@ -1,6 +1,6 @@
 FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
     Profile.init(data.responseData);
-    
+
     if ($('#playerProfile-Btn').hasClass('hud-btn-red')) {
         $('#playerProfile-Btn').removeClass('hud-btn-red');
         $('#playerProfile-Btn-closed').remove();
@@ -119,7 +119,7 @@ const Profile = {
             $('#PlayerProfile').addClass(theme);
             $('#PlayerProfileBody [data-original-title]').tooltip();
             if (isRebuilt) {
-                if (moreActive) { 
+                if (moreActive) {
                     $('#PlayerProfileBody .showMore').show();
                     $('#PlayerProfileBody .hideOnMore').hide();
                 }
@@ -158,7 +158,7 @@ const Profile = {
 
             /*
             $('#PlayerProfile').on('click', '.copyContent', function () {
-                let copyText = 
+                let copyText =
                     $('.dailyProd h2',this).text()+'\n'+
                     $('.dailyProd span',this).text()+'\n'+
                     $('.battleBoosts h2',this).text()+'\n'+
@@ -177,12 +177,12 @@ const Profile = {
         cl.push('<div class="header flex">');
         cl.push('<img src="'+srcLinks.get(`/city/buildings/H_SS_${CurrentEra}_Townhall.png`,true)+'" />');
         cl.push('</div>');
-        
+
         cl.push('<div class="expansions secondary">');
         cl.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_street.png`,true)+'" />');
         let roadAmount = 0;
-        for (let building of Object.values(MainParser.CityMapData)) { 
-            if (building.type !== "street") continue; 
+        for (let building of Object.values(MainParser.CityMapData)) {
+            if (building.type !== "street") continue;
             roadAmount++;
         }
         cl.push(HTML.Format(roadAmount)+'</span>');
@@ -201,7 +201,7 @@ const Profile = {
 
         let allGBs = [];
         for (let building of Object.values(MainParser.CityMapData)) { // get all GBs
-            if (building.type !== "greatbuilding") continue; 
+            if (building.type !== "greatbuilding") continue;
             allGBs.push(building);
         }
         allGBs.sort((a,b) => { // sort GBs by level
@@ -226,7 +226,7 @@ const Profile = {
 
         if (Profile.fpProduction > 0) {
             cl.push('<span class="removable">' +
-                '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_forgepoints.png`,true)+'" />' + 
+                '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_forgepoints.png`,true)+'" />' +
                 HTML.Format(parseInt(Profile.fpProduction)));
                 if (Boosts.Sums.forge_points_production > 0)
                     cl.push('<span class="boost"> '+Boosts.Sums.forge_points_production + '% </span>');
@@ -234,7 +234,7 @@ const Profile = {
         }
         if (Profile.guildGoods) {
             cl.push('<span class="removable">'+
-                '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_guild_goods.png`,true)+'" />' + 
+                '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_guild_goods.png`,true)+'" />' +
                 HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0));
                 if (Boosts.Sums.guild_goods_production > 0)
                     cl.push('<span class="boost"> '+ Boosts.Sums.guild_goods_production + '% </span>');
@@ -244,7 +244,7 @@ const Profile = {
         if (Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID]) {
             cl.push('<span class="removable">');
                 if (Profile.goods[CurrentEraID-2]) {
-                    cl.push(' <img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' + 
+                    cl.push(' <img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' +
                     HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0));
                 }
                 if (Profile.goods[CurrentEraID-1]) {
@@ -252,7 +252,7 @@ const Profile = {
                     cl.push(HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0));
                 }
                 if (Profile.goods[CurrentEraID]) {
-                    cl.push(' <img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + 
+                    cl.push(' <img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' +
                     HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0));
                 }
                 if (Boosts.Sums.goods_production > 0)
@@ -264,7 +264,7 @@ const Profile = {
 			cl.push('<span class="removable" data-original-title="'+i18n('Boxes.PlayerProfile.UnitsPerDay')+'"><img src="' + srcLinks.get(`/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png`,true)+'" />'+HTML.Format(parseInt(Profile.units))+'</span>');
         }
         cl.push('</div>');
-        
+
         // qi extra production
         let hasQIBoosts = (Boosts.noSettlement.guild_raids_action_points_collection+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_start+Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_supplies_start+Boosts.Sums.guild_raids_goods_start+Boosts.Sums.guild_raids_units_start !== 0)
         if (hasQIBoosts) {
@@ -356,7 +356,7 @@ const Profile = {
             if (Profile.guildGoods) {
                 cc.push('<span class="removable">'+
                     '<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.GuildMemberStat.GuildGoods')+':&nbsp;</span>'+
-                    '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_guild_goods.png`,true)+'" />' + 
+                    '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_guild_goods.png`,true)+'" />' +
                     HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0));
                     if (Boosts.Sums.guild_goods_production > 0)
                         cc.push('<span class="hidden-text">&nbsp;</span><span class="boost"> '+ Boosts.Sums.guild_goods_production + '% </span>');
@@ -367,7 +367,7 @@ const Profile = {
                 cc.push('<span class="removable">');
                     cc.push('<span class="hidden-text"><br>&numsp;&middot;&nbsp;'+i18n('Boxes.BlueGalaxy.Goods')+':</span>');
                     if (Profile.goods[CurrentEraID-2]) {
-                        cc.push('<span class="hidden-text">⬅️</span> <img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' + 
+                        cc.push('<span class="hidden-text">⬅️</span> <img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' +
                         HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0));
                     }
                     if (Profile.goods[CurrentEraID-1]) {
@@ -375,7 +375,7 @@ const Profile = {
                         cc.push(HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0));
                     }
                     if (Profile.goods[CurrentEraID]) {
-                        cc.push('<span class="hidden-text">➡️</span> <img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + 
+                        cc.push('<span class="hidden-text">➡️</span> <img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' +
                         HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0));
                     }
                     if (Boosts.Sums.goods_production > 0)
@@ -419,7 +419,7 @@ const Profile = {
                 +'</td><td class="qi"></td><td>'
                     +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_defender']))+'</span><span class="hidden-text">/</span><span class="dDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_defender']))+'</span> </td></tr>');
             cc.push('</tr></table>');
-            
+
             if (Boosts.Sums.critical_hit_chance > 0)
                 cc.push('<span class="hidden-text">&numsp;&middot;&nbsp;💥</span><span class="crit" data-original-title="'+i18n('Boxes.GBBonuses.Type.critical_hit_chance')+'"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_critical_hit_chance.png`,true)+'" /> '+Math.round(Boosts.Sums.critical_hit_chance*100)/100+'%</span>');
             cc.push('</div>');
@@ -446,7 +446,7 @@ const Profile = {
             for (let achievement of Profile.achievementList) {
                 let ach = achievement.split('#')
                 let achFromList = Profile.achievements.find(x => x.id === ach[0]).achievements.find(x => x.id === ach[1]);
-                if (isNaN(parseInt(achFromList?.currentLevel?.progress))) continue; 
+                if (isNaN(parseInt(achFromList?.currentLevel?.progress))) continue;
 
                 cc.push('<span class="removable" data-original-title="'+achFromList.descriptionTemplate.replace('%s/%s',HTML.Format(parseInt(achFromList.currentLevel.progress))).replace('%s-/%s-',HTML.Format(parseInt(achFromList.currentLevel.progress)))+'"><img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${ach[1]}.png`,true)+'" />'+
                 HTML.FormatNumberShort(parseInt(achFromList.currentLevel.progress),true,'en-EN') + '</span>');
@@ -472,8 +472,8 @@ const Profile = {
 		cr.push('<div class="stock pad text-center">');
 		cr.push('<span class="removable"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_forgepoints.png`,true)+'" />'+HTML.Format(StrategyPoints.InventoryFP || 0)+'</span>');
 		cr.push('<span class="removable" data-original-title="'+HTML.Format(ResourceStock.medals)+'"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_medals.png`,true)+'" />'+HTML.FormatNumberShort(ResourceStock.medals || 0,true,'en-EN')+'</span>');
-		
-		
+
+
 		let currentGoods = 0, previousGoods = 0, nextGoods = 0;
 		for (let good of Object.values(GoodsData)) {
 			if (good.era === CurrentEra)
@@ -495,7 +495,7 @@ const Profile = {
 		cr.push('<span class="secondary removable" data-original-title="'+HTML.Format(ResourceStock.tavern_silver)+'"><img src="'+srcLinks.get(`/shared/icons/eventwindow_tavern.png`,true)+'" />'+HTML.FormatNumberShort(ResourceStock.tavern_silver || 0,true,'en-EN')+'</span>');
 		cr.push('<span class="secondary removable" data-original-title="'+HTML.Format(ResourceStock.gemstones)+'"><img src="'+srcLinks.get(`/shared/icons/gemstones.png`,true)+'" />'+HTML.Format(ResourceStock.gemstones || 0)+'</span>');
 		cr.push('<span class="secondary removable" data-original-title="'+HTML.Format(ResourceStock.trade_coins)+'"><img src="'+srcLinks.get(`/shared/gui/antiquedealer/antiquedealer_currency_trade_coins.png`,true)+'" />'+HTML.FormatNumberShort(ResourceStock.trade_coins || 0,true,'en-EN')+'</span>');
-		
+
 		cr.push('</div>');
 
 		cr.push('<div class="inventory pad text-center">');
@@ -610,7 +610,7 @@ const Profile = {
             fpSum += (boosts.forge_points_production*boosts.strategy_points/100);
         }
         content.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(fpSum)) + '</span> '+fpBoost);
-        
+
         if (boosts.units > 0) {
 			content.push('<span data-original-title="'+i18n('Boxes.PlayerProfile.UnitsPerDay')+'"><img src="' + srcLinks.get(`/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png`,true)+'" />'+HTML.Format(parseInt(boosts.units))+'</span><br>');
         }
@@ -665,7 +665,7 @@ const Profile = {
         if (boosts['att_boost_attacker-guild_raids'] > 0 || boosts['def_boost_attacker-guild_raids'] > 0 || boosts['att_boost_defender-guild_raids'] > 0 || boosts['def_boost_defender-guild_raids'] > 0)
             content.push('<tr><td><span class="aAtt">'+HTML.Format(parseInt(boosts['att_boost_attacker-guild_raids']))+'</span><span class="aDef">'+HTML.Format(parseInt(boosts['def_boost_attacker-guild_raids']))+'</span> </td><td><span class="qi"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(boosts['att_boost_defender-guild_raids']))+'</span><span class="dDef">'+HTML.Format(parseInt(boosts['def_boost_defender-guild_raids']))+'</span> </td></tr>');
         content.push('</tr></table>');
-        
+
         if (boosts.critical_hit_chance > 0)
             content.push('<span class="crit" data-original-title="'+i18n('Boxes.GBBonuses.Type.critical_hit_chance')+'"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_critical_hit_chance.png`,true)+'" /> '+Math.round(boosts.critical_hit_chance*100)/100+'%</span>');
         content.push('</div>');

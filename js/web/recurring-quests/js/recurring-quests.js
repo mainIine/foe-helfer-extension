@@ -12,7 +12,7 @@
  */
 
 FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
-    
+
     if (!data.responseData) return;
     for (let q in data.responseData) {
         if (!data.responseData.hasOwnProperty(q)) continue;
@@ -41,7 +41,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 
 let Recurring = {
     data: JSON.parse(localStorage.getItem('Recurring')) || {"Questlist": {}, "count":0, "showCounter": false,"hideTasks":true},
-    
+
 	/**
 	 * Box in den DOM
 	 */
@@ -68,17 +68,17 @@ let Recurring = {
     },
 
 
-	RefreshGui: (fromHandler = false) => {       
+	RefreshGui: (fromHandler = false) => {
         Recurring.SetCounter();
         if ($('#RecurringQuestsBox').length < 1) return;
-        
+
         if (Object.keys(Recurring.data.Questlist).length === 0) {
             $('#RecurringQuestsBox').fadeOut('500', function() {
                 $(this).remove();
             });
         }
-        else 
-            Recurring.BuildBox();  
+        else
+            Recurring.BuildBox();
     },
     filter: () => {
         Recurring.data.filter = [];
@@ -210,7 +210,7 @@ let Recurring = {
         return t;
     },
     hideTasks: () => {
-        $('#recurringTable').toggleClass('hideTasks'); 
+        $('#recurringTable').toggleClass('hideTasks');
         Recurring.data["hideTasks"]=!Recurring.data.hideTasks;
         Recurring.SaveSettings();
     }

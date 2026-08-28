@@ -152,17 +152,17 @@
 #Productions td.ally::after {
 	content: ' 🙋';
 }
-#ProductionsRatingBody .settings label[for="inventorybuildingscore"], 
-#ProductionsRatingBody .settings label[for="showLimited"], 
-#ProductionsRatingBody .ratingtable tr.hidden, 
-#ProductionsRatingBody.tilevalues .buildingvalue, 
-#ProductionsRatingBody:not(.tilevalues) .tilevalue, 
-#ProductionsRatingBody .items, 
+#ProductionsRatingBody .settings label[for="inventorybuildingscore"],
+#ProductionsRatingBody .settings label[for="showLimited"],
+#ProductionsRatingBody .ratingtable tr.hidden,
+#ProductionsRatingBody.tilevalues .buildingvalue,
+#ProductionsRatingBody:not(.tilevalues) .tilevalue,
+#ProductionsRatingBody .items,
 #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
 	display: none;
 }
 #ProductionsRatingBody.inventorybuildings .settings label[for="inventorybuildingscore"],
-#ProductionsRatingBody.inventorybuildings .settings label[for="showLimited"] 
+#ProductionsRatingBody.inventorybuildings .settings label[for="showLimited"]
  {
 	display: inline-flex;
 }
@@ -354,10 +354,10 @@
 	filter: none;
 }
 
-#ProductionsRatingBody tfoot tr, 
-#ProductionsRatingBody.showhighlighted tbody tr.highlighted-explained, 
-#ProductionsRatingBody.showhighlighted tbody tr.highlighted, 
-#ProductionsRatingBody.showhighlighted tbody tr.highlighted2, 
+#ProductionsRatingBody tfoot tr,
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted-explained,
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted,
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted2,
 #ProductionsRatingBody.showhighlighted tbody tr.additional{
 	display: table-row;
 }
@@ -421,7 +421,7 @@
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
 }
-#ProductionsRatingBody span.resicon.forge_points_production, #ProductionsRatingBody .tabs ul li.forge_points_production, 
+#ProductionsRatingBody span.resicon.forge_points_production, #ProductionsRatingBody .tabs ul li.forge_points_production,
 #ProductionsRatingBody span.resicon.goods_production, #ProductionsRatingBody .tabs ul li.goods_production {
 	background-image: url('../images/productions.png'), url('../images/productions.png');
 	background-repeat: no-repeat;
