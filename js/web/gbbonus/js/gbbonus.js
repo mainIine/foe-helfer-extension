@@ -163,7 +163,9 @@ let GBBonuses = {
 				GBBonuses.Expanded[metaId] = !GBBonuses.IsExpanded(metaId);
 				GBBonuses.RenderList();
 			}),
-			$('<div />').attr('id', 'gbBonusesBottombar')
+			$('<div />').attr('id', 'gbBonusesBottombar').on('click', '.gbb-export-btn', (e) => {
+				GBBonuses.Export(String($(e.currentTarget).data('format')));
+			})
 		);
 
 		GBBonuses.FillTypeSelect();
@@ -244,19 +246,13 @@ let GBBonuses = {
 
 
 	/**
-	 * Applies search and filters, sorts the cards (own buildings by level first,
-	 * the rest by era and name) and renders the list and the counter.
+	 * Applies search and filters and sorts the cards: own buildings by level
+	 * first, the rest by era and name.
+	 * @returns {GBBonusCard[]}
 	 */
-	RenderList: () => {
-		const all = GBBonuses.CollectGBs();
+	FilteredCards: () => {
+		let cards = GBBonuses.CollectGBs();
 
-		if (all.length === 0) {
-			$('#gbBonusesInner').html(`<div class="no-data"><em>${i18n('Boxes.GBBonuses.NoData')}</em></div>`);
-			$('#gbBonusesBottombar').empty();
-			return;
-		}
-
-		let cards = all;
 		if (GBBonuses.SearchText !== '') {
 			const search = GBBonuses.SearchText.toLowerCase();
 			cards = cards.filter(card => card.name.toLowerCase().includes(search));
@@ -275,12 +271,85 @@ let GBBonuses = {
 			return a.name.localeCompare(b.name);
 		});
 
+		return cards;
+	},
+
+
+	/**
+	 * Renders the filtered card list and the counter.
+	 */
+	RenderList: () => {
+		if (GBBonuses.CollectGBs().length === 0) {
+			$('#gbBonusesInner').html(`<div class="no-data"><em>${i18n('Boxes.GBBonuses.NoData')}</em></div>`);
+			$('#gbBonusesBottombar').empty();
+			return;
+		}
+
+		const cards = GBBonuses.FilteredCards();
+
 		$('#gbBonusesInner').html(cards.map(card => GBBonuses.BuildCard(card)).join(''));
 
-		$('#gbBonusesBottombar').html(HTML.i18nReplacer(i18n('Boxes.GBBonuses.Count'), {
-			count: cards.length,
-			built: cards.filter(card => card.level !== null).length
-		}));
+		$('#gbBonusesBottombar').html(
+			'<span>' + HTML.i18nReplacer(i18n('Boxes.GBBonuses.Count'), {
+				count: cards.length,
+				built: cards.filter(card => card.level !== null).length
+			}) + '</span>' +
+			'<span class="gbb-export">' +
+				'<button class="btn btn-slim gbb-export-btn" data-format="csv">' + i18n('Boxes.General.ExportCSV') + '</button>' +
+				'<button class="btn btn-slim gbb-export-btn" data-format="json">' + i18n('Boxes.General.ExportJSON') + '</button>' +
+			'</span>'
+		);
+	},
+
+
+	/**
+	 * Exports the currently filtered cards as CSV or JSON download: one row per
+	 * building, tier and bonus type with a column for every level breakpoint
+	 * occurring in the data plus the live value of built buildings.
+	 * @param {string} format 'csv' or 'json'
+	 */
+	Export: (format) => {
+		const cards = GBBonuses.FilteredCards();
+
+		// union of the breakpoints over all exported cards (e.g. 1/101/200/201/301/400)
+		const breakpoints = [...new Set(cards.flatMap(card =>
+			card.tiers.flatMap(tier => tier.bonuses.flatMap(bonus => Object.keys(bonus.valuesMap).map(Number)))
+		))].sort((a, b) => a - b);
+
+		const rows = [];
+		for (const card of cards) {
+			for (const tier of card.tiers) {
+				for (const bonus of tier.bonuses) {
+					const row = {
+						building: card.name,
+						era: card.eraName,
+						level: card.level,
+						tier: tier.tier?.value || 'copper',
+						bonus: GBBonuses.TypeName(bonus.type),
+						unit: (GBBonuses.PercentTypes.has(bonus.type) ? '%' : ''),
+					};
+					for (const level of breakpoints) {
+						row['level_' + level] = bonus.valuesMap[level]?.value ?? '';
+					}
+					row.current = (card.level !== null ? (card.currentBonuses.find(entry => entry.type === bonus.type)?.value ?? '') : '');
+					rows.push(row);
+				}
+			}
+		}
+
+		let content;
+		if (format === 'json') {
+			content = JSON.stringify(rows);
+		} else {
+			const columns = Object.keys(rows[0] || {});
+			content = [columns.join(';')]
+				.concat(rows.map(row => columns.map(column => row[column] ?? '').join(';')))
+				.join('\r\n');
+		}
+
+		// with UTF-8 BOM, like HTML.ExportTable
+		const blob = new Blob(['\ufeff' + content], { type: 'application/octet-binary;charset=ANSI' });
+		MainParser.ExportFile(blob, 'GBBonuses-' + moment().format('YYYY-MM-DD') + '.' + format);
 	},
 
 

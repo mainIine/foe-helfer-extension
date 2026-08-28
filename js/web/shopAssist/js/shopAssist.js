@@ -224,19 +224,10 @@ let shopAssist = {
 				</tr>
 			</thead>`;
 
-		// render available slots first, sold out ones last
-		const soldOutSlots = [];
+		// keep the ingame order, sold out slots are only faded via css
 		for (const slot of shopAssist.slots) {
 			const alertKey = `${shopAssist.storeId}#${slot.slotId}`;
 			if (shopAssist.alerts[alertKey]) shopAssist.alerts[alertKey] = structuredClone(slot); // update alert data
-
-			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) {
-				soldOutSlots.push(slot);
-				continue;
-			}
-			h += shopAssist.renderSlotRow(slot);
-		}
-		for (const slot of soldOutSlots) {
 			h += shopAssist.renderSlotRow(slot);
 		}
 		h += `</table>`;
@@ -456,10 +447,18 @@ let shopAssist = {
 			${lockInfo}
 		</td>`;
 
-		// inventory
-		h += `<td>
-			<div>${stock.stock ? HTML.Format(stock.stock) : ''}</div>
-			<div>${isFragment ? `${srcLinks.icons('icon_tooltip_fragment')}${HTML.Format(stock.fragments || 0)}/${HTML.Format(slot.reward.requiredAmount)}` : ''}</div>
+		// inventory: owned items, fragment count (+ assemblable items) and progress bar (full once an item can be assembled)
+		let fragmentInfo = '';
+		if (isFragment) {
+			const fragments = stock.fragments || 0;
+			const required = slot.reward.requiredAmount;
+			const assemblable = Math.floor(fragments / required);
+			fragmentInfo = `<div>${srcLinks.icons('icon_tooltip_fragment')}${HTML.Format(fragments)}/${HTML.Format(required)}${assemblable > 0 ? ` <span class="assemblable">(${HTML.Format(assemblable)})</span>` : ''}</div>
+				<div class="fragment-bar"><span style="width:${Math.min(100, Math.round(fragments * 100 / required))}%"></span></div>`;
+		}
+		h += `<td class="inventory">
+			<div class="stock">${stock.stock ? HTML.Format(stock.stock) : ''}</div>
+			${fragmentInfo}
 		</td>`;
 
 		// costs: single purchase
@@ -499,7 +498,10 @@ let shopAssist = {
 		const maxSuffix = slot.flag?.value !== 'increasingCosts' && maxHasTT
 			? `/${limitedBuys}`
 			: (slot.flag?.value === 'increasingCosts' && limitedBuys > 0 ? '/?' : 'x');
-		h += `<td class="costs ${maxBuys > 0 && (maxBuys === limitedBuys || limitedBuys === Infinity) ? 'canBuy' : ''}${maxHasTT ? ' fh-tooltip' : ''}"${maxHasTT ? ` data-callback_tt="shopAssist.allTT" data-slotid="${slot.slotId}"` : ''}>
+		// sold out slots get an empty max cell, "(0x)" carries no information
+		h += limitReached
+			? `<td class="costs"></td>`
+			: `<td class="costs ${maxBuys > 0 && (maxBuys === limitedBuys || limitedBuys === Infinity) ? 'canBuy' : ''}${maxHasTT ? ' fh-tooltip' : ''}"${maxHasTT ? ` data-callback_tt="shopAssist.allTT" data-slotid="${slot.slotId}"` : ''}>
 				<div>
 					${maxFragments}
 					<span>(<span class="${maxBuys > 0 ? 'buyable' : ''}">${maxBuys}</span>${maxSuffix})</span>

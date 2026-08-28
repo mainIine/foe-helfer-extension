@@ -12,11 +12,11 @@
  */
 
 FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
-	
+
 	if(!Settings.GetSetting('ShowEventChest')){
 		return;
 	}
-	
+
 	if (data.requestMethod=="getHealthOffers") {
 		cardGame.healthShop={}
 		let offers = [...data.responseData.healthOffers].sort((a,b) => a.amount-b.amount)
@@ -107,7 +107,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		}
 	}
 	if (["useCard"].includes(data.requestMethod)) {
-		if (data.responseData?.nodeUpdates?.length==2 || 
+		if (data.responseData?.nodeUpdates?.length==2 ||
 			(data.responseData?.nodeUpdates?.length==1 && data.responseData.playerState.state.value == "card_buying")) cardGame.level += 1;
 	}
 	if (["useCard","finishCardBuying"].includes(data.requestMethod)) {
@@ -135,11 +135,11 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		cardGame.health = data.responseData.updatedPlayerHealth;
 		cardGame.currencySpent.heal += cardGame.healthShop[cardGame.health];
 	}
-	
+
 	if (["redrawCard","buyCard","getHealthOffers"].includes(data.requestMethod)) {
 		cardGame.showWarning(undefined);
 	}
-	
+
 	if (["getHealthOffers","buyCard"].includes(data.requestMethod)) {
 		cardGame.showCardsList();
 		return
@@ -239,9 +239,9 @@ let cardGame = {
 			blocker.className = cardGame.context+" helper-blocker";
 			$('#game_body')[0].append(blocker);
 			$('#cardGameFightBlocker').on("click",()=>{$('#cardGameFightBlocker').remove()});
-		} 
+		}
 	},
-	
+
 	checkHealth:()=> {
 		if (!cardGame.card?.cardType?.value) return;
 		let minHealth = cardGame.health
@@ -269,8 +269,8 @@ let cardGame = {
 					if (a.__class__=="CardGameOpponentSelfAttackAbility") {
 						enemyHealth = cardGame.enemy.currentHealth + cardGame.enemy.card.abilities[0].maxValue * a.factor;
 					}
-				} 
-			}	
+				}
+			}
 			else {
 				enemyHealth = cardGame.enemy.currentHealth + (cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.card.cardFactionId] ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
 			}
@@ -282,7 +282,7 @@ let cardGame = {
 
 
     showCardsList: () => {
-        
+
 		// Don't create a new box while another one is still open
 		if ($('#cardGameDialog').length === 0) {
 			HTML.Box({
@@ -324,14 +324,14 @@ let cardGame = {
 						dmg[c]["min"] -= Math.round(cardGame.enemy.maxHealth * a.percentage/100);
 						dmg[c]["max"] -= Math.round(cardGame.enemy.maxHealth * a.percentage/100);
 					}
-	
+
 				}
 			} else if (card?.cardType?.value == "attack"){
 				dmg[c]["min"] -= card.abilities[0].maxValue + (cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId] ? cardGame.cards[c].abilities[1].amount : 0);
 				dmg[c]["max"] -= card.abilities[0].minValue + (cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId] ? cardGame.cards[c].abilities[1].amount : 0);
 			}
 		}
-		
+
 		cards.sort((a,b) => dmg[a].max-dmg[b].max);
 		cards.sort((a,b) => dmg[a].min-dmg[b].min);
 		let data= cardGame.data[cardGame.context];
@@ -347,7 +347,7 @@ let cardGame = {
 				if (!cardGame.rewardcount[r]) continue;
 				h += `<img style="height:40px" src="${srcLinks.get(`/shared/icons/reward_icons/reward_icon_${r}.png`,true)}">` + cardGame.rewardcount[r] + `&nbsp;&nbsp;`
 			}
-		}  
+		}
 		let currency=`<img style="height:25px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>`
 		h +=`</tr><tr><td style="text-align:right"><img style="height:40px" src=${srcLinks.get(imgs.spentAbility,true)}></td style="text-align:left"><td>${cardGame.currencySpent.ability+currency}</td>`;
 		h +=`<td style="text-align:right"><img style="height:40px" src=${srcLinks.get(imgs.spentHealth,true)}></td><td style="text-align:left">${cardGame.currencySpent.heal+currency}</td>`;

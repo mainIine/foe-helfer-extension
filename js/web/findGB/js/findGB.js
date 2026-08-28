@@ -62,7 +62,7 @@ let findGB = {
                 //ask: i18n('Boxes.findGB.HelpLink'),
             });
         }
-        
+
         html = ``;
         html += `<table class="dark-bg w-full"><tr>`;
         html += `<td><select id="GBselect">`;
@@ -77,12 +77,12 @@ let findGB = {
         html += `<td colspan="2"><input type="button" id="findGBreset" class="btn" value="${i18n("General.Reset")}"></input></td>`;
         html += `</tr></table>`;
         html += `<table id="foundGB" class="foe-table"><thead class="sticky"><tr><th>${i18n("General.Player")}</th><th>${i18n("General.GB")}</th><th>${i18n("General.Level")}</th><th class="text-center">${i18n("Boxes.OwnpartCalculator.Tier")}</th></tr></thead>`
-        
+
         for (i of findGB.found) {
             html += findGB.row(i)
         }
         html += `</table>`
-        
+
         $('#findGBDialogBody').html(html);
         $('#findGBreset').click(() => {
             findGB.found=[];
@@ -108,7 +108,7 @@ let findGB = {
                     findGB.found.push(testGB);
                     $('#foundGB').append(findGB.row(testGB));
                 }
-            }   
+            }
         }
     },
 

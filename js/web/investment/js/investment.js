@@ -14,7 +14,7 @@
 // LG Investitionen
 FoEproxy.addHandler('GreatBuildingsService', (data) => {
 
-	if(typeof data['requestMethod'] === 'undefined') 
+	if(typeof data['requestMethod'] === 'undefined')
 	{
 		return;
 	}
@@ -149,7 +149,7 @@ let Investment = {
 		b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
 		b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong>${removeUnsafeCalc ? '<span class="safe">  (' + i18n('Boxes.Investment.Safe') + ')</span>':''}</div>`);
 		b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong></div>`);
-		
+
 		if (showMedals === 1) {
 			b.push('<div id="total-medals" class="text-center"><span class="invest-tooltip icon medal" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.MedalsProfit')) + '"></span><strong class="total-medals-reward">0</strong></div>');
 		}
@@ -192,17 +192,17 @@ let Investment = {
 		h.push('<th class="is-number text-center" data-type="invest-group">&nbsp;</th>' +
 			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.InvestedDesc')) + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
 			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.ProfitDesc')) + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>');
-		
+
 		if(showMedals)
 		{
 			h.push('<th class="is-number text-center" data-type="invest-group"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.Medals')) + '"></span></th>');
 		}
-		
+
 		if(showBlueprints)
 		{
 			h.push('<th class="is-number text-center" data-type="invest-group"><span class="blueprints" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.Blueprints')) + '"></span></th>');
 		}
-		
+
 		h.push('<th class="no-sort"></th></tr></thead><tbody class="invest-group">');
 
 		let CurrentGB = await IndexDB.db.investhistory.reverse().toArray();
@@ -270,7 +270,7 @@ let Investment = {
 				`<td class="case-sensitive" data-text="${helper.str.cleanup(contribution['playerName'])}"><img style="max-width: 22px" src="${srcLinks.GetPortrait(contribution['Avatar'])}" alt="${contribution['playerName']}"> ${MainParser.GetPlayerLink(contribution['playerId'], contribution['playerName'])}</td>`);
 			h.push('<td class="case-sensitive" data-text="' + helper.str.cleanup(contribution['gbname']) + '">' + contribution['gbname'] + ' (' + contribution['level'] + ')</td>');
 			h.push(`<td class="is-number text-center invest-tooltip" data-number="${isHidden}" title="${i18n('Boxes.Investment.Overview.HideGB')}"><span class="hideicon ishidden-${isHidden?'on':'off'}"></span></td>`);
-			
+
 			if (showEntryDate) {
 				h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHHmm')}">${moment(contribution['date']).format(i18n('Date'))}</td>`);
 			}
@@ -298,12 +298,12 @@ let Investment = {
 			h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank invest-tooltip" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="${i18n('Boxes.Investment.Rank')} ${contribution['rank']}" /></td>`);
 			h.push(`<td class="is-number text-center gbinvestment" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
 			h.push(`<td class="is-number text-center gbprofit" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td>`);
-			
+
 			if(showMedals)
 			{
 				h.push(`<td class="is-number text-center gbmedals" data-number="${Medals}"><b class="${RealProfitClass === 'error' ? 'success' : RealProfitClass}">${HTML.Format(Medals)}</b></td>`);
 			}
-			
+
 			if(showBlueprints)
 			{
 				h.push(`<td class="is-number text-center gbblueprints" data-number="${Blueprints}"><b class="${RealProfitClass === 'error' ? 'success' : RealProfitClass}">${HTML.Format(Blueprints)}</b></td>`);
@@ -580,13 +580,13 @@ let Investment = {
 				if(CurrentGB !== undefined && (CurrentGB['ishidden'] === undefined || CurrentGB['medals'] === undefined || forceFullUpdate))
 				{
 					GbhasUpdate=true;
-					
+
 					if(!arrfphistory.length)
 					{
 						arrfphistory = JSON.parse(CurrentGB['fphistory']);
 					}
-					
-					if(CurrentGB['ishidden'] !== undefined) 
+
+					if(CurrentGB['ishidden'] !== undefined)
 					{
 						isHidden = CurrentGB['ishidden'];
 					}
@@ -764,7 +764,7 @@ let Investment = {
 
 		let medalsstart = (startvalues.medalssto !== Medals) ? startvalues.medalssto : 0;
 
-		if($("#total-medals").length !== 0) 
+		if($("#total-medals").length !== 0)
 		{
 			$('.total-medals-reward').easy_number_animate({
 				start_value: medalsstart,

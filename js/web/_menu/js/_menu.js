@@ -27,9 +27,11 @@ let _menu = {
 	TopOffset: 0,
 
 	MenuOptions: ['BottomBar', 'RightBar', 'Box'],
-	
+
 	Items: [
 		//'calculator',
+		'citySearch',
+		'checklist',
 		'gbBonuses',
 		'ascended',
 		'webRequest',
@@ -77,7 +79,7 @@ let _menu = {
 	 * Create the div holders and put them to the DOM
 	 */
 	CallSelectedMenu: (selMenu = 'RightBar') => {
-	
+
 		window.onresize = (function(event){
 			if (event.target == window) _menu.OverflowCheck()
 		})
@@ -102,12 +104,12 @@ let _menu = {
 		if (Settings.GetSetting('AutoOpenCloseBox')) {
 			CloseBox.BuildBox();
 		}
-		
+
 		_menu.OverflowCheck(_menu.selectedMenu, true);
 	},
 
 	OverflowCheck: (selMenu='Box', flag) => {
-		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {			
+		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {
 			$('#menu_box').remove();
 			$('.tooltip').remove();
 			_menu.CallSelectedMenu(MainParser.SelectedMenu);
@@ -135,7 +137,7 @@ let _menu = {
 		}
 	},
 
-	
+
 	toolTipp: (btn, title, desc) => {
 		$(btn).attr('title', desc);
 		let pos = (_menu.selectedMenu === 'RightBar' ? 'left' : 'top');
@@ -260,7 +262,7 @@ let _menu = {
 
 			_menu.HiddenItems.push(name);
 		}
-		
+
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
 
 		// refresh the Menü after setting-toggle
@@ -297,14 +299,14 @@ let _menu = {
 			`${slug}-btn`
 		);
 
-		if (red) 
+		if (red)
 			btn.addClass('hud-btn-red');
 
 		return btn;
 	},
 
 	/*----------------------------------------------------------------------------------------------------------------*/
-	
+
 	ItemsData: [
 		{ id: 'partCalc', title: i18n('Menu.OwnpartCalculator.Title'), description: i18n('Menu.OwnpartCalculator.Desc'), warning: '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>'},
 		{ id: 'unit', title: i18n('Menu.Unit.Title'), description: i18n('Menu.Unit.Desc'), warning: '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>'},
@@ -338,6 +340,8 @@ let _menu = {
 		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
 		{ id: 'inventory', title: i18n('Menu.Inventory.Title'), description: i18n('Menu.Inventory.Desc') },
 		{ id: 'ascended', title: i18n('Menu.Ascended.Title'), description: i18n('Menu.Ascended.Desc') },
+		{ id: 'checklist', title: i18n('Menu.Checklist.Title'), description: i18n('Menu.Checklist.Desc') },
+		{ id: 'citySearch', title: i18n('Menu.CitySearch.Title'), description: i18n('Menu.CitySearch.Desc') },
 		{ id: 'gbBonuses', title: i18n('Menu.GBBonuses.Title'), description: i18n('Menu.GBBonuses.Desc') },
 		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
 		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
@@ -383,7 +387,7 @@ let _menu = {
 	 */
 	outpost_Btn: () => {
 		let red = false;
-		if (Outposts.OutpostData === null || localStorage.getItem('OutpostBuildings') === null) 
+		if (Outposts.OutpostData === null || localStorage.getItem('OutpostBuildings') === null)
 			red = true;
 
 		let btn = _menu.MakeButton('outpost', red);
@@ -404,7 +408,7 @@ let _menu = {
 	 */
 	shopAssist_Btn: () => {
 		let red = true;
-		if (shopAssist.storeId !== null) 
+		if (shopAssist.storeId !== null)
 			red = false;
 
 		let btn = _menu.MakeButton('shopAssist', red);
@@ -505,7 +509,7 @@ let _menu = {
 	},
 
 	/**
-	 * InfoBox 
+	 * InfoBox
 	 */
 	infobox_Btn: () => {
 		let btn = _menu.MakeButton('infobox');
@@ -641,6 +645,32 @@ let _menu = {
 	 * Inventory overview
 	 */
 	/**
+	 * Building search: mark buildings of the own city by name
+	 */
+	citySearch_Btn: () => {
+		let btn = _menu.MakeButton('citySearch');
+
+		let btn_sp = $('<span />').on('click', function () {
+			CitySearch.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	/**
+	 * Message checklist: tick off the lines of a picked ingame message
+	 */
+	checklist_Btn: () => {
+		let btn = _menu.MakeButton('checklist');
+
+		let btn_sp = $('<span />').on('click', function () {
+			Checklist.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	/**
 	 * Time limited ("ascended") buildings overview
 	 */
 	ascended_Btn: () => {
@@ -726,7 +756,7 @@ let _menu = {
 
 		return btn.append(btn_sp, $('<span id="hidden-blue-galaxy-count" class="hud-counter">0</span>'));
 	},
-	
+
 	/**
 	 * Moppelassistent
 	 * */
@@ -867,7 +897,7 @@ let _menu = {
 				betterMusic.CloseBox();
 			} else {
 				betterMusic.ShowDialog();
-			}		
+			}
 
 		});
 

@@ -106,13 +106,13 @@
             if(!$(this).parent().hasClass("subsort")){
                 $("tr.detailview").remove();
             }
-            
+
             if (!$(this).hasClass('no-sort')) {
                 let type = 'string';
                 let tbody = $(this).data('type');
                 let tableHeaders = $(this).parent().children();
                 let column = tableHeaders.index($(this));
-                
+
                 switch (true) {
                     case $(this).hasClass('is-number'):
                         type = 'numeric';
@@ -125,8 +125,8 @@
                         break;
                 }
 
-                let direction = type == "numeric" ? 
-                    ($(this).hasClass('descending') ? 1 : -1) : 
+                let direction = type == "numeric" ?
+                    ($(this).hasClass('descending') ? 1 : -1) :
                     ($(this).hasClass('ascending') ? -1 : 1);
                 tableHeaders.each(function () {
                     $(this).hasClass('ascending') ? $(this).removeClass('ascending') : null;

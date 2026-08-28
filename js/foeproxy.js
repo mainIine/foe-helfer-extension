@@ -139,7 +139,7 @@ if (typeof globalThis.FoEproxy == 'undefined') {
             if (!proxyEnabled) return;
             if (!data) return;
             try {
-                
+
                 let posts = [];
 
                 if (typeof data === 'object' && (data instanceof ArrayBuffer || data instanceof Uint8Array)) {

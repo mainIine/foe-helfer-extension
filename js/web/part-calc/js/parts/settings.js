@@ -48,7 +48,7 @@ Object.assign(Parts, {
 		c.push(`<span class="percent-chip ghost" title="${i18n('Boxes.Calculator.Settings.AddArk')}" onclick="Parts.SettingsAddArk()"${buttons.includes('ark') ? ' style="display:none"' : ''}>+ ${MainParser.ArkBonus}%</span>`);
 
 		c.push(`<span class="percent-add">
-			<input type="number" class="percent-add-input" step="0.1" min="0" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Parts.SettingsAddValue();event.preventDefault();}">
+			<input type="number" class="percent-add-input" step="0.1" min="-100" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Parts.SettingsAddValue();event.preventDefault();}">
 			<span class="btn btn-green btn-slim" title="${i18n('Boxes.Calculator.Settings.newValue')}" onclick="Parts.SettingsAddValue()">+</span>
 		</span>`);
 		c.push('</div>');
@@ -117,7 +117,7 @@ Object.assign(Parts, {
 			$input = $box.find('.percent-add-input'),
 			v = parseFloat($input.val());
 
-		if(isFinite(v) && v >= 0 && v <= 200){
+		if(isFinite(v) && v >= -100 && v <= 200){
 			v = Math.round(v * 10) / 10;
 
 			let exists = $box.find('.percent-chip .settings-values').toArray().some(el => parseFloat(el.value) === v);

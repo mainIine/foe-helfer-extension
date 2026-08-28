@@ -82,12 +82,12 @@ let Discord = {
 
 				h.push(`${d.message}
 				</span>
-					
+
 				<span style="white-space:nowrap;" class="text-right">
 					<span class="btn-group">`);
 					if (d.type != 'template')
 						h.push(`<button class="btn btn-green btn-slim" role="button" type="button" onclick="Discord.SendEntry(${i})">${i18n('General.Send')}</button>`);
-				
+
 					h.push(`<button class="btn btn-slim" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 17px;" alt="" /></button>`);
 					if (d.type != 'template')
 						h.push(`<button class="btn btn-slim btn-edit" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button>`);
@@ -95,7 +95,7 @@ let Discord = {
 						h.push(`<button class="btn btn-slim btn-edit" role="button" type="button" onclick="Discord.TemplateForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button>`);
 
 					h.push(`<button class="btn btn-slim btn-delete icon" role="button" type="button" onclick="Discord.Delete(${i})"></button>
-					
+
 					</span>
 				</span>
 			</li>`);
@@ -117,7 +117,7 @@ let Discord = {
 			Discord.CloseOverlay('DiscordWebhookUrls');
 		});
 
-		Discord.BuildWebhookFormContent();	
+		Discord.BuildWebhookFormContent();
 	},
 
 	BuildWebhookFormContent(state = '') {
@@ -128,9 +128,9 @@ let Discord = {
 			h.push('<div class="foehelper-accordion-head">');
 				h.push(`<strong>${i18n('Boxes.Discord.WebhookUrlManage')}</strong>`);
 			h.push(`</div>`);
-		
+
 		h.push('<div class="foehelper-accordion-body">');
-		
+
 		h.push(`<form onsubmit="return false;" autocomplete="off">`);
 		h.push(`<table class="foe-table no-hover vertical-middle" style="margin-bottom: 1.5rem;">`);
 		h.push(`<thead>`);
@@ -196,7 +196,7 @@ let Discord = {
 		h.push(`<form action="" onsubmit="return false;" autocomplete="off">
 			<b>${i18n('Boxes.Discord.WebhookUrl')}</b>`);
 		h.push(`<ul id="url-list" class="clickable">`);
-		
+
 		if (Discord.WebHooksUrls.length === 0) {
 			h.push(`<li><em>${i18n('Boxes.Discord.WebhookUrlNeeded')}</em></li>`);
 		}
@@ -257,7 +257,7 @@ let Discord = {
 			data = Discord.WebHooks[parseInt(i)];
 		}
 
-		let h = [];		
+		let h = [];
 
 		h.push(`<div id="discord-template-form" style="display:none;" class="dark-bg discordForm">
 			<h1 class="p5">${i18n('Boxes.Discord.TitleNewTemplate')}</h1>
@@ -567,7 +567,7 @@ let Discord = {
 		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
 		let battleColor = (Guild_fights.showTileColors != 0 ? (sector.isAttackBattleType ? '🔴' : '🔵') : '');
 		let msg = battleColor +" **" + sector.title + "** <t:" + timeAt + ":t>, <t:" + timeAt + ":R>";
-		
+
 		return msg;
 	},
 
@@ -575,13 +575,13 @@ let Discord = {
 		const vars = Guild_fights.GetSectorVars(sector);
 
 		let msg = (tpl != '') ? Discord.WebHooks.find(x => x.name == tpl).message
-        			: '#battletype **#name** @ <t:#name:R> - #attrition%*\n-# :medal:`#vp)`';
+			: '#battletype **#name** @ <t:#name:R> - #attrition%*\n-# :medal:`#vp)`';
 
 		msg = Object.entries(vars).reduce(
 			(str, [placeholder, value]) => str.replaceAll(placeholder, value ?? ''),
 			msg
 		);
-		
+
 		return msg;
 	},
 

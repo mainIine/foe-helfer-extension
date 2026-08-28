@@ -18,7 +18,7 @@ FoEproxy.addWsHandler('ItemAuctionService', 'updateBid', data => {
     }
     Auction.current = data.responseData.amount;
     Auction.updateClipboard();
-    
+
 });
 
 FoEproxy.addHandler('ItemAuctionService', 'getAuction', (data, postdata) => {
@@ -53,7 +53,7 @@ let Auction = {
     index: 0,
     current: 0,
     timeout:null,
-    
+
     updateClipboard: () => {
         newBid = Math.floor(Math.max(Auction.fak[Auction.index] * Auction.current, Auction.current + Auction.diff[Auction.index]));
         helper.str.copyToClipboard(newBid);
@@ -73,7 +73,7 @@ let Auction = {
 			});
 
 			HTML.AddCssFile('auctions');
-		} 
+		}
         let t=[];
         t.push(`<button id="AuctionHelpBtn" class="btn">${i18n('Boxes.AuctionSettings.Help')}</button>`);
         t.push(`<div id="AuctionHelp" style="display:none"><ul><li>${i18n('Boxes.AuctionSettings.Help1')}</li><li>${i18n('Boxes.AuctionSettings.Help2')}</li><li>${i18n('Boxes.AuctionSettings.Help3')}</li><li>${i18n('Boxes.AuctionSettings.Help4')}</li><li>${i18n('Boxes.AuctionSettings.Help5')}</li></div> `);
@@ -84,8 +84,8 @@ let Auction = {
         }
         t.push(`<tr><td colspan="3"><button id="AuctionAddRow" class="btn">+</button><button id="AuctionDelRow" class="btn">-</button></td></tr>`)
         t.push(`</table>`)
-        
-        
+
+
         $('#auctionSettingsBoxBody').html(t.join(''));
         $('.AuctionInput').on("input", (e) => {
             let elem = e.target;
@@ -102,17 +102,17 @@ let Auction = {
             Auction.fak.push(1);
             localStorage.setItem('AuctionDifference', JSON.stringify(Auction.diff))
             localStorage.setItem('AuctionFactors', JSON.stringify(Auction.fak))
-            Auction.BuildBody();            
+            Auction.BuildBody();
         });
         $('#AuctionDelRow').on("click", () => {
             let x= Auction.diff.pop();
             x = Auction.fak.pop();
             localStorage.setItem('AuctionDifference', JSON.stringify(Auction.diff))
             localStorage.setItem('AuctionFactors', JSON.stringify(Auction.fak))
-            Auction.BuildBody();            
+            Auction.BuildBody();
         });
         $('#AuctionHelpBtn').on("click", () => {
-            $('#AuctionHelp').fadeToggle();            
+            $('#AuctionHelp').fadeToggle();
         });
     },
 };

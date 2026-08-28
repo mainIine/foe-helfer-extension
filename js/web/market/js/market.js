@@ -98,7 +98,7 @@ let Market = {
 
 
             $('#Market').on('blur', '#minquantity', function () {
-                Market.MinQuantity = parseFloat($('#minquantity').val());              
+                Market.MinQuantity = parseFloat($('#minquantity').val());
                 Market.CalcBody();
             });
 
@@ -443,7 +443,7 @@ let Market = {
                 return false;
             }
         }
-        
+
         let OfferGoodID = Trade['offer']['good_id'],
             NeedGoodID = Trade['need']['good_id'],
             OfferEra = Technologies.Eras[GoodsData[OfferGoodID]['era']],

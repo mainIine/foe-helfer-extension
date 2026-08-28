@@ -41,7 +41,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		idleGame.data[x].need = 0;
 		idleGame.data[x].ndegree = 0;
 	}
-	
+
 	for (let x in data.responseData.characters) {
 		if (!Object.hasOwnProperty.call(data.responseData.characters, x)) continue;
         let character = data.responseData.characters[x];
@@ -51,7 +51,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
     }
 
 	idleGame.Tasklist = data.responseData.taskHandler.taskOrder;
-	
+
 	for (let t in data.responseData.taskHandler.completedTasks) {
 		if (!Object.hasOwnProperty.call(data.responseData.taskHandler.completedTasks, t)) continue;
         td = data.responseData.taskHandler.completedTasks[t];
@@ -60,7 +60,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 			idleGame.Tasklist.splice(index, 1);
 		}
     }
-	
+
 	idleGame.Progress = Number(data.responseData.idleCurrencyAmount.value)||0;
 	idleGame.ProgressDegree = Number(data.responseData.idleCurrencyAmount.degree)||0;
 
@@ -68,7 +68,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		for (let t of data.responseData.taskHandler.inProgressTasks) {
 			idleGame.Taskprogress[t.id] = {value:t.currentProgress.value || 0, degree:t.currentProgress.degree || 0};
 		}
-	
+
 	}
 
 	if (data.responseData.stage) {
@@ -91,7 +91,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 });
 
 FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
-	
+
     if(postData['requestClass'] !== 'IdleGameService')
     	return;
 
@@ -101,7 +101,7 @@ FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
 	{
 		if (!Object.hasOwnProperty.call(game, x)) continue;
         let data2 = game[x];
-				
+
 		if(!data2['characterId'] && !data2['taskId']) {
 			continue;
 		}
@@ -178,7 +178,7 @@ let idleGame = {
 			Production: i18n('Boxes.idleGame.Production.StPat')
 		}
 	},
-	
+
 	event: "fellowship_event",
 
     Tasks : {},
@@ -236,7 +236,7 @@ let idleGame = {
 			}
 			idleGame.Tasks[task['id']] = task;
 		}
-		
+
 		idleGame.finishTown = data.stageCostValue
 		idleGame.finishTownDegree = data.stageCostDegree
 		idleGame.finishTownDiscount = 1 - data.nextStageCostReductionPercentage/100
@@ -250,7 +250,7 @@ let idleGame = {
      */
     ShowDialog: () => {
         HTML.AddCssFile('idleGame');
-        
+
         HTML.Box({
             id: 'idleGameDialog',
             title: i18n('Boxes.idleGame.Title'),
@@ -269,7 +269,7 @@ let idleGame = {
         htmltext += `<div>${idleGame.texts[idleGame.event].Production}<br><span id="idleGame_Work"></span></div></div></td>`;
         htmltext += `</tr><tr class="town_info"><td><div class="idleGame_Town"></div></td>`
 		htmltext += `<td data-original-title="${i18n('Boxes.idleGame.Warning')}">${i18n('General.Disclaimer')}</td></tr></table>`;
-        
+
 		htmltext += `<table id="idleGame_Next" class="foe-table" style="width:100%"><tr><th colspan="4" onclick="idleGame.hide('#idleGame_Next')">${i18n('Boxes.idleGame.BuildingUpgrades')}<i></i></tr>`;
 		htmltext += `<tr>`;
         htmltext += `<td><img data-original-title="${idleGame.data.workshop_1.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_1, true)}" alt="" ></td>`;
@@ -328,8 +328,8 @@ let idleGame = {
         htmltext += `<tr><td colspan="2" id="idleGame_StratNext"></td><td></td></tr>`;
         htmltext += `</table>`;
 		htmltext += `<div id="idleGame_Town" style="color:var(--text-bright); font-weight:bold"></div>`;
-        
-        
+
+
         $('#idleGameDialogBody').html(htmltext);
 
 		for (let t of idleGame.settings.hiddenTables) {
@@ -373,7 +373,7 @@ let idleGame = {
 	updateTarget: (event) => {
 		if (event.key != 'Enter' && event.key != 'Escape') return;
 
-		
+
 		if (event.key === 'Enter') {
 			idleGame.settings.targets[event.srcElement.dataset.station] = Math.max(Math.floor(Math.min(Number(event.srcElement.value),999)||0,0));
 			idleGame.saveSettings();
@@ -383,16 +383,16 @@ let idleGame = {
 		event.srcElement.setAttribute("onfocusout", "");
 		event.srcElement.remove();
 		idleGame.idleGameUpdateDialog();
-			
+
 	},
 
 	removeInput: (event) => {
-		
+
 		idleGame.settings.targets[event.srcElement.dataset.station] = Math.max(Math.floor(Math.min(Number(event.srcElement.value),999)||0,0));
 		idleGame.saveSettings();
-		
+
 		$('#'+event.srcElement.dataset.replace)[0].style.display = "block";
-		
+
 		event.srcElement.remove();
 
 		idleGame.idleGameUpdateDialog();
@@ -458,7 +458,7 @@ let idleGame = {
 			$('#idleGame_'+x).text(`${idleGame.bigNum(idleGame.data[x].need)}${idleGame.iGNums[idleGame.data[x].ndegree]}`);
 			$('#idleGame_'+x+'Time').html(`${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0,fest,festd)}`);
 			$('#idleGame_'+x).attr('data-original-title', `${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNumTitles[idleGame.data[x].ndegree]}`);
-		
+
 		}
 
 		$('#idleGame_Work').text(`${idleGame.bigNum(work)} ${idleGame.iGNums[workd]}`);
@@ -497,7 +497,7 @@ let idleGame = {
 				targetProduction = work;
 				targetDegree = workd;
 			}
-			
+
 			$('#time'+ t).html(`${idleGame.time(Task.requiredProgress.value,
 												Task.requiredProgress.degree,
 												targetProduction,
@@ -506,31 +506,31 @@ let idleGame = {
 												idleGame.Taskprogress[idleGame.Tasklist[t]]?.degree || 0,
 												0,0)}`);
 			$('#time'+ t).removeClass('hide');
-			
-			
-			
+
+
+
 		}
 		for (let t = 3;t<9;t++) {
 			if (t < i) {
 				let Task = idleGame.Tasks[idleGame.Tasklist[t]];
 				$('#idleGame_Task'+ t).text(`${Task.description}`);
 				$('#idleGame_Task'+ t).removeClass('hide');
-				
+
 			} else {
 				$('#idleGame_Task'+ t).text(``);
 				$('#idleGame_Task'+ t).addClass('hide');
 			}
 		}
-		
+
 		idleGame.checkStrat();
-		
+
 		idleGame.DisplayStrat(idleGame.checkStrat());
-		
+
 		const text_currentrun = `${i18n('Boxes.idleGame.CurrentRun')}: ${idleGame.Stage} / ${i18n('Boxes.idleGame.Variant')}: ${idleGame.Variant}`;
 		let text_currentrun_short = `${idleGame.Stage}/${idleGame.Variant}`;
 		let Tt = idleGame.finishTown
 		let Td = idleGame.finishTownDegree
-		
+
 		if (idleGame.Stage === 1) {
 			Tt = 1
 			Td = 2
@@ -541,8 +541,8 @@ let idleGame = {
 		let discounted = Math.round(idleGame.finishTownDiscount * Tt * 100) / 100
 		text_nexttown += `${discounted} ${idleGame.iGNums[Td]}: `
 		text_nexttown += `${idleGame.time(discounted,Td,sum,degree,idleGame.Progress,idleGame.ProgressDegree,fest,festd)}`;
-		
-		
+
+
 		$('#idleGame_Town').html(`${text_currentrun}<br/>${text_nexttown}`);
 
 		text_nexttown = `${Tt}${idleGame.iGNums[Td]}: `
@@ -553,7 +553,7 @@ let idleGame = {
 			text_nexttown += `, ${discounted}${idleGame.iGNums[Td]}: `
 			text_nexttown += `${discounted_time}`;
 		}
-		
+
 		$('.idleGame_Town').html(`<span data-original-title="${text_currentrun}">${text_currentrun_short}</span> &middot; ${text_nexttown}`);
 
 		$('#idleGameDialogBody [data-original-title]').tooltip();
@@ -569,7 +569,7 @@ let idleGame = {
 			if (building.need >= 1000 && building.ndegree<6) {
 				building.need /= 1000;
 				building.ndegree += 1;
-			}			
+			}
 			return building;
 		}
 
@@ -614,7 +614,7 @@ let idleGame = {
 		if (idleGame.settings.targets[building.baseData.id] > building.level) {
 			x = idleGame.settings.targets[building.baseData.id];
 		};
-		
+
 		building.next = x;
 
 		let base = building.baseData.baseUpgradeCostValue;
@@ -675,9 +675,9 @@ let idleGame = {
 		return building;
 	},
 
-	
+
 	time: (amount, da, hourly, dh, stock, ds, fest, df) => {
-		
+
 		let t = (amount, da, hourly, dh, stock, ds) => {
 			stock = stock * Math.pow(1000, ds - da);
 			let diff = amount - stock;
@@ -690,11 +690,11 @@ let idleGame = {
 		let tf = (time)=> {
 			return time.h >= 1000 ? `>999h` : `${time.h}h` + (time.h < 24 ? `:${time.m}m` : ``)
 		}
-		
+
 		let t0 = t(amount, da, hourly, dh, stock, ds)
 		let tNB = t(amount, da, fest, df, stock, ds)
-		
-		let time = `<span ${(t0.t > tNB.t) ? 'data-original-title="' + tf(tNB)+'<br>' + i18n("Boxes.idleGame.noBottleneck")+'"':''}>${tf(t0)}</span>`		
+
+		let time = `<span ${(t0.t > tNB.t) ? 'data-original-title="' + tf(tNB)+'<br>' + i18n("Boxes.idleGame.noBottleneck")+'"':''}>${tf(t0)}</span>`
 		time += (t0.h < 24) ? ` <img class="clickable" data-original-title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${t0.h},${t0.m})">` : ``
 		return time;
 	},
@@ -732,7 +732,7 @@ let idleGame = {
 		idleGame.DisplayStrat(strat);
 		idleGame.saveSettings();
 	},
-	
+
 	StratCheck:() =>{
 		let strat = 0;
 		for (strat = 0; strat < idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length;strat++) {
@@ -742,7 +742,7 @@ let idleGame = {
 		idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check = true;
 		strat++;
 		idleGame.DisplayStrat(strat);
-		idleGame.saveSettings();		
+		idleGame.saveSettings();
 	},
 
 	checkStrat:()=>{
@@ -806,12 +806,12 @@ let idleGame = {
 		if (strat<idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length) {
 			$('#idleGame_StratCheck').html('☐');
 			$('#idleGame_Strat').html(idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].text);
-		
+
 		} else {
 			$('#idleGame_StratCheck').html('');
 			$('#idleGame_Strat').html('');
 		}
-		
+
 		if (strat+1<idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length) {
 			$('#idleGame_StratNext').html(idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat+1].text);
 		} else {
@@ -837,9 +837,9 @@ let idleGame = {
 
 	saveStrategy:()=>{
 		let lines = $('#idleGameStratText').val().split('\n');
-		
+
 		idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = lines.map(x=>{
-			let conditions= x.split('#'); 
+			let conditions= x.split('#');
 			return {"text": conditions[0],"check": false,"conditions":conditions.slice(1)}});
 		idleGame.saveSettings();
 		idleGame.DisplayStrat(0);
@@ -854,7 +854,7 @@ let idleGame = {
 	},
 
 	addAlert:(hours,minutes)=>{
-					
+
 			const data = {
 				title: "Idle Game",
 				body: i18n("Boxes.idleGame.AlertText"),
@@ -866,7 +866,7 @@ let idleGame = {
 				vibrate: false,
 				actions: [{title:"OK"}]
 			};
-	
+
 			MainParser.sendExtMessage({
 				type: 'alerts',
 				playerId: ExtPlayerID,

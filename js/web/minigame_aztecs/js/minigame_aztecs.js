@@ -199,13 +199,13 @@ let AztecsHelper = {
                 var row = document.createElement('tr');
                 rowData.forEach((cellData, y) => {
                     var cell = document.createElement('td');
-                    if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell) 
+                    if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell)
                         cell.appendChild(document.createTextNode(cellData.content));
                     if(cellData.prob == 0){
-                        cell.className = cellData.content == AztecsHelper.unknownCell 
-                            ? "aztec colorU" 
+                        cell.className = cellData.content == AztecsHelper.unknownCell
+                            ? "aztec colorU"
                             : "aztec color0";
-                    }  
+                    }
                     else if(cellData.prob > 0 && cellData.prob < 0.33) {
                         cell.className = "aztec color1";
                     }
@@ -237,7 +237,7 @@ let AztecsHelper = {
             span.className = "aztecDescription";
             divDes.className = "aztecDescriptionWrapper";
             divDes.appendChild(span);
-            
+
             span = document.createElement('span');
             span.textContent = ' '+AztecsHelper.nonresourceCell+' 0%';
             span.className = 'aztec color0';
@@ -273,7 +273,7 @@ let AztecsHelper = {
             span.className = 'aztec color6';
             span.style='font-weight:bold'
             divDes.appendChild(span);
-            
+
             $('#aztecsHelperBody').append(table);
             $('#aztecsHelperBody').append(divDes);
         }else{
@@ -296,7 +296,7 @@ let AztecsHelper = {
 		if ($("#aztecsAutoOpen").is(':checked'))
 			value = true;
 		localStorage.setItem('ShowAztecHelper', value);
-		
+
 		$(`#aztecsHelperSettingsBox`).remove();
 	},
 
@@ -304,14 +304,14 @@ let AztecsHelper = {
      * Checks adjacent cells for possible Resources
      * @param {number} x //Width
      * @param {number} y //Height
-     * @param {number} adj 
+     * @param {number} adj
      */
     CalcAdjacentCells: () => {
         var map = AztecsHelper.grid;
         const rC = AztecsHelper.resourceCell,
             uC = AztecsHelper.unknownCell,
             nrC = AztecsHelper.nonresourceCell;
-        
+
         var numberCells = {};
         var unknownCells = {};
         var leftRes = AztecsHelper.ResourcesLeft+0;
@@ -323,7 +323,7 @@ let AztecsHelper = {
                 map[y][x].prob = 0;
             }
         }
-        
+
         for (let y = 0; y < AztecsHelper.mapHeight; y++) {
             for (let x = 0; x < AztecsHelper.mapWidth; x++) {
                 var cell = map[y][x];
@@ -334,12 +334,12 @@ let AztecsHelper = {
                     cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); //alle Nachbarzellen mit Zahl
                 }
                 if (typeof cell.content === "number"){
-                    
-                    cell.surrUnCells = AztecsHelper.GetSurroundingCell(x,y,uC); //alle unbekannten Nachbarzellen 
+
+                    cell.surrUnCells = AztecsHelper.GetSurroundingCell(x,y,uC); //alle unbekannten Nachbarzellen
                     cell.surrResCells = AztecsHelper.GetSurroundingCell(x,y,rC);//alle Nachbarzellen mit Ressource
                     cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); // alle Nachbarzellen mit Zahl
                     numberCells[`y${y}x${x}`] = {"x":x,"y":y};
-                    
+
                 }
             }
         }
@@ -349,23 +349,23 @@ let AztecsHelper = {
             for (let c in tmp) {
                 if (tmp2.hasOwnProperty(c)) delete tmp2[c];
                 //if (leftRes == 0) break;
-                
+
                 let cell = map[tmp[c].y][tmp[c].x];
                 cell.surrUnCells = AztecsHelper.GetSurroundingCell(tmp[c].x,tmp[c].y,uC);
                 cell.surrResCells = AztecsHelper.GetSurroundingCell(tmp[c].x,tmp[c].y,rC);
-                
+
                 //Wenn drumherum unbekannte Felder vorhanden sind
                 if (cell.surrUnCells.length > 0){
                     let unrevRes = cell.content - cell.surrResCells.length; //Anzahl übriger Güter
-                    if (unrevRes == 0 || unrevRes == cell.surrUnCells.length){ //Anzahl übriger Güter ist 0 oder entspricht der Anzahl unbekannter Felder 
+                    if (unrevRes == 0 || unrevRes == cell.surrUnCells.length){ //Anzahl übriger Güter ist 0 oder entspricht der Anzahl unbekannter Felder
                         let prob = (unrevRes == 0) ? 0 : 1;
                         let content = (unrevRes == 0) ? nrC : rC;
-                        for (let cx of cell.surrUnCells) { //surrUnCells sind alle bekannt - entweder Ressource oder keine Ressource 
+                        for (let cx of cell.surrUnCells) { //surrUnCells sind alle bekannt - entweder Ressource oder keine Ressource
                             let uC = map[cx.y][cx.x];
                             uC.content = content;
                             uC.prob = prob;
                             for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
-                                tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
+                                tmp2[`y${snC.y}x${snC.x}`] = snC;
                             }
                             if (prob == 1) leftRes -= 1;
                             let uIndex = `y${cx.y}x${cx.x}`; //Zelle aus der Liste unbekannter Zellen entfernen
@@ -378,17 +378,17 @@ let AztecsHelper = {
                             let otherCell = map[numberCells[other].y][numberCells[other].x];
                                 otherCell.surrUnCells = AztecsHelper.GetSurroundingCell(numberCells[other].x,numberCells[other].y,uC);
                                 otherCell.surrResCells = AztecsHelper.GetSurroundingCell(numberCells[other].x,numberCells[other].y,rC);
-                
+
                             let Overlap = [], Diff=[];
                             [Overlap, Diff] = AztecsHelper.Compare(cell.surrUnCells, otherCell.surrUnCells); //Überlapp und Unterschied der auf unbekannten Nachbarn zwischen der Zelle und der anderen Zelle bestimmen
-                            
+
                             if (Overlap.length!=0) { //wenn es einen Überlapp gibt
                                 let testP= Math.max(0,
                                                     otherCell.content + Overlap.length - otherCell.surrUnCells.length - otherCell.surrResCells.length);
                                 //for (let oC of Overlap) { //Summe der Wahrscheinlichkeiten der Überlappzellen in Bezug auf die andere Zelle bestimmen
                                 //    if (map[oC.y][oC.x].hasOwnProperty("probList")) {
                                 //        testP += map[oC.y][oC.x].probList[other] || 0;
-                                //    } 
+                                //    }
                                 //}
                                 let min = unrevRes - (otherCell.content - otherCell.surrResCells.length);  //min Anzahl der Diff-Zellen die eine Ressource haben
                                 if (min < 0) min = 0;
@@ -397,12 +397,12 @@ let AztecsHelper = {
                                 if (Diff.length == min || max == 0){ // Anzahl Diffzellen entspricht dem minimum oder das max ist 0
                                     let prob = (max == 0) ? 0 : 1;
                                     let content = (max == 0) ? nrC : rC;
-                                    for (let cx of Diff) {  //Diff Zellen sind alle bekannt - entweder Ressource oder keine Ressource 
+                                    for (let cx of Diff) {  //Diff Zellen sind alle bekannt - entweder Ressource oder keine Ressource
                                         let uC = map[cx.y][cx.x];
                                         uC.content = content;
                                         uC.prob = prob;
                                         for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
-                                            tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
+                                            tmp2[`y${snC.y}x${snC.x}`] = snC;
                                         }
                                         if (prob == 1) leftRes -= 1;
                                         let uIndex=`y${cx.y}x${cx.x}`;
@@ -415,17 +415,17 @@ let AztecsHelper = {
                         }
                         if (cell.surrUnCells.length > 0) {//} && leftRes > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
                             for (let dC of cell.surrUnCells) {//unbekannte Nachbarzellen durchgehen
-                                let newP = unrevRes / cell.surrUnCells.length; //wahrscheinlichkeit, dass Nachbarzelle eine Ressource hat ist Anzahl Ressourcen/Anzahl unbekannter Nachbarn 
+                                let newP = unrevRes / cell.surrUnCells.length; //wahrscheinlichkeit, dass Nachbarzelle eine Ressource hat ist Anzahl Ressourcen/Anzahl unbekannter Nachbarn
                                 if (!map[dC.y][dC.x].hasOwnProperty("probList")) map[dC.y][dC.x].probList = []; //probList anlegen, falls noch nicht vorhanden
                                 let oldP = map[dC.y][dC.x].probList[c] || 0; //bisherige Wahrscheinlichkeit auslesen
                                 if (oldP != newP) {//wenn sich Wahrscheinlichkeit geändert hat
                                     map[dC.y][dC.x].probList[c] = newP; //neue Wahrscheinlichkeit zuweisen
                                     for (snC of map[dC.y][dC.x].surrNumCells) { // und benachbarte Zahlenzellen erneuter Prüfung unterziehen
-                                        tmp2[`y${snC.y}x${snC.x}`] = snC;                                   
+                                        tmp2[`y${snC.y}x${snC.x}`] = snC;
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
                 }
             }
@@ -435,8 +435,8 @@ let AztecsHelper = {
                 console.log("Endlosschleife???");
             }
 
-        }  
-        
+        }
+
         for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
             if (!unknownCells.hasOwnProperty(c)) continue;
             let cell = unknownCells[c];
@@ -451,11 +451,11 @@ let AztecsHelper = {
             map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
             delete map[cell.y][cell.x].probList; //probList entfernen
         }
-        
-        
+
+
         AztecsHelper.CalcBody();
         if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
-        
+
     },
 
     Compare: (BaseArray, CompareArray)=>{
@@ -502,7 +502,7 @@ let AztecsHelper = {
             if(width < AztecsHelper.mapWidth-1 && height > 0) if(typeof map[height-1][width+1].content === cellContent) arr.push({"x":width+1,"y":height-1});// height-1/width+1
             if(height < AztecsHelper.mapHeight-1 && width < AztecsHelper.mapWidth-1) if(typeof map[height+1][width+1].content === cellContent) arr.push({"x":width+1,"y":height+1});// +1/+1
             if(width > 0 && height > 0) if(typeof map[height-1][width-1].content === cellContent) arr.push({"x":width-1,"y":height-1});// -1/-1
-        
+
         }
 
         return arr;
@@ -522,7 +522,7 @@ let AztecsHelper = {
 
         let map=[];
         let heat=[];
-        
+
         for (let y=0; y<h;y++) {
             heat[y] = [];
             map[y] = [];
@@ -531,7 +531,7 @@ let AztecsHelper = {
                 map[y][x] = "";
             }
         }
-        
+
         for (let j=0;j<tries;j++) {
             let i=goods;
             while (i>0) {
@@ -550,7 +550,7 @@ let AztecsHelper = {
                     if(x > 0 && y > 0) if(map[y-1][x-1] !== 'G') map[y-1][x-1]='N';// -1/-1
                     i--
                 }
-                
+
             }
 
             for (let x=0; x<w;x++) {
@@ -588,7 +588,7 @@ let AztecsHelper = {
 
         const r = data?.responseData?.resources?.resources || data?.responseData?.resources
         if (!r) return
-        
+
         AztecsHelper.MovesLeft = r.aztecs_collecting_minigame_turns || 0;
 
         if(AztecsHelper.boughtSomething && AztecsHelper.MovesLeft > 0){

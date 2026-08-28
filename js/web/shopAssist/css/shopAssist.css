@@ -26,7 +26,7 @@
 	display:flex;
 	justify-content: space-between;
 	width:100%;
-	gap:5px;	
+	gap:5px;
 }
 
 
@@ -38,11 +38,11 @@
 	text-align: center;
 }
 .shopAssistTable thead tr:nth-child(1) th:nth-child(1),
-.shopAssistTable thead tr:nth-child(2) th:nth-child(2), 
+.shopAssistTable thead tr:nth-child(2) th:nth-child(2),
 .shopAssistTable td:nth-child(3){
 	text-align: left;
 }
-.shopAssistTable thead tr:nth-child(1) th:nth-child(2){ 
+.shopAssistTable thead tr:nth-child(1) th:nth-child(2){
 	text-align: right;
 }
 .shopAssistTable .shopResource {
@@ -103,7 +103,7 @@
 	font-size: smaller;
 }
 .shopAssistTable .shopAlert.alertActive:after {
-	content: '🔔';	
+	content: '🔔';
 }
 
 .shopAssistTable .shopAlert:hover,
@@ -113,7 +113,28 @@
 }
 
 .shopAssistTable tr.soldOut {
-	opacity: 0.5;
+	opacity: 0.65;
+}
+
+/* inventory column: owned items, fragment count and progress bar */
+.shopAssistTable td.inventory .stock {
+	color: var(--sunflower);
+	font-weight: 600;
+}
+.shopAssistTable td.inventory .assemblable {
+	color: var(--sunflower);
+}
+.shopAssistTable td.inventory .fragment-bar {
+	height: 3px;
+	margin-top: 2px;
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 2px;
+	overflow: hidden;
+}
+.shopAssistTable td.inventory .fragment-bar span {
+	display: block;
+	height: 100%;
+	background: #7ea83b;
 }
 
 .shopAssistTable img {

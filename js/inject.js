@@ -18,7 +18,7 @@ let scripts = {
 	vendor: ["once", "primed"],
 	internal: ["once", "primed"]
 };
-	
+
 function scriptLoaded (src, base) {
 	scripts[base].splice(scripts[base].indexOf(src),1);
 	if (scripts.internal.length == 1) {
@@ -65,7 +65,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			(document.head || document.documentElement).appendChild(sc);
 		});
 	}
-	
+
 	async function loadJsonResource(file) {
 		const response = await fetch(file);
 		if (response.status !== 200) {
@@ -73,7 +73,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 		}
 		return response.json();
 	}
-	
+
 	// check whether jQuery has been loaded in the DOM
 	// => Catch jQuery Loaded event
 	const jQueryLoading = new Promise(resolve => {
@@ -86,12 +86,12 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			resolve();
 		}, {capture: false, once: true, passive: true});
 	});
-	
+
 	const v = chrome.runtime.getManifest().version + (loadBeta ? '-beta-'+ betaDate:'');
 
 	let   lng = chrome.i18n.getUILanguage();
 	const uLng = localStorage.getItem('user-language');
-	
+
 	// we only need the first part
 	if (lng.indexOf('-') > 0) {
 		lng = lng.split('-')[0];
@@ -155,7 +155,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				devMode: `${!('update_url' in chrome.runtime.getManifest())}`,
 				loadBeta: loadBeta
 			}));
-			
+
 			// Firefox does not support direct communication with background.js but API injections
 			// So the the messages have to be forwarded and this exports an API-Function to do so
 			if (window.navigator.userAgent.indexOf("Firefox") > -1 && exportFunction && window.wrappedJSObject) {
@@ -192,7 +192,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`,"main");
 			scriptLoaded("primed", "main");
 			await mainLoaded;
-			
+
 			// wait for ant and i18n to be loaded
 			await jQueryLoading;
 
@@ -203,9 +203,9 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				vendorPromises.push(promisedLoadCode(`${extUrl}vendor/${vendorScriptsToLoad[i]}.js?v=${v}`,"vendor"));
 			}
 			await Promise.all(vendorPromises);
-			
+
 			scriptLoaded("primed", "vendor");
-			
+
 			// load scripts (parallel, execution order is preserved)
 			const internalScriptsToLoad = await scriptListPromise;
 			const internalPromises = [];
@@ -224,7 +224,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				}
 			}
 			await Promise.all(internalPromises);
-					
+
 			scriptLoaded("primed", "internal");
 
 		} catch (err) {

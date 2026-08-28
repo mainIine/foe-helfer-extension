@@ -29,14 +29,14 @@
   min-width: 50px;
 }
 
-#ReconstructionListBody tr.sorter-header th:last-child:before, 
+#ReconstructionListBody tr.sorter-header th:last-child:before,
 #ReconstructionListBody tr.sorter-header th:last-child:after {
   left: 5px;
 }
 
 
-#ReconstructionMap.window-box, 
-#ReconstructionMap .window-body, 
+#ReconstructionMap.window-box,
+#ReconstructionMap .window-body,
 #ReconstructionMap .window-head {
   background: none;
   box-shadow: none;
@@ -66,8 +66,8 @@
 #ReconstructionMap .window-head:hover {
   background: var(--black-30);
 }
-#ReconstructionMap .window-grippy, 
-#ReconstructionMap .window-head, 
+#ReconstructionMap .window-grippy,
+#ReconstructionMap .window-head,
 #ReconstructionMap .settingsbox-wrapper {
   pointer-events: all;
 }

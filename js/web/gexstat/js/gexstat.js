@@ -1079,7 +1079,7 @@ let GexStockWarning = {
 		let parts = []
 		for (let [res,amount] of Object.entries(costs)) {
 			parts.push({
-				resource:res, 
+				resource:res,
 				part: Math.round(amount/(stock[res]||0.1)*10000)/100
 			})
 		}
@@ -1087,9 +1087,9 @@ let GexStockWarning = {
 			b.part-a.part
 		)
 		parts = parts.slice(0,10)
-		
+
 		if (parts[0].part <= min) return
-		
+
 		if ($('#GexStockWarning').length === 0)	{
 			HTML.Box({
 				id: 'GexStockWarning',
@@ -1110,7 +1110,7 @@ let GexStockWarning = {
 			</tr>`
 		}
 		h+=`</table>`
-		
+
 		$('#GexStockWarningBody').html(h);
 
 	}

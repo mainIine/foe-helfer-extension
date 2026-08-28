@@ -99,7 +99,7 @@
 #technologies #technologiesBody .diplomacy-ask:hover .diplomacy-tip {
 	display: block;
 }
-#technologies #technologiesBody td.goods-image { 
+#technologies #technologiesBody td.goods-image {
 	padding: 0;
 	background-color: var(--black-50);
 }
@@ -140,4 +140,12 @@
 #technologies #technologiesBody td.actively-produced {
 	color: #4caf50;
 	font-style: italic;
+}
+/* Era subheadings of the "group by era" mode */
+#technologies #technologiesBody tr.technologies-era-row td {
+	padding: 3px 6px;
+	font-weight: bold;
+	color: var(--sunflower);
+	background: var(--table-bg-darker);
+	border-top: 1px solid var(--border-table-bottom);
 }

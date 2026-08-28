@@ -262,7 +262,7 @@ Object.assign(Productions, {
 
 
 	efficiencySettings: Object.assign(
-		JSON.parse(localStorage.getItem("Productions.efficiencySettings") || 
+		JSON.parse(localStorage.getItem("Productions.efficiencySettings") ||
 			`{
 			"tilevalues":false,
 			"showitems":true,
@@ -613,10 +613,10 @@ Object.assign(Productions, {
 	 * @param {string} [eraName=null] - The era to use for calculations.
 	 */
 	ShowRating: (external = false, eraName = null) => {
-		if (!Productions.Rating.Data) 
+		if (!Productions.Rating.Data)
 			Productions.Rating.load();
 
-		if (ActiveMap === 'OtherPlayer' && !external) 
+		if (ActiveMap === 'OtherPlayer' && !external)
 			return;
 
 		let era = (eraName === null) ? CurrentEra : eraName;
@@ -634,9 +634,9 @@ Object.assign(Productions, {
 				popout: () => MainParser.PopOut('ProductionsRating', 1100, 580),
 				settings: () => Productions.RSettings()
 			});
-			
+
 			helper.preloader.show('#ProductionsRating');
-			
+
 			HTML.AddCssFile('productions');
 
 			$('body').on('click', '.toggle-tab', async function () {
@@ -656,7 +656,7 @@ Object.assign(Productions, {
 
 	AdditionalSpecialBuildings:null,
 
-	
+
 	/**
 	 * Generates a tooltip HTML string showing best and top efficiency values for a production type.
 	 *
@@ -750,12 +750,12 @@ Object.assign(Productions, {
 			if (Allies.buildingList?.[building.id] && withAllies) {
 				compare += "+" + Object.keys(Allies.buildingList?.[building.id]).join("+");
 			}
-			
+
 			let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !Allies.buildingList?.[x.id])
 			if (!withAllies) {
 				foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory)
 			}
-			
+
 			let inventoryIdentifier = (building.isInInventory ? "I" : "C");
 
 			if (foundBuildingIndex === -1) {
@@ -978,11 +978,11 @@ Object.assign(Productions, {
 				if (eraShortName !== "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
 				h.push("</div></td>");
-				
+
 				// show amount in city if > 1
 				let buildingAmount = (Allies.buildingList?.[building.id] && withAllies ? 1 : (buildingCount[building.entityId+"C"] || 1));
 				h.push('<td exportvalue="'+buildingAmount+'" data-number="'+buildingAmount+'"><div class="text-right">')
-				if (buildingAmount > 1) 
+				if (buildingAmount > 1)
 					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span>')
 				h.push("</div></td>");
 
@@ -1312,7 +1312,7 @@ Object.assign(Productions, {
 				}
 				h=`<div id="FSPCalculator" class="dark-bg p5"><h2>${i18n("Boxes.ProductionsRating.TitleFSPCalculator")}</h2><div class="cats flex-between my-5 p5">`
 				for (let x of Productions.FSPqualifiedResources) {
-					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="1" min="0" max="1000000" class="${x} no-grow" value="${Productions.Rating.Data.fsp[x]||""}"></div>`				
+					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="1" min="0" max="1000000" class="${x} no-grow" value="${Productions.Rating.Data.fsp[x]||""}"></div>`
 				}
 				h+="</div>"
 				$(h).insertAfter($("li.fsp")).promise().done(()=>{
@@ -1482,7 +1482,7 @@ Object.assign(Productions, {
 		}
 		for (const building of uniqueBuildings) {
 			// do not include wishingwell type buildings
-			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial === undefined && building.type !== "greatbuilding")) 
+			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial === undefined && building.type !== "greatbuilding"))
 				continue;
 			let ratedBuilding = building;
 			if (additional) ratedBuilding.highlight = true;
@@ -1512,7 +1512,7 @@ Object.assign(Productions, {
 					let typeValue = Productions.getRatingValueForType(building, type) || 0; // production amount
 					let valuePerTile = typeValue / size;
 
-					if (valuePerTile !== 0 && desiredValuePerTile !== 0) 
+					if (valuePerTile !== 0 && desiredValuePerTile !== 0)
 						score.totalScore += (valuePerTile / desiredValuePerTile);
 
 					score[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0;
@@ -1556,19 +1556,18 @@ Object.assign(Productions, {
 			}
 			return bsum;
 		}
-		else if (type === "forge_points_production" || type === "goods_production") {
+		else if (type === "forge_points_production" || type === "goods_production" || type === "coin_production" || type === "supply_production") {
+			// collection boosts (FP, goods, coins, supplies); summed, as a building
+			// can carry several sources (base boost + set/chain bonuses)
 			if (building.boosts === undefined) return 0;
+			let bsum = 0;
 			for (const boost of building.boosts) {
 				if (boost.needsLink && building.setBuilding !== undefined) {
 					if (boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)) continue;
 				}
-				if (boost.type[0] === 'forge_points_production' && type === 'forge_points_production')  {
-					return boost.value;
-				}
-				if (boost.type[0] === 'goods_production' && type === 'goods_production')  {
-					return boost.value;
-				}
+				if (boost.type.includes(type)) bsum += boost.value;
 			}
+			return bsum;
 		}
 		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount

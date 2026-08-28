@@ -30,7 +30,7 @@ FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
 	}
 });
 
-// Treasury Goods 
+// Treasury Goods
 FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 	let requestMethod = postData[0]['requestMethod'];
 	if (requestMethod === 'getTreasury') {
@@ -54,7 +54,7 @@ FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
 });
 
 
-// Forum Activity 
+// Forum Activity
 FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
 	let ConversationData = data.responseData;
 
@@ -1074,7 +1074,7 @@ let GuildMemberStat = {
 			});
 
 			$('#GuildMemberTable > tbody tr:not(.strikeout)').each(function() {
-				$(this).on('click', async () => { 
+				$(this).on('click', async () => {
 					let memberId = $(this).data('id');
 					await GuildMemberStat.ShowMemberDetail(memberId)});
 			})
@@ -1117,17 +1117,17 @@ let GuildMemberStat = {
 				<h1>${GuildMemberStat.MemberDict[id].name}</h1>
 				${i18n('Eras.'+Technologies.Eras[memberData.era])}
 				<div class="average">
-					<span class="gex"></span> 
-					<span class="gbg"></span> 
-					<span class="qi"></span> 
-					<span class="goods"></span> 
+					<span class="gex"></span>
+					<span class="gbg"></span>
+					<span class="qi"></span>
+					<span class="goods"></span>
 				<i class="info-tip" data-original-title="${i18n('Boxes.GuildMemberStat.MemberDetail.Info')}">i</i></div>
 				</div>
 			</div>
 			</div>
 		<h2 class="dark-bg p5">Logs</h2>`);
 
-		
+
 		if (Member.activity !== undefined) {
 			d.push(`<div class="foehelper-accordion warnings">
 				<div class="foehelper-accordion-head">${i18n('Boxes.GuildMemberStat.Inactivity')}</div>
@@ -1157,7 +1157,7 @@ let GuildMemberStat = {
 			d.push('</tbody></table></div></div>');
 		}
 
-		
+
 		if (Member.gex !== undefined) {
 			d.push(`<div class="foehelper-accordion gex">
 				<div class="foehelper-accordion-head">${i18n('Boxes.General.Guild_Expedition.short')}</div>
@@ -1190,7 +1190,7 @@ let GuildMemberStat = {
 			gexNumber = Math.round((geSum)/(Member.gex?.length||1));
 		}
 
-		
+
 		if (Member.gbg !== undefined) {
 			d.push(`<div class="foehelper-accordion gbg">
 				<div class="foehelper-accordion-head">${i18n('Boxes.General.Guild_Battlegrounds.short')}</div>
@@ -1256,14 +1256,14 @@ let GuildMemberStat = {
 		if (playedSeasons > 0)
 			d.push(qi.join(''));
 
-		
+
 		let totalGoods = 0;
 		if (Member.guildbuildings !== undefined) {
 			let totalPower = 0;
 
 			d.push(`<div class="foehelper-accordion guildbuildings">
 				<div class="foehelper-accordion-head">Guild Buildings</div>
-				<div class="foehelper-accordion-body">${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} 
+				<div class="foehelper-accordion-body">${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')}
 				<small>(${i18n('Boxes.GuildMemberStat.LastUpdate')} ${guildbuildings?.date ? moment(guildbuildings.date).fromNow() : '-'})</small>`);
 
 			// Group GuildGoods buildings by name and their era
@@ -2252,7 +2252,7 @@ let GuildMemberStat = {
 		$(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
 
-			if (GuildMemberStat.CurrentStatGroup === 'Member') 
+			if (GuildMemberStat.CurrentStatGroup === 'Member')
 				GuildMemberStat.Show();
 		});
 	},

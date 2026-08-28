@@ -17,7 +17,7 @@
 let Notice = {
 
 	notes: null,
-	
+
 	/**
 	 * Toogle state for edit mode
 	 */
@@ -178,7 +178,7 @@ let Notice = {
 											<span class="clan-name"><em>#${player['PlayerID']}</em> ${player['ClanName'] ? '[' + player['ClanName'] + ']' : '&nbsp;'}</span>
 										</div>
 										<div class="info-text">
-											
+
 										</div>
 									</div>`);
 
@@ -249,7 +249,23 @@ let Notice = {
 			});
 
 			if( $('.tabs-sub').length > 0 ){
-				$('.tabs-sub').tabslet();
+				// restore the last used sub tab in the active group, every other group starts at 1
+				const activeSub = $('.notices > .notice-wrapper').eq(Notice.ActiveTab - 1).find('.tabs-sub');
+
+				$('.tabs-sub').each(function(){
+					const $this = $(this),
+						subCount = $this.find('ul.vertical li').length;
+
+					let active = 1;
+
+					if($this.is(activeSub) && Number.isInteger(Notice.ActiveSubTab) && Notice.ActiveSubTab >= 1 && Notice.ActiveSubTab <= subCount){
+						active = Notice.ActiveSubTab;
+					}
+
+					$this.tabslet({
+						active: active
+					});
+				});
 
 				setTimeout(()=>{
 					Notice.SetHeights();
@@ -402,7 +418,7 @@ let Notice = {
 
 		$('#notices-modalBody').append(inp);
 
-		
+
 		if(id !== 'new'){
 			let delBtn = $('<span />');
 
@@ -561,7 +577,8 @@ let Notice = {
 				Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id == grp)) +1;
 
 				if(id === 'new'){
-					Notice.ActiveSubTab = group.items.length +1;
+					// the response already contains the new item as the last one
+					Notice.ActiveSubTab = group.items.length;
 
 				} else {
 					Notice.ActiveSubTab = group.items.findIndex(i => (i.id == id)) +1;
@@ -608,8 +625,14 @@ let Notice = {
 				});
 			}
 			else {
-				let grpIdx = Notice.notes.findIndex(g => g.id === grpID),
-					itmIdx = Notice.notes[grpIdx].items.findIndex(i => i.id === itmID);
+				// loose comparisons, ids may arrive as strings from the DOM
+				let grpIdx = Notice.notes.findIndex(g => (g.id == grpID)),
+					itmIdx = grpIdx > -1 ? Notice.notes[grpIdx].items.findIndex(i => (i.id == itmID)) : -1;
+
+				// unknown ids: the server accepted the save, just skip the local cache update
+				if(itmIdx === -1){
+					return;
+				}
 
 				Notice.notes[grpIdx].items[itmIdx]['title'] = head;
 				Notice.notes[grpIdx].items[itmIdx]['content'] = cont;
