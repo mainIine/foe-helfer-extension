@@ -274,7 +274,12 @@ let InventoryOverview = {
 	 * @returns {JQuery[]}
 	 */
 	PropertyOptions: () => {
-		const types = Object.entries(Productions.Rating.getDefaultData())
+		const ratingTypes = Productions.Rating.getDefaultData();
+		// inventory-only filters (not part of the efficiency rating): coin and
+		// supply collection boosts, sorted right behind the plain productions
+		ratingTypes['coin_production'] = { order: 13.5, group: 1 };
+		ratingTypes['supply_production'] = { order: 15.5, group: 1 };
+		const types = Object.entries(ratingTypes)
 			.sort((a, b) => a[1].order - b[1].order);
 
 		const groupLabels = {

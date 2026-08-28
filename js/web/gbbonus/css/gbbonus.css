@@ -58,9 +58,18 @@
 }
 
 #gbBonuses #gbBonusesBottombar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
 	padding: 3px 8px;
-	text-align: right;
 	font-style: italic;
+}
+
+#gbBonuses .gbb-export {
+	display: flex;
+	gap: 4px;
+	font-style: normal;
 }
 
 #gbBonuses .no-data {

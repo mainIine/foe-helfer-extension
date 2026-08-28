@@ -99,7 +99,57 @@ let Productions = {
 		Productions.ReadData()
 	},
 
-	
+
+	/**
+	 * Calculates the daily production sums (forge points, units, goods and guild goods)
+	 * for the player profile without rendering the production overview box.
+	 */
+	calcDailyProduction: () => {
+		if (ActiveMap === 'OtherPlayer') return
+
+		MainParser.CityBuildingsData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData))
+		Productions.CombinedCityMapData = MainParser.CityBuildingsData
+
+		if (CityMap.EraOutpost.data) {
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data)
+		}
+
+		Productions.BuildingsAll = Object.values(Productions.CombinedCityMapData)
+		Productions.setChainsAndSets(Productions.BuildingsAll)
+
+		let fpSum = 0,
+			unitSum = 0,
+			guildGoodsSum = 0,
+			goodsTotal = {}
+
+		for (const building of Productions.BuildingsAll) {
+			if (building.player_id !== ExtPlayerID || building.chainBuilding?.type === "linked") continue
+
+			let fp = parseFloat(Productions.getBuildingProductionByCategory(false, building, 'strategy_points').amount)
+			if (building.isBoostable)
+				fp = Math.round(fp + (fp * Boosts.Sums.forge_points_production / 100))
+			fpSum += fp
+
+			unitSum += parseFloat(Productions.getBuildingProductionByCategory(false, building, 'units').amount)
+
+			const goods = CityBuildings.getBuildingGoodsByEra(false, building, true)
+			for (const [era, value] of Object.entries(goods?.eras || {})) {
+				goodsTotal[era] = (goodsTotal[era] || 0) + value
+			}
+
+			const guildGoods = CityBuildings.getBuildingGuildGoodsByEra(false, building, true)
+			for (const value of Object.values(guildGoods?.eras || {})) {
+				guildGoodsSum += value
+			}
+		}
+
+		Profile.fpProduction = fpSum
+		Profile.units = unitSum
+		Profile.goods = goodsTotal
+		Profile.guildGoods = guildGoodsSum
+	},
+
+
 	/**
 	 * Processes city building data, calculates population and happiness sums, and shows the production box.
 	 */
@@ -877,6 +927,12 @@ let Productions = {
         }
 		else if (GoodType === 'goods_production') {
 			return i18n('Boxes.Productions.goods_boost');
+        }
+		else if (GoodType === 'coin_production') {
+			return i18n('Boxes.Productions.coin_boost');
+        }
+		else if (GoodType === 'supply_production') {
+			return i18n('Boxes.Productions.supply_boost');
         }
 		else {
 			// prefer own translations for base resources - GoodsData names follow

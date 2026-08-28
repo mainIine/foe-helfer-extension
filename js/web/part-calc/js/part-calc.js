@@ -1029,7 +1029,7 @@ let Parts = {
 			if (printsEnabled) h.push('<td class="text-center">' + GreatBuildings.FormatBlueprintRewards(BPTierRewards[i], BPRewards[i]) + '</td>');
 			if (medalsEnabled) h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
 			if (!minView) h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input' + i + '" value="' + Parts.Exts[i] + '"></td>');
-			if (!minView) h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
+			if (!minView) h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="-100" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
 
 			h.push('</tr>');
 		}

@@ -30,6 +30,8 @@ let _menu = {
 	
 	Items: [
 		//'calculator',
+		'citySearch',
+		'checklist',
 		'gbBonuses',
 		'ascended',
 		'webRequest',
@@ -338,6 +340,8 @@ let _menu = {
 		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
 		{ id: 'inventory', title: i18n('Menu.Inventory.Title'), description: i18n('Menu.Inventory.Desc') },
 		{ id: 'ascended', title: i18n('Menu.Ascended.Title'), description: i18n('Menu.Ascended.Desc') },
+		{ id: 'checklist', title: i18n('Menu.Checklist.Title'), description: i18n('Menu.Checklist.Desc') },
+		{ id: 'citySearch', title: i18n('Menu.CitySearch.Title'), description: i18n('Menu.CitySearch.Desc') },
 		{ id: 'gbBonuses', title: i18n('Menu.GBBonuses.Title'), description: i18n('Menu.GBBonuses.Desc') },
 		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
 		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
@@ -640,6 +644,32 @@ let _menu = {
 	/**
 	 * Inventory overview
 	 */
+	/**
+	 * Building search: mark buildings of the own city by name
+	 */
+	citySearch_Btn: () => {
+		let btn = _menu.MakeButton('citySearch');
+
+		let btn_sp = $('<span />').on('click', function () {
+			CitySearch.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	/**
+	 * Message checklist: tick off the lines of a picked ingame message
+	 */
+	checklist_Btn: () => {
+		let btn = _menu.MakeButton('checklist');
+
+		let btn_sp = $('<span />').on('click', function () {
+			Checklist.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
 	/**
 	 * Time limited ("ascended") buildings overview
 	 */

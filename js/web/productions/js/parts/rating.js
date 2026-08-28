@@ -1556,19 +1556,18 @@ Object.assign(Productions, {
 			}
 			return bsum;
 		}
-		else if (type === "forge_points_production" || type === "goods_production") {
+		else if (type === "forge_points_production" || type === "goods_production" || type === "coin_production" || type === "supply_production") {
+			// collection boosts (FP, goods, coins, supplies); summed, as a building
+			// can carry several sources (base boost + set/chain bonuses)
 			if (building.boosts === undefined) return 0;
+			let bsum = 0;
 			for (const boost of building.boosts) {
 				if (boost.needsLink && building.setBuilding !== undefined) {
 					if (boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)) continue;
 				}
-				if (boost.type[0] === 'forge_points_production' && type === 'forge_points_production')  {
-					return boost.value;
-				}
-				if (boost.type[0] === 'goods_production' && type === 'goods_production')  {
-					return boost.value;
-				}
+				if (boost.type.includes(type)) bsum += boost.value;
 			}
+			return bsum;
 		}
 		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount

@@ -1,0 +1,165 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#checklist {
+	top: 15%;
+	left: 30%;
+	width: 380px;
+	height: 420px;
+}
+
+#checklistBody {
+	display: flex;
+	flex-direction: column;
+}
+
+#checklist #checklistTopbar {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 6px;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#checklist #checklistTopbar .picker-hint {
+	font-size: 90%;
+	color: var(--beige);
+}
+
+#checklist #checklistTopbar .checklist-source {
+	flex: 1 1 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+}
+
+#checklist #checklistInner {
+	flex: 1 1 auto;
+	overflow: hidden auto;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#checklist .no-results {
+	text-align: center;
+	padding: 20px 10px;
+}
+
+#checklist #checklistBottombar {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+	padding: 2px 10px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border-top: 1px solid var(--border-table-top);
+}
+
+/* Picker view */
+#checklist .checklist-thread .thread-head {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	padding: 5px 8px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#checklist .checklist-thread .thread-head:hover {
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+#checklist .checklist-thread.is-active .thread-head strong {
+	color: var(--sunflower);
+}
+
+#checklist .checklist-thread .thread-head strong {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#checklist .checklist-thread .thread-arrow {
+	flex: 0 0 auto;
+	width: 12px;
+}
+
+#checklist .checklist-thread .thread-count {
+	font-size: 85%;
+	color: var(--beige);
+}
+
+#checklist .checklist-thread .thread-time {
+	margin-left: auto;
+	font-size: 85%;
+	color: var(--beige);
+	white-space: nowrap;
+}
+
+#checklist .checklist-pick {
+	padding: 5px 8px 5px 20px;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#checklist .checklist-pick:hover {
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+#checklist .checklist-pick .pick-head {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+}
+
+#checklist .checklist-pick .pick-time {
+	margin-left: auto;
+	font-size: 85%;
+	color: var(--beige);
+	white-space: nowrap;
+}
+
+#checklist .checklist-pick .pick-preview {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#checklist .checklist-pick .pick-meta {
+	font-size: 85%;
+	color: var(--limegreen);
+}
+
+/* Checklist view */
+#checklist .checklist-line {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 8px;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#checklist .checklist-line:hover {
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+#checklist .checklist-line input {
+	flex: 0 0 auto;
+	width: 15px;
+	height: 15px;
+	accent-color: var(--limegreen);
+}
+
+#checklist .checklist-line.is-checked span {
+	text-decoration: line-through;
+	opacity: 0.5;
+}

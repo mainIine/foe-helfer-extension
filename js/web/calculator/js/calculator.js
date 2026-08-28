@@ -303,7 +303,7 @@ let Calculator = {
 			h.push(`<button class="btn btn-mid btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === MainParser.ArkBonus ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 		
-		h.push(`<span data-original-title="${i18n('Boxes.Calculator.FriendlyInvestment')} x%">  <input type="number" id="costFactor" step="0.1" min="12" max="200" value="${Calculator.ForderBonus}"></span>`);
+		h.push(`<span data-original-title="${i18n('Boxes.Calculator.FriendlyInvestment')} x%">  <input type="number" id="costFactor" step="0.1" min="-100" max="200" value="${Calculator.ForderBonus}"></span>`);
 
         h.push('</div>');
         h.push('</div>');

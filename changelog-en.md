@@ -1,5 +1,35 @@
 ## Extension Changelog
 
+##### 4.8.0.0
+**New**
+
+- Building search: new module — search buildings by name (with autocomplete based on your own city) and mark every match with golden arrows on the map
+- Message checklist: new module — turns an ingame message into a checklist to tick off line by line (e.g. guild instructions), with progress display
+
+**Update**
+
+- Shop assistant:
+    - The amount in your inventory is now highlighted in bold yellow
+    - Fragments show in brackets how many items could already be assembled, with a progress bar towards the next item below
+    - Sold out offers keep their position and are only slightly faded
+- Inventory overview: buildings can now also be filtered by coin boost and supply boost
+- PvP Arena: entries in the "lost Attacks" tab can now be removed individually or the whole list can be cleared — handy after defeats with accidentally wrong troops
+- Tech tree: new option "Group goods by era" — with era headings, sorting stays within each era
+- GB bonus overview: data can now be exported as CSV or JSON
+
+**Bugfixes**
+
+- Player profile: unit production (helmet icon) and critical hit chance (sword icon) now show a tooltip explaining the value
+- Own part calculator: when other players invest into your currently open GB, the box now updates immediately (progress, patron FP and remaining amount) — previously the display stayed frozen until the GB was reopened. The game does not reveal who took which spot; briefly reopen the GB for that
+- GB calculators: negative % boosts can be entered again — both directly and as custom percent buttons in the settings
+- Efficiency rating & inventory overview: FP and goods boost of set buildings now include the connection bonuses — previously only the first boost source was counted
+- Notes: reopening the notes and creating a new page now shows the last used page again instead of always the first one
+- Tech tree: window no longer opens blank since the Stellar Age
+- Player profile: daily goods production is summed up again after advancing to the Stellar Age
+- Other player profiles: values no longer depend on which fields are enabled in the efficiency rating — no more "NaN" displays
+
+---
+
 ##### 4.7.2.1
 **Bugfixes**
 

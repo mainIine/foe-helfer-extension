@@ -1,0 +1,96 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#citysearch {
+	top: 15%;
+	left: 35%;
+	width: 300px;
+}
+
+#citysearchBody {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Search bar */
+#citysearch #citysearchBar {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 6px;
+}
+
+#citysearch #citysearchInput {
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 3px 6px;
+}
+
+#citysearch #citysearchGo {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	padding: 2px 7px;
+}
+
+#citysearch #citysearchGo img {
+	width: 16px;
+	height: 16px;
+}
+
+/* Autocomplete suggestions */
+#citysearch .citysearch-suggestion {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	padding: 4px 10px;
+	border-top: 1px solid var(--border-table-bottom);
+}
+
+#citysearch .citysearch-suggestion:hover,
+#citysearch .citysearch-suggestion.is-highlighted {
+	background-color: rgba(255, 255, 255, 0.08);
+	color: var(--sunflower);
+}
+
+#citysearch .citysearch-suggestion span {
+	flex: 1 1 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#citysearch .citysearch-suggestion em {
+	flex: 0 0 auto;
+	font-size: 85%;
+	color: var(--beige);
+}
+
+/* Result line */
+#citysearch #citysearchResult {
+	padding: 0 10px;
+	text-align: center;
+	color: var(--limegreen);
+}
+
+#citysearch #citysearchResult:not(:empty) {
+	padding: 5px 10px;
+	border-top: 1px solid var(--border-table-bottom);
+}
+
+#citysearch #citysearchResult .citysearch-nomatch {
+	color: var(--beige);
+}

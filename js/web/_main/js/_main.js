@@ -745,6 +745,7 @@ GetFights = () =>{
 		MainParser.UpdatePlayerDict(data.responseData, 'LGContributions');
 	});
 
+
 	// can be removed after game update 1.332
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
 		if (!gbUpdateData || !gbUpdateData.Rankings) {
@@ -789,6 +790,34 @@ GetFights = () =>{
 			MainParser.CityMapData[b.id]=b;
 		}
 		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
+
+		// Live update of an own GB that is currently open: contributions of other
+		// players only arrive as this entity push with the new invested FP total —
+		// the game sends no updated rankings and does not re-request them either.
+		const CurrentGB = MainParser.CurrentGB;
+		if (!CurrentGB.Entity || CurrentGB.Entity['player_id'] !== ExtPlayerID) return;
+		if (Parts.IsPreviousLevel) return; // box shows a scrolled level, keep it
+
+		const Update = data.responseData.find(b => b['id'] === CurrentGB.Entity['id'] && b['type'] === 'greatbuilding');
+		if (!Update) return;
+		if (Update['level'] !== CurrentGB.Entity['level']) return; // level jumped, rankings are void until the GB is reopened
+
+		CurrentGB.Entity = { ...Update, player_id: ExtPlayerID };
+
+		// FP not covered by the known rankings are booked as one anonymous patron
+		// entry (rank -1, like a deleted player), that keeps all totals correct
+		// until reopening the GB delivers the real rankings again
+		const Invested = Update['state']?.['invested_forge_points'] || 0;
+		const Known = (CurrentGB.Rankings || []).reduce((acc, r) => acc + (r?.['forge_points'] || 0), 0);
+		if (CurrentGB.Rankings && Invested > Known) {
+			const LiveRow = CurrentGB.Rankings.find(r => r?.['__liveUpdate']);
+			if (LiveRow) LiveRow['forge_points'] += Invested - Known;
+			else CurrentGB.Rankings.push({ forge_points: Invested - Known, rank: -1, __liveUpdate: true });
+		}
+
+		if ($('#OwnPartBox').length > 0 || $('#CalculatorBox').length > 0) {
+			Parts.CalcBody();
+		}
 	});
 
 	FoEproxy.addWsHandler('CityProductionService', 'pickupProduction', data => {

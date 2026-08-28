@@ -35,7 +35,7 @@ FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
 	let era = data.responseData.technology.era;
 
     if (Technologies.Eras[era] > CurrentEraID) {
-        CurrentEraID = Technologies.EraNames[era];
+        CurrentEraID = Technologies.Eras[era];
         CurrentEra = era;
     }
 });
@@ -46,6 +46,9 @@ FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
 
     let ID = CurrentTech['id']
     if (ID === undefined) return;
+
+    if (!Technologies.UnlockedTechnologies) Technologies.UnlockedTechnologies = {};
+    if (!Array.isArray(Technologies.UnlockedTechnologies.inProgressTechnologies)) Technologies.UnlockedTechnologies.inProgressTechnologies = [];
 
     let TechFound = false;
     for (let i in Technologies.UnlockedTechnologies.inProgressTechnologies) {
@@ -77,6 +80,7 @@ FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
     if (ID === undefined) return;
 
     // Inno verwaltet die erforschten Technologien jetzt in 'unlockedNodes' (vorher 'unlockedTechnologies').
+    if (!Technologies.UnlockedTechnologies) Technologies.UnlockedTechnologies = {};
     if (!Array.isArray(Technologies.UnlockedTechnologies.unlockedNodes)) Technologies.UnlockedTechnologies.unlockedNodes = [];
     Technologies.UnlockedTechnologies.unlockedNodes.push(ID);
 
@@ -93,6 +97,15 @@ let Technologies = {
     IgnorePrevEra: null,
     IgnoreCurrentEraOptional: null,
 
+    /** @type {boolean} group the resource table by era with sorting inside each group */
+    GroupByEra: false,
+
+    /** @type {?number} sorted column index in grouped mode, null = default order */
+    SortColumn: null,
+
+    /** @type {number} sort direction in grouped mode: 1 ascending, -1 descending */
+    SortDirection: 1,
+
     /**
      * Ordered list of playable era ids, oldest first. Mirrors the game
      * client's EraConstants.ERA_IDS and acts as the single source for all
@@ -106,7 +119,8 @@ let Technologies = {
         'ModernEra', 'PostModernEra', 'ContemporaryEra', 'TomorrowEra',
         'FutureEra', 'ArcticFuture', 'OceanicFuture', 'VirtualFuture',
         'SpaceAgeMars', 'SpaceAgeAsteroidBelt', 'SpaceAgeVenus',
-        'SpaceAgeJupiterMoon', 'SpaceAgeTitan', 'SpaceAgeSpaceHub'
+        'SpaceAgeJupiterMoon', 'SpaceAgeTitan', 'SpaceAgeSpaceHub',
+        'StellarAgeDiscovery'
     ],
 
     /** @type {Object<string,number>} Era name -> era id (NoAge/AllAge = 0), built from EraList */
@@ -211,6 +225,12 @@ let Technologies = {
             if (gameList.length > Technologies.EraList.length) {
                 Technologies.EraList = gameList;
                 Technologies.BuildEraMaps();
+
+                // StartUp resolves CurrentEraID synchronously and may have run before the
+                // maps knew this era (async detection) — refresh it from the extended maps
+                if (typeof CurrentEra === 'string' && Technologies.Eras[CurrentEra] !== undefined) {
+                    CurrentEraID = Technologies.Eras[CurrentEra];
+                }
             }
 
             Technologies.AddEraTranslations(cache.names || {});
@@ -376,6 +396,25 @@ let Technologies = {
                 Technologies.CalcBody();
             });
 
+            $technologiesBox.on('click', '.groupbyera', function () {
+                Technologies.GroupByEra = $(this).prop('checked');
+
+                localStorage.setItem('TechnologiesGroupByEra', Technologies.GroupByEra);
+
+                Technologies.CalcBody();
+            });
+
+            // grouped mode: own sort handling, era blocks stay intact and are sorted internally
+            $technologiesBox.on('click', '.technologies-grouped .sorter-header th', function () {
+                let column = $(this).index();
+                if ($(this).hasClass('no-sort')) return;
+
+                Technologies.SortDirection = (Technologies.SortColumn === column ? -Technologies.SortDirection : 1);
+                Technologies.SortColumn = column;
+
+                Technologies.CalcBody();
+            });
+
             // Zeitalter vor und zurück schalten
             $technologiesBox.on('click', '.btn-switchage', function () {
 
@@ -418,6 +457,7 @@ let Technologies = {
         // real booleans — the string 'false' would be truthy in the checks below
         Technologies.IgnorePrevEra = localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false'
         Technologies.IgnoreCurrentEraOptional = localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false'
+        Technologies.GroupByEra = localStorage.getItem('TechnologiesGroupByEra') === 'true'
 
         Technologies.CalcBody();
     },
@@ -495,9 +535,11 @@ let Technologies = {
         }
 
         // Teilweise erforscht
-        for (let i = 0; i < Technologies.UnlockedTechnologies['inProgressTechnologies'].length; i++) {
-            let InProgTech = Technologies.UnlockedTechnologies['inProgressTechnologies'][i];
+        let InProgressTechs = Technologies.UnlockedTechnologies['inProgressTechnologies'] || [];
+        for (let i = 0; i < InProgressTechs.length; i++) {
+            let InProgTech = InProgressTechs[i];
             let Index = TechDict[InProgTech['tech_id']];
+            if (Index === undefined) continue;
             Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
         }
 
@@ -590,6 +632,7 @@ let Technologies = {
 	        h.push('<div class="text-small">');
             h.push('<input id="IgnorePrevEra" class="ignoreprevera game-cursor" ' + (Technologies.IgnorePrevEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnorePrevEra') + '<br>');
             h.push('<input id="IgnoreCurrentEraOptional" class="ignorecurrenteraoptional game-cursor" ' + (Technologies.IgnoreCurrentEraOptional ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnoreCurrentEraOptional') + '<br>');
+            h.push('<input id="GroupByEra" class="groupbyera game-cursor" ' + (Technologies.GroupByEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.GroupByEra') + '<br>');
         	h.push('</div>');
         h.push('</div>');
 
@@ -598,20 +641,25 @@ let Technologies = {
             h.push('<div class="technologies-hint">' + i18n('Boxes.Technologies.NoTechs') + '</div>');
         }
 
-        h.push('<table class="foe-table sortable-table exportable">');
+        // grouped mode uses its own sort handling (era blocks are sorted internally),
+        // so the global tableSorter must not be attached to the table
+        h.push('<table class="foe-table exportable ' + (Technologies.GroupByEra ? 'technologies-grouped' : 'sortable-table') + '">');
 
         // Only show the cumulative column when the cumulative range spans more than
         // the selected era (otherwise it would be identical to the "Required" column).
         let ShowCumulative = CumLowerEraID < SelEraID;
 
+        // sort indicator of the grouped mode
+        let SortClass = (column) => (Technologies.GroupByEra && Technologies.SortColumn === column ? (Technologies.SortDirection === 1 ? ' ascending' : ' descending') : '');
+
         h.push('<thead class="sticky">' +
             '<tr class="sorter-header">' +
             '<th class="no-sort"></th>' +
-            '<th data-type="technologiesTBody" data-export="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
-            '<th class="is-number" data-type="technologiesTBody" data-export="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
-            (ShowCumulative ? '<th class="is-number" data-type="technologiesTBody" data-export="cumulative">' + i18n('Boxes.Technologies.DescCumulative') + '</th>' : '') +
-            '<th class="is-number" data-type="technologiesTBody" data-export="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
-            '<th class="is-number text-right" data-type="technologiesTBody" data-export="remaining">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
+            '<th class="' + SortClass(1) + '" data-type="technologiesTBody" data-export="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
+            '<th class="is-number' + SortClass(2) + '" data-type="technologiesTBody" data-export="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
+            (ShowCumulative ? '<th class="is-number' + SortClass(3) + '" data-type="technologiesTBody" data-export="cumulative">' + i18n('Boxes.Technologies.DescCumulative') + '</th>' : '') +
+            '<th class="is-number' + SortClass(ShowCumulative ? 4 : 3) + '" data-type="technologiesTBody" data-export="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
+            '<th class="is-number text-right' + SortClass(ShowCumulative ? 5 : 4) + '" data-type="technologiesTBody" data-export="remaining">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
             '</tr>' +
             '</thead>');
 
@@ -632,22 +680,30 @@ let Technologies = {
                 }
             }
 
-            // output order: era by era the special resource (research gate) first, then the era's goods
-            let OutputList = ['strategy_points', 'money', 'supplies'],
+            // output order: era by era the special resource (research gate) first, then the era's goods;
+            // strategy points, coins and supplies stay on top of the table in every mode (era null)
+            let OutputList = [
+                    { id: 'strategy_points', era: null },
+                    { id: 'money', era: null },
+                    { id: 'supplies', era: null }
+                ],
                 LastEra = null;
             for (let i = 0; i < GoodsList.length; i++) {
                 let Era = GoodsList[i]['era'];
 
                 if (Era !== LastEra) {
-                    OutputList.push(...(SpecialsByEra[Era] || []));
+                    OutputList.push(...(SpecialsByEra[Era] || []).map(id => ({ id: id, era: Era })));
                     LastEra = Era;
                 }
 
-                OutputList[OutputList.length] = GoodsList[i]['id'];
+                OutputList.push({ id: GoodsList[i]['id'], era: Era });
             }
 
+            let Rows = [];
             for (let i = 0; i < OutputList.length; i++) {
-                let ResourceName = OutputList[i];
+                let ResourceName = OutputList[i]['id'];
+                // resources without goods metadata (e.g. brand-new era resources) would break the whole render
+                if (GoodsData[ResourceName] === undefined) continue;
                 if (RelevantResources[ResourceName]) {
                     let Required = RequiredResources[ResourceName] || 0;
                     let Cumulative = CumulativeResources[ResourceName] || 0;
@@ -663,16 +719,66 @@ let Technologies = {
                     let IsProducible = (ResourceName !== 'strategy_points' && ResourceName !== 'money' && ResourceName !== 'supplies') && ProducibleGoods.has(ResourceName);
                     let IsActive = IsProducible && ActiveProductionGoods.has(ResourceName);
                     let NameClass = IsProducible ? (IsActive ? 'producible-good actively-produced' : 'producible-good') : '';
-                    h.push('<tr' + (IsDone ? ' class="technologies-done"' : '') + '>');
-                    h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
-                    h.push('<td data-text="' + helper.str.cleanup(GoodsData[ResourceName]['name']) + '"' + (NameClass ? ' class="' + NameClass + '"' : '') + '>' + GoodsData[ResourceName]['name'] + '</td>');
-                    h.push('<td data-number="' + Required + '">' + HTML.Format(Required) + '</td>');
+
+                    let r = [];
+                    r.push('<tr' + (IsDone ? ' class="technologies-done"' : '') + '>');
+                    r.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
+                    r.push('<td data-text="' + helper.str.cleanup(GoodsData[ResourceName]['name']) + '"' + (NameClass ? ' class="' + NameClass + '"' : '') + '>' + GoodsData[ResourceName]['name'] + '</td>');
+                    r.push('<td data-number="' + Required + '">' + HTML.Format(Required) + '</td>');
                     if (ShowCumulative) {
-                        h.push('<td data-number="' + Cumulative + '">' + HTML.Format(Cumulative) + '</td>');
+                        r.push('<td data-number="' + Cumulative + '">' + HTML.Format(Cumulative) + '</td>');
                     }
-                    h.push('<td data-number="' + Stock + '">' + HTML.Format(Stock) + '</td>');
-                    h.push('<td data-number="' + Diff + '" class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
-                    h.push('</tr>');
+                    r.push('<td data-number="' + Stock + '">' + HTML.Format(Stock) + '</td>');
+                    r.push('<td data-number="' + Diff + '" class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
+                    r.push('</tr>');
+
+                    // column values for the grouped mode sort, aligned with the column indexes
+                    let SortValues = [null, GoodsData[ResourceName]['name'], Required];
+                    if (ShowCumulative) SortValues.push(Cumulative);
+                    SortValues.push(Stock, Diff);
+
+                    Rows.push({ era: OutputList[i]['era'], html: r.join(''), values: SortValues });
+                }
+            }
+
+            if (Technologies.GroupByEra) {
+                let ColumnCount = (ShowCumulative ? 6 : 5);
+
+                // sort each era block internally, the block order itself stays era by era
+                if (Technologies.SortColumn !== null) {
+                    let Column = Technologies.SortColumn,
+                        Direction = Technologies.SortDirection,
+                        Groups = [];
+                    for (let Row of Rows) {
+                        let LastGroup = Groups[Groups.length - 1];
+                        if (!LastGroup || LastGroup.era !== Row.era) {
+                            Groups.push({ era: Row.era, rows: [Row] });
+                        } else {
+                            LastGroup.rows.push(Row);
+                        }
+                    }
+                    Rows = Groups.flatMap(group =>
+                        group.rows.sort((a, b) => {
+                            let A = a.values[Column], B = b.values[Column];
+                            if (typeof A === 'string') return A.localeCompare(B) * Direction;
+                            return (A - B) * Direction;
+                        })
+                    );
+                }
+
+                LastEra = null;
+                for (let Row of Rows) {
+                    if (Row.era !== null && Row.era !== LastEra) {
+                        let EraID = Technologies.Eras[Row.era];
+                        h.push('<tr class="technologies-era-row"><td colspan="' + ColumnCount + '">' + (EraID !== undefined ? i18n('Eras.' + EraID) : Row.era) + '</td></tr>');
+                        LastEra = Row.era;
+                    }
+                    h.push(Row.html);
+                }
+            }
+            else {
+                for (let Row of Rows) {
+                    h.push(Row.html);
                 }
             }
         }
@@ -725,8 +831,9 @@ let Technologies = {
             Technologies.AllTechnologies[Index]['currentSP'] = Technologies.GetTechFP(Technologies.AllTechnologies[Index]);
         }
 
-        for (let i = 0; i < Technologies.UnlockedTechnologies['inProgressTechnologies'].length; i++) {
-            let InProgTech = Technologies.UnlockedTechnologies['inProgressTechnologies'][i];
+        let InProgressTechs = Technologies.UnlockedTechnologies['inProgressTechnologies'] || [];
+        for (let i = 0; i < InProgressTechs.length; i++) {
+            let InProgTech = InProgressTechs[i];
             let Index = TechDict[InProgTech['tech_id']];
             if (Index === undefined) continue;
             Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];

@@ -4,6 +4,7 @@ const PvPArena = {
     DefenseFights: [],
     LostFights: [],
     LostAttackFights: [],
+    AllLostAttackFights: [],
     StartPvPArenaBackupData: undefined,
 
     activeTable: 'LostAttackFights',
@@ -69,23 +70,48 @@ const PvPArena = {
 
         $('#PvPArenaBody').html(h.join(''));
         $('#PvPArenaBody .sortable-table').tableSorter();
-        $('#PvPArenaBody').on('click', '.toggle-fights', function () {
+        $('#PvPArenaBody').off('click', '.toggle-fights').on('click', '.toggle-fights', function () {
             PvPArena.activeTable = $(this).data('value');
             $(this).parent().siblings().removeClass('active');
             $(this).parent().addClass('active');
-            $('#PvPArenaTable').html(PvPArena.CalcTable())
-            $('#PvPArenaTable .sortable-table').tableSorter();
+            PvPArena.RefreshTable();
+        });
+        $('#PvPArenaBody').off('click', '.delete-lost-fight').on('click', '.delete-lost-fight', function () {
+            PvPArena.HideLostAttackFight($(this).data('index'));
+        });
+        $('#PvPArenaBody').off('click', '.reset-lost-fights').on('click', '.reset-lost-fights', () => {
+            PvPArena.ResetLostAttackFights();
         });
     },
 
+    /**
+     * Re-render the currently active table
+     */
+    RefreshTable: () => {
+        $('#PvPArenaTable').html(PvPArena.CalcTable());
+        $('#PvPArenaTable .sortable-table').tableSorter();
+    },
+
     CalcTable: () => {
+        const deletable = PvPArena.activeTable === 'LostAttackFights';
+
         let h = [];
+
+        if (deletable && PvPArena.LostAttackFights.length > 0) {
+            h.push(`<p class="text-right"><button class="btn btn-default reset-lost-fights">${i18n('Boxes.PvPArena.ResetLostAttackFights')}</button></p>`);
+        }
+
         h.push('<table class="foe-table sortable-table">');
         h.push('<thead>');
         h.push('<tr class="sorter-header">');
         h.push(`<th class="game-cursor no-sort" data-type="fights">${i18n('Boxes.PvPArena.Type')}</th>`);
         h.push(`<th class="game-cursor ascending" data-type="fights">${i18n('Boxes.PvPArena.PlayerName')}</th>`);
         h.push(`<th class="is-number game-cursor text-right" data-type="fights">${i18n('Boxes.PvPArena.Points')}</th>`);
+
+        if (deletable) {
+            h.push('<th class="no-sort" data-type="fights">&nbsp;</th>');
+        }
+
         h.push('</tr>');
         h.push('</thead>');
 
@@ -96,6 +122,11 @@ const PvPArena = {
             h.push(`<td><div class="${PvPArena[PvPArena.activeTable][i].type}"></div></td>`);
             h.push(`<td class="" data-text="${helper.str.cleanup(PvPArena[PvPArena.activeTable][i].playerName)}">${PvPArena[PvPArena.activeTable][i].playerName}</td>`);
             h.push(`<td class="is-number text-right text-${PvPArena[PvPArena.activeTable][i].rankingPointsChange < 0 ? 'danger' : 'success'}" data-number="${PvPArena[PvPArena.activeTable][i].rankingPointsChange}">${PvPArena[PvPArena.activeTable][i].rankingPointsChange}</td>`);
+
+            if (deletable) {
+                h.push(`<td class="text-center"><button class="btn btn-slim btn-delete icon delete-lost-fight" data-index="${i}" title="${i18n('Boxes.PvPArena.DeleteLostAttackFight')}"></button></td>`);
+            }
+
             h.push(`</tr>`)
         }
 
@@ -125,9 +156,58 @@ const PvPArena = {
         PvPArena.LostFights = PvPArena.Fights.filter(fight => fight.rankingPointsChange < 0);
 
         const playersSet = new Set();
-        PvPArena.LostAttackFights = PvPArena.LostFights.filter(fight => fight.type === "attack" && !playersSet.has(fight.playerName) && playersSet.add(fight.playerName));
+        PvPArena.AllLostAttackFights = PvPArena.LostFights.filter(fight => fight.type === "attack" && !playersSet.has(fight.playerName) && playersSet.add(fight.playerName));
+
+        // drop hidden players whose losses no longer appear in the server history
+        const hidden = PvPArena.GetHiddenPlayers().filter(name => playersSet.has(name));
+        PvPArena.SetHiddenPlayers(hidden);
+
+        PvPArena.LostAttackFights = PvPArena.AllLostAttackFights.filter(fight => !hidden.includes(fight.playerName));
 
         PvPArena.Show();
+    },
+
+    /**
+     * Read the list of manually removed players from localStorage
+     *
+     * @returns {string[]}
+     */
+    GetHiddenPlayers: () => JSON.parse(localStorage.getItem(`PvPArenaHiddenLostAttacks-${ExtWorld}`) || '[]'),
+
+    /**
+     * Persist the list of manually removed players
+     *
+     * @param {string[]} names
+     */
+    SetHiddenPlayers: names => {
+        if (names.length > 0) {
+            localStorage.setItem(`PvPArenaHiddenLostAttacks-${ExtWorld}`, JSON.stringify(names));
+        } else {
+            localStorage.removeItem(`PvPArenaHiddenLostAttacks-${ExtWorld}`);
+        }
+    },
+
+    /**
+     * Remove a single entry from the lost attacks tab
+     *
+     * @param {number} index Row index in LostAttackFights
+     */
+    HideLostAttackFight: index => {
+        const fight = PvPArena.LostAttackFights[index];
+        if (!fight) return;
+
+        PvPArena.SetHiddenPlayers([...PvPArena.GetHiddenPlayers(), fight.playerName]);
+        PvPArena.LostAttackFights.splice(index, 1);
+        PvPArena.RefreshTable();
+    },
+
+    /**
+     * Remove all entries from the lost attacks tab
+     */
+    ResetLostAttackFights: () => {
+        PvPArena.SetHiddenPlayers(PvPArena.AllLostAttackFights.map(fight => fight.playerName));
+        PvPArena.LostAttackFights = [];
+        PvPArena.RefreshTable();
     },
 
     /**

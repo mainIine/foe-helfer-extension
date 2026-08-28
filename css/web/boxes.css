@@ -900,6 +900,16 @@ p {
 	background-size: 65%;
 }
 
+[id$=checklist-Btn] span {
+	background-image: url('../../js/web/checklist/images/checklist.png');
+	background-size: auto 60%;
+}
+
+[id$=citySearch-Btn] span {
+	background-image: url('../../js/web/citysearch/images/citysearch.png');
+	background-size: auto 60%;
+}
+
 /* red counter: expired limited buildings in the city */
 .hud-btn #ascended-expired-count {
 	background-color: var(--red);

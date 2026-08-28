@@ -1,5 +1,36 @@
 ## Extension Changelog
 
+##### 4.8.0.0
+**Neu**
+
+- Gebäudesuche: neues Modul — Gebäude per Name suchen (mit Auto-Vervollständigung über die eigene Stadt) und alle Treffer mit goldenen Pfeilen auf der Karte markieren
+- Nachrichten-Checkliste: neues Modul — verwandelt eine Ingame-Nachricht in eine Checkliste zum zeilenweisen Abhaken (z. B. Gilden-Anweisungen), mit Fortschrittsanzeige
+
+**Update**
+
+- Shop Assistent:
+    - Die Anzahl im Inventar wird jetzt fett-gelb hervorgehoben
+    - Bei Fragmenten steht in Klammern, wie viele Gegenstände sich daraus bereits zusammensetzen lassen, darunter ein Fortschrittsbalken bis zum nächsten Gegenstand
+    - Ausverkaufte Angebote bleiben an ihrer Position und werden nur leicht abgeblendet
+- Inventar-Übersicht: Gebäude lassen sich jetzt auch nach Münz-Boost und Vorräte-Boost filtern
+- Forschungskosten: neue Option „Güter nach Zeitalter gruppieren" — mit Era-Überschriften, sortiert wird nur innerhalb des Zeitalters
+- LG-Bonus-Übersicht: Daten lassen sich jetzt als CSV oder JSON exportieren
+- PvP-Arena: Im Tab „verl. Angriffe" können Einträge jetzt einzeln entfernt oder die ganze Liste geleert werden — praktisch nach Niederlagen mit versehentlich falsch gewählten Truppen
+
+**Bugfixes**
+
+- Spielerprofil: Einheitenproduktion (Helm-Symbol) und Chance auf kritische Treffer (Schwert-Symbol) haben jetzt einen Tooltip, der erklärt, was der Wert bedeutet
+- Eigenanteilsrechner: 
+    - Zahlen andere Spieler in dein gerade geöffnetes LG ein, aktualisiert sich die Box jetzt sofort (Fortschritt, Mäzen-FP und Restbetrag) — bisher blieb die Anzeige stehen, bis das LG neu geöffnet wurde. Wer auf welchem Platz gelandet ist, verrät das Spiel dabei nicht; dafür das LG kurz neu öffnen
+- Effizienz-Bewertung & Inventar-Übersicht: FP- und Güter-Boost von Set-Gebäuden zählen jetzt auch die Verbindungsboni mit — bisher wurde nur die erste Boost-Quelle gewertet
+- LG-Rechner: Negative %-Boosts lassen sich wieder eingeben — sowohl direkt als auch als eigene Prozent-Buttons in den Einstellungen
+- Notizen: Beim erneuten Öffnen und nach dem Anlegen einer neuen Seite wird wieder die zuletzt genutzte Seite angezeigt statt immer der ersten
+- Forschungskosten: Fenster öffnet nicht mehr leer seit dem Stellar Age
+- Spielerprofil: tägliche Güterproduktion wird nach dem Aufstieg ins Stellar Age wieder aufsummiert
+- Fremde Spielerprofile: Werte hängen nicht mehr davon ab, welche Felder in der Effizienzbewertung aktiviert sind — keine „NaN"-Anzeigen mehr
+
+---
+
 ##### 4.7.2.1
 **Bugfixes**
 
