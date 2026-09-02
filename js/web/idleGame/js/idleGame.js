@@ -17,63 +17,13 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		return;
 	}
 
-	idleGame.event = data.responseData.context;
-	idleGame.selectEventData();
-
-	if (!idleGame.settings.Strategy) idleGame.settings.Strategy = {};
-	if (!idleGame.settings.Strategy[idleGame.event]) idleGame.settings.Strategy[idleGame.event] = {};
-	if (idleGame.settings.currentEvent !== idleGame.event) {
-		idleGame.settings.Strategy.CurrentVariant = 0;
-		idleGame.settings.currentEvent = idleGame.event;
+	// The idle_game metadata normally arrives with the startup batch — if it is
+	// still missing, keep the state and apply it as soon as the meta handler fires
+	if (!idleGame.meta) {
+		idleGame.pendingState = data.responseData;
+		return;
 	}
-
-	// Don't create a new box while another one is still open
-	if ($('#idleGameDialog').length === 0) {
-		idleGame.ShowDialog();
-	}
-
-	for (const building of Object.values(idleGame.data)) {
-		Object.assign(building, { level: 0, manager: 0, production: 0, degree: 0, next: 0, need: 0, ndegree: 0 });
-	}
-
-	for (const character of Object.values(data.responseData.characters)) {
-		idleGame.data[character.id].level = character.level || 0;
-		idleGame.data[character.id].manager = character.managerLevel || 0;
-	}
-
-	idleGame.Tasklist = data.responseData.taskHandler.taskOrder;
-
-	for (const taskId of Object.values(data.responseData.taskHandler.completedTasks)) {
-		const index = idleGame.Tasklist.indexOf(taskId);
-		if (index > -1) {
-			idleGame.Tasklist.splice(index, 1);
-		}
-	}
-
-	idleGame.Progress = Number(data.responseData.idleCurrencyAmount.value) || 0;
-	idleGame.ProgressDegree = Number(data.responseData.idleCurrencyAmount.degree) || 0;
-
-	for (const task of data.responseData.taskHandler.inProgressTasks || []) {
-		idleGame.Taskprogress[task.id] = { value: task.currentProgress.value || 0, degree: task.currentProgress.degree || 0 };
-	}
-
-	if (data.responseData.stage) {
-		idleGame.Stage = data.responseData.stage;
-		idleGame.Variant = (idleGame.Stage - 1) % 3 + 1;
-		if (!idleGame.settings.Strategy.CurrentVariant) idleGame.settings.Strategy.CurrentVariant = 0;
-		if (idleGame.Variant !== idleGame.settings.Strategy.CurrentVariant) {
-			idleGame.settings.Strategy.CurrentVariant = idleGame.Variant;
-			if (!idleGame.strategy()) idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = [];
-			for (const step of idleGame.strategy()) {
-				step.check = false;
-			}
-			idleGame.settings.targets = idleGame.defaultTargets();
-			idleGame.saveSettings();
-		}
-		if (!idleGame.strategy()) idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = [];
-	}
-
-	idleGame.idleGameUpdateDialog();
+	idleGame.applyState(data.responseData);
 });
 
 FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
@@ -104,6 +54,11 @@ FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
 
 FoEproxy.addMetaHandler('idle_game', (data, postData) => {
 	idleGame.meta = JSON.parse(data['response']);
+	if (idleGame.pendingState) {
+		const state = idleGame.pendingState;
+		idleGame.pendingState = null;
+		idleGame.applyState(state);
+	}
 });
 
 
@@ -210,6 +165,343 @@ const idleGame = {
 			degree += 1;
 		}
 		return [value, degree];
+	},
+
+
+	/**
+	 * Adopts a full IdleGameService.getState response (levels, managers, tasks, currency, stage)
+	 *
+	 * @param {Object} state responseData of getState
+	 * @returns {void}
+	 */
+	applyState: (state) => {
+		idleGame.event = state.context;
+		idleGame.selectEventData();
+
+		if (!idleGame.settings.Strategy) idleGame.settings.Strategy = {};
+		if (!idleGame.settings.Strategy[idleGame.event]) idleGame.settings.Strategy[idleGame.event] = {};
+		if (idleGame.settings.currentEvent !== idleGame.event) {
+			idleGame.settings.Strategy.CurrentVariant = 0;
+			idleGame.settings.currentEvent = idleGame.event;
+		}
+
+		// Don't create a new box while another one is still open
+		if ($('#idleGameDialog').length === 0) {
+			idleGame.ShowDialog();
+		}
+
+		for (const building of Object.values(idleGame.data)) {
+			Object.assign(building, { level: 0, manager: 0, production: 0, degree: 0, next: 0, need: 0, ndegree: 0 });
+		}
+
+		for (const character of Object.values(state.characters)) {
+			idleGame.data[character.id].level = character.level || 0;
+			idleGame.data[character.id].manager = character.managerLevel || 0;
+		}
+
+		idleGame.Tasklist = state.taskHandler.taskOrder;
+
+		for (const taskId of Object.values(state.taskHandler.completedTasks)) {
+			const index = idleGame.Tasklist.indexOf(taskId);
+			if (index > -1) {
+				idleGame.Tasklist.splice(index, 1);
+			}
+		}
+
+		idleGame.Progress = Number(state.idleCurrencyAmount.value) || 0;
+		idleGame.ProgressDegree = Number(state.idleCurrencyAmount.degree) || 0;
+
+		for (const task of state.taskHandler.inProgressTasks || []) {
+			idleGame.Taskprogress[task.id] = { value: task.currentProgress.value || 0, degree: task.currentProgress.degree || 0 };
+		}
+
+		if (state.stage) {
+			idleGame.Stage = state.stage;
+			idleGame.Variant = (idleGame.Stage - 1) % 3 + 1;
+			if (!idleGame.settings.Strategy.CurrentVariant) idleGame.settings.Strategy.CurrentVariant = 0;
+			if (idleGame.Variant !== idleGame.settings.Strategy.CurrentVariant) {
+				idleGame.settings.Strategy.CurrentVariant = idleGame.Variant;
+				if (!idleGame.strategy()) idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = [];
+				for (const step of idleGame.strategy()) {
+					step.check = false;
+				}
+				idleGame.settings.targets = idleGame.defaultTargets();
+				idleGame.saveSettings();
+			}
+			if (!idleGame.strategy()) idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = [];
+		}
+
+		idleGame.idleGameUpdateDialog();
+	},
+
+
+	/**
+	 * 1:1 port of the game's IdleGameNumber (value 1-999 plus a thousands degree).
+	 * Every operation re-fits the degree AND rounds: to 6 decimals whenever the
+	 * degree changes and to a whole number while the degree is 0 — this is why
+	 * +20 % on a level-1 factory yields nothing (1 × 1.2 → 1) and why upgrade
+	 * costs are whole coins early on.
+	 */
+	Num: class {
+		/**
+		 * @param {number} [value]
+		 * @param {number} [degree]
+		 */
+		constructor(value, degree) {
+			this.value = 0;
+			this.degree = 0;
+			this.set(value || 0, degree || 0);
+		}
+
+		/**
+		 * @param {number} value
+		 * @param {number} [degree]
+		 * @returns {this}
+		 */
+		set(value, degree) {
+			this.value = value;
+			this.degree = degree || 0;
+			this.fit();
+			return this;
+		}
+
+		/**
+		 * @param {number} degree
+		 * @returns {number} value expressed at the given degree
+		 */
+		valueFor(degree) {
+			return this.value * Math.pow(1000, this.degree - degree);
+		}
+
+		/**
+		 * @param {idleGame.Num} n
+		 * @returns {this}
+		 */
+		add(n) {
+			const d = Math.max(n.degree, this.degree) | 0;
+			this.value = this.valueFor(d) + n.valueFor(d);
+			this.degree = d;
+			this.fit();
+			return this;
+		}
+
+		/**
+		 * @param {idleGame.Num} n
+		 * @returns {this}
+		 */
+		subtract(n) {
+			const d = Math.max(n.degree, this.degree) | 0;
+			this.value = this.valueFor(d) - n.valueFor(d);
+			this.degree = d;
+			this.fit();
+			return this;
+		}
+
+		/**
+		 * multiplyByNativeNumber
+		 *
+		 * @param {number} x
+		 * @returns {this}
+		 */
+		mul(x) {
+			this.value *= x;
+			this.fit();
+			return this;
+		}
+
+		/**
+		 * @param {idleGame.Num} n
+		 * @returns {boolean}
+		 */
+		gt(n) {
+			return this.degree !== n.degree ? this.degree > n.degree : this.value > n.value;
+		}
+
+		/**
+		 * @returns {number} plain float
+		 */
+		toFloat() {
+			return this.value * Math.pow(1000, this.degree);
+		}
+
+		/**
+		 * _adjustDegreeToBestFit of the game
+		 *
+		 * @returns {void}
+		 */
+		fit() {
+			if (this.value === 0) {
+				this.degree = 0;
+				return;
+			}
+			let a = Math.abs(this.value);
+			if (a >= 1000) {
+				this.toDegree(this.degree + (Math.log(a) / Math.log(1000) | 0));
+			} else {
+				while (a < 1 && this.degree > 0) {
+					this.toDegree(this.degree - 1);
+					a = Math.abs(this.value);
+				}
+			}
+			if (this.degree === 0) this.value = Math.round(this.value);
+		}
+
+		/**
+		 * _adjustToDegree of the game (6 decimals, rounded)
+		 *
+		 * @param {number} d
+		 * @returns {void}
+		 */
+		toDegree(d) {
+			this.value = Math.round(this.value * Math.pow(1000, this.degree - d) * 1e6) / 1e6;
+			this.degree = d;
+			if (this.degree < 0) {
+				this.value = 0;
+				this.degree = 0;
+			}
+		}
+	},
+
+
+	/**
+	 * Array or object values of a meta list (the JSON delivers both forms)
+	 *
+	 * @param {Array|Object} x
+	 * @returns {Array}
+	 */
+	list: (x) => Array.isArray(x) ? x : Object.values(x || {}),
+
+
+	/**
+	 * Rank bonus production modifier (IdleGameCharacter._getRankBonusProductionModifier):
+	 * every reached rank threshold, then the endless rank every N levels
+	 *
+	 * @param {Object} base meta character
+	 * @param {number} level
+	 * @returns {number} multiplier
+	 */
+	rankModifier: (base, level) => {
+		const levels = idleGame.list(base.rankProductionLevels);
+		const mods = idleGame.list(base.rankProductionModifiers);
+		let c = 1;
+		for (let i = 0; i < levels.length; i++) {
+			if (level >= levels[i]) c *= 1 + (mods[i] || 0);
+			else break;
+		}
+		const step = base.rankProductionEndlessLevel || 0;
+		if (step > 0) {
+			for (let a = (levels.length ? levels[levels.length - 1] : 0) + step; level >= a; a += step) {
+				c *= 1 + (base.rankProductionEndlessModifier || 0);
+			}
+		}
+		return c;
+	},
+
+
+	/**
+	 * First level of the NEXT rank (IdleGameCharacter._buildCachedLevelProgress)
+	 *
+	 * @param {Object} base meta character
+	 * @param {number} level
+	 * @returns {number}
+	 */
+	nextRank: (base, level) => {
+		const levels = idleGame.list(base.rankProductionLevels);
+		const step = base.rankProductionEndlessLevel || 0;
+		let d = 0, start = 0, next = 0;
+		for (const g of levels) {
+			d = g;
+			if (level >= g) start = g;
+			next = g;
+			if (start !== next) break;
+		}
+		if (start === next) {
+			d = (levels.length ? levels[levels.length - 1] : 0) + step;
+			if (level >= d) start = d;
+			next = d;
+		}
+		if (step <= 0) return start === next ? level + 1 : next;
+		while (start === next) {
+			d += step;
+			if (level >= d) start = d;
+			next = d;
+		}
+		return next;
+	},
+
+
+	/**
+	 * Active manager bonuses summed per type (IdleGameCharacter._getActiveBonuses):
+	 * every bonus whose level is reached counts, whatever the list order
+	 *
+	 * @param {Object} base meta character
+	 * @param {number} manager manager level
+	 * @returns {{production?: number, speed?: number}}
+	 */
+	bonuses: (base, manager) => {
+		const out = {};
+		for (const b of idleGame.list(base.bonuses)) {
+			if (b.level > manager) continue;
+			out[b.type] = (out[b.type] || 0) + (b.amount || 0);
+		}
+		return out;
+	},
+
+
+	/**
+	 * Amount produced per cycle (IdleGameFormulas.updateCharacterMaxProduceAmount):
+	 * base × level × productionGrowthRate × (1 + production bonus) × rank modifier,
+	 * each factor applied through IdleGameNumber (rounded after every step)
+	 *
+	 * @param {Object} base meta character
+	 * @param {number} level
+	 * @param {number} manager manager level
+	 * @returns {idleGame.Num}
+	 */
+	produce: (base, level, manager) => {
+		const n = new idleGame.Num(base.baseProductionValue, base.baseProductionDegree || 0);
+		n.mul(level);
+		const growth = Number(base.productionGrowthRate);
+		n.mul(isFinite(growth) && growth > 0 ? growth : 1);
+		const b = idleGame.bonuses(base, manager);
+		if (b.production) n.mul(1 + b.production);
+		n.mul(idleGame.rankModifier(base, level));
+		return n;
+	},
+
+
+	/**
+	 * Cost of the upgrade level → level+1 (IdleGameFormulas.updateCharacterUpgradeCost):
+	 * base × growth^(level-1), multiplied in chunks of 50 like the game
+	 *
+	 * @param {Object} base meta character
+	 * @param {number} level current level (≥ 1)
+	 * @returns {idleGame.Num}
+	 */
+	levelCost: (base, level) => {
+		const b = level - 1;
+		const n = new idleGame.Num(base.baseUpgradeCostValue, base.baseUpgradeCostDegree || 0);
+		const g = base.upgradeCostGrowthRate;
+		const chunks = Math.floor(b / 50);
+		const big = Math.pow(g, 50);
+		for (let i = 0; i < chunks; i++) n.mul(big);
+		n.mul(Math.pow(g, b % 50));
+		return n;
+	},
+
+
+	/**
+	 * Total cost of the upgrades from → to, summed level by level like the MAX purchase
+	 *
+	 * @param {Object} base meta character
+	 * @param {number} from
+	 * @param {number} to
+	 * @returns {idleGame.Num}
+	 */
+	rangeCost: (base, from, to) => {
+		const total = new idleGame.Num();
+		for (let u = from; u < to; u++) total.add(idleGame.levelCost(base, u));
+		return total;
 	},
 
 
@@ -514,6 +806,7 @@ const idleGame = {
 
 	/**
 	 * Calculates the hourly production and the cost of the next upgrade for one building
+	 * — exact port of the game's IdleGameCharacter/IdleGameFormulas math (see idleGame.Num)
 	 *
 	 * @param {Object} building entry of idleGame.data (mutated in place)
 	 * @returns {Object} the same building object
@@ -522,58 +815,30 @@ const idleGame = {
 		const base = building.baseData;
 
 		if (building.level === 0) {
+			const buy = new idleGame.Num(base.buyCostValue, base.buyCostDegree || 0);
 			building.next = 1;
-			building.need = base.buyCostValue;
-			building.ndegree = base.buyCostDegree || 0;
-			if (building.need >= 1000 && building.ndegree < 6) {
-				building.need /= 1000;
-				building.ndegree += 1;
-			}
+			building.need = buy.value;
+			building.ndegree = buy.degree;
 			return building;
 		}
 
-		let p = base.baseProductionValue * building.level;
-		let d = base.baseProductionDegree || 0;
-		[p, d] = idleGame.normalize(p, d);
-
-		// Apply all rank modifiers already reached; x = first level of the next rank
-		let x = 0;
-		for (const [rank, rankLevel] of Object.entries(base.rankProductionLevels)) {
-			x = rankLevel;
-			if (x > building.level) break;
-			p *= base.rankProductionModifiers[rank] + 1;
-		}
-		[p, d] = idleGame.normalize(p, d);
-
-		while (building.level >= x) {
-			x += base.rankProductionEndlessLevel;
-			if (building.level >= x) {
-				p *= base.rankProductionEndlessModifier + 1;
-			}
-		}
-
+		// First level of the next rank — or the user's own target when above the level
+		let x = idleGame.nextRank(base, building.level);
 		if (idleGame.settings.targets[base.id] > building.level) {
 			x = idleGame.settings.targets[base.id];
 		}
 		building.next = x;
 
-		let need = 0;
-		for (let i = building.level; i < x; i++) {
-			need += Math.pow(base.upgradeCostGrowthRate, i - 1) * base.baseUpgradeCostValue;
-		}
-		[building.need, building.ndegree] = idleGame.normalize(need, base.baseUpgradeCostDegree || 0);
+		const need = idleGame.rangeCost(base, building.level, x);
+		building.need = need.value;
+		building.ndegree = need.degree;
 
-		let pbonus = 0;
-		let tbonus = 0;
-		for (const bonus of Object.values(base.bonuses)) {
-			if (building.manager < bonus.level) break;
-			if (bonus.type === 'production') pbonus += bonus.amount;
-			else if (bonus.type === 'speed') tbonus += bonus.amount;
-		}
+		// Coins per cycle (whole coins while below 1K) and the cycle time incl. speed bonus
+		const amount = idleGame.produce(base, building.level, building.manager);
+		const bonus = idleGame.bonuses(base, building.manager);
+		const cycle = (base.productionDuration + base.rechargeDuration) * (bonus.speed ? 1 / (1 + bonus.speed) : 1);
 
-		p *= 1 + pbonus;
-		p *= 3600 / ((base.productionDuration + base.rechargeDuration) / (1 + tbonus));
-		[p, d] = idleGame.normalize(p, d);
+		const [p, d] = idleGame.normalize(amount.toFloat() * 3600 / cycle, 0);
 
 		building.production = building.manager > 0 ? p : 0;
 		building.degree = building.manager > 0 ? d : 0;
