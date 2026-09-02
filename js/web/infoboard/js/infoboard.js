@@ -606,7 +606,7 @@ let Info = {
                 EntityID = Entity['id'],
                 EraName = EraName = GreatBuildings.GetEraName(EntityID),
                 Era = Technologies.Eras[EraName],
-                P1 = GreatBuildings.Rewards[Era][d['level']-1],
+                P1 = GreatBuildings.GetP1(Era, d['level']-1) || 0,
                 FPRewards = GreatBuildings.GetMaezen(P1, MainParser.ArkBonus);
 
                 newFP = FPRewards[d['rank'] - 1];

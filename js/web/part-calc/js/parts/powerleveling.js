@@ -120,7 +120,7 @@ Object.assign(Parts, {
 			EraName = GreatBuildings.GetEraName(EntityID),
 			Era = Technologies.Eras[EraName],
 			StartLevel = Parts.PowerLevelingStartLevel,
-			EndLevel = (GreatBuildings.Rewards[Era] ? Math.min(Parts.PowerLevelingEndLevel, GreatBuildings.Rewards[Era].length) : 0);
+			EndLevel = Math.min(Parts.PowerLevelingEndLevel, GreatBuildings.GetP1MaxLevel(Era));
 
 		// Limit minimum value for the power leveling range
 		StartLevel = StartLevel < 0 ? 0 : StartLevel;
@@ -149,8 +149,9 @@ Object.assign(Parts, {
 
 			// How many FPs are needed for each spot.
 			// For non-current levels, calculate the FPs for each spot...
-			if (i != Parts.Level) {
-				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.Rewards[Era][i], Parts.ArcPercents)
+			// (the live values are also unusable when no level is open, e.g. a locked rework level)
+			if (i != Parts.Level || !Number.isFinite(Parts.RemainingOwnPart)) {
+				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.GetP1(Era, i), Parts.ArcPercents)
 
 				EigenBruttos[i] = Totals[i] - Places[i][0] - Places[i][1] - Places[i][2] - Places[i][3] - Places[i][4]
 			}
@@ -189,7 +190,8 @@ Object.assign(Parts, {
 			EndLevel,
 			EigenBruttos,
 			DoubleCollections,
-			EigenNettos
+			EigenNettos,
+			IsEstimated: !GreatBuildings.Rewards[Era]
 		};
 	},
 
@@ -279,6 +281,7 @@ Object.assign(Parts, {
 			OwnPartSum,
 			StartLevel,
 			EndLevel,
+			IsEstimated,
 		} = Parts.PowerLevelingData;
 
 		let h = [];
@@ -290,6 +293,9 @@ Object.assign(Parts, {
 		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.EndLevel') + ': <input type="number" id="endLevel" step="1" min=10" max="1000" value="' + EndLevel + '"></div>');
 		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong class="info" id="PowerLevelingBoxOwnPartSum">'+ HTML.Format(MainParser.round(OwnPartSum)) + '</strong></div>')
 		h.push('</div>');
+		if (IsEstimated) {
+			h.push('<div class="text-center" style="margin-top:5px;"><em>' + i18n('Boxes.PowerLeveling.Estimated') + '</em></div>');
+		}
 		h.push('</div>');
 
 		h.push('<table class="foe-table">');

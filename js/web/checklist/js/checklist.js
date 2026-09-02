@@ -104,6 +104,9 @@ let Checklist = {
 	/** @type {Object<string,boolean>} conversation id => picker group expanded (session only) */
 	Expanded: {},
 
+	/** @type {Object<string,string>} conversation id => title of a thread excluded from the checklist */
+	Ignored: {},
+
 
 	/**
 	 * Menu button: opens the box (or closes an already open one).
@@ -145,7 +148,7 @@ let Checklist = {
 	 * @param {number|string|undefined} conversationId id of the opened thread
 	 */
 	HandleThreadOpened: (conversationId) => {
-		if (conversationId === undefined) return;
+		if (conversationId === undefined || Checklist.Ignored[String(conversationId)]) return;
 
 		Checklist.ActiveThread = String(conversationId);
 		Checklist.Expanded[Checklist.ActiveThread] = true;
@@ -169,6 +172,10 @@ let Checklist = {
 		$('#checklistBody').append(
 			$('<div />').attr('id', 'checklistTopbar'),
 			$('<div />').attr('id', 'checklistInner')
+				.on('click', '.thread-ignore', (e) => {
+					e.stopPropagation();
+					Checklist.IgnoreThread(String($(e.currentTarget).data('cid')));
+				})
 				.on('click', '.thread-head', (e) => {
 					const cid = String($(e.currentTarget).data('cid'));
 					Checklist.Expanded[cid] = !Checklist.IsExpanded(cid);
@@ -215,6 +222,8 @@ let Checklist = {
 		if (!msg || conversationId === undefined || msg['id'] === undefined) return;
 
 		const cid = String(conversationId);
+		if (Checklist.Ignored[cid]) return;
+
 		const key = cid + '-' + msg['id'];
 		const group = Checklist.Groups[cid] || {cid: cid, title: '', messages: []};
 
@@ -416,18 +425,41 @@ let Checklist = {
 
 
 	/**
-	 * Settings panel (gear icon).
+	 * Settings panel (gear icon). Every control persists immediately, so no
+	 * change gets lost when the panel is closed without an extra save click.
 	 */
 	ShowSettings: () => {
-		const h = [];
+		const box = $('#checklistSettingsBox').empty();
 
-		h.push(`<p><input id="checklistAutoOpen" type="checkbox" class="game-cursor"${Checklist.AutoOpen ? ' checked' : ''}>
-			<label for="checklistAutoOpen">${i18n('Boxes.Checklist.AutoOpen')}</label></p>`);
+		box.append($('<p />').append(
+			$('<input />').attr({id: 'checklistAutoOpen', type: 'checkbox', class: 'game-cursor'})
+				.prop('checked', Checklist.AutoOpen)
+				.on('change', function () {
+					Checklist.AutoOpen = this.checked;
+					localStorage.setItem('ChecklistAutoOpen', String(Checklist.AutoOpen));
+				}),
+			$('<label />').attr('for', 'checklistAutoOpen').text(i18n('Boxes.Checklist.AutoOpen'))
+		));
 
-		h.push(`<p><button onclick="Checklist.ClearMessages()" class="btn" style="width:100%">${i18n('Boxes.Checklist.Clear')}</button></p>`);
-		h.push(`<button onclick="Checklist.SaveSettings()" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button>`);
+		const ignored = Object.entries(Checklist.Ignored);
+		if (ignored.length > 0) {
+			box.append($('<p />').addClass('ignored-head').text(i18n('Boxes.Checklist.HiddenThreads')));
 
-		$('#checklistSettingsBox').html(h.join(''));
+			for (const [cid, title] of ignored) {
+				box.append($('<p />').addClass('ignored-row').append(
+					$('<button />').attr('class', 'btn btn-slim game-cursor')
+						.text(i18n('Boxes.Checklist.RestoreThread'))
+						.on('click', () => Checklist.UnignoreThread(cid)),
+					$('<span />').text(title)
+				));
+			}
+		}
+
+		box.append($('<p />').append(
+			$('<button />').attr('class', 'btn game-cursor').css('width', '100%')
+				.text(i18n('Boxes.Checklist.Clear'))
+				.on('click', () => Checklist.ClearMessages())
+		));
 	},
 
 
@@ -445,12 +477,30 @@ let Checklist = {
 
 
 	/**
-	 * Stores the settings panel values.
+	 * Excludes a thread from the checklist: removes its group and skips all
+	 * future captures until it is restored via the settings panel.
+	 * @param {string} cid conversation id
 	 */
-	SaveSettings: () => {
-		Checklist.AutoOpen = $('#checklistAutoOpen').is(':checked');
-		localStorage.setItem('ChecklistAutoOpen', String(Checklist.AutoOpen));
-		$('#checklistSettingsBox').remove();
+	IgnoreThread: (cid) => {
+		const group = Checklist.Groups[cid];
+
+		// always store a non-empty title: the capture guards test it for truthiness
+		Checklist.Ignored[cid] = group?.title || group?.messages[0]?.sender || ('#' + cid);
+
+		delete Checklist.Groups[cid];
+		delete Checklist.Expanded[cid];
+		Checklist.Sync();
+	},
+
+
+	/**
+	 * Lets an excluded thread reappear (new messages get captured again).
+	 * @param {string} cid conversation id
+	 */
+	UnignoreThread: (cid) => {
+		delete Checklist.Ignored[cid];
+		Checklist.Save();
+		Checklist.ShowSettings();
 	},
 
 
@@ -474,6 +524,7 @@ let Checklist = {
 			if (time) {
 				rows.push(`<em class="thread-time">${moment(time).format('L LT')}</em>`);
 			}
+			rows.push(`<span class="thread-ignore${time ? '' : ' no-time'}" data-cid="${group.cid}" title="${i18n('Boxes.Checklist.HideThread')}">✕</span>`);
 			rows.push('</div>');
 
 			if (expanded) {
@@ -568,7 +619,8 @@ let Checklist = {
 			groups: Checklist.Groups,
 			checked: Checklist.Checked,
 			currentKey: Checklist.CurrentKey,
-			seq: Checklist.Seq
+			seq: Checklist.Seq,
+			ignored: Checklist.Ignored
 		}));
 	},
 
@@ -585,8 +637,10 @@ let Checklist = {
 		try {
 			const stored = JSON.parse(localStorage.getItem('ChecklistData') || '{}');
 
+			Checklist.Ignored = stored.ignored || {};
+
 			for (const [cid, group] of Object.entries(stored.groups || {})) {
-				if (Array.isArray(group?.messages)) Checklist.Groups[cid] = group;
+				if (Array.isArray(group?.messages) && !Checklist.Ignored[cid]) Checklist.Groups[cid] = group;
 			}
 
 			// migrate the flat message list of the previous format into groups

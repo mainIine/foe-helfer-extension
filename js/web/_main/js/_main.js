@@ -1129,7 +1129,11 @@ let MainParser = {
 	 *   - `MainParser.Inactives.check()`: Performs post-processing checks for inactive entities.
 	 *
 	 * The function ensures robust error handling, timeout management for HTTP requests, and retries
-	 * to handle occasional network failures. Metadata updates are written back to IndexDB in bulk.
+	 * to handle occasional network failures. Downloaded metadata is written back to IndexDB in chunks,
+	 * so an interrupted first start resumes from the cache instead of downloading everything again.
+	 * While a larger batch has to be downloaded (first start after installation, big game updates)
+	 * `MainParser.MetaLoader` shows a progress indicator, because the helper cannot start before
+	 * the metadata is complete.
 	 */
 	CityEntityBuilder: async (buildingUrls) => {
 		let buildingsOld = {};
@@ -1150,6 +1154,23 @@ let MainParser = {
 		const maxConcurrent = 10; // z.B. 10 gleichzeitige Requests
 		let active = 0;
 		let index = 0;
+		let done = 0;
+
+		// show the startup indicator only when a noticeable amount has to be downloaded
+		const toFetch = ids.filter(id => !(buildingsOld[id] && buildingsOld[id].hash === buildingUrls[id].hash)).length;
+		if (toFetch >= MainParser.MetaLoader.minDownloads) MainParser.MetaLoader.show(toFetch);
+
+		// persist finished downloads in chunks so a page reload during the first
+		// start continues from the cache instead of starting over
+		async function persistUpdated() {
+			if (!dbAvailable || updated.length === 0) return;
+			const chunk = updated.splice(0);
+			try {
+				await IndexDB.db.buildingMeta.bulkPut(chunk);
+			} catch (e) {
+				console.warn('Could not persist building metadata cache', e);
+			}
+		}
 
 		// fallback: reuse the last cached version (even with an outdated hash) so a
 		// failed download does not leave a hole in MainParser.CityEntities
@@ -1178,6 +1199,7 @@ let MainParser = {
 							try {
 								Metadata[id] = JSON.parse(xhr.responseText);
 								updated.push({ id: id, hash: meta.hash, json: xhr.responseText });
+								if (updated.length >= 200) persistUpdated();
 							} catch (e) { useCachedMeta(id); }
 							resolve();
 						} else if (retries > 0) {
@@ -1216,6 +1238,7 @@ let MainParser = {
 					active++;
 					fetchMeta(id, meta).then(() => {
 						active--;
+						MainParser.MetaLoader.update(++done);
 						runNext();
 					});
 				}
@@ -1231,13 +1254,8 @@ let MainParser = {
 			checkDone();
 		});
 
-		if (dbAvailable && updated.length > 0) {
-			try {
-				await IndexDB.db.buildingMeta.bulkPut(updated);
-			} catch (e) {
-				console.warn('Could not persist building metadata cache', e);
-			}
-		}
+		await persistUpdated();
+		MainParser.MetaLoader.hide();
 
 		// drop entities that could not be loaded at all — a missing key is handled
 		// downstream, a null entry is not
@@ -1248,6 +1266,76 @@ let MainParser = {
 		MainParser.CityEntities = Metadata;
 		MainParser.correctBuildingType();
 		MainParser.Inactives.check();
+	},
+
+
+	/**
+	 * Progress indicator (bottom right) shown while a larger batch of building metadata
+	 * is downloaded, e.g. on the very first start after installation.
+	 * The helper cannot start before the metadata is complete, so the player should see
+	 * that the extension is working instead of an apparently dead helper.
+	 */
+	MetaLoader: {
+		/** @type {number} minimum number of downloads before the indicator is shown */
+		minDownloads: 50,
+		/** @type {HTMLElement|null} */
+		el: null,
+		total: 0,
+		done: 0,
+		finished: false,
+
+		/**
+		 * Renders the indicator; waits briefly for translations and falls back to English
+		 *
+		 * @param {number} total number of files that have to be downloaded
+		 */
+		show: async (total) => {
+			const L = MainParser.MetaLoader;
+			L.total = total;
+			await Promise.race([i18n_loadPromise, new Promise(resolve => setTimeout(resolve, 3000))]);
+			if (L.el || L.finished) return;
+
+			const t = (key, fallback) => i18n_loaded ? i18n(key) : fallback;
+			const menu = (localStorage.getItem('SelectedMenu') || 'RightBar').toLowerCase();
+			const el = document.createElement('div');
+			el.id = 'foeh-meta-loader';
+			el.className = 'menu-' + menu;
+			el.innerHTML = `<div class="loadericon"></div>
+				<div class="text">
+					<strong>${t('Menu.MetaLoader.Title', 'Preparing FoE Helper')}</strong>
+					<span>${t('Menu.MetaLoader.Desc', 'The building database is being built. This is only needed on the first start or after game updates – the helper starts automatically afterwards.')}</span>
+					<div class="bar"><div class="fill"></div></div>
+					<span class="count"></span>
+				</div>`;
+			document.body.appendChild(el);
+			L.el = el;
+			L.update(L.done);
+		},
+
+		/**
+		 * Updates bar and counter
+		 *
+		 * @param {number} done number of finished downloads
+		 */
+		update: (done) => {
+			const L = MainParser.MetaLoader;
+			L.done = done;
+			if (!L.el) return;
+			const current = Math.min(done, L.total);
+			L.el.querySelector('.fill').style.width = (L.total ? current / L.total * 100 : 0) + '%';
+			L.el.querySelector('.count').textContent = `${current} / ${L.total}`;
+		},
+
+		/** Fades the indicator out and removes it */
+		hide: () => {
+			const L = MainParser.MetaLoader;
+			L.finished = true;
+			if (!L.el) return;
+			const el = L.el;
+			L.el = null;
+			el.classList.add('done');
+			setTimeout(() => el.remove(), 700);
+		}
 	},
 
 

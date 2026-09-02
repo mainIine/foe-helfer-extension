@@ -1,5 +1,21 @@
 ## Extension Changelog
 
+##### 4.8.1.0
+**Update**
+
+- Building search: buildings can now also be found by size — the dropdown next to the name field lists every footprint (width × length in tiles) that exists in your city and marks all buildings of that size
+- Message checklist: single threads can now be hidden from the list with the ✕ next to the thread — hidden threads can be restored in the settings
+- GB calculator & power leveling: the patron value tables of all eras have been extended considerably from globally collected live data (up to level 500 depending on the era) — power leveling can now be planned for much higher levels
+- GB calculator & shop assistant: automatic opening is now enabled by default — it can be switched off in the settings of the respective box
+- First start: while the building database is being built (only after installation or big game updates) an indicator in the bottom right shows the progress — reloading in between no longer discards what was already loaded
+
+**Bugfixes**
+
+- Message checklist: changes in the settings (e.g. disabling the automatic opening) take effect immediately and no longer get lost without a click on save
+- Power leveling: the box stayed empty for the new Stellar Age great building — its patron values are now included up to level 251, higher levels and future eras are calculated automatically (accurate to ±5 FP, with a note in the box), and the display also works while no level is unlocked
+
+---
+
 ##### 4.8.0.0
 **New**
 

@@ -37,6 +37,12 @@
 	padding: 3px 6px;
 }
 
+#citysearch #citysearchSize {
+	flex: 0 0 auto;
+	max-width: 80px;
+	padding: 2px 3px;
+}
+
 #citysearch #citysearchGo {
 	flex: 0 0 auto;
 	display: flex;

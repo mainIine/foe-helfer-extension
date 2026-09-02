@@ -2789,3 +2789,68 @@ tr.sorter-header.sort2 th.ascending:before, tr.sorter-header.sort2 th.descending
 .unit_skill.unit::before {background-position: calc(-96px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
 .unit_skill.unit_ability_dug_in::before {background-position: calc(-120px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
 .unit_skill.random::before {background-image: url('../../js/web/x_img/random.webp'); background-size: contain; } /* todo */
+
+/* startup indicator while building metadata is downloaded (first start / big game updates) */
+#foeh-meta-loader {
+	position: fixed;
+	right: 17px;
+	bottom: 13px;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 340px;
+	padding: 10px 14px;
+	background: var(--text-darkest);
+	border: 1px solid var(--border-tab);
+	border-radius: 4px;
+	color: var(--text-btn);
+	font: 13px/1.4 sans-serif;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, .6);
+	transition: opacity .6s;
+}
+
+#foeh-meta-loader.menu-rightbar { right: 80px; }
+#foeh-meta-loader.menu-bottombar { bottom: 60px; }
+#foeh-meta-loader.done { opacity: 0; }
+
+#foeh-meta-loader .loadericon {
+	flex: 0 0 auto;
+	position: relative;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: var(--sunflower);
+	animation: spin 1.5s linear infinite;
+}
+
+#foeh-meta-loader .loadericon:before {
+	content: "";
+	position: absolute;
+	inset: 4px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: var(--text-btn);
+	animation: spin 2.2s linear infinite reverse;
+}
+
+#foeh-meta-loader .text { flex: 1 1 auto; min-width: 0; }
+#foeh-meta-loader strong { display: block; margin-bottom: 2px; color: var(--sunflower); }
+
+#foeh-meta-loader .bar {
+	height: 6px;
+	margin: 6px 0 3px;
+	background: #000;
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+#foeh-meta-loader .fill {
+	height: 100%;
+	width: 0;
+	background: var(--sunflower);
+	transition: width .3s;
+}
+
+#foeh-meta-loader .count { font-size: 11px; color: var(--text-medium); }
