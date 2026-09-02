@@ -1,5 +1,28 @@
 ## Extension Changelog
 
+##### 4.8.1.0
+**Update**
+
+- Gebäudesuche: 
+  - Gebäude lassen sich jetzt auch nach Größe finden — das Dropdown neben dem Namensfeld listet alle in deiner Stadt vorkommenden Grundflächen (Breite × Länge in Feldern) und markiert alle Gebäude dieser Größe
+- Nachrichten-Checkliste: 
+  - einzelne Threads lassen sich jetzt über das ✕ am Thread aus der Liste ausblenden — ausgeblendete Threads können in den Einstellungen wiederhergestellt werden
+- LG-Rechner & Powerleveln: 
+  - Die Mäzenwerte-Tabellen aller Zeitalter wurden aus weltweit gesammelten Live-Daten deutlich erweitert (je nach Zeitalter bis zu Level 500) — Powerleveln lässt sich damit für deutlich höhere Stufen planen
+- LG-Rechner & Shop Assistent: 
+  - Das automatische Öffnen ist jetzt standardmäßig aktiviert — wer es nicht möchte, schaltet es in den Einstellungen der jeweiligen Box ab
+- Erster Start: 
+  - Beim Aufbau der Gebäude-Datenbank (nur nach Installation oder großen Spiel-Updates) zeigt eine Anzeige unten rechts den Fortschritt — ein Neuladen zwischendurch verwirft den bereits geladenen Teil nicht mehr
+
+**Bugfixes**
+
+- Nachrichten-Checkliste: 
+  - Änderungen in den Einstellungen (z. B. das Abschalten des automatischen Öffnens) wirken sofort und gehen nicht mehr ohne Klick auf Speichern verloren
+- Powerleveln: 
+  - Die Box blieb beim neuen Legendären Bauwerk des Stellar Age leer — die Mäzenwerte sind jetzt bis Level 251 hinterlegt, für höhere Level und künftige Zeitalter werden sie automatisch berechnet (auf ±5 FP genau, mit Hinweis in der Box); außerdem funktioniert die Anzeige jetzt auch, wenn gerade keine Stufe freigeschaltet ist
+
+---
+
 ##### 4.8.0.0
 **Neu**
 

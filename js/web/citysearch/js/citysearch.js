@@ -18,11 +18,18 @@
  */
 
 /**
- * Finds buildings of the own city by name and marks every match with the
- * golden BuildingMarker arrows. While typing, an autocomplete list offers
- * only names that actually exist in the city, so a single letter never
- * floods the map with markers — picking a suggestion marks exactly that
- * building type.
+ * @typedef CitySearchSize
+ * @property {number} area footprint in tiles (width × length)
+ * @property {(number|string)[]} ids entity ids of all buildings with that footprint
+ */
+
+/**
+ * Finds buildings of the own city by name or by footprint size and marks
+ * every match with the golden BuildingMarker arrows. While typing, an
+ * autocomplete list offers only names that actually exist in the city, so a
+ * single letter never floods the map with markers — picking a suggestion
+ * marks exactly that building type. The size dropdown lists only footprints
+ * present in the city; both search modes are exclusive.
  * @namespace
  */
 let CitySearch = {
@@ -30,11 +37,23 @@ let CitySearch = {
 	/** @type {CitySearchGroup[]} distinct building names of the city, sorted */
 	Index: [],
 
+	/** @type {CitySearchSize[]} distinct footprints of the city, ascending */
+	Sizes: [],
+
 	/** @type {CitySearchGroup[]} suggestions currently shown below the input */
 	Current: [],
 
 	/** @type {number} index of the keyboard-highlighted suggestion (-1 = none) */
 	Highlight: -1,
+
+	/**
+	 * Entity types without a position on the city grid (e.g. the space
+	 * carrier, antiques dealer, outpost ship, settlement hubs) or that are
+	 * not buildings at all (impediments). They cannot be marked, so they
+	 * are left out of both indexes.
+	 * @type {string[]}
+	 */
+	SkipTypes: ['off_grid', 'outpost_ship', 'hub_main', 'hub_part', 'friends_tavern', 'impediment'],
 
 
 	/**
@@ -69,26 +88,37 @@ let CitySearch = {
 
 
 	/**
-	 * Collects the distinct building names of the city with the entity ids
-	 * of all their instances. Rebuilt on every open and search, so moved,
-	 * sold or freshly built buildings are always up to date.
+	 * Collects the distinct building names and footprints of the city with
+	 * the entity ids of all their instances. Rebuilt on every open and
+	 * search, so moved, sold or freshly built buildings are always up to date.
 	 */
 	BuildIndex: () => {
-		const byName = new Map();
+		const byName = new Map(),
+			bySize = new Map();
 
 		for (const entity of Object.values(MainParser.CityMapData || {})) {
 			const meta = MainParser.CityEntities ? MainParser.CityEntities[entity.cityentity_id] : null;
 
-			if (!meta || !meta.name) continue;
+			if (!meta || !meta.name || CitySearch.SkipTypes.includes(meta.type)) continue;
 
 			const key = meta.name.toLowerCase();
 			const group = byName.get(key) || {name: meta.name, ids: []};
 
 			group.ids.push(entity.id);
 			byName.set(key, group);
+
+			const area = CityMap.GetBuildingSize(entity).building_area;
+
+			if (area > 0) {
+				const size = bySize.get(area) || {area, ids: []};
+
+				size.ids.push(entity.id);
+				bySize.set(area, size);
+			}
 		}
 
 		CitySearch.Index = [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+		CitySearch.Sizes = [...bySize.values()].sort((a, b) => a.area - b.area);
 	},
 
 
@@ -107,6 +137,8 @@ let CitySearch = {
 				})
 					.on('input', () => CitySearch.UpdateSuggestions())
 					.on('keydown', (e) => CitySearch.HandleKey(e)),
+				$('<select />').attr({id: 'citysearchSize', class: 'game-cursor fh-tooltip', title: HTML.i18nTooltip(i18n('Boxes.CitySearch.SizeTT'))})
+					.on('change', (e) => CitySearch.SearchSize(Number($(e.currentTarget).val()))),
 				$('<button />').attr({id: 'citysearchGo', class: 'btn game-cursor', title: i18n('Boxes.CitySearch.Title')})
 					.append($('<img />').attr({src: `${extUrl}js/web/citysearch/images/citysearch.png`, alt: ''}))
 					.on('click', () => CitySearch.Search($('#citysearchInput').val()))
@@ -118,7 +150,23 @@ let CitySearch = {
 			$('<div />').attr('id', 'citysearchResult')
 		);
 
+		CitySearch.RenderSizes();
 		$('#citysearchInput').trigger('focus');
+	},
+
+
+	/**
+	 * Fills the size dropdown with the footprints present in the city and
+	 * keeps the current selection if it still exists.
+	 */
+	RenderSizes: () => {
+		const $select = $('#citysearchSize'),
+			selected = String($select.val() || '');
+		const options = CitySearch.Sizes.map(size => `<option value="${size.area}">${size.area}</option>`);
+
+		$select.html(`<option value="">${i18n('Boxes.CitySearch.Size')}</option>${options.join('')}`).val(selected);
+
+		if ($select.val() === null) $select.val('');
 	},
 
 
@@ -162,6 +210,8 @@ let CitySearch = {
 	 */
 	UpdateSuggestions: () => {
 		const query = String($('#citysearchInput').val() || '').trim().toLowerCase();
+
+		$('#citysearchSize').val('');
 
 		if (query === '') {
 			CitySearch.Current = [];
@@ -222,15 +272,21 @@ let CitySearch = {
 	/**
 	 * Free text search via Enter or the magnifier button: an exact name
 	 * match marks only that building type, otherwise every building whose
-	 * name contains the query is marked.
+	 * name contains the query is marked. An empty name repeats the size
+	 * search of the dropdown instead.
 	 * @param {string} term raw input value
 	 */
 	Search: (term) => {
 		const query = String(term || '').trim().toLowerCase();
 
-		if (query === '') return;
+		if (query === '') {
+			CitySearch.SearchSize(Number($('#citysearchSize').val()));
+			return;
+		}
 
+		$('#citysearchSize').val('');
 		CitySearch.BuildIndex();
+		CitySearch.RenderSizes();
 
 		const exact = CitySearch.Index.find(group => group.name.toLowerCase() === query);
 		const groups = exact ? [exact] : CitySearch.Index.filter(group => group.name.toLowerCase().includes(query));
@@ -239,6 +295,32 @@ let CitySearch = {
 		CitySearch.Highlight = -1;
 		CitySearch.RenderSuggestions();
 		CitySearch.Mark(groups.flatMap(group => group.ids));
+	},
+
+
+	/**
+	 * Size search via the dropdown: marks every building whose footprint
+	 * (width × length) equals the chosen area. Exclusive to the name search,
+	 * so the input and its suggestions are cleared.
+	 * @param {number} area footprint in tiles, 0 or NaN clears the result
+	 */
+	SearchSize: (area) => {
+		$('#citysearchInput').val('');
+		CitySearch.Current = [];
+		CitySearch.Highlight = -1;
+		CitySearch.RenderSuggestions();
+
+		if (!(area > 0)) {
+			$('#citysearchResult').empty();
+			return;
+		}
+
+		CitySearch.BuildIndex();
+		CitySearch.RenderSizes();
+
+		const size = CitySearch.Sizes.find(entry => entry.area === area);
+
+		CitySearch.Mark(size ? size.ids : []);
 	},
 
 

@@ -44,7 +44,7 @@ Object.assign(Calculator, {
 		c.push(`<p class="bbd p5">
 			<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ${(Calculator.ForderBonusPerConversation ? 'checked' : '')} type="checkbox">${i18n('Boxes.Calculator.ForderBonusPerConversation')}</label><br/>
 			<label for="calc-openonaliengb"><input type="checkbox" id="calc-openonaliengb" class="game-cursor" ${((!allGB) ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
-			<label for="calc-autoOpen"><input type="checkbox" id="calc-autoOpen" class="game-cursor" ${((autoOpen == 'true') ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
+			<label for="calc-autoOpen"><input type="checkbox" id="calc-autoOpen" class="game-cursor" ${((autoOpen !== 'false') ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
 			<label for="calc-showboost"><input type="checkbox" id="calc-showboost" class="game-cursor" ${(localStorage.getItem('CalculatorShowBoostColumn') !== 'false' ? 'checked' : '')}> ${i18n('Boxes.Calculator.ShowBoostColumn')}</label><br>
 			<label for="CalculatorTone"><input id="CalculatorTone" class="CalculatorTone game-cursor" ${(Calculator.PlayInfoSound ? 'checked' : '')} type="checkbox"> ${i18n('Boxes.Calculator.PlayInfoSound')}</label>
 		</p>`);

@@ -23,7 +23,6 @@ let Calculator = {
     PlayInfoSound: false,
 	LastRecurringQuests: undefined,
 	ForderBonusPerConversation: true,
-	AutoOpen: false,
 	OwnPartClose: false,
 	DefaultButtons: [
 		80, 90, 100, 'ark'

@@ -46,7 +46,8 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 });
 
 FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
-	if (localStorage.getItem('OwnPartAutoOpen') != 'true') return;
+	// enabled by default: only an explicit 'false' disables the auto open
+	if (localStorage.getItem('OwnPartAutoOpen') === 'false') return;
 
 	if (Calculator.IsSplitView()) {
 		// the own part box only opens for own GBs (or all GBs if the setting is enabled)
@@ -729,7 +730,7 @@ let Parts = {
 			}
 		}
 		else {
-			let P1 = GreatBuildings.Rewards[Era][Parts.Level];
+			let P1 = GreatBuildings.GetP1(Era, Parts.Level) || 0;
 
 			Parts.Maezens = [0, 0, 0, 0, 0];
 			FPRewards = GreatBuildings.GetMaezen(P1, Parts.ArcPercents)
@@ -889,7 +890,7 @@ let Parts = {
 
 			h.push(Parts.Level + ' &rarr; ' + (parseInt(Parts.Level) + 1));
 
-			if (GreatBuildings.Rewards[Era] && GreatBuildings.Rewards[Era][Parts.Level + 1])
+			if (GreatBuildings.GetP1(Era, Parts.Level + 1))
 				h.push(' <button class="btn btn-slim btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 		}
 		h.push('</div>');
