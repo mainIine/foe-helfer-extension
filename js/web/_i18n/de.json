@@ -1591,6 +1591,7 @@
     "Boxes.idleGame.SetTimer": "Timer setzen",
     "Boxes.idleGame.AlertSetText": "Timer gesetzt für __hours__ Stunden und __minutes__ Minuten",
     "Boxes.idleGame.noBottleneck": " ohne Engpässe",
+    "Boxes.idleGame.Tapped": "🖱 ohne Aufseher, gezählt als getippt im Produktionstakt: __names__",
     "Date": "DD.MM.YYYY",
     "DateShort": "DD.MM",
     "DateTime": "DD.MM.YYYY HH:mm [Uhr]",

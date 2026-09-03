@@ -683,6 +683,7 @@ const idleGame = {
 		let degree = 0;
 		let sum = 0;
 		let worktitle = '';
+		const tappedNames = [];
 
 		for (const building of Object.values(idleGame.data)) {
 			if (building.type === 'work' && building.degree > degree) {
@@ -692,7 +693,11 @@ const idleGame = {
 		for (const building of Object.values(idleGame.data)) {
 			if (building.type !== 'work') continue;
 			sum += Math.pow(1000, building.degree - degree) * building.production;
-			worktitle += `<br/>${building.baseData.name}: ${building.production.toPrecision(3)} ${idleGame.iGNums[building.degree]}`;
+			if (building.tapped) tappedNames.push(building.baseData.name);
+			worktitle += `<br/>${building.tapped ? '🖱 ' : ''}${building.baseData.name}: ${building.production.toPrecision(3)} ${idleGame.iGNums[building.degree]}`;
+		}
+		if (tappedNames.length) {
+			worktitle += `<br/><i>${i18n('Boxes.idleGame.Tapped').replace('__names__', tappedNames.join(', '))}</i>`;
 		}
 
 		while (Number(sum.toPrecision(3)) >= 1000 && degree < 6) {
@@ -840,8 +845,13 @@ const idleGame = {
 
 		const [p, d] = idleGame.normalize(amount.toFloat() * 3600 / cycle, 0);
 
-		building.production = building.manager > 0 ? p : 0;
-		building.degree = building.manager > 0 ? d : 0;
+		// Without a manager the station produces only when tapped — the player
+		// (or an auto-tapper) taps it every cycle, so its goods are real and
+		// flow through the chain. Counting it as 0 hid the actual bottleneck
+		// (the carriage starving the banquet while the factories overflowed).
+		building.tapped = building.manager === 0;
+		building.production = p;
+		building.degree = d;
 
 		return building;
 	},
