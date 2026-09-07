@@ -47,6 +47,15 @@ let Calculator = {
 
 
 	/**
+	 * localStorage key of the auto open setting: the own box has its own one in
+	 * split view, the combined box shares the own part calculator's setting.
+	 *
+	 * @returns {string} Key name
+	 */
+	AutoOpenKey: () => (Calculator.IsSplitView() ? 'CalculatorAutoOpen' : 'OwnPartAutoOpen'),
+
+
+	/**
 	 * Contribution boost column (piggy bank): show the FP bonus granted by the own
 	 * contribution boost per rank, can be hidden in the settings. Like the game the
 	 * column is always hidden without an own contribution boost.
@@ -276,23 +285,10 @@ let Calculator = {
 			h.push('</span></strong>');
 		}
 
-		// different arc bonus-buttons
-		let investmentSteps = [80, 90, 100, MainParser.ArkBonus],
-			customButtons = localStorage.getItem('CustomCalculatorButtons');
-
-		if(customButtons) {
-			investmentSteps = [];
-			let bonuses = JSON.parse(customButtons);
-
-			bonuses.forEach(bonus => {
-				if (bonus === 'ark') {
-					investmentSteps.push(MainParser.ArkBonus);
-				}
-				else {
-					investmentSteps.push(bonus);
-				}
-			})
-		}
+		// different arc bonus-buttons, the own arc bonus is always one of them
+		let customButtons = localStorage.getItem('CustomCalculatorButtons'),
+			investmentSteps = Calculator.SettingsSanitizeButtons(customButtons ? JSON.parse(customButtons) : Calculator.DefaultButtons)
+				.map(bonus => (bonus === 'ark' ? MainParser.ArkBonus : bonus));
 
 		h.push('<div class="costFactorWrapper">');
 		h.push('<div class="btn-group">');

@@ -1,5 +1,24 @@
 ## Extension Changelog
 
+##### 4.8.2.0
+**Update**
+
+- PvP-Arena: 
+  - Neue Notizspalte im Protokoll — zu jedem Gegner lässt sich ein kurzer Vermerk hinterlegen (z. B. seine Verteidigungsarmee nach einer Niederlage), der in allen Tabs erscheint und beim nächsten Aufeinandertreffen wieder da ist
+- LG Rechner & LG Fördern: 
+  - In der geteilten Ansicht hat jede Box in ihren Einstellungen eine eigene, nach der Box benannte Option „Automatisch öffnen" — so lässt sich z. B. nur der LG Rechner automatisch öffnen, ohne dass LG Fördern mit aufgeht
+
+**Bugfixes**
+
+- Forschungskosten: 
+  - Das Blättern ins Stellar Age funktioniert wieder — die Box blieb beim Umschalten stumm, sobald die Entscheidungspunkte des neuen Forschungsbaums im Bereich lagen. Die Technologien der Entscheidungszweige werden jetzt mitgerechnet (der gewählte Zweig, vor der Entscheidung der erste), und auch die neuen Ressourcen des Zeitalters (Stellar-Punkte, Stellar-Kapazität, Kodierte Datentafeln, Überrest synthetischer Intelligenz) erscheinen in der Tabelle
+- Markt: 
+  - Der Filter „für Forschung benötigt" berücksichtigt die Entscheidungszweige des Stellar Age ebenfalls
+- Gildengefechte: 
+  - Setzt die Gildenführung ein weiteres Fadenkreuz auf der Karte, bleiben die bereits markierten Sektoren in der Box erhalten — bisher verschwanden alle älteren Markierungen und nur die zuletzt gesetzte war noch zu sehen
+
+---
+
 ##### 4.8.1.0
 **Update**
 

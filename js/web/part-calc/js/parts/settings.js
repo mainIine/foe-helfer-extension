@@ -38,14 +38,13 @@ Object.assign(Parts, {
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
 			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
+			// split view: name the box, the cost calculator has its own auto open setting
+			autoOpenLabel = i18n('Settings.ShowOwnPartAutoOpen.Desc') + (Calculator.IsSplitView() ? ' (' + i18n('Boxes.OwnpartCalculator.Title') + ')' : ''),
 			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
 			buttons = Calculator.SettingsSanitizeButtons(sB ? JSON.parse(sB) : Parts.DefaultButtons);
 
 		c.push('<div class="percent-chips bbd">');
 		buttons.forEach(bonus => c.push(Parts.SettingsChip(bonus)));
-
-		// ghost chip to bring the arc bonus button back, hidden while it exists
-		c.push(`<span class="percent-chip ghost" title="${i18n('Boxes.Calculator.Settings.AddArk')}" onclick="Parts.SettingsAddArk()"${buttons.includes('ark') ? ' style="display:none"' : ''}>+ ${MainParser.ArkBonus}%</span>`);
 
 		c.push(`<span class="percent-add">
 			<input type="number" class="percent-add-input" step="0.1" min="-100" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Parts.SettingsAddValue();event.preventDefault();}">
@@ -54,7 +53,7 @@ Object.assign(Parts, {
 		c.push('</div>');
 
 		c.push(`<p class="bbd p5">
-				<input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen !== 'false') ? 'checked' : '')}> <label for="autoOpen">${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
+				<input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen !== 'false') ? 'checked' : '')}> <label for="autoOpen">${autoOpenLabel}</label><br>
 				<input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ${((allGB == 'true') ? 'checked' : '')}> <label for="openonaliengb">${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
 				<input type="checkbox" id="showmedals" class="showmedals game-cursor" ${((showMedals == 'true') ? 'checked' : '')}> <label for="showmedals">${i18n('Settings.ShowOwnPartMedals.Desc')}</label><br>
 				<input type="checkbox" id="showprints" class="showprints game-cursor" ${((showPrints == 'true') ? 'checked' : '')}> <label for="showprints">${i18n('Settings.ShowOwnPartBP.Desc')}</label><br>
@@ -71,17 +70,23 @@ Object.assign(Parts, {
 
 
 	/**
-	 * Returns the markup of one percent chip in this settings dialog.
+	 * Returns the markup of one percent chip in this settings dialog. The arc
+	 * bonus chip is fixed and has no delete button.
 	 *
 	 * @param {number|string} bonus - Percent value or 'ark' for the arc bonus entry
 	 * @returns {string} Chip HTML
 	 */
 	SettingsChip: (bonus)=> {
-		let isArk = (bonus === 'ark');
+		if(bonus === 'ark'){
+			return `<span class="percent-chip arc" title="${i18n('Boxes.Calculator.Settings.ArkInfo')}">
+				<input type="hidden" class="settings-values" value="ark">
+				<span class="chip-value">${i18n('Boxes.OwnpartCalculator.Arc')} ${MainParser.ArkBonus}%</span>
+			</span>`;
+		}
 
-		return `<span class="percent-chip${isArk ? ' arc' : ''}"${isArk ? ` title="${i18n('Boxes.Calculator.Settings.ArkInfo')}"` : ''}>
+		return `<span class="percent-chip">
 			<input type="hidden" class="settings-values" value="${bonus}">
-			<span class="chip-value">${isArk ? MainParser.ArkBonus : bonus}%</span>
+			<span class="chip-value">${bonus}%</span>
 			<span class="chip-del" onclick="Parts.SettingsRemoveRow(this)">&times;</span>
 		</span>`;
 	},
@@ -95,7 +100,7 @@ Object.assign(Parts, {
 	SettingsInsertChip: (bonus)=> {
 		let $box = $('#OwnPartBoxSettingsBox'),
 			value = (bonus === 'ark' ? MainParser.ArkBonus : bonus),
-			$next = $box.find('.percent-chip').not('.ghost').filter(function(){
+			$next = $box.find('.percent-chip').filter(function(){
 				let v = $(this).find('.settings-values').val();
 				return ((v === 'ark' ? MainParser.ArkBonus : parseFloat(v)) > value);
 			}).first();
@@ -104,7 +109,7 @@ Object.assign(Parts, {
 			$(Parts.SettingsChip(bonus)).insertBefore($next);
 		}
 		else {
-			$(Parts.SettingsChip(bonus)).insertBefore($box.find('.percent-chip.ghost'));
+			$(Parts.SettingsChip(bonus)).insertBefore($box.find('.percent-add'));
 		}
 	},
 
@@ -131,33 +136,13 @@ Object.assign(Parts, {
 
 
 	/**
-	 * Brings the removed arc bonus chip back and hides the ghost chip again.
-	 */
-	SettingsAddArk: ()=> {
-		let $box = $('#OwnPartBoxSettingsBox');
-
-		$box.find('.percent-chip.ghost').hide();
-		Parts.SettingsInsertChip('ark');
-	},
-
-
-	/**
-	 * Removes a percent chip from this settings dialog. Removing the arc bonus
-	 * chip reveals the ghost chip to bring it back.
+	 * Removes a percent chip from this settings dialog.
 	 *
 	 * @param {HTMLElement} $this - The clicked delete button
 	 */
 	SettingsRemoveRow: ($this)=> {
-		let $chip = $($this).closest('.percent-chip'),
-			isArk = ($chip.find('.settings-values').val() === 'ark'),
-			$box = $('#OwnPartBoxSettingsBox');
-
-		$chip.fadeOut('fast', function(){
+		$($this).closest('.percent-chip').fadeOut('fast', function(){
 			$(this).remove();
-
-			if(isArk){
-				$box.find('.percent-chip.ghost').show();
-			}
 		});
 	},
 
@@ -185,6 +170,9 @@ Object.assign(Parts, {
 				values.push( parseFloat(v) );
 			}
 		});
+
+		// keeps the arc bonus entry even if the dialog was built without one
+		values = Calculator.SettingsSanitizeButtons(values);
 
 		if(values.length){
 			localStorage.setItem('CustomPartCalcButtons', JSON.stringify(values));

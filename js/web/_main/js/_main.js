@@ -201,6 +201,15 @@ GetFights = () =>{
 		setTimeout(()=>{ MainParser.CityEntityBuilder(buildingUrls) },500);
 	});
 
+	// Prestige tiers of the great buildings (copper / silver / gold): level range per tier
+	FoEproxy.addMetaHandler('great_building_tiers', (xhr, postData) => {
+		try {
+			MainParser.GreatBuildingTiers = JSON.parse(xhr.responseText || '[]');
+		} catch {
+			MainParser.GreatBuildingTiers = [];
+		}
+	});
+
 	// Building-Upgrades
 	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
 		let BuildingUpgradesArray = JSON.parse(xhr.responseText);
@@ -684,12 +693,13 @@ GetFights = () =>{
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
 		let getConstructionRanking = data.requestMethod === 'getConstructionRanking' ? data : null;
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
-		let Rankings, Bonus = {}, Era;
+		let Rankings, Bonus = {}, Era, NextLevelBonuses = null;
 
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
-			Bonus['passive'] = getConstruction.responseData.next_passive_bonus; // GB update to do
-			Bonus['production'] = getConstruction.responseData.next_production_bonus; // GB update to do
+			Bonus['passive'] = getConstruction.responseData.next_passive_bonus; // classic worlds only, null after the prestige rework
+			Bonus['production'] = getConstruction.responseData.next_production_bonus; // classic worlds only, null after the prestige rework
+			NextLevelBonuses = getConstruction.responseData.nextLevelBonuses || null; // prestige rework: bonuses of level + 1
 			let EraName = getConstruction.responseData.ownerEra;
 			if (EraName) Era = Technologies.Eras[EraName];
 			IsLevelScroll = false;
@@ -731,6 +741,7 @@ GetFights = () =>{
 				gbUpdateData.Rankings = Rankings;
 				gbUpdateData.Bonus = Bonus;
 				gbUpdateData.Era = Era;
+				gbUpdateData.NextLevelBonuses = NextLevelBonuses;
 			}
 		}
 
@@ -1781,6 +1792,41 @@ let MainParser = {
 	 * @param Rankings GreatBuildingRankingRow[] from getConstruction/contributeForgePoints
 	 * @returns {?Object} GreatBuildingTier enum, e.g. {value: 'copper'}, or null
 	 */
+	/**
+	 * Level ranges of the prestige tiers as {starts: {copper: 1, silver: 81, ...}, ends: {copper: 80, ...}}.
+	 * Uses the game's great_building_tiers metadata when loaded, otherwise the first level with a
+	 * non-zero bonus value per tier from the building's `bonuses` metadata.
+	 *
+	 * @param {Object} meta city entity meta data of the great building
+	 * @returns {{starts: Object, ends: Object}}
+	 */
+	GetGBTierRanges: (meta) => {
+		const starts = {}, ends = {};
+
+		for (const row of (MainParser.GreatBuildingTiers || [])) {
+			const tier = row?.['tier']?.['value'] || row?.['tier'];
+			if (!tier) continue;
+			if (row['startLevel'] > 0) starts[tier] = row['startLevel'];
+			if (row['endLevel'] > 0) ends[tier] = row['endLevel'];
+		}
+
+		if (Object.keys(starts).length > 0) return { starts, ends };
+
+		for (const tierRow of (meta?.['bonuses'] || [])) {
+			const tier = tierRow?.['tier']?.['value'] || tierRow?.['tier'];
+			if (!tier) continue;
+
+			const levels = (tierRow['bonuses'] || []).flatMap(bonus =>
+				Object.keys(bonus['valuesMap'] || {}).map(Number).filter(level => (bonus['valuesMap'][level]?.['value'] || 0) > 0)
+			);
+
+			if (levels.length > 0) starts[tier] = Math.min(...levels);
+		}
+
+		return { starts, ends };
+	},
+
+
 	GetGBTierFromRankings: (Rankings) => {
 		const TierOrder = { copper: 1, silver: 2, gold: 3 };
 		let Tier = null;
@@ -1800,13 +1846,29 @@ let MainParser = {
 	SendLGData: (d)=> {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],
+			meta = MainParser.CityEntities?.[dataEntity['cityentity_id']],
 			realData = {
 				image: srcLinks.get(`/city/buildings/${dataEntity['cityentity_id'].replace('X_', 'X_SS_')}.png`, true),
 				entity: dataEntity,
 				ranking: d['Rankings'],
 				bonus: d['Bonus'],
 				era: d['Era'],
+				name: meta?.['name'],
 			}
+
+		// Prestige rework (copper / silver / gold): the API stores these worlds in separate tables
+		if (meta && meta['strategy_points_for_upgrade'] !== undefined && Array.isArray(meta['bonuses']) && meta['bonuses'].length > 0) {
+			const tiers = MainParser.GetGBTierRanges(meta);
+
+			realData.prestige = {
+				active: true,
+				nextLevelBonuses: d['NextLevelBonuses'] || [],
+				maxTier: meta['maxTier']?.['value'] || meta['maxTier'] || null,
+				tierStarts: tiers.starts,
+				tierEnds: tiers.ends,
+				levelCosts: meta['strategy_points_for_upgrade'] || [],
+			};
+		}
 
 		MainParser.sendExtMessage({
 			type: 'send2Api',

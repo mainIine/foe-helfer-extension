@@ -34,25 +34,20 @@ FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data =>
 	let own = Guild_fights.MapData.battlegroundParticipants.find(p => p.clan.id === ExtGuildID);
 	if (!own) return;
 
+	// a province holds at most one signal (setting "ignore" replaces "focus" without an
+	// extra removal frame), signals of other provinces stay untouched: the game allows
+	// several focus targets at once. Removal frames carry the province id only.
+	own.signals = (own.signals || []).filter(s => (s.provinceId || 0) !== (d.provinceId || 0));
+
 	if (d.signal) {
-		// a province holds at most one signal (setting "ignore" replaces "focus" without
-		// an extra removal frame) and the focus target exists only once guild wide
-		own.signals = (own.signals || []).filter(s =>
-			(s.provinceId || 0) !== (d.provinceId || 0) &&
-			(d.signal !== 'focus' || s.signal !== 'focus')
-		);
 		own.signals.push({ provinceId: d.provinceId || 0, signal: d.signal });
-	}
-	else {
-		// removal frames carry the province id only (e.g. after the sector got conquered)
-		own.signals = (own.signals || []).filter(s => (s.provinceId || 0) !== (d.provinceId || 0));
 	}
 
 	if ($('#LiveGildFighting').length > 0) {
 		Guild_fights.BuildFightContent();
 	}
 
-	// a focus move clears the marker on another sector too, so repaint the whole overlay
+	// repaint the whole overlay so the watermark of the changed sector gets drawn or cleared
 	if ($('#ProvinceMap').length > 0 && ProvinceMap.Overlay instanceof HTMLCanvasElement) {
 		ProvinceMap.DrawOverlay();
 	}

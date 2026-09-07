@@ -352,20 +352,6 @@ a[target="_blank"] svg {
 	background: var(--btn-bg-red-active);
 }
 
-.percent-chip.ghost {
-	background: none;
-	box-shadow: none;
-	border: 1px dashed var(--white-65);
-	color: var(--white-65);
-	padding: 1px 6px 2px;
-	cursor: url('../images/cursor_hover.cur'), pointer;
-}
-
-.percent-chip.ghost:hover {
-	border-color: var(--white);
-	color: var(--white);
-}
-
 .percent-add {
 	display: inline-flex;
 	align-items: center;

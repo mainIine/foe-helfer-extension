@@ -47,18 +47,20 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 
 FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
 	// enabled by default: only an explicit 'false' disables the auto open
-	if (localStorage.getItem('OwnPartAutoOpen') === 'false') return;
+	let autoOpenOwnPart = localStorage.getItem('OwnPartAutoOpen') !== 'false';
 
 	if (Calculator.IsSplitView()) {
-		// the own part box only opens for own GBs (or all GBs if the setting is enabled)
-		let openOwnPart = postData[0]?.requestData?.[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true';
+		// each box has its own auto open setting, the own part box additionally
+		// only opens for own GBs (or all GBs if the setting is enabled)
+		let autoOpenCalculator = localStorage.getItem('CalculatorAutoOpen') !== 'false',
+			openOwnPart = autoOpenOwnPart && (postData[0]?.requestData?.[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true');
 
 		if (openOwnPart && $('#OwnPartBox').length === 0)
-			Parts.Show(); // also opens the calculator box
-		else if ($('#CalculatorBox').length === 0)
+			Parts.Show(autoOpenCalculator);
+		else if (autoOpenCalculator && $('#CalculatorBox').length === 0)
 			Calculator.Show();
 	}
-	else if ($('#OwnPartBox').length === 0)
+	else if (autoOpenOwnPart && $('#OwnPartBox').length === 0)
 		Parts.Show();
 });
 
@@ -170,8 +172,10 @@ let Parts = {
 	 * Toggles the own part calculator box: creates it in the DOM including all
 	 * delegated events (a second call closes it again). In split view the cost
 	 * calculator box is opened/closed along with it.
+	 *
+	 * @param {boolean} [withCalculator=true] - Split view: also open the cost calculator box
 	 */
-	Show: () => {
+	Show: (withCalculator = true) => {
 		if ($('#OwnPartBox').length === 0) {
 			/*let spk = localStorage.getItem('PartsTone');
 
@@ -467,7 +471,7 @@ let Parts = {
 			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
 
 			// split view: also open the cost calculator box
-			if (Calculator.IsSplitView()) Calculator.Show();
+			if (Calculator.IsSplitView() && withCalculator) Calculator.Show();
 		}
 		else {
 			HTML.CloseOpenBox('OwnPartBox');
@@ -897,22 +901,10 @@ let Parts = {
 		h.push('</div>');
 
 		h.push('<span class="btn-group">');
-		// different arc bonus-buttons
-		let investmentSteps = [80, 90, 100, MainParser.ArkBonus],
-			customButtons = localStorage.getItem('CustomPartCalcButtons');
-
-		// custom buttons available
-		if(customButtons) {
-			investmentSteps = [];
-			let bonuses = JSON.parse(customButtons);
-
-			bonuses.forEach(bonus => {
-				if(bonus === 'ark')
-					investmentSteps.push(MainParser.ArkBonus);
-				else
-					investmentSteps.push(bonus);
-			});
-		}
+		// different arc bonus-buttons, the own arc bonus is always one of them
+		let customButtons = localStorage.getItem('CustomPartCalcButtons'),
+			investmentSteps = Calculator.SettingsSanitizeButtons(customButtons ? JSON.parse(customButtons) : Parts.DefaultButtons)
+				.map(bonus => (bonus === 'ark' ? MainParser.ArkBonus : bonus));
 
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);

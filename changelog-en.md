@@ -1,5 +1,19 @@
 ## Extension Changelog
 
+##### 4.8.2.0
+**Update**
+
+- PvP arena: new notes column in the log — a short remark can be stored for every opponent (e.g. their defense army after a lost fight), shown in all tabs and still there the next time you face that player
+- GB calculator & GB cost calc: in split view each box has its own "Open automatically" option in its settings, labeled with the box name — e.g. only the GB calculator can open automatically without the cost calc coming along
+
+**Bugfixes**
+
+- Research costs: paging into the Stellar Age works again — the box went silent on switching as soon as the decision points of the new research tree were in range. The technologies of the decision branches are now included (the chosen branch, the first one before deciding), and the new resources of the era (Stellar Points, Stellar Capacity, Encoded Tablets, Synthetic Intelligence Remnant) show up in the table as well
+- Market: the "needed for research" filter also takes the Stellar Age decision branches into account
+- Guild battlegrounds: when the guild leadership places another crosshair on the map, the sectors already marked stay visible in the box — previously all older markers vanished and only the last one placed was shown
+
+---
+
 ##### 4.8.1.0
 **Update**
 
