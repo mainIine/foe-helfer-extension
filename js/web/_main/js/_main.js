@@ -1734,7 +1734,7 @@ let MainParser = {
 
 		Infoboard.Init();
 		EventHandler.Init();
-		setTimeout(MainParser.forceLoadCityEntities, 15000);
+		setTimeout(MainParser.forceLoadMetadata, 15000);
 
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 
@@ -1743,12 +1743,28 @@ let MainParser = {
 	},
 
 
-	forceLoadCityEntities: () => {
-		if (MainParser.CityEntities) return;
-		//console.log('Forcing load of CityEntities');
-		let xhr = new XMLHttpRequest();
-        xhr.open("GET", MainParser.MetaUrls['city_entities'], true);
-        xhr.send();
+	/**
+	 * Requests metadata the game client did not load by itself during startup.
+	 * The beta client e.g. no longer fetches `building_upgrades` (only the new
+	 * `building_upgrade_paths`), so the city map, kits, inventory and ascended
+	 * buildings would wait for it forever. The request is answered from the CDN
+	 * and runs through the FoEproxy meta handlers like a request of the game client.
+	 * Metadata the client already loaded or does not offer at all is skipped.
+	 */
+	forceLoadMetadata: () => {
+		const wanted = [
+			['city_entities', MainParser.CityEntities == null],
+			['building_upgrades', MainParser.BuildingUpgrades == null],
+		];
+
+		for (const [id, isMissing] of wanted) {
+			const url = MainParser.MetaUrls[id];
+			if (!isMissing || !url) continue;
+
+			const xhr = new XMLHttpRequest();
+			xhr.open('GET', url, true);
+			xhr.send();
+		}
 	},
 
 

@@ -10,6 +10,8 @@
 
 **Bugfixes**
 
+- Stadtkarte: 
+  - Auf Beta-Welten werden die Gebäude wieder angezeigt — bisher blieb dort nur das leere Raster stehen; Kits, Inventar und Erhabene Gebäude, die auf denselben Daten aufbauen, funktionieren dort ebenfalls wieder. Live-Welten waren nicht betroffen
 - Forschungskosten: 
   - Das Blättern ins Stellar Age funktioniert wieder — die Box blieb beim Umschalten stumm, sobald die Entscheidungspunkte des neuen Forschungsbaums im Bereich lagen. Die Technologien der Entscheidungszweige werden jetzt mitgerechnet (der gewählte Zweig, vor der Entscheidung der erste), und auch die neuen Ressourcen des Zeitalters (Stellar-Punkte, Stellar-Kapazität, Kodierte Datentafeln, Überrest synthetischer Intelligenz) erscheinen in der Tabelle
 - Markt: 

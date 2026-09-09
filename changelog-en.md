@@ -8,6 +8,7 @@
 
 **Bugfixes**
 
+- City map: on beta worlds the buildings are shown again — until now only the empty grid was left there; kits, inventory and ascended buildings, which rely on the same data, work there again as well. Live worlds were not affected
 - Research costs: paging into the Stellar Age works again — the box went silent on switching as soon as the decision points of the new research tree were in range. The technologies of the decision branches are now included (the chosen branch, the first one before deciding), and the new resources of the era (Stellar Points, Stellar Capacity, Encoded Tablets, Synthetic Intelligence Remnant) show up in the table as well
 - Market: the "needed for research" filter also takes the Stellar Age decision branches into account
 - Guild battlegrounds: when the guild leadership places another crosshair on the map, the sectors already marked stay visible in the box — previously all older markers vanished and only the last one placed was shown
