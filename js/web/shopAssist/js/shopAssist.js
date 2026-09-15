@@ -649,7 +649,7 @@ let shopAssist = {
 				body += await Tooltips.BuildingData(meta[b], CurrentEra, null, eff);
 				body += `</td>`;
 			} else {
-				head += `<tr style="text-wrap-mode:nowrap"><td><span style="font-weight:600">${meta[b].name}</td><td>  ${eff[b] ? `(${i18n('Boxes.Kits.Efficiency')}: ${eff[b]})` : ''}</td><td>${upgrades[b]}</td></tr>`;
+				head += `<tr style="white-space:nowrap"><td><span style="font-weight:600">${meta[b].name}</td><td>  ${eff[b] ? `(${i18n('Boxes.Kits.Efficiency')}: ${eff[b]})` : ''}</td><td>${upgrades[b]}</td></tr>`;
 			}
 		}
 		if (buildingIds.length <= limit) {
