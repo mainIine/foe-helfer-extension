@@ -1,10 +1,19 @@
 ## Extension Changelog
 
+##### 4.8.2.3
+**Bugfixes**
+
+- Production overview & Blue Galaxy: buildings with a random production show the result already fixed for the next collection again (now marked with 🎲) instead of the average of all possible rewards — so Blue Galaxy can be aimed at the best roll again; the average stays in the general view
+
+---
+
 ##### 4.8.2.2
 **Bugfixes**
 
 - Older browsers: the extension installs and starts again from Chrome/Edge 109 and Firefox 115 (e.g. on Windows 7 and 8.1) — since version 4.4.1.0 it was rejected there or stayed without function
 - Building tooltip: line breaks and the alignment of multi-line entries (chain descriptions, historical allies, inhabitants, limited buildings) now also work in older browsers
+
+---
 
 ##### 4.8.2.1
 **Update**

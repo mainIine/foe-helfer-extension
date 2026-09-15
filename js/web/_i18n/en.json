@@ -1251,6 +1251,7 @@
     "Boxes.Productions.NoAsteroidDataWarning": "Goods from Asteroid Belt are not included. Please visit your Asteroid Belt outpost and open the box again",
     "Boxes.Productions.NoMarsDataWarning": "Goods from Mars are not included. Please visit your Mars outpost and open the box again",
     "Boxes.Productions.NoVenusDataWarning": "Goods from Venus are not included. Please visit your Venus Outpost and open the box again",
+    "Boxes.Productions.RandomRoll": "Random production – the game has already rolled this result for the next collection",
     "Boxes.Productions.RelativeTime": "Relative time",
     "Boxes.Productions.SearchInput": "Search Building… ",
     "Boxes.Productions.SizeTT": "Size including average road space requirement of __streetnettosize__ tiles",

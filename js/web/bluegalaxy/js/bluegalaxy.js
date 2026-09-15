@@ -320,7 +320,7 @@ const BlueGalaxy = {
 			if (showBGFragments) {
 				// showBuildingItems may return false, indexing it then yields undefined
 				const items = Productions.showBuildingItems(true, b.building)[2] || [];
-				table.push(`<td class="text-right item-amount" data-number="${b.FragmentAmount}">${items.map(item => item.random ? `Ø ${item.random}x` : `${item.amount}x`).join('<br>')}</td>`);
+				table.push(`<td class="text-right item-amount" data-number="${b.FragmentAmount}">${items.map(item => item.random ? `Ø ${item.random}x` : `${item.rolled ? '🎲 ' : ''}${item.amount}x`).join('<br>')}</td>`);
 				table.push(`<td>${items.map(item => `${item.fragment ? '🧩 ' : ''}${item.name}`).join('<br>')}</td>`);
 			}
 
