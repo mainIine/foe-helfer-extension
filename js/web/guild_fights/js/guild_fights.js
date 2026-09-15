@@ -34,25 +34,20 @@ FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data =>
 	let own = Guild_fights.MapData.battlegroundParticipants.find(p => p.clan.id === ExtGuildID);
 	if (!own) return;
 
+	// a province holds at most one signal (setting "ignore" replaces "focus" without an
+	// extra removal frame), signals of other provinces stay untouched: the game allows
+	// several focus targets at once. Removal frames carry the province id only.
+	own.signals = (own.signals || []).filter(s => (s.provinceId || 0) !== (d.provinceId || 0));
+
 	if (d.signal) {
-		// a province holds at most one signal (setting "ignore" replaces "focus" without
-		// an extra removal frame) and the focus target exists only once guild wide
-		own.signals = (own.signals || []).filter(s =>
-			(s.provinceId || 0) !== (d.provinceId || 0) &&
-			(d.signal !== 'focus' || s.signal !== 'focus')
-		);
 		own.signals.push({ provinceId: d.provinceId || 0, signal: d.signal });
-	}
-	else {
-		// removal frames carry the province id only (e.g. after the sector got conquered)
-		own.signals = (own.signals || []).filter(s => (s.provinceId || 0) !== (d.provinceId || 0));
 	}
 
 	if ($('#LiveGildFighting').length > 0) {
 		Guild_fights.BuildFightContent();
 	}
 
-	// a focus move clears the marker on another sector too, so repaint the whole overlay
+	// repaint the whole overlay so the watermark of the changed sector gets drawn or cleared
 	if ($('#ProvinceMap').length > 0 && ProvinceMap.Overlay instanceof HTMLCanvasElement) {
 		ProvinceMap.DrawOverlay();
 	}
@@ -209,6 +204,14 @@ let Guild_fights = {
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
 	// seconds between the sector alert and the actual unlock (#3511)
 	alertLeadTime: JSON.parse(localStorage.getItem("LiveFightSettings"))?.alertLeadTime || 30,
+	// create an alert for every sector listed in the upcoming tab (default off)
+	autoAlert: JSON.parse(localStorage.getItem("LiveFightSettings"))?.autoAlert || 0,
+	AlertsLoaded: false,
+	// sectors whose alert the player removed by hand: not re-added automatically until the next reload
+	AutoAlertSkipped: new Set(),
+	AutoAlertPending: new Set(),
+	// province ids currently shown in the upcoming tab
+	ListedProvinces: [],
 	discordWebhook: {
 		url: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
 		template: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplate || "",
@@ -1647,6 +1650,7 @@ let Guild_fights = {
 
 		Guild_fights.ScheduleDiscordAutoSend();
 		Guild_fights.ScheduleAlertTimers();
+		Guild_fights.AutoSetAlerts();
 
 		// fallback cleanup of expired rows in case no further map updates arrive
 		clearInterval(Guild_fights.PruneInterval);
@@ -1886,6 +1890,7 @@ let Guild_fights = {
 		}
 
 		let prov = arrayprov.sort((a, b) => { return a.lockedUntil - b.lockedUntil });
+		Guild_fights.ListedProvinces = [];
 
 		for (let x in prov) {
 			if (!prov.hasOwnProperty(x)) continue;
@@ -1899,6 +1904,8 @@ let Guild_fights = {
 			}
 
 			if (showCountdowns) {
+				Guild_fights.ListedProvinces.push(prov[x].id);
+
 				let countDownDate = moment.unix(prov[x].lockedUntil - 2),
 					color = Guild_fights.SortedColors.find(e => e.id === prov[x].ownerId),
 					battleType = prov[x].isAttackBattleType ? 'BTattack' : 'BTdefence',
@@ -2576,6 +2583,7 @@ let Guild_fights = {
 
 			// fetch all alerts and search the id
 			return Alerts.getAll().then((resp) => {
+				Guild_fights.AlertsLoaded = true;
 				if (resp.length === 0) {
 					resolve();
 				}
@@ -2602,9 +2610,31 @@ let Guild_fights = {
 				});
 
 				Guild_fights.ScheduleAlertTimers();
+				Guild_fights.AutoSetAlerts();
 				resolve();
 			});
 		});
+	},
+
+
+	/**
+	 * Creates the missing alerts for every sector listed in the upcoming tab when
+	 * the automatic alert option is enabled. Sectors that unlock within the lead
+	 * time and alerts the player removed by hand are left alone.
+	 */
+	AutoSetAlerts: () => {
+		if (!Guild_fights.autoAlert || !Guild_fights.AlertsLoaded || !Guild_fights.MapData) return;
+
+		for (const provId of Guild_fights.ListedProvinces) {
+			if (Guild_fights.Alerts.some(a => a.provId == provId)) continue;
+			if (Guild_fights.AutoAlertSkipped.has(provId) || Guild_fights.AutoAlertPending.has(provId)) continue;
+
+			const prov = Guild_fights.MapData['map']['provinces'].find(e => e.id === provId);
+			if (!prov || prov.lockedUntil - Guild_fights.alertLeadTime <= GameTime.get()) continue;
+
+			Guild_fights.AutoAlertPending.add(provId);
+			Guild_fights.SetAlert(provId, true);
+		}
 	},
 
 
@@ -2614,7 +2644,7 @@ let Guild_fights = {
 	 *
 	 * @param id Province id
 	 */
-	SetAlert: (id) => {
+	SetAlert: (id, silent = false) => {
 		let prov = Guild_fights.MapData['map']['provinces'].find(e => e.id === id);
 
 		const data = {
@@ -2638,9 +2668,11 @@ let Guild_fights = {
 			data: data,
 		}).then((aId) => {
 			Guild_fights.Alerts.push({ provId: id, alertId: aId, expires: data.expires });
+			Guild_fights.AutoAlertPending.delete(id);
 			Guild_fights.ScheduleAlertTimers();
 			$(`#alert-${id}`).html(Guild_fights.GetAlertButton(id));
 			$('.tooltip').remove();
+			if (silent) return;
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.GuildFights.SaveMessage.Title'),
 				text: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveMessage.Desc'), { provinceName: prov.title }),
@@ -2666,6 +2698,7 @@ let Guild_fights = {
 			id: alert.alertId,
 		}).then(() => {
 			Guild_fights.Alerts = Guild_fights.Alerts.filter((a) => a.provId != provId);
+			Guild_fights.AutoAlertSkipped.add(provId);
 			Guild_fights.ScheduleAlertTimers();
 			$('.tooltip').remove();
 			HTML.ShowToastMsg({
@@ -2703,6 +2736,7 @@ let Guild_fights = {
 		let showMarkerButton = LiveFightSettings?.showMarkerButton ?? 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
 		let alertLeadTime = LiveFightSettings?.alertLeadTime ?? 30;
+		let autoAlert = LiveFightSettings?.autoAlert ?? 0;
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
 		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
@@ -2744,6 +2778,7 @@ let Guild_fights = {
 		c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${Guild_fights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
 		c.push(`<hr><p><label for="alertLeadTime">${i18n('Boxes.GuildFights.AlertLeadTime')} <input id="alertLeadTime" name="alertLeadTime" value="${alertLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label></p>`);
+		c.push(`<p><label for="autoAlert"><input id="autoAlert" name="autoAlert" value="0" type="checkbox" ${(autoAlert === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.AutoAlert')}</label></p>`);
 		c.push(`</div>`);
 
 		c.push(`<div id="gbgsettings-sending" class="hidden-tab">`);
@@ -2900,6 +2935,7 @@ let Guild_fights = {
 		let alertLeadTime = parseInt($("#alertLeadTime").val());
 		if (isNaN(alertLeadTime)) alertLeadTime = 30;
 		value.alertLeadTime = Math.min(Math.max(alertLeadTime, 5), 3600);
+		value.autoAlert = $("#autoAlert").is(':checked') ? 1 : 0;
 
 		Guild_fights.showGuildColumn = value.showGuildColumn;
 		Guild_fights.showAdjacentSectors = value.showAdjacentSectors;
@@ -2917,6 +2953,7 @@ let Guild_fights = {
 		Guild_fights.discordWebhook.maxAttrition = value.discordAutoMaxAttrition;
 		Guild_fights.webRequestProfile = value.webRequestProfile;
 		Guild_fights.alertLeadTime = value.alertLeadTime;
+		Guild_fights.autoAlert = value.autoAlert;
 		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 
 		if (Guild_fights.serverOffset != null) {

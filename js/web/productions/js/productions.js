@@ -11,6 +11,15 @@
  * **************************************************************************************
  */
 
+// collections, moves etc.: keep an open box in sync with the city
+FoEproxy.addFoeHelperHandler('CityMapUpdated', () => {
+	if ($('#Productions').length === 0) return
+
+	clearTimeout(Productions.RefreshTimer)
+	Productions.RefreshTimer = setTimeout(Productions.Refresh, 1500)
+})
+
+
 let Productions = {
 
 	CombinedCityMapData: {},
@@ -19,6 +28,7 @@ let Productions = {
 	BuildingsProductsGroups: [],
 	ShowDaily: false,
 	ActiveTab: 1,
+	RefreshTimer: null,
 
 	Tabs: [],
 	TabsContent: [],
@@ -71,32 +81,28 @@ let Productions = {
 
 
 	/**
-	 * Initializes the Productions module, sets up building data, and reads productions.
+	 * Initializes the Productions module, sets up building data, and toggles the box.
 	 */
 	init: () => {
 		if (ActiveMap === 'OtherPlayer') return
 
-		MainParser.CityBuildingsData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData))
-		Productions.CombinedCityMapData = MainParser.CityBuildingsData
+		Productions.ReadData()
+		Productions.showBox()
+	},
 
-		if (CityMap.EraOutpost.data) {
-			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data)
-		}
 
-		// Create empty arrays
-		for(let i in Productions.Types) {
-			if (!Productions.Types.hasOwnProperty(i)) {
-				continue
-			}
-
-			Productions.BuildingsProducts[Productions.Types[i]] = []
-			if (Productions.Types[i] === 'goods') {
-				continue
-			}
-			Productions.BuildingsProductsGroups[ Productions.Types[i] ] = []
-		}
+	/**
+	 * Re-renders the open box with the current city data, e.g. after a collection:
+	 * the current productions and timers would stay stale otherwise. Keeps the active tab.
+	 */
+	Refresh: () => {
+		if ($('#Productions').length === 0 || ActiveMap === 'OtherPlayer') return
 
 		Productions.ReadData()
+
+		const $tabs = $('#Productions .production-tabs > ul > li')
+		Productions.ActiveTab = Math.max(1, $tabs.index($tabs.filter('.active')) + 1)
+		Productions.CalcBody()
 	},
 
 
@@ -151,9 +157,23 @@ let Productions = {
 
 
 	/**
-	 * Processes city building data, calculates population and happiness sums, and shows the production box.
+	 * Processes the city building data: builds the building list, resets the product
+	 * groups and calculates the population and happiness sums.
 	 */
 	ReadData: ()=> {
+		MainParser.CityBuildingsData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData))
+		Productions.CombinedCityMapData = MainParser.CityBuildingsData
+
+		if (CityMap.EraOutpost.data) {
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data)
+		}
+
+		// Create empty arrays
+		for (const type of Productions.Types) {
+			Productions.BuildingsProducts[type] = []
+			if (type !== 'goods') Productions.BuildingsProductsGroups[type] = []
+		}
+
 		Productions.BuildingsAll = Object.values(Productions.CombinedCityMapData)
 		Productions.setChainsAndSets(Productions.BuildingsAll)
 
@@ -178,8 +198,6 @@ let Productions = {
 		Productions.HappinessBoost = ProdBonus
 		Productions.Boosts['money'] += ProdBonus
 		Productions.Boosts['supplies'] += ProdBonus
-
-		Productions.showBox();
 	},
 
 
@@ -340,7 +358,7 @@ let Productions = {
 						if (Productions.BuildingsProducts.units.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.units.push(saveBuilding)
 					}
-					if (production.type === "genericReward") {
+					if (production.type === "genericReward" || production.type === "random") {
 						if (Productions.BuildingsProducts.items.find(x => x.id === building.id) === undefined) {
 							Productions.BuildingsProducts.items.push(saveBuilding)
 						}
@@ -445,8 +463,11 @@ let Productions = {
 			$('.TSinactive').removeClass('TSinactive')
 			HTML.FilterTable('#Productions .filterCurrentList')
 
+			// re-render (refresh, settings): only the first table is filled above, fill the restored tab as well
+			if (Productions.ActiveTab > 1) $('.production-tabs li').eq(Productions.ActiveTab - 1).trigger('click')
+
 			// mark a building in the city, fall back to the city map box if unsupported
-			$('#Productions').on('click', '.foe-table .show-entity', async function () {
+			$('#Productions').off('click', '.foe-table .show-entity').on('click', '.foe-table .show-entity', async function () {
 				const id = $(this).data('id');
 
 				if (!await BuildingMarker.show(id)) {
@@ -631,9 +652,29 @@ let Productions = {
 			allUnits = '',
 			itemArray = [];
 
+		// random productions (chests, "20 %: 10x ..."): listed with their average per collection
+		const addRandom = (resources) => {
+			for (const resource of (Array.isArray(resources) ? resources : [])) {
+				if (resource.type.includes("good") || resource.type === "resources") continue;
+
+				let frag = resource.subType === "fragment"
+				let amount = parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100)
+				if (resource.type === "unit") {
+					allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
+				} else {
+					allItems += "<span>Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "</span><br>"
+					itemArray.push({fragment:frag,name:resource.name,amount:0,random:amount})
+				}
+			}
+		}
+
 		// current item production
 		if (current && (building.state?.isPolivated === true || building.state?.isPolivated === undefined) && Array.isArray(building.state?.production)) {
 			for (const production of building.state?.production) {
+				if (production.type === "random") {
+					addRandom(production.resources)
+					continue
+				}
 				if (production.type !== "genericReward") continue;
 				if (production.resources?.icon?.includes("good")) return false;
 
@@ -647,18 +688,7 @@ let Productions = {
 			if (building.production) {
 				for (const production of building.production) {
 					if (production.type === "random") {
-						for (const resource of production.resources) {
-							if (resource.type.includes("good") || resource.type === "resources") continue;
-
-							let frag = resource.subType === "fragment"
-							let amount = parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100)
-							if (resource.type === "unit") {
-								allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
-							} else {
-								allItems += "<span>Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "</span><br>"
-								itemArray.push({fragment:frag,name:resource.name,amount:0,random:amount})
-							}
-						}
+						addRandom(production.resources)
 					}
 					if (production.type === "unit") {
 						for (let u of Object.keys(production.resources)) {
@@ -1013,7 +1043,7 @@ let Productions = {
 			localStorage.setItem('productionsShowRelativeTime', false)
 		}
 
-		Productions.CalcBody()
+		Productions.Refresh()
 
 		$(`#ProductionsSettingsBox`).remove()
 	},

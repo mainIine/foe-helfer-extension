@@ -46,3 +46,14 @@
     color: var(--success);
     font-weight: 700;
 }
+
+#PvPArena #PvPArenaBody .player-note {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2px 6px;
+    font-size: 0.95em;
+}
+
+#PvPArena #PvPArenaBody table th:last-child {
+    width: 40%;
+}

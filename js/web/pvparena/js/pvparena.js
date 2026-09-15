@@ -82,6 +82,12 @@ const PvPArena = {
         $('#PvPArenaBody').off('click', '.reset-lost-fights').on('click', '.reset-lost-fights', () => {
             PvPArena.ResetLostAttackFights();
         });
+        $('#PvPArenaBody').off('change', '.player-note').on('change', '.player-note', function () {
+            PvPArena.SaveNote($(this).data('id'), $(this).val());
+        });
+        $('#PvPArenaBody').off('keydown', '.player-note').on('keydown', '.player-note', function (e) {
+            if (e.key === 'Enter') $(this).blur();
+        });
     },
 
     /**
@@ -107,6 +113,7 @@ const PvPArena = {
         h.push(`<th class="game-cursor no-sort" data-type="fights">${i18n('Boxes.PvPArena.Type')}</th>`);
         h.push(`<th class="game-cursor ascending" data-type="fights">${i18n('Boxes.PvPArena.PlayerName')}</th>`);
         h.push(`<th class="is-number game-cursor text-right" data-type="fights">${i18n('Boxes.PvPArena.Points')}</th>`);
+        h.push(`<th class="no-sort" data-type="fights">${i18n('Boxes.PvPArena.Notes')}</th>`);
 
         if (deletable) {
             h.push('<th class="no-sort" data-type="fights">&nbsp;</th>');
@@ -117,11 +124,17 @@ const PvPArena = {
 
         h.push('<tbody class="fights">');
 
+        const notes = PvPArena.GetNotes();
+
         for (let i = 0; i < PvPArena[PvPArena.activeTable].length; i++) {
+            const fight = PvPArena[PvPArena.activeTable][i];
+            const note = notes[fight.playerId] || '';
+
             h.push(`<tr>`);
-            h.push(`<td><div class="${PvPArena[PvPArena.activeTable][i].type}"></div></td>`);
-            h.push(`<td class="" data-text="${helper.str.cleanup(PvPArena[PvPArena.activeTable][i].playerName)}">${PvPArena[PvPArena.activeTable][i].playerName}</td>`);
-            h.push(`<td class="is-number text-right text-${PvPArena[PvPArena.activeTable][i].rankingPointsChange < 0 ? 'danger' : 'success'}" data-number="${PvPArena[PvPArena.activeTable][i].rankingPointsChange}">${PvPArena[PvPArena.activeTable][i].rankingPointsChange}</td>`);
+            h.push(`<td><div class="${fight.type}"></div></td>`);
+            h.push(`<td class="" data-text="${helper.str.cleanup(fight.playerName)}">${fight.playerName}</td>`);
+            h.push(`<td class="is-number text-right text-${fight.rankingPointsChange < 0 ? 'danger' : 'success'}" data-number="${fight.rankingPointsChange}">${fight.rankingPointsChange}</td>`);
+            h.push(`<td><input type="text" class="player-note" data-id="${fight.playerId}" value="${HTML.escapeHtml(note)}" placeholder="${i18n('Boxes.PvPArena.NotesPlaceholder')}" title="${HTML.escapeHtml(note)}"></td>`);
 
             if (deletable) {
                 h.push(`<td class="text-center"><button class="btn btn-slim btn-delete icon delete-lost-fight" data-index="${i}" title="${i18n('Boxes.PvPArena.DeleteLostAttackFight')}"></button></td>`);
@@ -148,6 +161,7 @@ const PvPArena = {
 
         PvPArena.Fights = responseData.actions.map(action => ({
             type: action.type,
+            playerId: action.otherPlayer.player.player_id,
             playerName: action.otherPlayer.player.name,
             rankingPointsChange: action.rankingPointsChange
         }));
@@ -208,6 +222,38 @@ const PvPArena = {
         PvPArena.SetHiddenPlayers(PvPArena.AllLostAttackFights.map(fight => fight.playerName));
         PvPArena.LostAttackFights = [];
         PvPArena.RefreshTable();
+    },
+
+    /**
+     * Read the per-player notes of the current world from localStorage
+     *
+     * @returns {Object<string, string>} note text keyed by player id
+     */
+    GetNotes: () => JSON.parse(localStorage.getItem(`PvPArenaNotes-${ExtWorld}`) || '{}'),
+
+    /**
+     * Store a note for a player and mirror it into every row of that player
+     *
+     * @param {number} playerId
+     * @param {string} text
+     */
+    SaveNote: (playerId, text) => {
+        const notes = PvPArena.GetNotes();
+        text = text.trim();
+
+        if (text) {
+            notes[playerId] = text;
+        } else {
+            delete notes[playerId];
+        }
+
+        if (Object.keys(notes).length > 0) {
+            localStorage.setItem(`PvPArenaNotes-${ExtWorld}`, JSON.stringify(notes));
+        } else {
+            localStorage.removeItem(`PvPArenaNotes-${ExtWorld}`);
+        }
+
+        $(`#PvPArenaBody .player-note[data-id="${playerId}"]`).val(text).attr('title', text);
     },
 
     /**

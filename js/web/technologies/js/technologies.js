@@ -40,7 +40,8 @@ FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
     }
 });
 
-FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
+// spendResearchResources is the Stellar Age variant of spendForgePoints (stellar points instead of forge points)
+const OnResearchProgress = (data, postData) => {
     let CurrentTech = data.responseData['technology'];
     if (CurrentTech === undefined) return;
 
@@ -66,6 +67,24 @@ FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
         let TechCount = Technologies.UnlockedTechnologies.inProgressTechnologies.length;
         Technologies.UnlockedTechnologies.inProgressTechnologies[TechCount] = CurrentTech['progress'];
     }
+
+    if ($('#technologies').length !== 0) {
+        Technologies.CalcBody();
+    }
+};
+FoEproxy.addHandler('ResearchService', 'spendForgePoints', OnResearchProgress);
+FoEproxy.addHandler('ResearchService', 'spendResearchResources', OnResearchProgress);
+
+// branch choice of a Stellar Age decision point: the game only returns a success flag,
+// the chosen branch id is taken from the request
+FoEproxy.addHandler('ResearchService', 'chooseBranch', (data, postData) => {
+    let Request = (postData || []).find(post => post.requestClass === 'ResearchService' && post.requestMethod === 'chooseBranch'),
+        BranchID = Request?.requestData?.[0];
+    if (typeof BranchID !== 'string') return;
+
+    if (!Technologies.UnlockedTechnologies) Technologies.UnlockedTechnologies = {};
+    if (!Array.isArray(Technologies.UnlockedTechnologies.chosenBranches)) Technologies.UnlockedTechnologies.chosenBranches = [];
+    if (!Technologies.UnlockedTechnologies.chosenBranches.includes(BranchID)) Technologies.UnlockedTechnologies.chosenBranches.push(BranchID);
 
     if ($('#technologies').length !== 0) {
         Technologies.CalcBody();
@@ -464,20 +483,113 @@ let Technologies = {
 
 
     /**
-     * Returns the total forge point (strategy_points) cost of a technology.
-     * Inno moved this value from the former `max_progress` field into
-     * `researchCost.resources.strategy_points`. The old field is kept as a
-     * fallback for backward compatibility.
+     * Returns the research resource of a technology (forge points or, in the
+     * Stellar Age, stellar points): the first entry of `researchCost.resources`,
+     * resolved exactly like the game client does it. The former `max_progress`
+     * field is kept as forge point fallback for older metadata.
      *
-     * @param {Object} Tech - A technology entry from Technologies.AllTechnologies.
-     * @returns {number} The forge point cost, or 0 if none is defined.
+     * @param {Object} Tech - A technology entry of the research tree.
+     * @returns {{id: string, amount: number}} Resource id and total amount (strategy_points / 0 if none).
      */
-    GetTechFP: (Tech) => {
-        if (!Tech) return 0;
-        if (Tech['max_progress'] !== undefined) return Tech['max_progress'] || 0;
-        if (Tech['researchCost'] && Tech['researchCost']['resources'] && typeof Tech['researchCost']['resources'] === 'object')
-            return Tech['researchCost']['resources']['strategy_points'] || 0;
-        return 0;
+    GetResearchCost: (Tech) => {
+        if (Tech['max_progress'] !== undefined) return { id: 'strategy_points', amount: Tech['max_progress'] || 0 };
+
+        const Resources = Tech['researchCost']?.['resources'],
+            ID = (Resources && typeof Resources === 'object') ? Object.keys(Resources)[0] : undefined;
+
+        return ID ? { id: ID, amount: Resources[ID] || 0 } : { id: 'strategy_points', amount: 0 };
+    },
+
+
+    /**
+     * Returns the open demand of a technology as resource id -> amount: the
+     * goods requirements (`requirements.resources`, or `cost.resources` for the
+     * branch decision points of the Stellar Age, which have no requirements)
+     * plus the still unpaid part of the research resource.
+     *
+     * @param {Object} Tech - A technology entry of the research tree.
+     * @returns {Object<string,number>}
+     */
+    GetTechDemand: (Tech) => {
+        const Demand = Object.assign({}, (Tech['requirements'] || Tech['cost'] || {})['resources'] || {}),
+            Research = Technologies.GetResearchCost(Tech);
+
+        if (Research.amount > 0) Demand[Research.id] = (Demand[Research.id] || 0) + Research.amount - (Tech['currentSP'] || 0);
+
+        return Demand;
+    },
+
+
+    /**
+     * Optional technologies are dead ends of the tree (no children). The
+     * technologies of a decision point branch are never optional, their last
+     * node has no children by design.
+     *
+     * @param {Object} Tech - A technology entry of the research tree.
+     * @returns {boolean}
+     */
+    IsOptionalTech: (Tech) => !Tech['branchOf'] && (Tech['children'] || []).length === 0,
+
+
+    /**
+     * Flattens the research tree into one list: all top level nodes (root
+     * excluded) plus the technologies of the Stellar Age branch decision
+     * points. Of each decision point only one branch is taken: the chosen one
+     * if the player already decided, otherwise the first one (both branches
+     * carry the same research costs, only the goods differ slightly). Branch
+     * technologies are marked with `branchOf` (id of their decision point).
+     *
+     * @returns {Object[]} Technology entries
+     */
+    GetTechList: () => {
+        const Chosen = new Set(Technologies.UnlockedTechnologies?.['chosenBranches'] || []),
+            List = [];
+
+        for (const Tech of Technologies.AllTechnologies.slice(1)) {
+            List.push(Tech);
+
+            const Branches = Tech['branches'];
+            if (!Array.isArray(Branches) || Branches.length === 0) continue;
+
+            const Branch = Branches.find(branch => Chosen.has(branch['id'])) || Branches[0];
+            for (const Node of (Branch['nodes'] || [])) {
+                Node['branchOf'] = Tech['id'];
+                List.push(Node);
+            }
+        }
+
+        return List;
+    },
+
+
+    /**
+     * Marks the researched (`isResearched`, fully paid) and partially
+     * researched (`currentSP`) technologies of a tech list from the game's
+     * research progress.
+     *
+     * @param {Object[]} TechList - Output of GetTechList()
+     */
+    MarkResearchState: (TechList) => {
+        const ByID = new Map(TechList.map(Tech => [Tech['id'], Tech])),
+            Progress = Technologies.UnlockedTechnologies || {},
+            Researched = Progress['unlockedNodes']?.length ? Progress['unlockedNodes'] : (Progress['unlockedTechnologies'] || []);
+
+        for (const Tech of TechList) {
+            if (Tech['currentSP'] === undefined) Tech['currentSP'] = 0;
+        }
+
+        for (const ID of Researched) {
+            const Tech = ByID.get(ID);
+            if (!Tech) continue;
+
+            Tech['isResearched'] = true;
+            Tech['currentSP'] = Technologies.GetResearchCost(Tech).amount;
+        }
+
+        for (const InProgress of (Progress['inProgressTechnologies'] || [])) {
+            const Tech = ByID.get(InProgress['tech_id']);
+            if (Tech) Tech['currentSP'] = InProgress['currentSP'];
+        }
     },
 
 
@@ -488,16 +600,16 @@ let Technologies = {
      * and dynamically generating HTML content to display relevant data.
      *
      * The function performs the following steps:
-     * 1. Builds an index mapping technology IDs to array indices for quick access.
-     * 2. Marks technologies as researched or partially researched based on the current state.
-     * 3. Computes the total resources required to unlock remaining technologies, taking into
-     *    account various user-defined filters such as ignoring previous or optional technologies.
-     * 4. Assembles a list of resources and their statuses (required, in stock, missing).
-     * 5. Generates HTML content, including era navigation, settings, and a table displaying resource requirements.
+     * 1. Flattens the research tree (GetTechList, decision point branches included)
+     *    and marks researched / partially researched technologies (MarkResearchState).
+     * 2. Computes the total resources required to unlock remaining technologies (GetTechDemand),
+     *    taking into account the user-defined filters such as ignoring previous or optional technologies.
+     * 3. Assembles a list of resources and their statuses (required, in stock, missing).
+     * 4. Generates HTML content, including era navigation, settings, and a table displaying resource requirements.
      *
      * Data sources:
      * - `Technologies.AllTechnologies`: Array of all available technologies with their details.
-     * - `Technologies.UnlockedTechnologies`: Object containing arrays for unlocked and in-progress technologies.
+     * - `Technologies.UnlockedTechnologies`: Research progress (unlocked nodes, in-progress technologies, chosen branches).
      * - `Technologies.Eras`: Mapping of era names to era IDs.
      * - `GoodsList`: Array of all possible resources for the technologies.
      * - `ResourceStock`: Object containing current user stock of resources.
@@ -515,37 +627,13 @@ let Technologies = {
      */
     CalcBody: ()=> {
         let h = [],
-            TechDict = [];
+            TechList = Technologies.GetTechList();
 
-        // Index aufbauen (Namen => Index)
-        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
-            TechDict[Technologies.AllTechnologies[i]['id']] = i;
-        }
-
-        // Suche erforschte Technologien
-        let ResearchedTechs = (Technologies.UnlockedTechnologies['unlockedNodes'] && Technologies.UnlockedTechnologies['unlockedNodes'].length)
-            ? Technologies.UnlockedTechnologies['unlockedNodes']
-            : (Technologies.UnlockedTechnologies['unlockedTechnologies'] || []);
-        for (let i = 0; i < ResearchedTechs.length; i++) {
-            let TechName = ResearchedTechs[i];
-            let Index = TechDict[TechName];
-            if (Index === undefined) continue;
-            Technologies.AllTechnologies[Index]['isResearched'] = true;
-            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.GetTechFP(Technologies.AllTechnologies[Index]);
-        }
-
-        // Teilweise erforscht
-        let InProgressTechs = Technologies.UnlockedTechnologies['inProgressTechnologies'] || [];
-        for (let i = 0; i < InProgressTechs.length; i++) {
-            let InProgTech = InProgressTechs[i];
-            let Index = TechDict[InProgTech['tech_id']];
-            if (Index === undefined) continue;
-            Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
-        }
+        Technologies.MarkResearchState(TechList);
 
         // Güter zählen
-        let RequiredResources = [],            // Bedarf NUR des gewählten Zeitalters
-            CumulativeResources = [],          // Bedarf kumulativ: aktuelles ZA bis gewähltes ZA
+        let RequiredResources = {},            // Bedarf NUR des gewählten Zeitalters
+            CumulativeResources = {},          // Bedarf kumulativ: aktuelles ZA bis gewähltes ZA
             RelevantResources = { strategy_points: true, money: true, supplies: true },
             TechCount = 0;
 
@@ -555,17 +643,13 @@ let Technologies = {
         // unchecked, open researches of earlier eras are included as well.
         let CumLowerEraID = Technologies.IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1;
 
-        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
-            let Tech = Technologies.AllTechnologies[i];
-            if (Tech['currentSP'] === undefined)
-            	Tech['currentSP'] = 0;
-
+        for (let Tech of TechList) {
             if (Tech['isTeaser']) continue;
 
             let EraID = Technologies.Eras[Tech['era']];
 
             // Aktuelles/zukünftiges ZA und optionale Technologie ausblenden
-            if (EraID >= CurrentEraID && Tech['children'].length === 0 && Technologies.IgnoreCurrentEraOptional) {
+            if (EraID >= CurrentEraID && Technologies.IsOptionalTech(Tech) && Technologies.IgnoreCurrentEraOptional) {
                 continue;
             }
 
@@ -574,20 +658,12 @@ let Technologies = {
                 continue;
             }
 
-            let TechFP = Technologies.GetTechFP(Tech);
+            let Demand = Technologies.GetTechDemand(Tech);
 
             // Kumulativ: gesamter Bereich [CumLowerEraID .. SelEraID]
             if (!Tech['isResearched']) {
-                if (CumulativeResources['strategy_points'] === undefined)
-                	CumulativeResources['strategy_points'] = 0;
-
-                CumulativeResources['strategy_points'] += TechFP - Tech['currentSP'];
-
-                for (let ResourceName in Tech['requirements']['resources']) {
-                    if (CumulativeResources[ResourceName] === undefined)
-                    	CumulativeResources[ResourceName] = 0;
-
-                    CumulativeResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                for (let ResourceName in Demand) {
+                    CumulativeResources[ResourceName] = (CumulativeResources[ResourceName] || 0) + Demand[ResourceName];
 
                     // also list goods that are only needed in eras in between
                     RelevantResources[ResourceName] = true;
@@ -597,22 +673,14 @@ let Technologies = {
             // Pro gewähltem Zeitalter: nur Technologien genau dieses Zeitalters
             if (EraID === SelEraID) {
                 // Alle vorkommenden Güter merken, damit sie immer gelistet werden
-                for (let ResourceName in Tech['requirements']['resources']) {
+                for (let ResourceName in Demand) {
                     RelevantResources[ResourceName] = true;
                 }
 
                 // Nur noch nicht erforschte Technologien tragen zum Bedarf bei
                 if (!Tech['isResearched']) {
-                    if (RequiredResources['strategy_points'] === undefined)
-                    	RequiredResources['strategy_points'] = 0;
-
-                    RequiredResources['strategy_points'] += TechFP - Tech['currentSP'];
-
-                    for (let ResourceName in Tech['requirements']['resources']) {
-                        if (RequiredResources[ResourceName] === undefined)
-                        	RequiredResources[ResourceName] = 0;
-
-                        RequiredResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                    for (let ResourceName in Demand) {
+                        RequiredResources[ResourceName] = (RequiredResources[ResourceName] || 0) + Demand[ResourceName];
                     }
 
                     TechCount++;
@@ -699,6 +767,19 @@ let Technologies = {
                 OutputList.push({ id: GoodsList[i]['id'], era: Era });
             }
 
+            // resources outside the goods list (e.g. the Stellar Age research and mission
+            // resources) are appended to the block of their era so they are not lost
+            let Listed = new Set(OutputList.map(Entry => Entry['id']));
+            for (let ResourceName in RelevantResources) {
+                if (Listed.has(ResourceName) || GoodsData[ResourceName] === undefined) continue;
+
+                let Era = FHResourcesList.find(Resource => Resource['id'] === ResourceName)?.['era'] || null,
+                    LastIndex = OutputList.map(Entry => Entry['era']).lastIndexOf(Era);
+
+                // these resources are not part of the goods sprite atlas, their icon is a single image asset
+                OutputList.splice(LastIndex === -1 ? OutputList.length : LastIndex + 1, 0, { id: ResourceName, era: Era, img: true });
+            }
+
             let Rows = [];
             for (let i = 0; i < OutputList.length; i++) {
                 let ResourceName = OutputList[i]['id'];
@@ -722,7 +803,7 @@ let Technologies = {
 
                     let r = [];
                     r.push('<tr' + (IsDone ? ' class="technologies-done"' : '') + '>');
-                    r.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
+                    r.push('<td class="goods-image" style="width:25px">' + (OutputList[i]['img'] ? srcLinks.icons(ResourceName) : '<span class="goods-sprite sprite-35 ' + GoodsData[ResourceName]['id'] + '"></span>') + '</td>');
                     r.push('<td data-text="' + helper.str.cleanup(GoodsData[ResourceName]['name']) + '"' + (NameClass ? ' class="' + NameClass + '"' : '') + '>' + GoodsData[ResourceName]['name'] + '</td>');
                     r.push('<td data-number="' + Required + '">' + HTML.Format(Required) + '</td>');
                     if (ShowCumulative) {
@@ -814,93 +895,34 @@ let Technologies = {
         let IgnoreCurrentEraOptional = localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false';
         let SelEraID = Technologies.SelectedEraID || CurrentEraID;
 
-        // Build index and mark researched / in-progress techs exactly like CalcBody
-        let TechDict = [];
-        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
-            TechDict[Technologies.AllTechnologies[i]['id']] = i;
-        }
+        let TechList = Technologies.GetTechList();
+        Technologies.MarkResearchState(TechList);
 
-        let ResearchedTechs = (Technologies.UnlockedTechnologies['unlockedNodes'] && Technologies.UnlockedTechnologies['unlockedNodes'].length)
-            ? Technologies.UnlockedTechnologies['unlockedNodes']
-            : (Technologies.UnlockedTechnologies['unlockedTechnologies'] || []);
-        for (let i = 0; i < ResearchedTechs.length; i++) {
-            let TechName = ResearchedTechs[i];
-            let Index = TechDict[TechName];
-            if (Index === undefined) continue;
-            Technologies.AllTechnologies[Index]['isResearched'] = true;
-            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.GetTechFP(Technologies.AllTechnologies[Index]);
-        }
+        // Same "still missing" logic as CalcBody: when the cumulative range
+        // [CumLowerEraID .. SelEraID] spans more than the selected era, compare
+        // against the cumulative demand; otherwise against the selected era only.
+        let CumLowerEraID = IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1,
+            ShowCumulative = CumLowerEraID < SelEraID,
+            Demand = {};
 
-        let InProgressTechs = Technologies.UnlockedTechnologies['inProgressTechnologies'] || [];
-        for (let i = 0; i < InProgressTechs.length; i++) {
-            let InProgTech = InProgressTechs[i];
-            let Index = TechDict[InProgTech['tech_id']];
-            if (Index === undefined) continue;
-            Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
-        }
-
-        // Cumulative demand over [CumLowerEraID .. SelEraID]
-        let CumulativeResources = [];
-        let CumLowerEraID = IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1;
-
-        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
-            let Tech = Technologies.AllTechnologies[i];
-            if (Tech['currentSP'] === undefined)
-                Tech['currentSP'] = 0;
-
-            if (Tech['isTeaser']) continue;
+        for (let Tech of TechList) {
+            if (Tech['isTeaser'] || Tech['isResearched']) continue;
 
             let EraID = Technologies.Eras[Tech['era']];
 
-            if (EraID >= CurrentEraID && Tech['children'].length === 0 && IgnoreCurrentEraOptional) {
-                continue;
-            }
+            if (EraID >= CurrentEraID && Technologies.IsOptionalTech(Tech) && IgnoreCurrentEraOptional) continue;
+            if (ShowCumulative ? (EraID < CumLowerEraID || EraID > SelEraID) : EraID !== SelEraID) continue;
 
-            if (EraID < CumLowerEraID || EraID > SelEraID) {
-                continue;
-            }
-
-            if (!Tech['isResearched']) {
-                for (let ResourceName in Tech['requirements']['resources']) {
-                    if (CumulativeResources[ResourceName] === undefined)
-                        CumulativeResources[ResourceName] = 0;
-
-                    CumulativeResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
-                }
+            let TechDemand = Technologies.GetTechDemand(Tech);
+            for (let ResourceName in TechDemand) {
+                Demand[ResourceName] = (Demand[ResourceName] || 0) + TechDemand[ResourceName];
             }
         }
 
-        // Same "still missing" logic as CalcBody: when the cumulative range
-        // spans more than just the selected era, compare against the
-        // cumulative demand; otherwise against the selected-era demand.
-        let ShowCumulative = CumLowerEraID < SelEraID;
-
-        let RequiredResources = [];
-        if (!ShowCumulative) {
-            for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
-                let Tech = Technologies.AllTechnologies[i];
-                if (Tech['isTeaser']) continue;
-                let EraID = Technologies.Eras[Tech['era']];
-                if (EraID !== SelEraID) continue;
-                if (EraID >= CurrentEraID && Tech['children'].length === 0 && IgnoreCurrentEraOptional) continue;
-                if (!Tech['isResearched']) {
-                    for (let ResourceName in Tech['requirements']['resources']) {
-                        if (RequiredResources[ResourceName] === undefined)
-                            RequiredResources[ResourceName] = 0;
-                        RequiredResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
-                    }
-                }
-            }
-        }
-
-        for (let ResourceName in CumulativeResources) {
+        for (let ResourceName in Demand) {
             if (ResourceName === 'strategy_points' || ResourceName === 'money' || ResourceName === 'supplies') continue;
 
-            let Demand = ShowCumulative ? CumulativeResources[ResourceName] : (RequiredResources[ResourceName] || 0);
-            let Stock = ResourceStock[ResourceName];
-            if (Stock === undefined) Stock = 0;
-
-            if (Stock - Demand < 0) {
+            if ((ResourceStock[ResourceName] || 0) - Demand[ResourceName] < 0) {
                 neededGoods.add(ResourceName);
             }
         }

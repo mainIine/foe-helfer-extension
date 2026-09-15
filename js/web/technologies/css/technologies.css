@@ -149,3 +149,10 @@
 	background: var(--table-bg-darker);
 	border-top: 1px solid var(--border-table-bottom);
 }
+/* single image icons of resources outside the goods sprite atlas (e.g. stellar points) */
+#technologies #technologiesBody td.goods-image img {
+	height: 24px;
+	width: auto;
+	display: block;
+	margin: 0 auto;
+}
