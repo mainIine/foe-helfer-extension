@@ -22,13 +22,20 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
                 if (!Recurring.data.Questlist[quest.id] && quest.genericRewards[0].flags.includes('random')) {
                     Recurring.data.Questlist[quest.id] = {'title':quest.title, 'diamonds': false};
                 }
+                let entry = Recurring.data.Questlist[quest.id];
+                if (!entry) continue;
                 if (quest.genericRewards[0].subType == "medals" || quest.genericRewards[0].subType == "premium") {
-                    Recurring.data.Questlist[quest.id].diamonds = true;
+                    entry.diamonds = true;
                 }
-                if (!Recurring.data.Questlist[quest.id].era) Recurring.data.Questlist[quest.id].era = CurrentEraID;
-                if (!Recurring.data.Questlist[quest.id].conditions) {
-                    Recurring.data.Questlist[quest.id].conditions = quest.successConditions;
-                    Recurring.data.Questlist[quest.id].groups = quest.successConditionGroups;
+                // A quest the game offers right now belongs to the current era. Right after
+                // an era change the new quests can still arrive with the old era (the era
+                // update and the quest update come in the same batch), they were then filtered
+                // out for good and the list stopped updating (#3555) — so move the era along
+                // whenever the quest shows up again.
+                if (CurrentEraID && (!entry.era || entry.era < CurrentEraID)) entry.era = CurrentEraID;
+                if (!entry.conditions) {
+                    entry.conditions = quest.successConditions;
+                    entry.groups = quest.successConditionGroups;
                 }
             }
         }

@@ -1,5 +1,19 @@
 ## Extension Changelog
 
+##### 4.8.2.1
+**Update**
+
+- Guild battlegrounds: new option in the live box settings (tab "Time & Alarm") to set an alert automatically for every sector in the upcoming list — off by default; an alert you remove by hand is not set again until the next reload
+
+**Bugfixes**
+
+- Beta worlds: Building Efficiency Rating, Shop Assistant, Town Overview, city map, kits, inventory and ascended buildings stayed at the loading spinner (or the empty grid) on zz1 — the beta game client no longer loads a part of the building data at startup, the extension now requests it itself. Live worlds were not affected
+- Recurring quests: after advancing to a new era the list mixed old and new quests, then most of them vanished and the box stopped updating — the quests of the new era are now assigned correctly, and an already broken list repairs itself as the quests come around again
+- Production overview & Blue Galaxy: buildings with a random production (e.g. Yukitomo Imperial: 20 % 10× Self-Aid Kit, 80 % 1×) showed a placeholder as if it were the fixed production — the possible rewards are now listed with their average per collection, like the general view already did
+- Production overview: the box updates itself after collecting, moving or motivating — collected productions stayed listed with an outdated timer until the box was reopened; the selected tab is kept, also after saving the settings
+
+---
+
 ##### 4.8.2.0
 **Update**
 
@@ -8,7 +22,6 @@
 
 **Bugfixes**
 
-- City map: on beta worlds the buildings are shown again — until now only the empty grid was left there; kits, inventory and ascended buildings, which rely on the same data, work there again as well. Live worlds were not affected
 - Research costs: paging into the Stellar Age works again — the box went silent on switching as soon as the decision points of the new research tree were in range. The technologies of the decision branches are now included (the chosen branch, the first one before deciding), and the new resources of the era (Stellar Points, Stellar Capacity, Encoded Tablets, Synthetic Intelligence Remnant) show up in the table as well
 - Market: the "needed for research" filter also takes the Stellar Age decision branches into account
 - Guild battlegrounds: when the guild leadership places another crosshair on the map, the sectors already marked stay visible in the box — previously all older markers vanished and only the last one placed was shown

@@ -660,6 +660,7 @@
     "Boxes.GBBonuses.Type.totem_drop": "Totem-Fragmente",
     "Boxes.GreatBuildings.Title": "LG Investitionen",
     "Boxes.GuildFights.AlertLeadTime": "Vorlaufzeit des Sektor-Alarms (Sekunden)",
+    "Boxes.GuildFights.AutoAlert": "Für jeden Sektor in der Liste automatisch einen Alarm setzen",
     "Boxes.GuildFights.Attrition": "Zermürbung",
     "Boxes.GuildFights.BoostedVP": "mit Boost: __vp__",
     "Boxes.GuildFights.Copy": "Kopieren",

@@ -979,7 +979,19 @@ let CityBuildings = {
 				}
 			}
 			else if (data.state.productionOption) { // generic building
+				// random products: the state only carries a placeholder result (isRandom) that
+				// the game itself hides, the reward is rolled on collection — show the random
+				// pool of the building instead of the placeholder
+				const randomPool = (data.state.productionOption.products.some(product => product.isRandom)
+					? (this.setAllProductions(metaData, data, era) || []).filter(product => product.type === 'random')
+					: []);
+
 				data.state.productionOption.products.forEach(production => {
+					if (production.isRandom && randomPool.length > 0) {
+						productions.push(randomPool.shift());
+						return;
+					}
+
 					const resource = {
 						type: production.type,
 						resources: {}

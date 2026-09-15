@@ -662,6 +662,7 @@
     "Boxes.GBBonuses.Type.totem_drop": "Totem Fragments",
     "Boxes.GreatBuildings.Title": "GB Investment Overview",
     "Boxes.GuildFights.AlertLeadTime": "Sector alert lead time (seconds)",
+    "Boxes.GuildFights.AutoAlert": "Set an alert automatically for every sector in the list",
     "Boxes.GuildFights.Attrition": "Attrition",
     "Boxes.GuildFights.BoostedVP": "with boost: __vp__",
     "Boxes.GuildFights.Copy": "Copy",
