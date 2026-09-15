@@ -477,7 +477,7 @@ let Tooltips = {
             if (chain?.chainId) {
                 let ChainMeta = (MainParser.BuildingChains?.[chain.chainId] || MainParser.BuildingChains?.[chain.chainId.toLowerCase()]);
                 set = srcLinks.icons(chain.chainId) + ChainMeta.name;
-                if (!ChainMeta.cityEntityIds.includes(meta.id)) set += '</td></tr><tr><td style="text-wrap-mode:wrap;">' + chain.description;
+                if (!ChainMeta.cityEntityIds.includes(meta.id)) set += '</td></tr><tr><td class="wrapText">' + chain.description;
             }
 
             // Traits
@@ -491,14 +491,14 @@ let Tooltips = {
                     }
                 }
                 if (a.__class__ === "AffectsEnvironmentAbility" && a.action?.type === "add_unique_inhabitant") {
-                    traits += `<tr><td><img alt class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`, true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`;
+                    traits += `<tr><td class="hasInhabitant"><img alt class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`, true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`;
                 }
             }
 
             if (levels?.AllAge?.environmentEffect?.effects) {
                 for (let e of levels.AllAge.environmentEffect.effects || []) {
                     if (e.type === "add_unique_inhabitant") {
-                        traits += `<tr><td><img alt class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${e.name}/${e.name}_south_00.png`, true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(e.name)})</td></tr>`;
+                        traits += `<tr><td class="hasInhabitant"><img alt class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${e.name}/${e.name}_south_00.png`, true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(e.name)})</td></tr>`;
                     }
                 }
             }
@@ -514,7 +514,7 @@ let Tooltips = {
                     if (r.allyType === allydata.type && (!r.rarity?.value || r.rarity?.value === allydata.rarity)) break;
                     allydata = null;
                 }
-                ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" : "empty"))}<div>${Allies.types[r.allyType]?.name + (r.rarity?.value ? (" (" + i18n("Boxes.Productions.AllyRarity." + r.rarity?.value) + ")") : "")}`;
+                ally += `<tr><td${allydata ? ' class="hasAlly"' : ''}>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" : "empty"))}<div>${Allies.types[r.allyType]?.name + (r.rarity?.value ? (" (" + i18n("Boxes.Productions.AllyRarity." + r.rarity?.value) + ")") : "")}`;
                 if (allydata) {
                     ally += `<div class="allyName"><span>${Allies.meta[allydata.allyId]?.name}</span><span>(${i18n("Boxes.Productions.AllyRarity." + allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`;
                     for (let b of allydata.currentLevel?.boosts || allydata.boosts || []) {
@@ -671,7 +671,7 @@ let Tooltips = {
             for (let b of chain?.config?.bonuses || []) {
                 if (Object.values(b.boosts).length > 0) {
                     if (first) {
-                        provides += '<tr><td style="text-wrap-mode:wrap;">' + chain.description + "</td></tr>";
+                        provides += '<tr><td class="wrapText">' + chain.description + "</td></tr>";
                         first = false;
                     }
                     provides += `<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► `;
@@ -680,7 +680,7 @@ let Tooltips = {
                 }
                 if (Object.values(b.productions || []).length > 0) {
                     if (first) {
-                        prods += '<tr><td style="text-wrap-mode:wrap;">' + chain.description + "</td></tr>";
+                        prods += '<tr><td class="wrapText">' + chain.description + "</td></tr>";
                         first = false;
                     }
                     for (let [pIndex, product] of Object.entries(b.productions || [])) {
@@ -715,7 +715,7 @@ let Tooltips = {
             for (let [i, b] of Object.entries(chainMin?.config?.bonuses || [])) {
                 for (let j in Object.keys(b.boosts)) {
                     if (first) {
-                        provides += '<tr><td style="text-wrap-mode:wrap;">' + chain.description + "</td></tr>";
+                        provides += '<tr><td class="wrapText">' + chain.description + "</td></tr>";
                         first = false;
                     }
                     provides += `<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► `;
@@ -724,7 +724,7 @@ let Tooltips = {
                 }
                 for (let [pIndex, product] of Object.entries(b.productions || [])) {
                     if (first) {
-                        prods += '<tr><td style="text-wrap-mode:wrap;">' + chain.description + "</td></tr>";
+                        prods += '<tr><td class="wrapText">' + chain.description + "</td></tr>";
                         first = false;
                     }
                     if (product.type === "resources") {
@@ -795,7 +795,7 @@ let Tooltips = {
                     }
                 }
                 if (a.__class__ === "ChainStartAbility") {
-                    set = srcLinks.icons(a.chainId) + MainParser.BuildingChains[a.chainId].name + '</td></tr><tr><td style="text-wrap-mode:wrap;">' + a.description;
+                    set = srcLinks.icons(a.chainId) + MainParser.BuildingChains[a.chainId].name + '</td></tr><tr><td class="wrapText">' + a.description;
                 }
                 if (a.__class__ === "ChainLinkAbility") {
                     set = srcLinks.icons(a.chainId) + MainParser.BuildingChains[a.chainId].name;
@@ -824,7 +824,7 @@ let Tooltips = {
                     info += a.text;
                 }
                 if (a.__class__ === "AffectsEnvironmentAbility" && a.action?.type === "add_unique_inhabitant") {
-                    traits += `<tr><td><img alt class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`, true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`;
+                    traits += `<tr><td class="hasInhabitant"><img alt class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`, true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`;
                 }
                 if (a.boostHints) {
                     for (let b of a.boostHints || []) {
@@ -846,7 +846,7 @@ let Tooltips = {
 
             if (era !== "") out += "<tr><td>" + era + "</td></tr>";
             if (set !== "") out += "<tr><td>" + set + "</td></tr>";
-            if (info !== "") out += '<tr><td style="text-wrap-mode:wrap;">' + info + "</td></tr>";
+            if (info !== "") out += '<tr><td class="wrapText">' + info + "</td></tr>";
 
             let provides = "";
             if (meta.provided_population || meta.required_population) {
@@ -977,7 +977,7 @@ let Tooltips = {
                 for (let b of a.bonuses) {
                     if (Object.values(b.boost).length > 0) {
                         if (first) {
-                            boosts += '<tr><td style="text-wrap-mode:wrap;">' + a.description + "</td></tr>";
+                            boosts += '<tr><td class="wrapText">' + a.description + "</td></tr>";
                             first = false;
                         }
                         boosts += `<tr><td>${b.level + "x" + srcLinks.icons(a.chainId)} ► `;
@@ -992,7 +992,7 @@ let Tooltips = {
                     }
                     else {
                         if (first) {
-                            prods += '<tr><td style="text-wrap-mode:wrap;">' + a.description + "</td></tr>";
+                            prods += '<tr><td class="wrapText">' + a.description + "</td></tr>";
                             first = false;
                         }
 

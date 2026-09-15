@@ -60,10 +60,13 @@
 }
 
 /* rows wrapping to several lines keep their top alignment */
-.HXBuilding td[style*="text-wrap-mode"],
+.HXBuilding td.wrapText,
 .HXBuilding td.limited,
-.HXBuilding td:has(.allyName) {
+.HXBuilding td.hasAlly {
     align-items: flex-start;
+}
+.HXBuilding td.wrapText {
+    white-space: normal;
 }
 .HXBuilding img {
     padding-right: 3px;
@@ -85,18 +88,10 @@
     bottom: 10px;
     background: var(--tooltip-inhabitant);
 }
-.HXBuilding .inhabitant {
-    max-width: unset;
-    max-height: unset;
-    position: absolute;
-    right: 320px;
-    bottom: 10px;
-    background: var(--tooltip-inhabitant);
-}
 td:nth-child(3) .HXBuilding .inhabitant {
     display: none;
 }
-.HXBuilding td:has(.inhabitant) {
+.HXBuilding td.hasInhabitant {
     position: relative;
 }
 .HXBuilding .ifMot {
@@ -164,7 +159,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
 }
 
 .HXBuilding .limited {
-    text-wrap: auto;
+    white-space: normal;
 }
 
 .HXBuilding .limited img{

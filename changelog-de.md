@@ -1,5 +1,11 @@
 ## Extension Changelog
 
+##### 4.8.2.2
+**Bugfixes**
+
+- Ältere Browser: Die Erweiterung lässt sich wieder ab Chrome/Edge 109 und Firefox 115 installieren und starten (z. B. unter Windows 7 und 8.1) — seit Version 4.4.1.0 wurde sie dort abgelehnt bzw. blieb ohne Funktion
+- Gebäude-Tooltip: Zeilenumbrüche und die Ausrichtung mehrzeiliger Einträge (Ketten-Beschreibungen, Historische Verbündete, Bewohner, limitierte Gebäude) funktionieren jetzt auch in älteren Browsern
+
 ##### 4.8.2.1
 **Update**
 
