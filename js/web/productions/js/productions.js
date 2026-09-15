@@ -678,9 +678,11 @@ let Productions = {
 				if (production.type !== "genericReward") continue;
 				if (production.resources?.icon?.includes("good")) return false;
 
+				// rolled random production: the result the server has already determined for this collection
 				let frag = production.resources.subType === "fragment";
-				allItems += '<span>'+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>";
-				itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0});
+				let rolled = production.isRandom === true;
+				allItems += `<span${rolled ? ` title="${i18n('Boxes.Productions.RandomRoll')}"` : ''}>` + (rolled ? "🎲 " : "") + production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>";
+				itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0,rolled:rolled});
 			}
 		}
 		// general item production

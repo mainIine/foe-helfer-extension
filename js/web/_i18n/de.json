@@ -1254,6 +1254,7 @@
     "Boxes.Productions.NoAsteroidDataWarning": "Güter vom Asteroidengürtel sind nicht inkludiert. Bitte besuche deinen Asteroidengürtel Außenposten und öffne das Fenster erneut",
     "Boxes.Productions.NoMarsDataWarning": "Güter vom Mars sind nicht inkludiert. Bitte besuche deinen Mars Außenposten und öffne das Fenster erneut",
     "Boxes.Productions.NoVenusDataWarning": "Güter von der Venus sind nicht inkludiert. Bitte besuche deinen Venus Außenposten und öffne das Fenster erneut",
+    "Boxes.Productions.RandomRoll": "Zufallsproduktion – dieses Ergebnis hat das Spiel für die nächste Ernte bereits ausgewürfelt",
     "Boxes.Productions.RelativeTime": "Relative Zeitangaben",
     "Boxes.Productions.SearchInput": "Gebäude Suche... ",
     "Boxes.Productions.SizeTT": "Größe enthält den durchschnittlichen Platzbedarf für Straßen von __streetnettosize__ Feldern",

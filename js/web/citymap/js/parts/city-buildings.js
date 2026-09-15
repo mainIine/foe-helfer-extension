@@ -979,23 +979,19 @@ let CityBuildings = {
 				}
 			}
 			else if (data.state.productionOption) { // generic building
-				// random products: the state only carries a placeholder result (isRandom) that
-				// the game itself hides, the reward is rolled on collection — show the random
-				// pool of the building instead of the placeholder
-				const randomPool = (data.state.productionOption.products.some(product => product.isRandom)
-					? (this.setAllProductions(metaData, data, era) || []).filter(product => product.type === 'random')
-					: []);
-
 				data.state.productionOption.products.forEach(production => {
-					if (production.isRandom && randomPool.length > 0) {
-						productions.push(randomPool.shift());
-						return;
-					}
-
 					const resource = {
 						type: production.type,
 						resources: {}
 					};
+
+					// random productions: the server rolls the reward when the production starts and
+					// sends it with isRandom; the game hides it and shows the pool instead, the
+					// extension shows the rolled result (verified in-game: identical buildings carry
+					// different rolls, the collection matches the roll)
+					if (production.isRandom) {
+						resource.isRandom = true;
+					}
 					if (production.type === 'resources') {
 						resource.resources = production.playerResources.resources;
 
