@@ -58,6 +58,54 @@
     font-size: 115%;
 }
 
+/* counter in the title bar, faded in once the table head is sticky */
+#bluegalaxyHeader .collections-left-title {
+    flex-shrink: 0;
+    margin: 0 auto;
+    padding: 0 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--sunflower);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s ease-in-out, visibility .2s;
+}
+
+#bluegalaxyHeader .collections-left-title.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#bluegalaxyHeader .box-buttons {
+    margin-left: 0;
+}
+
+/* settings box */
+#bluegalaxySettingsBox {
+    min-width: 290px;
+    padding: 6px 10px;
+}
+
+#bluegalaxySettingsBox p {
+    margin: 6px 0;
+}
+
+#bluegalaxySettingsBox .bg-goods-row {
+    margin: 0;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--text-medium2);
+}
+
+#bluegalaxySettingsBox .bg-goods-row label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+#bluegalaxySettingsBox .bg-goods-row input {
+    max-width: 60px;
+}
+
 #bluegalaxy table th.icon span {
     display: inline-block;
     min-width: 30px;
