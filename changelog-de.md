@@ -1,5 +1,27 @@
 ## Extension Changelog
 
+##### 4.8.3.0
+**Update**
+
+- Blaue Galaxie: 
+  - Güter-Bewertungen ins Einstellungsmenü verschoben — mehr Platz für die Tabelle
+  - Einstellungen greifen sofort, ohne Speichern-Button
+  - Verfügbare Versuche erscheinen beim Scrollen in der Titelleiste
+
+**Bugfixes**
+
+- Firefox: Die Erweiterung lässt sich wieder in älteren Firefox-Versionen installieren (z. B. Firefox 115 unter Windows 7 und 8.1) — dort wurde sie bisher als „beschädigt“ abgelehnt
+
+---
+
+##### 4.8.2.4
+**Bugfixes**
+
+- Produktionsübersicht: 
+  - Die automatische Aktualisierung nach dem Einsammeln, Verschieben oder Motivieren verwarf die Eingabe im Suchfeld — Suchbegriff, Sortierung, Listen-/Gruppenansicht und Scrollposition bleiben jetzt erhalten, so lassen sich mehrere gleiche Gebäude wieder am Stück einsammeln
+
+---
+
 ##### 4.8.2.3
 **Bugfixes**
 

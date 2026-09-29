@@ -1,5 +1,25 @@
 ## Extension Changelog
 
+##### 4.8.3.0
+**Update**
+
+- Blue Galaxy: goods ratings moved to the settings menu — more room for the table
+- Blue Galaxy: settings apply instantly, no save button
+- Blue Galaxy: available attempts show in the title bar when scrolling
+
+**Bugfixes**
+
+- Firefox: the extension can be installed again on older Firefox versions (e.g. Firefox 115 on Windows 7 and 8.1) — until now it was rejected there as "corrupt"
+
+---
+
+##### 4.8.2.4
+**Bugfixes**
+
+- Production overview: the automatic refresh after collecting, moving or motivating discarded the search term — the search term, sort order, list/group view and scroll position are now kept, so several identical buildings can be collected in a row again
+
+---
+
 ##### 4.8.2.3
 **Bugfixes**
 

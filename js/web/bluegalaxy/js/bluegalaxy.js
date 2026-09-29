@@ -93,19 +93,29 @@ const BlueGalaxy = {
 
 			HTML.AddCssFile('bluegalaxy');
 
-			const bindGoodsInput = (selector, property, storageKey) => {
-				$('#bluegalaxy').on('blur', selector, function () {
-					const value = parseFloat($(this).val());
-					BlueGalaxy[property] = isNaN(value) ? 0 : value;
-					localStorage.setItem(storageKey, BlueGalaxy[property]);
+			// counter in the title bar, only visible once the body header has been scrolled away
+			$('#bluegalaxyHeader .title').after('<div class="collections-left-title"></div>');
+			$('#bluegalaxyBody').on('scroll', () => BlueGalaxy.UpdateTitleCounter());
 
-					BlueGalaxy.CalcBody();
-				});
-			};
+			// live hint "1 FP ist X Güter wert" in the settings
+			$('#bluegalaxy').on('input', '.bg-goods-value', function () {
+				const value = parseFloat($(this).val());
+				$(this).siblings('small').text(value > 0 ? `(${HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), { goods: Math.round(1 / value * 100) / 100 })})` : '');
+			});
 
-			bindGoodsInput('#goodsValue', 'GoodsValue', 'BlueGalaxyGoodsValue');
-			bindGoodsInput('#NextGoodsValue', 'NextGoodsValue', 'BlueGalaxyNextGoodsValue');
-			bindGoodsInput('#OlderGoodsValue', 'OlderGoodsValue', 'BlueGalaxyOlderGoodsValue');
+			// goods ratings in the settings: save and recalculate when leaving the field, the settings box stays open
+			$('#bluegalaxy').on('change', '.bg-goods-value', function () {
+				const value = parseFloat($(this).val());
+				const property = $(this).data('property');
+
+				BlueGalaxy[property] = isNaN(value) ? 0 : value;
+				localStorage.setItem(`BlueGalaxy${property}`, BlueGalaxy[property]);
+
+				BlueGalaxy.CalcBody();
+			});
+
+			// all other settings: save and recalculate immediately on click/change
+			$('#bluegalaxy').on('change', '#bluegalaxySettingsBox input:not(.bg-goods-value)', () => BlueGalaxy.SaveSettings());
 
 			// A building should be marked in the city, fall back to the city map box if unsupported
 			$('#bluegalaxy').on('click', '.foe-table .show-entity', async function () {
@@ -264,27 +274,11 @@ const BlueGalaxy = {
 			return direction * (valueB - valueA);
 		});
 
-		const goodsValueInput = (id, value) => {
-			let input = `<input type="number" id="${id}" step="0.01" min="0" max="1000" value="${value}" title="${HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue'))}">`;
-			if (value > 0) {
-				input += `<small> (${HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), { goods: Math.round(1 / value * 100) / 100 })})</small>`;
-			}
-			return input;
-		};
-
 		const h = [];
-		h.push('<div class="text-center dark-bg header">');
 
 		if (BlueGalaxy.DoubleCollections > 0) {
-			h.push(`<div class="collections-left">${i18n('Boxes.BlueGalaxy.AvailableCollections')} <strong>${BlueGalaxy.DoubleCollections}</strong></div>`);
+			h.push(`<div class="text-center dark-bg header"><div class="collections-left">${i18n('Boxes.BlueGalaxy.AvailableCollections')} <strong>${BlueGalaxy.DoubleCollections}</strong></div></div>`);
 		}
-
-		h.push(`${i18n('Boxes.BlueGalaxy.GoodsValue')} ${goodsValueInput('goodsValue', BlueGalaxy.GoodsValue)}<br>`);
-		if (showBGNextGoods) {
-			h.push(`${i18n('Boxes.BlueGalaxy.NextGoodsValue')} ${goodsValueInput('NextGoodsValue', BlueGalaxy.NextGoodsValue)}<br>`);
-		}
-		h.push(`${i18n('Boxes.BlueGalaxy.OlderGoodsValue')} ${goodsValueInput('OlderGoodsValue', BlueGalaxy.OlderGoodsValue)}`);
-		h.push('</div>');
 
 		const sortClass = (col) => (BlueGalaxy.sort.col === col ? BlueGalaxy.sort.order : '');
 		const iconTh = (col, icon, title, align = 'text-center') => `<th class="is-number icon ${icon} ${sortClass(col)} ${align}" title="${title}" data-type="bg-group" data-colname="${col}"><span></span></th>`;
@@ -352,6 +346,7 @@ const BlueGalaxy = {
 
 		$('#bluegalaxyBody').html(h.join('')).promise().done(() => {
 			$('#BGTable').tableSorter();
+			BlueGalaxy.UpdateTitleCounter();
 		});
 
 		$('#BGTable th').on('click', (e) => {
@@ -387,6 +382,23 @@ const BlueGalaxy = {
 
 
 	/**
+	 * Shows the remaining double collections in the title bar as soon as the
+	 * counter in the body header is scrolled out of view (table head gets sticky).
+	 */
+	UpdateTitleCounter: () => {
+		const titleCounter = $('#bluegalaxyHeader .collections-left-title');
+		const header = $('#bluegalaxyBody > .header');
+
+		if (!titleCounter.length) return;
+
+		titleCounter.html(`${i18n('Boxes.BlueGalaxy.AvailableCollections')} <strong>${BlueGalaxy.DoubleCollections}</strong>`);
+
+		const scrolledAway = header.length > 0 && $('#bluegalaxyBody').scrollTop() >= header.outerHeight(true);
+		titleCounter.toggleClass('visible', BlueGalaxy.DoubleCollections > 0 && scrolledAway);
+	},
+
+
+	/**
 	 * Shows or hides the double collection counter in the menu.
 	 */
 	SetCounter: () => {
@@ -407,23 +419,31 @@ const BlueGalaxy = {
 		const showBGNextGoods = JSON.parse(localStorage.getItem('showBGNextGoods') || 'true');
 		const MaxBgList = localStorage.getItem('MaxBgList') || 50;
 
+		const goodsValueInput = (id, property, label, value) => {
+			const hint = value > 0 ? `(${HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), { goods: Math.round(1 / value * 100) / 100 })})` : '';
+			return `<p class="bg-goods-row"><label for="${id}">${label}</label> <input type="number" class="bg-goods-value" id="${id}" data-property="${property}" step="0.01" min="0" max="1000" value="${value}" title="${HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue'))}"> <small>${hint}</small></p>`;
+		};
+
 		const h = [];
+		h.push(goodsValueInput('goodsValue', 'GoodsValue', i18n('Boxes.BlueGalaxy.GoodsValue'), BlueGalaxy.GoodsValue));
+		h.push(goodsValueInput('NextGoodsValue', 'NextGoodsValue', i18n('Boxes.BlueGalaxy.NextGoodsValue'), BlueGalaxy.NextGoodsValue));
+		h.push(goodsValueInput('OlderGoodsValue', 'OlderGoodsValue', i18n('Boxes.BlueGalaxy.OlderGoodsValue'), BlueGalaxy.OlderGoodsValue));
+		h.push(`<p><input id="MaxBgList" name="MaxBgList" style="max-width:50px" value="${MaxBgList}" type="number" min="1" step="1" /> <label for="MaxBgList">${i18n('Boxes.Settings.MaxBgList')}</label></p>`);
+		h.push('<hr>')
 		h.push(`<p><input id="autoStartBGHelper" name="autoStartBGHelper" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartBGHelper">${i18n('Boxes.Settings.Autostart')}</label></p>`);
 		h.push(`<p><input id="showBGFragments" name="showBGFragments" value="1" type="checkbox" ${(showBGFragments === true) ? ' checked="checked"' : ''} /> <label for="showBGFragments">${i18n('Boxes.Settings.showBGFragments')}</label></p>`);
 		h.push(`<p><input id="showBGNextGoods" name="showBGNextGoods" value="1" type="checkbox" ${(showBGNextGoods === true) ? ' checked="checked"' : ''} /> <label for="showBGNextGoods">${i18n('Boxes.Settings.showBGNextGoods')}</label></p>`);
-		h.push(`<p><label for="MaxBgList" style="margin-left:22px">${i18n('Boxes.Settings.MaxBgList')}</label> <input id="MaxBgList" name="MaxBgList" style="max-width:40px" value="${MaxBgList}" type="text" /></p>`);
-		h.push(`<p><button onclick="BlueGalaxy.SaveSettings()" id="save-bghelper-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
 		$('#bluegalaxySettingsBox').html(h.join(''));
 	},
 
 
 	/**
-	 * Persists the settings, refreshes the box and closes the settings panel.
+	 * Persists the settings and refreshes the box, the settings panel stays open.
 	 */
 	SaveSettings: () => {
 		localStorage.setItem('ShowBlueGalaxyHelper', $('#autoStartBGHelper').is(':checked'));
-		localStorage.setItem('MaxBgList', $('#MaxBgList').val());
+		localStorage.setItem('MaxBgList', Math.max(1, parseInt($('#MaxBgList').val()) || 50));
 		localStorage.setItem('showBGFragments', String($('#showBGFragments').is(':checked')));
 		localStorage.setItem('showBGNextGoods', String($('#showBGNextGoods').is(':checked')));
 
@@ -434,7 +454,5 @@ const BlueGalaxy = {
 		}
 
 		BlueGalaxy.CalcBody();
-
-		$('#bluegalaxySettingsBox').remove();
 	},
 };

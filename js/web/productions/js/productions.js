@@ -28,6 +28,7 @@ let Productions = {
 	BuildingsProductsGroups: [],
 	ShowDaily: false,
 	ActiveTab: 1,
+	ViewState: {},
 	RefreshTimer: null,
 
 	Tabs: [],
@@ -86,6 +87,7 @@ let Productions = {
 	init: () => {
 		if (ActiveMap === 'OtherPlayer') return
 
+		Productions.ViewState = {}
 		Productions.ReadData()
 		Productions.showBox()
 	},
@@ -93,7 +95,8 @@ let Productions = {
 
 	/**
 	 * Re-renders the open box with the current city data, e.g. after a collection:
-	 * the current productions and timers would stay stale otherwise. Keeps the active tab.
+	 * the current productions and timers would stay stale otherwise. Keeps the active tab,
+	 * the search terms, the list/group view, the sort order and the scroll position.
 	 */
 	Refresh: () => {
 		if ($('#Productions').length === 0 || ActiveMap === 'OtherPlayer') return
@@ -102,7 +105,79 @@ let Productions = {
 
 		const $tabs = $('#Productions .production-tabs > ul > li')
 		Productions.ActiveTab = Math.max(1, $tabs.index($tabs.filter('.active')) + 1)
+		Productions.CaptureViewState()
 		Productions.CalcBody()
+	},
+
+
+	/**
+	 * Remembers the search terms, the list/group view and the sort order of every rendered tab
+	 * as well as the scroll position, so a re-render does not reset them.
+	 */
+	CaptureViewState: () => {
+		const state = { tabs: {}, scrollTop: $('#Productions #ProductionsBody').scrollTop() || 0 }
+
+		$('#Productions #ProductionsBody .content').each(function () {
+			const $tables = $(this).children('table.sortable-table')
+			if ($tables.length === 0) return
+
+			state.tabs[this.id] = {
+				filters: $(this).find('input.filterCurrentList').map(function () { return $(this).val() }).get(),
+				activeTable: $tables.index($tables.filter('.active')),
+				// only columns the user sorted, the pre-marked default headers are left alone
+				sorts: $tables.get().map(table => {
+					const column = $(table).data('sortedColumn')
+					if (column === undefined) return null
+
+					const $th = $(table).find('tr.sorter-header').first().children('th').eq(column)
+					if (!($th.hasClass('ascending') || $th.hasClass('descending'))) return null
+
+					return { column: column, ascending: $th.hasClass('ascending') }
+				})
+			}
+		})
+
+		Productions.ViewState = state
+	},
+
+
+	/**
+	 * Re-applies the remembered search terms, list/group view and sort order to a freshly rendered tab.
+	 *
+	 * @param {string} type Production type (= id of the tab content)
+	 */
+	RestoreViewState: (type) => {
+		const tabState = Productions.ViewState?.tabs?.[type]
+		if (!tabState) return
+
+		delete Productions.ViewState.tabs[type]
+
+		const $content = $('#Productions #' + type),
+			$tables = $content.children('table.sortable-table')
+
+		if (tabState.activeTable > -1 && tabState.activeTable < $tables.length) {
+			$tables.removeClass('active').css('display', '')
+			$tables.eq(tabState.activeTable).addClass('active')
+		}
+
+		// replay the sort with a click on the header; table-sorter derives the direction from the header class
+		;(tabState.sorts || []).forEach((sort, i) => {
+			if (!sort || i >= $tables.length) return
+
+			const $th = $tables.eq(i).find('tr.sorter-header').first().children('th').eq(sort.column)
+			if ($th.length === 0 || $th.hasClass('no-sort')) return
+
+			const numeric = $th.hasClass('is-number')
+			$th.removeClass('ascending descending')
+			if (numeric && sort.ascending) $th.addClass('descending')
+			if (!numeric && !sort.ascending) $th.addClass('ascending')
+			$th.trigger('click')
+			$tables.eq(i).data('sortedColumn', sort.column)
+		})
+
+		$content.find('input.filterCurrentList').each(function (i) {
+			if (tabState.filters[i]) $(this).val(tabState.filters[i]).trigger('keyup')
+		})
 	},
 
 
@@ -441,6 +516,7 @@ let Productions = {
 								$('.TSinactive').tableSorter()
 								$('.TSinactive').removeClass('TSinactive')
 								HTML.FilterTable('#Productions .filterCurrentList')
+								Productions.RestoreViewState(type)
 							}
 							$("#Productions .content").css('display','none')
 							$("#Productions #"+type).css('display','block')
@@ -450,6 +526,7 @@ let Productions = {
 					$('.TSinactive').tableSorter()
 					$('.TSinactive').removeClass('TSinactive')
 					HTML.FilterTable('#Productions .filterCurrentList')
+					Productions.RestoreViewState(type)
 
 					//$('#Productions [data-original-title]').tooltip({container: "#Productions", html:true});
 				}
@@ -462,9 +539,20 @@ let Productions = {
 			$('.TSinactive').tableSorter()
 			$('.TSinactive').removeClass('TSinactive')
 			HTML.FilterTable('#Productions .filterCurrentList')
+			Productions.RestoreViewState(type)
 
 			// re-render (refresh, settings): only the first table is filled above, fill the restored tab as well
 			if (Productions.ActiveTab > 1) $('.production-tabs li').eq(Productions.ActiveTab - 1).trigger('click')
+
+			if (Productions.ViewState?.scrollTop) {
+				$('#Productions #ProductionsBody').scrollTop(Productions.ViewState.scrollTop)
+				Productions.ViewState.scrollTop = 0
+			}
+
+			// remember the column the user sorted by, so a refresh can restore it
+			$('#Productions').off('click.productionsSort').on('click.productionsSort', 'tr.sorter-header th:not(.no-sort)', function () {
+				$(this).closest('table').data('sortedColumn', $(this).index())
+			})
 
 			// mark a building in the city, fall back to the city map box if unsupported
 			$('#Productions').off('click', '.foe-table .show-entity').on('click', '.foe-table .show-entity', async function () {
