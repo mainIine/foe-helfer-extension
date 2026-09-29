@@ -8,6 +8,10 @@
   - Einstellungen greifen sofort, ohne Speichern-Button
   - Verfügbare Versuche erscheinen beim Scrollen in der Titelleiste
 
+**Bugfixes**
+
+- Firefox: Die Erweiterung lässt sich wieder in älteren Firefox-Versionen installieren (z. B. Firefox 115 unter Windows 7 und 8.1) — dort wurde sie bisher als „beschädigt“ abgelehnt
+
 ---
 
 ##### 4.8.2.4

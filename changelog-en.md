@@ -7,6 +7,10 @@
 - Blue Galaxy: settings apply instantly, no save button
 - Blue Galaxy: available attempts show in the title bar when scrolling
 
+**Bugfixes**
+
+- Firefox: the extension can be installed again on older Firefox versions (e.g. Firefox 115 on Windows 7 and 8.1) — until now it was rejected there as "corrupt"
+
 ---
 
 ##### 4.8.2.4
