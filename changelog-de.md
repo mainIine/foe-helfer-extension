@@ -1,5 +1,19 @@
 ## Extension Changelog
 
+##### 4.8.3.1
+**Bugfixes**
+
+- Neuer Spiel-Client (Beta, bald Live): Stadtkarte, Effizienzbewertung, Kits, Inventar, Erhabene Gebäude und Shop-Assistent funktionieren wieder, das Spiel liefert die Kit-Daten nicht mehr wie bisher
+- Historische Verbündete: Boosts der Verbündeten und die Aufstiegs-Spalten werden wieder angezeigt; die Aufstiegskosten sind jetzt Heroische Schriftrollen statt XP
+- Alarme: Alarme lassen sich wieder löschen, wenn Chromes Benachrichtigungs-API versagt (Windows); seit mehr als einem Tag abgelaufene Alarme werden automatisch aufgeräumt
+- Produktionen: Belohnungen, die in den Gebäudedaten fehlen, zeigen ihren eigenen Namen statt „DEFINE NAME“
+- Inventar: kein Absturz mehr, wenn das Inventar vor den Gebäudedaten eintrifft
+- Shop-Assistent: Box blieb auf Welten mit neuem Spiel-Client leer, wenn der Shop direkt nach dem Login geöffnet wurde
+- Firefox: Menü-Tooltips zeigten nach dem Neuladen manchmal Platzhalter wie „Menu.ShopAssist.Title“ statt Text
+- Firefox: Gebäudesuche ausgeblendet, das Modul läuft dort nicht
+
+---
+
 ##### 4.8.3.0
 **Update**
 

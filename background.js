@@ -209,6 +209,30 @@ alertsDB.version(1).stores({
 			return id;
 		}
 		/**
+		 * Displayed notifications by id. `notifications.getAll()` throws "Unknown error."
+		 * in some Chrome versions on Windows (native notifications, #3585); then no
+		 * notification is assumed so the alert can still be deleted.
+		 * @returns {Promise<Object<string, boolean>>}
+		 */
+		async function getNotifications() {
+			try {
+				return await browser.notifications.getAll() || {};
+			} catch (err) {
+				console.warn('notifications.getAll() failed', err);
+				return {};
+			}
+		}
+
+		/**
+		 * Removes alerts that expired more than a day ago: they fired (or were missed)
+		 * long ago and only pile up in the database (#3585: >1000 stale entries).
+		 * @returns {Promise<number>} number of removed alerts
+		 */
+		function cleanupExpiredAlerts() {
+			return db.alerts.where('data.expires').below(Date.now() - 24 * 60 * 60 * 1000).delete();
+		}
+
+		/**
 		 * delets an alert
 		 * @param {!number} id Alert-ID which should be deleted
 		 * @returns {Promise<void>} Alarm removed
@@ -218,7 +242,7 @@ alertsDB.version(1).stores({
 			// delete alarm-trigger
 			const alarmClearP = browser.alarms.clear(tagId);
 			// don't actually delete an alarm with notification since the user can still interact with the notification
-			const notifications = await browser.notifications.getAll();
+			const notifications = await getNotifications();
 			if (notifications[tagId]) {
 				// mark this alarm for deletion so it is deletet from the API point of view
 				await db.alerts.update(id, {delete: true});
@@ -235,7 +259,7 @@ alertsDB.version(1).stores({
 		async function cleanupAlerts() {
 			const alerts = await getAllAlerts();
 			// don't actually delete an alarm with notification since the user can still interact with the notification
-			const notifications = await browser.notifications.getAll();
+			const notifications = await getNotifications();
 			alerts.forEach(alert => {
 				const tagId = prefix + alert.id;
 				if (!notifications[tagId]) {
@@ -357,6 +381,7 @@ alertsDB.version(1).stores({
 
 		// upon start cleanup alerts which didn't get removed properly.
 		//cleanupAlerts(); // deactivated - is triggered too often and deletes correct/active alarms (it seems the background.js is unloaded/reloaded regularly and this is triggered then unintentionally)
+		cleanupExpiredAlerts().catch(err => console.warn('alert cleanup failed', err));
 
 		return {
 			getValidData: getValidateAlertData,

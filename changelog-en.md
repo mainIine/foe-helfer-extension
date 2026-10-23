@@ -1,5 +1,19 @@
 ## Extension Changelog
 
+##### 4.8.3.1
+**Bugfixes**
+
+- New game client (beta, soon live): City Map, Efficiency Rating, Kits, Inventory, Ascended Buildings and Shop Assistant work again, the game no longer delivers the upgrade kit data the way it used to
+- Historical Allies: boosts of allies and the level-up columns are shown again; the level-up costs are now heroic scrolls instead of XP
+- Alerts: alerts can be deleted again when Chrome's notification API fails (Windows); alerts expired for more than a day are cleaned up automatically
+- Productions: rewards unknown to the building data show their own name instead of "DEFINE NAME"
+- Inventory: no longer crashes when the inventory arrives before the building data
+- Shop assistant: the box stayed empty on worlds with the new game client when a shop was opened right after login
+- Firefox: menu tooltips sometimes showed placeholders like "Menu.ShopAssist.Title" instead of text after reloading
+- Firefox: building search hidden, the module doesn't work there
+
+---
+
 ##### 4.8.3.0
 **Update**
 

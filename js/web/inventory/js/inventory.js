@@ -423,7 +423,7 @@ let InventoryOverview = {
 			if (item.cityEntityId !== undefined) {
 				if (MainParser.CityEntities[item.cityEntityId] === undefined) continue;
 				buildings.add(item.cityEntityId);
-				names.add(MainParser.CityEntities[item.cityEntityId].name);
+				names.add(MainParser.CityEntities?.[item.cityEntityId]?.name || item.cityEntityId);
 			}
 			else if (item.upgradeItemId !== undefined) {
 				names.add(MainParser.BuildingUpgrades?.[item.upgradeItemId]?.upgradeItem?.name || item.upgradeItemId);

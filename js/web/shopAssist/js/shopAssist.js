@@ -15,6 +15,11 @@
 FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.slots = data.responseData.slots;
 	shopAssist.storeId = data.responseData.id;
+
+	// kit rows need the upgrade metadata, which the preview client does not load
+	// itself: request it now instead of waiting for the 15 s startup fallback
+	if (MainParser.BuildingUpgrades == null) MainParser.forceLoadMetadata();
+
 	shopAssist.unlockProgress = Object.assign({}, ...data.responseData.unlockConditionsProgress.map(x => ({ [`${x.type}#${x.subtype || x.context}`]: x.amount })));
 
 	// reset, check once for the freshly opened store, then reset again so the
@@ -96,6 +101,16 @@ FoEproxy.addHandler('ItemStoreService', 'updateUnlockConditions', (data, postDat
 	if ($('#shopAssist').length === 0) return;
 	shopAssist.timeout = setTimeout(shopAssist.Show, 100);
 });
+
+// Upgrade/selection kit metadata arrived late (preview client loads it only via
+// MainParser.forceLoadMetadata): redraw so kit rows get their building tooltips
+for (const meta of ['building_upgrades', 'selection_kits']) {
+	FoEproxy.addMetaHandler(meta, () => {
+		if ($('#shopAssist').length === 0) return;
+		clearTimeout(shopAssist.timeout);
+		shopAssist.timeout = setTimeout(shopAssist.Show, 100);
+	});
+}
 
 FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 	shopAssist.updateDialog();
@@ -434,7 +449,7 @@ let shopAssist = {
 			shopAssist.allTTContent[`${slot.slotId}A`] = `<table class="foe-table shopAssistTable">
 					<tr><th><img src=${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_ally_${slot.reward.assembledReward.iconAssetName}.png`, true)} style="height:unset">
 					${Allies.rarityStars(slot.reward.assembledReward.rarity.value)}</th></tr>
-					<tr><td> ${Allies.boosts(slot.reward.assembledReward.boosts)}</td></tr>
+					<tr><td> ${Allies.boosts(Allies.rewardBoosts(slot.reward.assembledReward))}</td></tr>
 				</table>`;
 		}
 
@@ -581,7 +596,8 @@ let shopAssist = {
 	getBuildingIds: (reward) => {
 		let ids = [];
 		const getFromUpgrade = (id) => {
-			const steps = MainParser.BuildingUpgrades[id]?.upgradeSteps || [];
+			// metadata may not be loaded yet (e.g. beta client before forceLoadMetadata)
+			const steps = MainParser.BuildingUpgrades?.[id]?.upgradeSteps || [];
 			return steps[steps.length - 1]?.buildingIds || [];
 		};
 
@@ -590,14 +606,14 @@ let shopAssist = {
 		} else if (reward.subType === 'fragment') {
 			ids.push(...shopAssist.getBuildingIds(reward.assembledReward));
 		} else if (reward.subType === 'selection_kit') {
-			for (const option of MainParser.SelectionKits[reward.id].options) {
+			for (const option of MainParser.SelectionKits?.[reward.id]?.options || []) {
 				if (option.item.__class__ === 'BuildingItemPayload') ids.push(option.item.cityEntityId);
 				if (option.item.__class__ === 'UpgradeKitPayload') ids.push(...getFromUpgrade(option.item.upgradeItemId));
 			}
 		} else if (reward.subType === 'upgrade_kit') {
 			ids.push(...getFromUpgrade(reward.id));
 		} else if (reward.type === 'chest') {
-			for (const rew of reward.possible_rewards) {
+			for (const rew of reward.possible_rewards || []) {
 				ids.push(...shopAssist.getBuildingIds(rew.reward));
 			}
 		}

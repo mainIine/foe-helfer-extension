@@ -81,6 +81,11 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			resolve();
 		}, {capture: false, once: true, passive: true});
 	});
+	const i18nLoaded = new Promise(resolve => {
+		window.addEventListener('foe-helper#i18n-loaded', evt => {
+			resolve();
+		}, {capture: false, once: true, passive: true});
+	});
 	const mainLoaded = new Promise(resolve => {
 		window.addEventListener('foe-helper#mainloaded', evt => {
 			resolve();
@@ -205,6 +210,10 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			await Promise.all(vendorPromises);
 
 			scriptLoaded("primed", "vendor");
+
+			// modules partly call i18n() while being parsed (e.g. menu titles), so the
+			// translations have to be in place first; don't block forever if they hang
+			await Promise.race([i18nLoaded, new Promise(resolve => setTimeout(resolve, 5000))]);
 
 			// load scripts (parallel, execution order is preserved)
 			const internalScriptsToLoad = await scriptListPromise;

@@ -611,7 +611,7 @@ let Settings = {
 			if (!menuItems.hasOwnProperty(i)) break;
 
 			const name = menuItems[i];
-			if(name === 'settings') continue;
+			if(name === 'settings' || _menu.BrowserUnsupported.includes(name)) continue;
 
 			// is there a function?
 			if (_menu[name + '_Btn']) {

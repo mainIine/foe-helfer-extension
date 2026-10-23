@@ -161,15 +161,73 @@ let Allies = {
 		let prod = {};
 
 		Object.values(Allies.buildingList[CityMapId]).forEach(id => {
-			let ally = Allies.allyList[id];
-			let boosts = ally.currentLevel?.boosts || ally.boosts;
+			const boosts = Allies.currentBoosts(Allies.allyList[id]);
 
-			if (boosts) {
+			if (boosts.length) {
 				prod.boosts = (prod.boosts || []).concat(boosts);
 			}
 		});
 
 		return prod;
+	},
+
+
+	/**
+	 * Boosts of an ally at a given level from the `allies` metadata: per rarity one
+	 * entry per boost with the value for every level. The new game client no longer
+	 * delivers the boosts with the ally itself (`currentLevel.boosts` is empty).
+	 *
+	 * @param {Object} ally Ally (or assembled fragment reward) with `allyId` and `rarity`
+	 * @param {number} level Ally level
+	 * @returns {?Object[]} Boost objects with `type`, `value` and `targetedFeature`, null when unknown
+	 */
+	metaBoosts: (ally, level) => {
+		const rarityValue = ally.rarity?.value ?? ally.rarity;
+		const rarity = Allies.meta[ally.allyId]?.rarityInfo?.find(r => r.rarity?.value === rarityValue);
+		if (!rarity) return null;
+
+		const boosts = rarity.rarityBoosts.map(b => b.boost?.[level]).filter(Boolean);
+		return boosts.length ? boosts : null;
+	},
+
+
+	/**
+	 * Current boosts of an ally: as delivered by the game, otherwise from the metadata.
+	 *
+	 * @param {Object} ally Ally object
+	 * @returns {Object[]} Boost objects, empty when unknown
+	 */
+	currentBoosts: (ally) => {
+		const own = ally?.currentLevel?.boosts?.length ? ally.currentLevel.boosts : ally?.boosts;
+		return own?.length ? own : (Allies.metaBoosts(ally, ally.level) || []);
+	},
+
+
+	/**
+	 * Boosts of an ally that is still a fragment reward (inventory, shop).
+	 *
+	 * @param {Object} reward Assembled reward with `iconAssetName` (= ally id), `rarity` and `level`
+	 * @returns {Object[]} Boost objects, empty when unknown
+	 */
+	rewardBoosts: (reward) => {
+		if (reward?.boosts?.length) return reward.boosts;
+
+		return Allies.metaBoosts({ allyId: reward?.iconAssetName, rarity: reward?.rarity }, reward?.level || 1) || [];
+	},
+
+
+	/**
+	 * Cost of the next level in training manuals (`levelUpCosts` of the metadata);
+	 * replaces the experience the game used before.
+	 *
+	 * @param {Object} ally Ally object with `allyId` and `level`
+	 * @returns {?number} Cost of the next level, null when unknown or at max level
+	 */
+	levelUpCost: (ally) => {
+		const costs = Allies.meta[ally.allyId]?.levelUpCosts?.[ally.level + 1]?.resources;
+		if (!costs) return null;
+
+		return Object.values(costs).reduce((sum, amount) => sum + amount, 0);
 	},
 
 
@@ -310,12 +368,13 @@ let Allies = {
 		];
 
 		// level/XP fields shared by assigned and unassigned allies
+		const orNull = (list) => (list?.length ? list : null);
 		const levelData = (a) => ({
 			allyLevel: a.level || null,
-			allyBoosts: a.currentLevel?.boosts || a.boosts || null,
+			allyBoosts: orNull(Allies.currentBoosts(a)),
 			xp: a.experience ?? null,
-			xpNeeded: a.currentLevel?.experience ?? null,
-			nextBoosts: a.nextLevel?.boosts || null,
+			xpNeeded: a.currentLevel?.experience ?? Allies.levelUpCost(a),
+			nextBoosts: a.nextLevel ? orNull(a.nextLevel.boosts) || Allies.metaBoosts(a, a.nextLevel.level) : null,
 			isMax: !!(a.currentLevel && !a.nextLevel),
 		});
 
@@ -376,7 +435,7 @@ let Allies = {
 					allyId: x.item.reward.assembledReward.iconAssetName || null,
 					allyRarity: x.item.reward.assembledReward.rarity?.value || '',
 					allyLevel: x.item.reward.assembledReward.level || null,
-					allyBoosts: x.item.reward.assembledReward.boosts || null,
+					allyBoosts: orNull(Allies.rewardBoosts(x.item.reward.assembledReward)),
 					allyName: x.item.reward.assembledReward.name,
 				};
 				unassigned++;
@@ -463,7 +522,7 @@ let Allies = {
 
 			// level cell with XP progress bar
 			let xpBar = '';
-			if (r.allyLevel && r.xpNeeded && !r.isMax) {
+			if (r.allyLevel && r.xpNeeded && r.xp != null && !r.isMax) {
 				xpBar = `<div class="xp-bar" title="${r.xp || 0} / ${r.xpNeeded} XP"><span style="width:${Math.min(100, (r.xp || 0) * 100 / r.xpNeeded)}%"></span></div>`;
 			}
 			html += `<td data-number="${(r.allyLevel || 0)}">${r.allyLevel || ''}${xpBar}</td>`;
