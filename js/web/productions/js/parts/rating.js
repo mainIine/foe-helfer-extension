@@ -227,7 +227,7 @@ Object.assign(Productions, {
 			.find(c => c.chain.some(el => el.type === 'building' && el.from === 'city'));
 		if (cityChain) {
 			const stepName = (el) => {
-				if (el.type === 'upgrade') return MainParser.BuildingUpgrades[el.id]?.upgradeItem?.name || MainParser.SelectionKits[el.id]?.name || el.id;
+				if (el.type === 'upgrade') return MainParser.BuildingUpgrades?.[el.id]?.upgradeItem?.name || MainParser.SelectionKits?.[el.id]?.name || el.id;
 				if (el.from === 'selectionKit') return MainParser.SelectionKits[el.id]?.name || el.id;
 				return MainParser.CityEntities[el.id]?.name || el.id;
 			};

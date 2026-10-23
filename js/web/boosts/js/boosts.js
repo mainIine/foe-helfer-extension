@@ -80,6 +80,11 @@ let Boosts = {
         'att_def_boost_defender': ['att_boost_defender', 'def_boost_defender'],
         'att_def_boost_attacker_defender': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
         'advanced_tactics': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
+        // feature specific great building boosts (e.g. Arc / Himeji / Observatory in GBG, Château / Blue Galaxy / Zeus in GE)
+        'attack_boost': ['att_boost_attacker'],
+        'attacker_defense_boost': ['def_boost_attacker'],
+        'defender_attack_boost': ['att_boost_defender'],
+        'defense_boost': ['def_boost_defender'],
         'money_boost': ['coin_production'],
     },
     Sums: {
@@ -144,6 +149,8 @@ let Boosts = {
                     entityId: x.entityId||x.id,
                     origin: "greatBuilding",
                     type: b.type,
+                    // keep the feature (battleground / guild_expedition), otherwise getFeatureType treats it as general boost
+                    targetedFeature: b.targetedFeature || "all",
                     value: b.value || 0
                 }))
         )

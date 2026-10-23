@@ -517,7 +517,7 @@ let Tooltips = {
                 ally += `<tr><td${allydata ? ' class="hasAlly"' : ''}>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" : "empty"))}<div>${Allies.types[r.allyType]?.name + (r.rarity?.value ? (" (" + i18n("Boxes.Productions.AllyRarity." + r.rarity?.value) + ")") : "")}`;
                 if (allydata) {
                     ally += `<div class="allyName"><span>${Allies.meta[allydata.allyId]?.name}</span><span>(${i18n("Boxes.Productions.AllyRarity." + allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`;
-                    for (let b of allydata.currentLevel?.boosts || allydata.boosts || []) {
+                    for (let b of Allies.currentBoosts(allydata)) {
                         ally += `${srcLinks.icons(b.type + feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`;
                     }
                 }

@@ -739,7 +739,7 @@ let Kits = {
 		const item = el.item;
 		const assetName = item.itemAssetName
 			|| item.asset_id
-			|| MainParser.BuildingUpgrades[item]?.upgradeItem?.iconAssetName
+			|| MainParser.BuildingUpgrades?.[item]?.upgradeItem?.iconAssetName
 			|| Kits.specialCases[item]
 			|| item;
 
@@ -752,7 +752,7 @@ let Kits = {
 		let title = item.name;
 		if (!title) {
 			if (el.type === 'update') {
-				title = MainParser.BuildingUpgrades[item]?.upgradeItem.name || i18n('Boxes.Kits.UpgradeKit');
+				title = MainParser.BuildingUpgrades?.[item]?.upgradeItem?.name || i18n('Boxes.Kits.UpgradeKit');
 			}
 			else if (el.type === 'kit') {
 				title = MainParser.SelectionKits[item]?.name || i18n('Boxes.Kits.SelectionKit');
@@ -784,7 +784,8 @@ let Kits = {
 			let name = entry.name;
 
 			if (entry.item.__class__ === 'BuildingItemPayload') {
-				asset = MainParser.CityEntities[id].asset_id;
+				// the new client builds the city entities one by one, the inventory may be here first
+				asset = MainParser.CityEntities?.[id]?.asset_id || asset;
 			}
 
 			if (entry.item.__class__ === 'FragmentItemPayload') {

@@ -1136,8 +1136,10 @@ let CityBuildings = {
 			name = this.setRewardNameFromLookupData(lookupData, metaData);
 		}
 		else {
+			// not in the lookup of the building, its chain or set: the production of a
+			// placed building carries name and icon itself, use them instead of a placeholder
 			console.log('setGenericReward() data missing for', metaData.name, metaData, product);
-			name = 'DEFINE NAME';
+			name = product.reward.name || product.reward.id;
 		}
 
 		// units
@@ -1158,10 +1160,10 @@ let CityBuildings = {
 			reward = {
 				id: product.reward.id,
 				name: name,
-				type: lookupData?.type || 'consumable',
-				subType: lookupData?.subType,
+				type: lookupData?.type || product.reward.type || 'consumable',
+				subType: lookupData?.subType || product.reward.subType,
 				amount: amount, // amount can be undefined for blueprints or units if building is not motivated
-				icon: lookupData?.iconAssetName
+				icon: lookupData?.iconAssetName || product.reward.iconAssetName
 			};
 		}
 		// chain attachments with generic production need extra handling

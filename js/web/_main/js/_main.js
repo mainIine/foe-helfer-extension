@@ -130,9 +130,9 @@ const i18n_loadPromise = (async () => {
 					// frage die Sprachdatei an
 					fetch(extUrl + 'js/web/_i18n/' + lang + '.json')
 						// lade die antwort als JSON
-						.then(response => response.text())
-						// im fehlerfall wird ein leeres Objekt zurück gegeben
-						.catch(() => ({}))
+						.then(response => response.ok ? response.text() : '{}')
+						// im fehlerfall wird ein leeres JSON-Objekt zurück gegeben
+						.catch(() => '{}')
 				)
 		);
 
@@ -149,6 +149,10 @@ const i18n_loadPromise = (async () => {
 
 	} catch (err) {
 		console.error('i18n translation loading error:', err);
+	} finally {
+		// inject.js waits for this before loading the modules, which partly call
+		// i18n() already while being parsed (e.g. _menu.ItemsData)
+		window.dispatchEvent(new CustomEvent('foe-helper#i18n-loaded'));
 	}
 })();
 
@@ -212,12 +216,16 @@ GetFights = () =>{
 
 	// Building-Upgrades
 	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
-		let BuildingUpgradesArray = JSON.parse(xhr.responseText);
-		MainParser.BuildingUpgrades = Object.assign({}, ...BuildingUpgradesArray.map((x) => ({ [x.upgradeItem.id]: x })));
+		const BuildingUpgradesArray = JSON.parse(xhr.responseText);
+		MainParser.SetBuildingUpgrades(Object.assign({}, ...BuildingUpgradesArray.map((x) => ({ [x.upgradeItem.id]: x }))));
+	});
 
-		if (MainParser.SelectionKits != null) {
-			Kits.CreateUpgradeSchemes();
-		}
+	// Building-Upgrade-Paths: the new game client (haxe 5) only offers this file,
+	// `building_upgrades` is gone on beta. Converted to the old format the modules use.
+	FoEproxy.addMetaHandler('building_upgrade_paths', (xhr, postData) => {
+		if (MainParser.BuildingUpgrades != null) return; // live worlds still deliver the old file
+
+		MainParser.SetBuildingUpgrades(MainParser.ConvertUpgradePaths(JSON.parse(xhr.responseText)));
 	});
 
 	// Building-Sets
@@ -1042,6 +1050,10 @@ let MainParser = {
 	Conversations: [],
 	MetaIds: {},
 	MetaUrls: {},
+
+	/** @type {Object<string, boolean>} metadata ids currently requested by forceLoadMetadata */
+	MetaForceLoading: {},
+
 	CityEntities: null,
 	CastleSystemLevels: null,
 	StartUpType: null,
@@ -1744,24 +1756,84 @@ let MainParser = {
 
 
 	/**
+	 * Replaces the building upgrade metadata and builds the kit schemes as soon
+	 * as the selection kits are known as well.
+	 * @param {Object<string, Object>} upgrades upgrade kit id => {upgradeItem, upgradeSteps}
+	 */
+	SetBuildingUpgrades: (upgrades) => {
+		MainParser.BuildingUpgrades = upgrades;
+
+		if (MainParser.SelectionKits != null) {
+			Kits.CreateUpgradeSchemes();
+		}
+	},
+
+
+	/**
+	 * Converts `building_upgrade_paths` (one path per base building holding the
+	 * steps of all its kits) into the `building_upgrades` format (one entry per
+	 * upgrade kit with the building ids per level). Verified against a live
+	 * world that still delivers both files: the output is identical.
+	 * @param {Object[]} paths entries with upgradeItems and upgradeSteps
+	 * @returns {Object<string, Object>} upgrade kit id => {upgradeItem, upgradeSteps}
+	 */
+	ConvertUpgradePaths: (paths) => {
+		const upgrades = {};
+
+		for (const path of paths) {
+			// steps grouped by kit and level; variants of a level carry an optionIndex
+			const byKit = {};
+			for (const step of path.upgradeSteps) {
+				const levels = byKit[step.upgradeItemId] ??= {};
+				(levels[step.stepIndex || 0] ??= []).push(step);
+			}
+
+			for (const [kitId, levels] of Object.entries(byKit)) {
+				const indexes = Object.keys(levels).map(Number).sort((a, b) => a - b);
+				const ids = (index, field) => [...new Set(
+					levels[index].sort((a, b) => a.optionIndex - b.optionIndex).map(step => step[field])
+				)];
+
+				upgrades[kitId] = {
+					upgradeItem: path.upgradeItems[kitId],
+					upgradeSteps: [
+						{buildingIds: ids(indexes[0], 'fromBuildingId')},
+						...indexes.map(index => ({buildingIds: ids(index, 'toBuildingId')}))
+					]
+				};
+			}
+		}
+
+		return upgrades;
+	},
+
+
+	/**
 	 * Requests metadata the game client did not load by itself during startup.
 	 * The beta client e.g. no longer fetches `building_upgrades` (only the new
 	 * `building_upgrade_paths`), so the city map, kits, inventory and ascended
 	 * buildings would wait for it forever. The request is answered from the CDN
 	 * and runs through the FoEproxy meta handlers like a request of the game client.
 	 * Metadata the client already loaded or does not offer at all is skipped.
+	 * Runs 15 s after startup as a fallback; modules that need the data right
+	 * away (e.g. the shop assistant) may call it earlier on demand. Requests
+	 * that are still in flight are not sent twice.
 	 */
 	forceLoadMetadata: () => {
 		const wanted = [
 			['city_entities', MainParser.CityEntities == null],
 			['building_upgrades', MainParser.BuildingUpgrades == null],
+			// the new client offers only the paths file (converted by its meta handler)
+			['building_upgrade_paths', MainParser.BuildingUpgrades == null && !MainParser.MetaUrls.building_upgrades],
 		];
 
 		for (const [id, isMissing] of wanted) {
 			const url = MainParser.MetaUrls[id];
-			if (!isMissing || !url) continue;
+			if (!isMissing || !url || MainParser.MetaForceLoading[id]) continue;
 
+			MainParser.MetaForceLoading[id] = true;
 			const xhr = new XMLHttpRequest();
+			xhr.addEventListener('loadend', () => delete MainParser.MetaForceLoading[id]);
 			xhr.open('GET', url, true);
 			xhr.send();
 		}
