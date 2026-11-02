@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.3.2
+**Bugfixes**
+
+- Forge-Punkte-Leiste: Der Paket-Zähler oben zeigte zu viele FP, sobald ein FP-Paketstapel komplett aufgebraucht war (#3592)
+- Legendäre Bauwerke: Fehler beim Öffnen mancher Legendären Bauwerke behoben
+- Gildengefechte: Die Differenz zur Serverzeit wird wieder automatisch erkannt und passt sich der Zeitumstellung an; ein früher gespeicherter Wert wird einmalig zurückgesetzt, ein eigener Wert muss bei Bedarf neu eingetragen werden
+
+---
+
 ##### 4.8.3.1
 **Bugfixes**
 

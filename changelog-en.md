@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.3.2
+**Bugfixes**
+
+- Forge Points bar: the package counter at the top showed too many FP once a stack of FP packages was used up completely (#3592)
+- Great Buildings: fixed an error when opening some Great Buildings
+- Guild Battlegrounds: the offset to server time is detected automatically again and follows daylight saving changes; a previously saved value is reset once, enter your own value again if you need one
+
+---
+
 ##### 4.8.3.1
 **Bugfixes**
 

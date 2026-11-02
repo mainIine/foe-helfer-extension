@@ -644,7 +644,7 @@ GetFights = () =>{
 
 	// Required by the kits
 	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-		MainParser.UpdateInventory(data.responseData);
+		MainParser.UpdateInventory(data.responseData, true);
 	});
 
 
@@ -1915,11 +1915,17 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Determines the GB tier (copper/silver/gold) from the highest blueprint reward tier in the rankings.
+	 *
+	 * @param {Object[]} Rankings
+	 * @returns {{value: string}|null}
+	 */
 	GetGBTierFromRankings: (Rankings) => {
 		const TierOrder = { copper: 1, silver: 2, gold: 3 };
 		let Tier = null;
 
-		for (let row of (Rankings || [])) {
+		for (let row of (Array.isArray(Rankings) ? Rankings : [])) {
 			for (let bp of (row?.reward?.blueprintRewards || [])) {
 				if (bp?.tier?.value && (!Tier || (TierOrder[bp.tier.value] || 0) > (TierOrder[Tier.value] || 0))) {
 					Tier = bp.tier;
@@ -2137,45 +2143,44 @@ let MainParser = {
 
 
 	/**
-	 * Updates the inventory
+	 * Stores inventory items by their id.
 	 *
-	 * @param Items
+	 * @param {Object[]} Items
+	 * @param {boolean} [replace=false] true for a full sync (getItems): items missing from the list are gone
 	 */
-	UpdateInventory: (Items) => {
-		//MainParser.Inventory = {};
-		for (let i = 0; i < Items.length; i++) {
-			let ID = Items[i]['id'];
-			MainParser.Inventory[ID] = Items[i];
+	UpdateInventory: (Items, replace = false) => {
+		if (replace) MainParser.Inventory = {};
+		for (const Item of Items || []) {
+			MainParser.Inventory[Item.id] = Item;
 		}
 		FoEproxy.triggerFoeHelperHandler('InventoryUpdated');
 	},
 
 
 	/**
-	 * Updates the inventory
+	 * Stores a single inventory item.
 	 *
-	 * @param Item
+	 * @param {Object} Item
 	 */
 	UpdateInventoryItem: (Item) => {
-		let ID = Item['id'];
-		MainParser.Inventory[ID] = Item;
+		MainParser.Inventory[Item.id] = Item;
 		FoEproxy.triggerFoeHelperHandler('InventoryUpdated');
 	},
 
 
 	/**
-	 * Applies an InventoryItemUpdate delta ({id, amount}) to a known inventory entry.
-	 * Sent e.g. after item store purchases; unknown items get picked up by the next full sync.
+	 * Applies an InventoryItemUpdate ({id, amount}) to a known inventory entry; amount is the new stock.
+	 * The server omits zero values, so a used-up stack arrives without amount (the game removes the item then).
+	 * Unknown items get picked up by the next full sync.
 	 *
-	 * @param {{id: number, amount: number}|{id: number, amount: number}[]} update
+	 * @param {{id: number, amount?: number}|{id: number, amount?: number}[]} update
 	 */
 	UpdateInventoryItemAmount: (update) => {
 		const updates = Array.isArray(update) ? update : [update];
 		let changed = false;
 		for (const upd of updates) {
-			if (upd?.id === undefined || upd.amount === undefined) continue;
-			if (!MainParser.Inventory[upd.id]) continue;
-			MainParser.Inventory[upd.id].inStock = upd.amount;
+			if (upd?.id === undefined || !MainParser.Inventory[upd.id]) continue;
+			MainParser.Inventory[upd.id].inStock = upd.amount || 0;
 			changed = true;
 		}
 		if (changed) FoEproxy.triggerFoeHelperHandler('InventoryUpdated');
@@ -2183,18 +2188,14 @@ let MainParser = {
 
 
 	/**
-	 * Updates the inventory
+	 * Applies a legacy getItemAmount response ([id, amount]) to a known inventory entry.
 	 *
-	 * @param Item
+	 * @param {number[]} Item
 	 */
-	UpdateInventoryAmount: (Item) => {
-			let ID = Item[0],
-			Amount = Item[1];
-			try {
-				MainParser.Inventory[ID].inStock = Amount;
-			} catch (e) {
-			}
-			FoEproxy.triggerFoeHelperHandler('InventoryUpdated');
+	UpdateInventoryAmount: ([ID, Amount] = []) => {
+		if (!MainParser.Inventory[ID]) return;
+		MainParser.Inventory[ID].inStock = Amount || 0;
+		FoEproxy.triggerFoeHelperHandler('InventoryUpdated');
 	},
 
 
