@@ -7,12 +7,14 @@
 - Contribution boost: the gold contribution boost is detected and used for gold tier levels in the GB Calculator, GB Cost Calc, Investments and Infoboard
 - Great Buildings: the new prestige bonuses (multipliers and bonuses limited to Guild Battlegrounds, GE or QI) count in the boosts, the building efficiency, the GB investments and the GB bonus overview
 - Help: almost every box now links to its own help page in the docs via the “?” icon; missing languages will be added step by step
+- City overview: the QI city can now be sent to the city planner on foe-helper.com, just like the main city
 - News: a box in the top right corner shows what is new in the helper after the game start; close it once, the settings bring it back any time
+- GB Investment Overview: a player selection shows the great buildings of other players as well, once their GB overview has been opened in the game
 
 **Bugfixes**
 
 - Allies: allies were listed twice and their boosts counted twice
-- Guild Battlegrounds and QI: no more duplicate snapshots (too high daily values), day rows in the player details expand again, QI round selection works again
+- Guild Battlegrounds and QI: no more duplicate snapshots (too high daily values), day rows in the player details expand again, QI round selection works again, without a loaded ranking the QI overview shows a hint instead of an empty box
 - Discord: automatic sending stops when the GBG box is closed, deleted templates no longer cause errors
 - Guild treasury: the export setting was always switched off on saving, “Reset” in the export window failed with an error
 - Notes: your own player disappeared from the player list; without "Upload/Send data to foe-helper.com" no request is sent anymore

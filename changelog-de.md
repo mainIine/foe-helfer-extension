@@ -7,12 +7,14 @@
 - Mäzen-Bonus: Der Gold-Mäzen-Bonus wird erkannt und für Gold-Stufen in LG Rechner, LG Fördern, Investitionen und Infoboard verwendet
 - Legendäre Bauwerke: Die neuen Prestige-Boni (Multiplikatoren sowie Boni nur für Gildengefechte, GEX oder QI) zählen in den Boosts, der Gebäude-Effizienz, den LG-Investitionen und der LG-Bonusübersicht mit
 - Hilfe: Fast alle Boxen verlinken jetzt über das „?“-Symbol auf ihre eigene Hilfeseite in der Doku; fehlende Sprachen werden nach und nach ergänzt
+- Stadtübersicht: Die QI-Stadt lässt sich jetzt wie die Hauptstadt an den Stadtplaner auf foe-helper.com schicken
 - Neuigkeiten: Eine Box rechts oben zeigt nach dem Spielstart, was im Helfer neu ist; einmal schließen genügt, über die Einstellungen lässt sie sich jederzeit wieder öffnen
+- LG Investitionen: Über eine Spieler-Auswahl zeigt die Box auch die LG von Mitspielern, sobald deren LG-Übersicht im Spiel einmal geöffnet wurde
 
 **Bugfixes**
 
 - Verbündete: Verbündete wurden doppelt gelistet und ihre Boni doppelt gezählt
-- Gildengefechte und QI: keine doppelten Snapshots mehr (zu hohe Tageswerte), Tageszeilen der Spieler-Details klappen wieder auf, QI-Rundenauswahl funktioniert wieder
+- Gildengefechte und QI: keine doppelten Snapshots mehr (zu hohe Tageswerte), Tageszeilen der Spieler-Details klappen wieder auf, QI-Rundenauswahl funktioniert wieder, ohne geladene Rangliste zeigt die QI-Übersicht einen Hinweis statt einer leeren Box
 - Discord: Autoversand stoppt beim Schließen der GG-Box, gelöschte Vorlagen führen nicht mehr zu Fehlern
 - Gildenkasse: Die Export-Einstellung schaltete sich beim Speichern immer aus, „Zurücksetzen“ im Export-Fenster brach mit einem Fehler ab
 - Notizen: Der eigene Spieler verschwand aus der Spielerliste; ohne „Übermittlung an foe-helper.com“ geht keine Anfrage mehr raus
