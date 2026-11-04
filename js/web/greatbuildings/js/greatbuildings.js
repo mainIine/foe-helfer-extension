@@ -33,11 +33,22 @@
 		if (playerID === ExtPlayerID) return;
 
 		GreatBuildings.Overviews[playerID] = {
+			id: playerID,
 			name: rows[0]['player']['name'] || PlayerDict[playerID]?.['PlayerName'] || String(playerID),
 			time: Date.now(),
 			rows: rows,
 		};
 
+		FoEproxy.triggerFoeHelperHandler('OtherPlayerGBsUpdated');
+	});
+
+	// a great building of another player opened in the game delivers its placed
+	// bonuses, the only exact values the helper gets for foreign buildings
+	FoEproxy.addHandler('OtherPlayerService', 'getOtherPlayerCityMapEntity', (data) => {
+		const entity = data.responseData;
+		if (entity?.['type'] !== 'greatbuilding' || !entity['player_id'] || entity['player_id'] === ExtPlayerID) return;
+
+		(GreatBuildings.OpenedGBs[entity['player_id']] ??= {})[entity['cityentity_id']] = entity;
 		FoEproxy.triggerFoeHelperHandler('OtherPlayerGBsUpdated');
 	});
 
@@ -62,6 +73,13 @@ let GreatBuildings = {
      * @type {Object<number, {name: string, time: number, rows: Object[]}>}
      */
     Overviews: {},
+
+    /**
+     * Great buildings of other players opened in the game, by player id and
+     * city entity id: the city map entity with its placed `bonuses`.
+     * @type {Object<number, Object<string, Object>>}
+     */
+    OpenedGBs: {},
 
     /**
      * Player whose great buildings the box shows, null for the own city.
@@ -574,14 +592,17 @@ let GreatBuildings = {
 
             const bonus = match.bonus;
             const max = bonus['values'][bonus['values'].length - 1];
-            // other players: only the reached breakpoint is known, the value in between is at least that high
+            // other players without an opened building: only the reached breakpoint is known,
+            // the value in between is at least that high
             let current, lowerBound = false;
+            const live = (row.placed ? CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'] && !!entry['isBonusMultiplier'] === !!bonus['isBonusMultiplier']) : null);
             if (!row.placed) current = (bonus['valuesMap'][1]?.['value'] || 0);
+            else if (live) current = (live['value'] || 0);
             else if (row.placed.foreign) {
                 current = GreatBuildings.MetaBonusValue(bonus, row.placed['level']);
                 lowerBound = (bonus['valuesMap'][row.placed['level']] === undefined);
             }
-            else current = (CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'] && !!entry['isBonusMultiplier'] === !!bonus['isBonusMultiplier'])?.['value'] || 0);
+            else current = 0;
 
             // first level the bonus becomes active on
             const startLevel = Math.min(...Object.keys(bonus['valuesMap']).map(Number).filter(level => bonus['valuesMap'][level]['value'] > 0), Infinity);
@@ -860,9 +881,25 @@ let GreatBuildings = {
 
 
     /**
+     * Opened great building of another player, as long as it is not older than
+     * the overview row (a lower level than the row means the building levelled
+     * up since it was opened, its bonuses are outdated then).
+     *
+     * @param {number} playerID Owner of the building
+     * @param {Object} row Overview row of the building
+     * @returns {?Object} City map entity or null
+     */
+    OpenedGB: (playerID, row) => {
+        const entity = GreatBuildings.OpenedGBs[playerID]?.[row['city_entity_id']];
+        return (entity && entity['level'] >= (row['level'] || 0) ? entity : null);
+    },
+
+
+    /**
      * Placed great buildings by city entity id: the own city map entities, or
      * for another player the rows of their overview snapshot shaped like city
-     * map entities (level and level costs, flagged `foreign`).
+     * map entities (level and level costs, flagged `foreign`); a building
+     * opened in the game additionally carries its exact `bonuses`.
      *
      * @param {?{rows: Object[]}} overview Overview snapshot of another player, null for the own city
      * @returns {Object<string, Object>}
@@ -878,12 +915,16 @@ let GreatBuildings = {
         }
 
         for (const row of overview.rows) {
+            const opened = GreatBuildings.OpenedGB(overview.id, row);
             placedById[row['city_entity_id']] = {
                 type: 'greatbuilding',
                 foreign: true,
                 cityentity_id: row['city_entity_id'],
-                level: (row['level'] || 0),
-                state: { forge_points_for_level_up: row['max_progress'], invested_forge_points: row['current_progress'] },
+                level: (opened ? opened['level'] : (row['level'] || 0)),
+                bonuses: (opened ? opened['bonuses'] : undefined),
+                state: (opened && opened['level'] > (row['level'] || 0)
+                    ? opened['state']
+                    : { forge_points_for_level_up: row['max_progress'], invested_forge_points: row['current_progress'] }),
             };
         }
         return placedById;

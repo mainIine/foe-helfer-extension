@@ -626,7 +626,7 @@
     "Boxes.GBBonuses.ColLevel": "Level __lvl__",
     "Boxes.GBBonuses.ColCurrent": "Aktuell",
     "Boxes.GBBonuses.Unlocked": "__max__ Level freigeschaltet",
-    "Boxes.GBBonuses.MinValueTT": "Für LG von Mitspielern kennt der Helfer nur den zuletzt erreichten Stützpunkt (Stufe 1, 101, 201, 301, 400). Zwischen den Stützpunkten steigt der Wert unregelmäßig, „≥“ zeigt daher den Mindestwert",
+    "Boxes.GBBonuses.MinValueTT": "Für LG von Mitspielern kennt der Helfer nur den zuletzt erreichten Stützpunkt (Stufe 1, 101, 201, 301, 400). Zwischen den Stützpunkten steigt der Wert unregelmäßig, „≥“ zeigt daher den Mindestwert. Öffne das LG einmal im Spiel, dann zeigt der Helfer den genauen Wert",
     "Boxes.GBBonuses.NotBuilt": "nicht gebaut",
     "Boxes.GBBonuses.Count": "__count__ legendäre Bauwerke, davon __built__ gebaut",
     "Boxes.GBBonuses.NoData": "Keine Bonus-Daten in den Spieldaten gefunden — diese Übersicht gibt es erst nach dem LG-Update.",

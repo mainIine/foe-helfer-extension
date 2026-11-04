@@ -4,11 +4,14 @@
 **Update**
 
 - GB Bonus Overview and GB Investment Overview: a player selection shows the great buildings of other players in both boxes, once their GB overview has been opened in the game
+- GB Bonus Overview and GB Investment Overview: opening a great building of another player in the game gives both boxes its exact bonus values instead of the minimum
 - City overview: the QI city can now be sent to the city planner on foe-helper.com, just like the main city
 
 **Bugfixes**
 
 - QI overview: without a loaded ranking a hint is shown instead of an empty box, members without a record in the round show a hint as well
+
+---
 
 ##### 4.8.4.0
 **Update**

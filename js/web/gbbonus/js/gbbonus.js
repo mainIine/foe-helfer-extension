@@ -45,7 +45,7 @@
  * @property {?number} level current level when built in the shown city
  * @property {?number} maxLevel unlocked levels when built in the shown city
  * @property {?string} tier current prestige tier of another player's building
- * @property {boolean} foreign building of another player (no live values)
+ * @property {boolean} foreign building of another player (live values only once opened in the game)
  * @property {Object[]} currentBonuses live bonus values of the placed building
  */
 
@@ -242,7 +242,16 @@ let GBBonuses = {
 
 		if (overview) {
 			for (const row of overview.rows) {
-				own[row.city_entity_id] = {foreign: true, level: (row.level || 0), max_level: row.maxLevel, tier: (row.currentTier?.value || row.currentTier || null)};
+				// a building opened in the game carries its exact bonuses
+				const opened = GreatBuildings.OpenedGB(overview.id, row);
+				own[row.city_entity_id] = {
+					foreign: true,
+					cityentity_id: row.city_entity_id,
+					level: (opened ? opened.level : (row.level || 0)),
+					max_level: (opened?.max_level ?? row.maxLevel),
+					tier: (row.currentTier?.value || row.currentTier || null),
+					bonuses: (opened ? opened.bonuses : undefined),
+				};
 			}
 		}
 		else {
@@ -271,7 +280,7 @@ let GBBonuses = {
 				maxLevel: (placed ? (placed.max_level ?? null) : null),
 				tier: (placed?.foreign ? placed.tier : null),
 				foreign: !!placed?.foreign,
-				currentBonuses: (placed && !placed.foreign ? CityBuildings.getGBBonuses(placed) : []),
+				currentBonuses: (placed ? CityBuildings.getGBBonuses(placed) : []),
 			});
 		}
 
@@ -345,20 +354,23 @@ let GBBonuses = {
 
 
 	/**
-	 * Current value of one bonus of a built card: the live value in the own
-	 * city, for another player the reached breakpoint of the metadata, which is
-	 * only a lower bound off the breakpoints.
+	 * Current value of one bonus of a built card: the live value of the placed
+	 * building (own city, or another player's building opened in the game),
+	 * otherwise the reached breakpoint of the metadata, which is only a lower
+	 * bound off the breakpoints.
 	 * @param {GBBonusCard} card
 	 * @param {Object} bonus GreatBuildingBonus metadata entry
 	 * @returns {{value: (number|undefined), exact: boolean}}
 	 */
 	CurrentValue: (card, bonus) => {
+		const current = card.currentBonuses.find(entry => entry.type === bonus.type && !!entry.isBonusMultiplier === !!bonus.isBonusMultiplier);
+		if (current) return {value: current.value, exact: true};
+
 		if (card.foreign) {
 			return {value: GreatBuildings.MetaBonusValue(bonus, card.level), exact: bonus.valuesMap[card.level] !== undefined};
 		}
 
-		const current = card.currentBonuses.find(entry => entry.type === bonus.type && !!entry.isBonusMultiplier === !!bonus.isBonusMultiplier);
-		return {value: current?.value, exact: true};
+		return {value: undefined, exact: true};
 	},
 
 
