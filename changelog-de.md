@@ -4,11 +4,14 @@
 **Update**
 
 - LG-Bonusübersicht und LG Investitionen: Über eine Spieler-Auswahl zeigen beide Boxen auch die LG von Mitspielern, sobald deren LG-Übersicht im Spiel einmal geöffnet wurde
+- LG-Bonusübersicht und LG Investitionen: Wird ein LG eines Mitspielers im Spiel geöffnet, zeigen beide Boxen dessen genaue Bonuswerte statt des Mindestwerts
 - Stadtübersicht: Die QI-Stadt lässt sich jetzt wie die Hauptstadt an den Stadtplaner auf foe-helper.com schicken
 
 **Bugfixes**
 
 - QI-Übersicht: Ohne geladene Rangliste erscheint ein Hinweis statt einer leeren Box, Mitglieder ohne Stand in der Runde zeigen ebenfalls einen Hinweis
+
+---
 
 ##### 4.8.4.0
 **Update**
