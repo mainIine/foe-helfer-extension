@@ -38,6 +38,10 @@
 			rows: rows,
 		};
 
+		FoEproxy.triggerFoeHelperHandler('OtherPlayerGBsUpdated');
+	});
+
+	FoEproxy.addFoeHelperHandler('OtherPlayerGBsUpdated', () => {
 		if ($('#greatbuildings').length !== 0) GreatBuildings.RenderInvest();
 	});
 }
@@ -61,6 +65,7 @@ let GreatBuildings = {
 
     /**
      * Player whose great buildings the box shows, null for the own city.
+     * Shared by the GB bonus overview, which keeps its own selection.
      * @type {?number}
      */
     PlayerID: null,
@@ -569,9 +574,13 @@ let GreatBuildings = {
 
             const bonus = match.bonus;
             const max = bonus['values'][bonus['values'].length - 1];
-            let current;
+            // other players: only the reached breakpoint is known, the value in between is at least that high
+            let current, lowerBound = false;
             if (!row.placed) current = (bonus['valuesMap'][1]?.['value'] || 0);
-            else if (row.placed.foreign) current = GreatBuildings.MetaBonusValue(bonus, row.placed['level']);
+            else if (row.placed.foreign) {
+                current = GreatBuildings.MetaBonusValue(bonus, row.placed['level']);
+                lowerBound = (bonus['valuesMap'][row.placed['level']] === undefined);
+            }
             else current = (CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'] && !!entry['isBonusMultiplier'] === !!bonus['isBonusMultiplier'])?.['value'] || 0);
 
             // first level the bonus becomes active on
@@ -585,6 +594,7 @@ let GreatBuildings = {
                 meta: row.meta,
                 placed: row.placed,
                 current: current,
+                lowerBound: lowerBound,
                 second: max,
                 state: state,
                 startLevel: startLevel,
@@ -689,7 +699,9 @@ let GreatBuildings = {
         CityBuildings.createBuildings();
 
         const hasRework = GreatBuildings.HasReworkData();
-        const mode = (hasRework && GreatBuildings.InvestMode === 'rework' ? 'rework' : 'standard');
+        const foreign = (GreatBuildings.PlayerID !== null && GreatBuildings.Overviews[GreatBuildings.PlayerID] !== undefined);
+        // on rework worlds the classic production tables are outdated, other players only get the tier bonuses
+        const mode = (hasRework && (GreatBuildings.InvestMode === 'rework' || foreign) ? 'rework' : 'standard');
 
         const overview = (GreatBuildings.PlayerID !== null ? GreatBuildings.Overviews[GreatBuildings.PlayerID] : null);
         if (GreatBuildings.PlayerID !== null && !overview) GreatBuildings.PlayerID = null;
@@ -760,7 +772,7 @@ let GreatBuildings = {
         }
         h.push('</select>');
 
-        if (hasRework) {
+        if (hasRework && !overview) {
             h.push(' <select id="gbInvestMode" class="game-cursor">');
             h.push('<option value="standard"' + (mode === 'standard' ? ' selected' : '') + '>' + i18n('Boxes.GreatBuildings.ModeStandard') + '</option>');
             h.push('<option value="rework"' + (mode === 'rework' ? ' selected' : '') + '>' + i18n('Boxes.GreatBuildings.ModeRework') + '</option>');
@@ -805,7 +817,9 @@ let GreatBuildings = {
                 h.push('<td class="text-center">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.PendingFrom'), { lvl: entry.startLevel }) + '</td>');
             }
             else {
-                h.push('<td class="text-center"' + (entry.state === 'maxed' ? ' title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.MaxReached')) + '"' : '') + '>' + avgSign + GBBonuses.FormatValue(entry.cellBonus, entry.current) + (entry.state === 'maxed' ? ' ✔' : '') + '</td>');
+                const minimum = (entry.lowerBound && entry.current > 0 && entry.state !== 'maxed');
+                const currentTT = (entry.state === 'maxed' ? 'Boxes.GreatBuildings.MaxReached' : (minimum ? 'Boxes.GBBonuses.MinValueTT' : null));
+                h.push('<td class="text-center"' + (currentTT ? ' title="' + HTML.i18nTooltip(i18n(currentTT)) + '"' : '') + '>' + avgSign + (minimum ? '≥ ' : '') + GBBonuses.FormatValue(entry.cellBonus, entry.current) + (entry.state === 'maxed' ? ' ✔' : '') + '</td>');
             }
 
             let second = GBBonuses.FormatValue(entry.cellBonus, entry.second);
@@ -887,7 +901,9 @@ let GreatBuildings = {
 
     /**
      * Bonus value of a tier bonus at a completed level from the metadata:
-     * the value of the highest listed level not above the given one.
+     * the value of the highest listed level not above the given one. Values
+     * between the breakpoints are not interpolable, so off the breakpoints
+     * this is a lower bound.
      *
      * @param {Object} bonus Tier bonus entry with `valuesMap` keyed by level
      * @param {number} level Completed level of the building
