@@ -79,7 +79,8 @@ FoEproxy.addHandler('PresentGameService', 'getOverview', (data, postData) => {
 
 FoEproxy.addHandler('PresentGameService', 'openPresent', (data, postData) => {
 
-	if(!Settings.GetSetting('ShowEventChest')) return
+	// Presents is only filled by getOverview, which is skipped when the present helper is off
+	if(!Settings.GetSetting('ShowEventChest') || !EventPresents.Presents) return
     let presents = data.responseData.updatedPresentList
 
     for (let present of presents) {
@@ -91,7 +92,8 @@ FoEproxy.addHandler('PresentGameService', 'openPresent', (data, postData) => {
 
 FoEproxy.addHandler('PresentGameService', 'useBooster', (data, postData) => {
 
-	if(!Settings.GetSetting('ShowEventChest')) return
+	// Presents is only filled by getOverview, which is skipped when the present helper is off
+	if(!Settings.GetSetting('ShowEventChest') || !EventPresents.Presents) return
     let presents = data.responseData.updatedPresentList
 
     for (let present of presents) {
@@ -133,7 +135,7 @@ let EventPresents = {
 
         h.push('<table class="foe-table">');
         for (let present of EventPresents.Presents) {
-            let icon;
+            let icon, asset;
             let frag = "";
 
             if (present.status.value !== "used") {

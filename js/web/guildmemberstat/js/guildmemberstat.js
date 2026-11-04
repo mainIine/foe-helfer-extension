@@ -17,15 +17,20 @@ FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
 	if (requestMethod === 'getOwnClanData') {
 		GuildMemberStat.Data = data.responseData;
 
-		if (GuildMemberStat.Data !== undefined && !GuildMemberStat.hasUpdateProgress) {
-			GuildMemberStat.UpdateData('clandata', null).then((e) => {
-
+		if (GuildMemberStat.Data !== undefined) {
+			const unlockButton = () => {
 				if ($('#guildMemberstat-Btn').hasClass('hud-btn-red')) {
 					$('#guildMemberstat-Btn').removeClass('hud-btn-red');
 					$('#guildMemberstat-Btn-closed').remove();
 				}
+			};
 
-			});
+			// an update that is already running stores this data too - unlock the menu button in any case
+			if (GuildMemberStat.hasUpdateProgress) {
+				unlockButton();
+			} else {
+				GuildMemberStat.UpdateData('clandata', null).then(unlockButton);
+			}
 		}
 	}
 });
@@ -1093,7 +1098,10 @@ let GuildMemberStat = {
 
 		let currentTime = MainParser.round(+MainParser.getCurrentDate() / 1000);
 		let Member = GuildMemberStat.MemberDict[id];
-		let memberData = GuildMemberStat.Data.members.find(x => x.player_id == id);
+		let memberData = GuildMemberStat.Data?.members?.find(x => x.player_id == id);
+
+		// no member list received in this session yet
+		if (memberData === undefined) return;
 		let guildbuildings = Member.guildbuildings;
 
 		let geSum = 0, gexNumber = 0, gbgSum = 0, gbgNumber = 0, qiSum = 0, qiNumber = 0;
@@ -1525,7 +1533,7 @@ let GuildMemberStat = {
 
 				if (EraGroup[eraId].members !== undefined) {
 
-					let EraMembers = EraGroup[eraId].members.sort(function (a, b) { return a.score > b.score });
+					let EraMembers = EraGroup[eraId].members.sort(function (a, b) { return b.score - a.score });
 
 					EraMembers.forEach(member => {
 						h.push(`<tr><td>${member.rank[1]}</td><td>${MainParser.GetPlayerLink(member.player_id, member.name)}</td><td>${i18n('Eras.' + eraId)}</td><td class="text-right">${HTML.Format(member.score)}</td></tr>`);

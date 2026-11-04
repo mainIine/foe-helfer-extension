@@ -394,6 +394,7 @@ let Allies = {
 				for (let r of rs) {
 					if (!r.ally && !r.rarity) {
 						r.ally = x;
+						return;
 					}
 				}
 			}

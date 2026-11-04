@@ -96,7 +96,7 @@ let Settings = {
 
 			for (let x in grps) {
 				if (!grps.hasOwnProperty(x) || grps[x].hidden) {
-					break;
+					continue;
 				}
 
 				let d = grps[x],
@@ -144,10 +144,10 @@ let Settings = {
 				cd.html(i18n(`Settings.${d['name']}.Desc`));
 				ct.text(i18n(`Settings.${d['name']}.Title`));
 
-				childLis.push(`<li><a href="#subtab-${cnt}" title="${i18n('Settings.Entry.' + d['name'])}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
+				childLis.push(`<li><a href="#subtab-${i}-${cnt}" title="${i18n('Settings.Entry.' + d['name'])}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
 
 				let h = c.append(cr.append(ct, cd, cs));
-				childDivs.push('<div id="subtab-' + cnt + '" class="sub-tab">' + h.html() + '</div>');
+				childDivs.push('<div id="subtab-' + i + '-' + cnt + '" class="sub-tab">' + h.html() + '</div>');
 
 				cnt++;
 			}
@@ -516,7 +516,7 @@ let Settings = {
 			ip.val(value);
 		}
 
-		$('#SettingsBox').on('keyup', '#menu-input-length', function () {
+		$('#SettingsBox').on('keyup change input', '#menu-input-length', function () {
 			let value = $(this).val();
 
 			if (value > 0) {
@@ -545,7 +545,7 @@ let Settings = {
 		ip[0].defaultValue = ip[0].value = value;
 		ip.val(value);
 
-		$('#SettingsBox').on('keyup', '#GexStockWarningInput', function () {
+		$('#SettingsBox').on('keyup change input', '#GexStockWarningInput', function () {
 			let value = $(this).val();
 
 			if (value >= 0 && value <= 100) {
@@ -578,7 +578,7 @@ let Settings = {
 			ip.val(value);
 		}
 
-		$('#SettingsBox').on('keyup', '#doubleFPtimeoutinput', function () {
+		$('#SettingsBox').on('keyup change input', '#doubleFPtimeoutinput', function () {
 			let value = Number($(this).val());
 			if (value > 0) {
 				localStorage.setItem('doubleFPtimeout', value);
@@ -730,7 +730,7 @@ let Settings = {
 			ip.val(value);
 		}
 
-		$('#SettingsBox').on('keyup', '#toast-amount', function () {
+		$('#SettingsBox').on('keyup change input', '#toast-amount', function () {
 			let value = $(this).val();
 
 			if (value > 0) {

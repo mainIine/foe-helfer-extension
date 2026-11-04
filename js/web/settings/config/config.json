@@ -13,6 +13,13 @@
 		"sort": 2
 	},
 	{
+		"name": "ShowAnnouncements",
+		"status": true,
+		"group": "Auto",
+		"button": "Announcements.ShowAll()",
+		"sort": 3
+	},
+	{
 		"name": "AutoOpenCloseBox",
 		"status": false,
 		"group": "Auto",
@@ -70,7 +77,7 @@
 		"name": "ShowArmyAdvice",
 		"status": false,
 		"group": "Auto",
-		"button":"BattleAssist.ShowArmyAdviceConfig()",
+		"button": "BattleAssist.ShowArmyAdviceConfig()",
 		"sort": 24
 	},
 	{
@@ -120,7 +127,7 @@
 		"name": "Auctions",
 		"status": false,
 		"group": "Boxes",
-		"button":"Auction.BuildBody()",
+		"button": "Auction.BuildBody()",
 		"sort": 9
 	},
 	{
@@ -187,7 +194,7 @@
 		"name": "ShowBuildingsExpired",
 		"status": true,
 		"group": "Extension",
-		"button":"MainParser.Inactives.showSettings()",
+		"button": "MainParser.Inactives.showSettings()",
 		"sort": 9
 	},
 	{
@@ -248,10 +255,9 @@
 	{
 		"name": "LoadBeta2",
 		"group": "About",
-		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
+		"button": "window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
 		"sort": 19
 	},
-
 	{
 		"name": "ShowBlueGalaxyHelper",
 		"status": true,
@@ -269,7 +275,7 @@
 	},
 	{
 		"name": "ShowOwnPartOnAllGBs",
-		"status": true,
+		"status": false,
 		"hidden": true
 	},
 	{

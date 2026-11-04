@@ -18,11 +18,6 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
 
     if (requestMethod === 'getTradeOffers' || requestMethod === 'acceptOfferById') {
         Market.Trades = data.responseData;
-
-        if ($('#marketOffers-Btn').hasClass('hud-btn-red')) {
-            $('#marketOffers-Btn').removeClass('hud-btn-red');
-            $('#marketOffers-Btn-closed').remove();
-        }
     }
 });
 
@@ -159,7 +154,7 @@ let MarketOffers = {
             h.push('<td class="is-number" data-number="' + OfferSum + '">' + (OfferCount > 0 ? '<button class="btn btn-filter-offer" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(OfferSum) + ' (' + OfferCount + ')' + '</button>' : '-') + '</td>');
             h.push('<td class="is-number" data-number="' + NeedSum + '">' + (NeedCount > 0 ? '<button class="btn btn-filter-need" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(NeedSum) + ' (' + NeedCount + ')' + '</button>' : '-') + '</td>');
             h.push('<td class="is-number" data-number="' + (Inventory + OfferSum) + '">' + HTML.Format(Inventory + OfferSum) + '</td>');
-            h.push('<td class="is-number" data-number="' + NeedSum + '">' + HTML.Format(Inventory + NeedSum) + '</td>');
+            h.push('<td class="is-number" data-number="' + (Inventory + NeedSum) + '">' + HTML.Format(Inventory + NeedSum) + '</td>');
 
             h.push('</tr>');
         }
@@ -362,7 +357,6 @@ let MarketOffers = {
         h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'csv', 'MarketOffersEvents')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
         h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'json', 'MarketOffersEvents')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
-        h.push(i18n('Boxes.MarketOffersEvents.OptionalColumns') + ':');
 
         $('#MarketOffersEventsSettingsBox').html(h.join(''));
     },

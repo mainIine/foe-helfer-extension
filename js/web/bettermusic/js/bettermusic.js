@@ -327,7 +327,7 @@ let betterMusic = {
         htmltext += `</div>`;
         htmltext += `</div>`;
 
-        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">${i18n('Boxes.BetterMusic.Scenes')}</caption><thead class="sticky">><tr><th>${i18n('Boxes.BetterMusic.TitleName')}</th>`;
+        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">${i18n('Boxes.BetterMusic.Scenes')}</caption><thead class="sticky"><tr><th>${i18n('Boxes.BetterMusic.TitleName')}</th>`;
 
         for (let scene in betterMusic.Scenes) {
             htmltext += `<th><span>${betterMusic.Scenes[scene].Name}</span></th>`;
@@ -545,7 +545,7 @@ let betterMusic = {
         betterMusic.Scenes[scene].TitleList = [];
         for (title in betterMusic.Settings.Scenes[scene]) {
             if (betterMusic.PossibleTracks[title]?.banned) continue;
-            if (scene==="settlement" && (betterMusic.PossibleTracks[title].Settlement != Outposts?.OutpostData?.content) && (betterMusic.PossibleTracks[title].Settlement != undefined) && (!betterMusic.IgnoreSettlement)) continue;
+            if (scene==="settlement" && (betterMusic.PossibleTracks[title].Settlement != Outposts?.OutpostData?.content) && (betterMusic.PossibleTracks[title].Settlement != undefined) && (!betterMusic.Settings.IgnoreSettlement)) continue;
             if (scene==="colony" && (
                 ((betterMusic.PossibleTracks[title].Agelimit < CurrentEraID || betterMusic.PossibleTracks[title].Age > CurrentEraID ) && betterMusic.Settings.Colony == 2) ||
                 (betterMusic.PossibleTracks[title].Age > CurrentEraID && betterMusic.Settings.Colony == 1)

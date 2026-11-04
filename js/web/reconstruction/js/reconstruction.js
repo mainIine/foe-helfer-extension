@@ -126,6 +126,7 @@ let reconstruction = {
             "outpost_ship",
             "hub_main"].includes(meta.type)) return
         let page = id[0]=="W"? "prod" : reconstruction.pageMapper[meta.type]||meta.type
+        if (!reconstruction.pages[page]) return // unknown type (e.g. generic_building): no reconstruction tab known
         if (reconstruction.count[id].stored==0) { //remove from pages
             reconstruction.pages[page].splice(reconstruction.pages[page].indexOf(id),1)
         } else { //add to pages
@@ -166,6 +167,7 @@ let reconstruction = {
 				minimize: true,
 				resize: true,
                 map: () => reconstruction.showMap(),
+                mapId: 'ReconstructionMap',
 			    active_maps:"main"
 			});
         }
@@ -257,7 +259,7 @@ let reconstruction = {
         let c = `<select class="scale-view" name="reconstructionscale">
 			<option data-scale="50" ${storedUnit === 50 ? 'selected' : ''}>S</option>
 			<option data-scale="80" ${storedUnit === 80 ? 'selected' : ''}>M</option>
-			<option data-scale="100" ${storedUnit === 110 ? 'selected' : ''}>L</option>
+			<option data-scale="100" ${storedUnit === 100 ? 'selected' : ''}>L</option>
 			<option data-scale="156.1" ${storedUnit === 156.1 ? 'selected' : ''}>XL</option>
             </select>`;
             c += `<br><input type="range" class="opacity" name="opacity" min="0.01" max="1" step="0.01" value="0.9" />`

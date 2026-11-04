@@ -249,6 +249,8 @@ let Stats = {
 	ChartData: null,
 
 	ChartInstance: null,
+	_chartLocaleLang: null,
+	_chartLocaleBase: null,
 	_chartLibPromise: null,
 	_chartResizeObserver: null,
 	_tooltipMeta: null,
@@ -1071,7 +1073,58 @@ let Stats = {
 	 */
 	formatNumber: (v) => {
 		if (v == null) return '–';
-		return Number(v).toLocaleString(undefined, { maximumFractionDigits: Math.abs(v) < 10 ? 2 : 0 });
+		return Number(v).toLocaleString(i18n('Local'), { maximumFractionDigits: Math.abs(v) < 10 ? 2 : 0 });
+	},
+
+
+	/**
+	 * Formats value axis labels in the helper language, large numbers in compact notation (e.g. 250 Mio.).
+	 *
+	 * @param {number} v
+	 * @returns {string}
+	 */
+	formatAxisNumber: (v) => {
+		if (Math.abs(v) >= 1000000) return HTML.FormatNumberShort(v, false);
+		return Number(v).toLocaleString(i18n('Local'));
+	},
+
+
+	/**
+	 * Registers an ECharts locale for the helper language: month and weekday names come from Intl,
+	 * all other texts from the built-in English locale (ECharts only ships EN and ZH).
+	 *
+	 * @returns {string} locale name for echarts.init
+	 */
+	chartLocale: () => {
+		const lang = i18n('Local');
+		if (Stats._chartLocaleLang === lang) return 'FOEHELPER';
+
+		try {
+			if (!Stats._chartLocaleBase) {
+				const probe = echarts.init(document.createElement('div'), null, { width: 1, height: 1, locale: 'EN' });
+				probe.setOption({});
+				Stats._chartLocaleBase = probe.getModel().getLocaleModel().option;
+				probe.dispose();
+			}
+
+			// 2024-01-07 is a Sunday, ECharts weekdays start with Sunday
+			const names = (options, weekdays) => Array.from({ length: weekdays ? 7 : 12 }, (_, i) =>
+				new Intl.DateTimeFormat(lang, options).format(weekdays ? new Date(2024, 0, 7 + i) : new Date(2024, i, 15)));
+
+			echarts.registerLocale('FOEHELPER', Object.assign({}, Stats._chartLocaleBase, {
+				time: {
+					month: names({ month: 'long' }),
+					monthAbbr: names({ month: 'short' }),
+					dayOfWeek: names({ weekday: 'long' }, true),
+					dayOfWeekAbbr: names({ weekday: 'short' }, true)
+				}
+			}));
+			Stats._chartLocaleLang = lang;
+			return 'FOEHELPER';
+		}
+		catch (e) {
+			return 'EN';
+		}
 	},
 
 
@@ -1141,7 +1194,7 @@ let Stats = {
 			Stats._chartResizeObserver?.disconnect();
 
 			container.textContent = '';
-			chart = echarts.init(container, 'foe');
+			chart = echarts.init(container, 'foe', { locale: Stats.chartLocale() });
 			Stats.ChartInstance = chart;
 
 			Stats._chartResizeObserver = new ResizeObserver(() => chart.resize());
@@ -1557,6 +1610,7 @@ let Stats = {
 			splitLine: { lineStyle: { color: '#3a3a3d' } },
 			nameTextStyle: { color: '#a0a0a3' }
 		};
+		const valueAxis = Object.assign({}, axis, { axisLabel: { color: '#e0e0e3', formatter: Stats.formatAxisNumber } });
 
 		return {
 			color: Stats.ChartColors,
@@ -1591,9 +1645,9 @@ let Stats = {
 				}
 			},
 			categoryAxis: axis,
-			valueAxis: axis,
+			valueAxis: valueAxis,
 			timeAxis: axis,
-			logAxis: axis
+			logAxis: valueAxis
 		};
 	},
 

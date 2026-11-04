@@ -151,7 +151,7 @@ let Recurring = {
             $(this).addClass('loading');
             Recurring.loadingTimer = setTimeout(() => {
                 $(this).removeClass('loading');
-                id=$(this).data('id');
+                let id=$(this).data('id');
                 Recurring.data.Questlist[id].diamonds = !Recurring.data.Questlist[id].diamonds;
                 Recurring.SaveSettings();
                 Recurring.BuildBox();
@@ -170,7 +170,7 @@ let Recurring = {
     loadingTimer: null,
 
 	SetCounter: ()=> {
-        $buttonNumber=$('#recurring-count')
+        let $buttonNumber=$('#recurring-count')
         if ($buttonNumber.length==0) return;
         $buttonNumber.text(Recurring.data.count).show();
         if (Recurring.data.count === 0 || !Recurring.data.showCounter) $buttonNumber.hide();

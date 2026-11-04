@@ -845,7 +845,7 @@ let Alerts = function(){
 								let persist = ( alert.persistent ) ? ' checked="checked"' : '';
 								html += `<tr id="alert-id-${alert.id}">
 							<td><input type="checkbox"${persist}></td>
-							<td>${alert.title}</td>
+							<td>${alert.title}${alert.body ? ` <span class="alert-body">${HTML.escapeHtml(String(alert.body).split('\n')[0])}</span>` : ''}</td>
 							<td>${moment(alert.expires).from(dt)}</td>
 							<td>${labels.repeats[alert.repeat+""]}</td>
 							<td class="text-right">
@@ -943,7 +943,7 @@ let Alerts = function(){
 								if ( ! isNaN( expires ) ) {
 									let alert = {
 										id: null,
-										title: `${province.title} (${province.owner})`,
+										title: `${province.title}${province.owner ? ` (${province.owner})` : ''}`,
 										body: '',
 										expires: expires,
 										repeat: -1,
@@ -1248,7 +1248,7 @@ let Alerts = function(){
 							let value = ( province['lockedUntil'] - tmp.preferences.data.early.value - GameTime.Offset ) * 1000;
 							// if the sector is currently taken
 							if ( ! isNaN( value ) ) {
-								let text = `${province.title} (${province.owner})`;
+								let text = `${province.title}${province.owner ? ` (${province.owner})` : ''}`;
 								battlegroundOptions += `<option value="${value}">${text}</option>`;
 							}
 						});

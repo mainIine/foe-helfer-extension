@@ -34,7 +34,7 @@ FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
 });
 FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data, postData) => {
     //buy Extra turns
-    if(!Settings.GetSetting('ShowEventChest')) return;
+    if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperPop') === undefined ? true : Settings.GetSetting('EventHelperPop'))) return;
     if (!Array.isArray(data.responseData)) return;
     for (let G of data.responseData) {
         if (G.gains?.resources?.[`${Popgame.event}_pop_moves`]) {

@@ -527,7 +527,7 @@ let EventHandler = {
 
 		for (let i = 0; i < EventHandler.MaxVisitCount; i++)
 		{
-			h.push('<th data-export="Event'+ (i+1) +'" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i + 1) + '</th>');
+			h.push('<th data-export="Event'+ (i+1) +'" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + ' ' + (i + 1) + '</th>');
 		}
 
 		h.push('</tr></thead>');

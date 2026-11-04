@@ -1,5 +1,46 @@
 ## Extension Changelog
 
+##### 4.8.4.0
+**Update**
+
+- GB Calculator: shows all reward places of the current level, up to 7 on worlds with prestige tiers, including the copy function and the place selection
+- Contribution boost: the gold contribution boost is detected and used for gold tier levels in the GB Calculator, GB Cost Calc, Investments and Infoboard
+- Great Buildings: the new prestige bonuses (multipliers and bonuses limited to Guild Battlegrounds, GE or QI) count in the boosts, the building efficiency, the GB investments and the GB bonus overview
+- Help: almost every box now links to its own help page in the docs via the “?” icon; missing languages will be added step by step
+- News: a box in the top right corner shows what is new in the helper after the game start; close it once, the settings bring it back any time
+
+**Bugfixes**
+
+- Allies: allies were listed twice and their boosts counted twice
+- Guild Battlegrounds and QI: no more duplicate snapshots (too high daily values), day rows in the player details expand again, QI round selection works again
+- Discord: automatic sending stops when the GBG box is closed, deleted templates no longer cause errors
+- Guild treasury: the export setting was always switched off on saving, “Reset” in the export window failed with an error
+- Notes: your own player disappeared from the player list; without "Upload/Send data to foe-helper.com" no request is sent anymore
+- "API Token missing" now also appears with notifications switched off, the link there and in the settings points to the new docs
+- Fixed crashes in Productions, Efficiency, Reconstruction list, Castle System, GE, Scouting, Incidents, Battle Potions and Alerts
+- City overview: total area and share of streets are calculated correctly
+- Inventory and kits: filters stay visible after reopening, invalid search patterns no longer break the filter
+- Settings: number fields also save via the arrows
+- Guild Member Overview: the icon stays red and locked again until the member list has been opened in the game
+- Alerts: the list shows the first line of the body next to the title (e.g. which building expires)
+- Data export: seconds instead of half a minute, only the helper's own data, the loading overlay covers the table properly again and shows the progress
+- Background music: “Ignore settlement type” works again, no stray “>” above the track list
+- Army overview: after collecting Alcatraz it still said “ready to harvest” instead of the time until the next harvest
+- Scouting status and building tooltips: numbers in the format of the helper language
+- Statistics and GEX course: months and numbers in the helper language, the GEX course axes no longer overlap
+- Translations: many typos and wrong terms fixed in German, English and French, English leftovers in Kits and Productions translated
+
+---
+
+##### 4.8.3.2
+**Bugfixes**
+
+- Forge Points bar: the package counter at the top showed too many FP once a stack of FP packages was used up completely (#3592)
+- Great Buildings: fixed an error when opening some Great Buildings
+- Guild Battlegrounds: the offset to server time is detected automatically again and follows daylight saving changes; a previously saved value is reset once, enter your own value again if you need one
+
+---
+
 ##### 4.8.3.1
 **Bugfixes**
 

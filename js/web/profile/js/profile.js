@@ -3,7 +3,7 @@ FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
 
     if ($('#playerProfile-Btn').hasClass('hud-btn-red')) {
         $('#playerProfile-Btn').removeClass('hud-btn-red');
-        $('#playerProfile-Btn-closed').remove();
+        $('#PlayerProfile-Btn-closed').remove();
     }
 });
 FoEproxy.addHandler('OtherPlayerService','visitPlayer', (data, postData) => {
@@ -133,7 +133,7 @@ const Profile = {
                 $(this).attr('data-original-title', text);
             });
             $('#PlayerProfileBody').on('click', '.colorToggle',function () {
-                Profile.currentThemeNr = Profile.themes.indexOf(localStorage.getItem("PlayerProfileTheme")) || 0;
+                Profile.currentThemeNr = Math.max(0, Profile.themes.indexOf(localStorage.getItem("PlayerProfileTheme")));
                 $('#PlayerProfile').removeClass(Profile.themes[Profile.currentThemeNr]);
                 if (Profile.themes[Profile.currentThemeNr+1] !== undefined)
                     Profile.currentThemeNr++;
@@ -538,7 +538,7 @@ const Profile = {
 
 		HTML.Box({
 			id: 'OtherPlayerProfile',
-			title: ExtPlayerName,
+			title: Profile.otherPlayer.other_player.name,
 			auto_close: true,
 			dragdrop: true,
             class: 'playerprofile other'

@@ -149,16 +149,18 @@ FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
 	}
 });
 
-FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
-	if (Guild_fights.serverOffset !== null) return;
-	data.responseData.filter(t=>t.type=="battlegroundsAttrition").forEach(t=>{
-		if (!t.time) return;
-		serverMidnight = moment.unix(t.time);
+// The battlegrounds attrition resets at server midnight: its local time of day is the offset to server time.
+// Detected anew with every timer update, so it follows daylight saving changes.
+FoEproxy.addHandler('TimerService', 'getTimers', (data) => {
+	const attrition = data.responseData?.find(t => t.type === 'battlegroundsAttrition' && t.time);
+	if (!attrition) return;
 
-		Guild_fights.serverOffset = serverMidnight.format("HH")*60
-									+ serverMidnight.format("mm")*1;
-	})
+	const serverMidnight = moment.unix(attrition.time);
+	Guild_fights.serverOffsetAuto = serverMidnight.hours() * 60 + serverMidnight.minutes();
 });
+
+// Up to 4.8.3.1 the detected offset was frozen into this key when saving the settings; drop it once
+localStorage.removeItem('GuildFights.serverOffset');
 
 let Guild_fights = {
 
@@ -168,6 +170,8 @@ let Guild_fights = {
 	PrevActionTimestamp: null,
 	NewAction: null,
 	NewActionTimestamp: null,
+	// true while the latest leaderboard data has not been written as snapshot yet
+	SnapshotPending: false,
 	MapData: null,
 	AutoOpenedOnMap: false,
 	AutoOpenPending: false,
@@ -201,7 +205,20 @@ let Guild_fights = {
 	showMarkerButton: 1,
 	// known placed buildings per own province, collected from getBuildings responses (ajax + websocket)
 	ProvinceBuildings: JSON.parse(localStorage.getItem('GuildFights.ProvinceBuildings') || '{}'),
-	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
+	// offset to server time in minutes entered in the settings, null = use the detected one
+	serverOffsetManual: JSON.parse(localStorage.getItem('GuildFights.serverOffsetManual') || 'null'),
+	// offset to server time in minutes detected from the attrition timer
+	serverOffsetAuto: null,
+
+	/**
+	 * Effective offset to server time in minutes: manual setting first, detected value otherwise.
+	 *
+	 * @returns {number|null}
+	 */
+	get serverOffset() {
+		return this.serverOffsetManual ?? this.serverOffsetAuto;
+	},
+
 	// seconds between the sector alert and the actual unlock (#3511)
 	alertLeadTime: JSON.parse(localStorage.getItem("LiveFightSettings"))?.alertLeadTime || 30,
 	// create an alert for every sector listed in the upcoming tab (default off)
@@ -403,6 +420,7 @@ let Guild_fights = {
 		await Guild_fights.UpdateDB('history', { participation: players, sumNegotiations: sumNegotiations, sumBattles: sumBattles });
 
 		Guild_fights.GBGHistoryView = false;
+		Guild_fights.SnapshotPending = true;
 		Guild_fights.NewAction = players;
 		localStorage.setItem('GuildFights.NewAction', JSON.stringify(Guild_fights.NewAction));
 
@@ -515,7 +533,7 @@ let Guild_fights = {
 	SetBoxNavigation: async (gbground) => {
 		let h = [];
 		let i = 0;
-		let PlayerBoxSettings = JSON.parse(localStorage.getItem('GuildFightsPlayerBoxSettings')) || '{}';
+		let PlayerBoxSettings = JSON.parse(localStorage.getItem('GuildFightsPlayerBoxSettings')) || {};
 
 		Guild_fights.PlayerBoxSettings.showRoundSelector = (PlayerBoxSettings.showRoundSelector !== undefined) ? PlayerBoxSettings.showRoundSelector : Guild_fights.PlayerBoxSettings.showRoundSelector;
 		Guild_fights.PlayerBoxSettings.showLogButton = (PlayerBoxSettings.showLogButton !== undefined) ? PlayerBoxSettings.showLogButton : Guild_fights.PlayerBoxSettings.showLogButton;
@@ -1033,6 +1051,14 @@ let Guild_fights = {
 
 			// add css to the dom
 			HTML.AddCssFile('guild_fights');
+
+			// scheduled automatic Discord sends belong to the open window
+			$('#LiveGildFighting').on('remove', function () {
+				for (let timerId of Guild_fights.DiscordAutoTimers) {
+					clearTimeout(timerId);
+				}
+				Guild_fights.DiscordAutoTimers = [];
+			});
 		}
 		else if (!reload) {
 			HTML.CloseOpenBox('LiveGildFighting');
@@ -1107,6 +1133,12 @@ let Guild_fights = {
 
 		let newRound = false;
 		let updateDetailView = false;
+
+		// only fresh leaderboard data creates snapshots, a rebuild of the box must not repeat them
+		let recordSnapshot = Guild_fights.SnapshotPending && Guild_fights.GBGHistoryView === false;
+		if (recordSnapshot) {
+			Guild_fights.SnapshotPending = false;
+		}
 
 		await Guild_fights.SetBoxNavigation(gbground);
 
@@ -1198,7 +1230,7 @@ let Guild_fights = {
 				}
 			}
 
-			if ((change === true || newRound === true) && Guild_fights.GBGHistoryView === false)
+			if ((change === true || newRound === true) && recordSnapshot)
 			{
 				await Guild_fights.UpdateDB('player', {
 						gbground: Guild_fights.CurrentGBGRound,
@@ -1399,9 +1431,8 @@ let Guild_fights = {
 			h.push('</thead><tbody class="gbg-playerlog-group">');
 
 			dailyFights.forEach(day => {
-				let id = moment.unix(day.time).format(i18n('DateTime'));
 				let sum = (day.battles + day.negotiations * 2);
-				h.push('<tr id="gbgdetail_' + id + '" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + id + '">');
+				h.push('<tr id="gbgdetail_' + day.date + '" class="hasdetail" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + day.date + '">');
 				h.push(`<td class="is-number" data-number="${day.time}">${moment.unix(day.time).format(i18n('Date'))}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.negotiations}">${HTML.Format(day.negotiations)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.battles}">${HTML.Format(day.battles)}</td>`);
@@ -1512,7 +1543,7 @@ let Guild_fights = {
 	 */
 	BuildDetailViewLog: async (data) => {
 		let h = [];
-		let d = await Guild_fights.db.snapshots.where({ player_id: data.player, date: data.date }).reverse().sortBy('date');
+		let d = await Guild_fights.db.snapshots.where({ player_id: data.player, date: data.date }).reverse().sortBy('time');
 
 		if (!d) return;
 
@@ -1520,7 +1551,7 @@ let Guild_fights = {
 			data.width = { a: 50, b: 20, c: 20, d: 20 }
 		}
 
-		h.push(`<tr class="detailview dark-bg"><td class="nopadding" colspan="${$('#GildPlayersDetailViewBody > .foe-table thead tr').find("th").length}"><table class="foe-table log"><body>`);
+		h.push(`<tr class="detailview dark-bg"><td class="nopadding" colspan="${$('#GildPlayersDetailViewBody > .foe-table thead tr').find("th").length}"><table class="foe-table log"><tbody>`);
 
 		d.forEach(e => {
 			h.push(`<tr>`);
@@ -2134,7 +2165,7 @@ let Guild_fights = {
 			$('.copybutton').html(i18n('Boxes.GuildFights.Copy'));
 			$('.copybutton').removeClass('all');
 			$('.dcbutton').show();
-			if (Guild_fights.discordWebhook.bulkTemplate == "")
+			if (Guild_fights.discordWebhook.bulkTemplate == "" || !Discord.WebHooks.some(x => x.name == Guild_fights.discordWebhook.bulkTemplate))
 				$('.dcbutton.custom').hide();
 			if (Guild_fights.discordWebhook.url == "")
 				$('.dcbutton.discord').hide();
@@ -2776,7 +2807,7 @@ let Guild_fights = {
 
 		c.push(`<div id="gbgsettings-time" class="hidden-tab">`);
 		c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
-		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${Guild_fights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
+		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${Guild_fights.serverOffsetManual ?? ''}" placeholder="${Guild_fights.serverOffsetAuto ?? ''}" type="text" maxlength="5" size = "5"/></label></p>`);
 		c.push(`<hr><p><label for="alertLeadTime">${i18n('Boxes.GuildFights.AlertLeadTime')} <input id="alertLeadTime" name="alertLeadTime" value="${alertLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label></p>`);
 		c.push(`<p><label for="autoAlert"><input id="autoAlert" name="autoAlert" value="0" type="checkbox" ${(autoAlert === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.AutoAlert')}</label></p>`);
 		c.push(`</div>`);
@@ -2954,13 +2985,15 @@ let Guild_fights = {
 		Guild_fights.webRequestProfile = value.webRequestProfile;
 		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.autoAlert = value.autoAlert;
-		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
+		// an empty field or the detected value means "detect automatically"
+		const manualOffset = parseInt($('#serverOffset').val());
+		Guild_fights.serverOffsetManual = Number.isNaN(manualOffset) || manualOffset === Guild_fights.serverOffsetAuto ? null : manualOffset;
 
-		if (Guild_fights.serverOffset != null) {
-			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(Guild_fights.serverOffset))
+		if (Guild_fights.serverOffsetManual !== null) {
+			localStorage.setItem('GuildFights.serverOffsetManual', JSON.stringify(Guild_fights.serverOffsetManual));
 		}
 		else {
-			localStorage.removeItem('GuildFights.serverOffset');
+			localStorage.removeItem('GuildFights.serverOffsetManual');
 		}
 
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));

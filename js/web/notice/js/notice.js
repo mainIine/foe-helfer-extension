@@ -53,12 +53,19 @@ let Notice = {
 				],
 				type: 'error',
 				hideAfter: 10000,
+				show: true, // the user clicked something - show it even with notifications switched off
 			});
 
 			return;
 		}
 
 		Notice.ApiToken = apiToken;
+
+		// global send is deactivated, don't request the notes from the server
+		if(!Settings.GetSetting('GlobalSend')){
+			Notice.buildBox(false);
+			return;
+		}
 
 		if(Notice.notes === null){
 			MainParser.send2Server({apiToken:apiToken}, 'Notice/get',(resp)=>{
@@ -104,6 +111,9 @@ let Notice = {
 			});
 
 			Notice.Listener();
+
+			// edit buttons are not rendered in a new box
+			Notice.EditMode = false;
 		}
 		else if (!event)
 		{
@@ -111,7 +121,8 @@ let Notice = {
 			return;
 		}
 
-		Notice.Players = PlayerDict;
+		// copy, so removing the own player doesn't touch PlayerDict
+		Notice.Players = { ...PlayerDict };
 
 		if(Settings.GetSetting('GlobalSend')){
 			Notice.prepareContent();
@@ -713,7 +724,8 @@ let Notice = {
 		};
 
 		// check if not double
-		const group = Notice.notes.find(e => (e.id === Notice.ActualGrp));
+		// loose comparison, ActualGrp comes from the DOM
+		const group = Notice.notes.find(e => (e.id == Notice.ActualGrp));
 		const player = group.items.find(e => (e.tab === PlayerDict[id]['PlayerName']));
 
 		// Player is allways added
@@ -722,7 +734,7 @@ let Notice = {
 		}
 
 		// set the active Tab for reload
-		Notice.ActiveTab = Notice.notes.findIndex(idx => idx.id === Notice.ActualGrp) + 1;
+		Notice.ActiveTab = Notice.notes.findIndex(idx => idx.id == Notice.ActualGrp) + 1;
 
 		MainParser.send2Server(data, 'Notice/set', (resp)=>{
 			if(resp['status'] === 'ERROR') {

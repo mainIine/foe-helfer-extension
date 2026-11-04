@@ -1,5 +1,46 @@
 ## Extension Changelog
 
+##### 4.8.4.0
+**Update**
+
+- LG Rechner: zeigt alle Belohnungsplätze der aktuellen Stufe, auf Welten mit Prestige-Rängen bis zu 7, inklusive Kopierfunktion und Auswahl der Plätze
+- Mäzen-Bonus: Der Gold-Mäzen-Bonus wird erkannt und für Gold-Stufen in LG Rechner, LG Fördern, Investitionen und Infoboard verwendet
+- Legendäre Bauwerke: Die neuen Prestige-Boni (Multiplikatoren sowie Boni nur für Gildengefechte, GEX oder QI) zählen in den Boosts, der Gebäude-Effizienz, den LG-Investitionen und der LG-Bonusübersicht mit
+- Hilfe: Fast alle Boxen verlinken jetzt über das „?“-Symbol auf ihre eigene Hilfeseite in der Doku; fehlende Sprachen werden nach und nach ergänzt
+- Neuigkeiten: Eine Box rechts oben zeigt nach dem Spielstart, was im Helfer neu ist; einmal schließen genügt, über die Einstellungen lässt sie sich jederzeit wieder öffnen
+
+**Bugfixes**
+
+- Verbündete: Verbündete wurden doppelt gelistet und ihre Boni doppelt gezählt
+- Gildengefechte und QI: keine doppelten Snapshots mehr (zu hohe Tageswerte), Tageszeilen der Spieler-Details klappen wieder auf, QI-Rundenauswahl funktioniert wieder
+- Discord: Autoversand stoppt beim Schließen der GG-Box, gelöschte Vorlagen führen nicht mehr zu Fehlern
+- Gildenkasse: Die Export-Einstellung schaltete sich beim Speichern immer aus, „Zurücksetzen“ im Export-Fenster brach mit einem Fehler ab
+- Notizen: Der eigene Spieler verschwand aus der Spielerliste; ohne „Übermittlung an foe-helper.com“ geht keine Anfrage mehr raus
+- „API Token fehlt!“ erscheint jetzt auch bei ausgeschalteten Benachrichtigungen, der Link dort und in den Einstellungen zeigt auf die neue Doku
+- Abstürze behoben in Produktionen, Effizienz, Umbau-Liste, Burgsystem, GEX, Späherstatus, Ereignissen, Kampftränken und Alarmen
+- Stadtübersicht: Gesamtfläche und Straßen-Anteil werden richtig berechnet
+- Inventar und Kits: Filter bleiben nach dem Wiederöffnen sichtbar, ungültige Suchmuster brechen den Filter nicht mehr ab
+- Einstellungen: Zahlenfelder speichern auch über die Pfeile
+- Gildenmitglieder-Übersicht: Das Symbol bleibt wieder rot und gesperrt, bis die Mitgliederliste im Spiel geöffnet wurde
+- Alarme: Die Liste zeigt neben dem Titel auch die erste Zeile des Textes (z. B. welches Gebäude abläuft)
+- Daten-Export: Sekunden statt einer halben Minute, nur noch die eigenen Daten des Helfers, Ladeanzeige verdeckt die Tabelle wieder sauber und zeigt den Fortschritt
+- Hintergrundmusik: „Siedlungstyp ignorieren“ wirkt wieder, kein verirrtes „>“ mehr über der Titelliste
+- Armee-Übersicht: Nach dem Einsammeln des Alcatraz stand weiter „bereit zur Ernte“ statt der Zeit bis zur nächsten Ernte
+- Späherstatus und Gebäude-Tooltips: Zahlen im Format der Helfer-Sprache (90.000 statt 90,000)
+- Statistiken und GEX-Verlauf: Monate und Zahlen in der Helfer-Sprache, die Achsen im GEX-Verlauf überlappen nicht mehr
+- Übersetzungen: viele Tippfehler und falsche Begriffe in Deutsch, Englisch und Französisch korrigiert, englische Reste in Kits und Produktionen übersetzt
+
+---
+
+##### 4.8.3.2
+**Bugfixes**
+
+- Forge-Punkte-Leiste: Der Paket-Zähler oben zeigte zu viele FP, sobald ein FP-Paketstapel komplett aufgebraucht war (#3592)
+- Legendäre Bauwerke: Fehler beim Öffnen mancher Legendären Bauwerke behoben
+- Gildengefechte: Die Differenz zur Serverzeit wird wieder automatisch erkannt und passt sich der Zeitumstellung an; ein früher gespeicherter Wert wird einmalig zurückgesetzt, ein eigener Wert muss bei Bedarf neu eingetragen werden
+
+---
+
 ##### 4.8.3.1
 **Bugfixes**
 

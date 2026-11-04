@@ -81,9 +81,9 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
     let bt=data.responseData?.battleType?.type;
     if (!bt || bt=="pvp" || bt=="campaign") return;
-    let opId = id = BattleAssist.armyRecent[0]?.id
+    let opId = BattleAssist.armyRecent[0]?.id
     if (bt=="pvp_arena") {
-        opponent = BattleAssist.ArenaOpponents[data.responseData?.battleType?.difficulty]
+        let opponent = BattleAssist.ArenaOpponents[data.responseData?.battleType?.difficulty]
         if (!opponent) return;
         let wave1 = data.responseData.state.unitsOrder.filter(x=>x.ownerId!=ExtPlayerID).map(x=>x.unitTypeId)
         BattleAssist.processArmies(wave1,null,opponent.bonus,bt);
@@ -130,22 +130,22 @@ FoEproxy.addHandler('BattlefieldService', 'surrenderWave', (data, postData) => {
 });
 
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
-    for (e of data.responseData?.section?.encounters||[]) {
+    for (let e of data.responseData?.section?.encounters||[]) {
         BattleAssist.GEArmies[e.id||0] = e;
     }
 });
 FoEproxy.addHandler('GuildExpeditionService', 'getSection', (data, postData) => {
-    for (e of data.responseData?.encounters||[]) {
+    for (let e of data.responseData?.encounters||[]) {
         BattleAssist.GEArmies[e.id||0] = e;
     }
 });
 FoEproxy.addHandler('GuildExpeditionService', 'selectTrial', (data, postData) => {
-    for (e of data.responseData?.section?.encounters||[]) {
+    for (let e of data.responseData?.section?.encounters||[]) {
         BattleAssist.GEArmies[e.id||0] = e;
     }
 });
 FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postData) => {
-    for (e of data.responseData?.section?.encounters||[]) {
+    for (let e of data.responseData?.section?.encounters||[]) {
         BattleAssist.GEArmies[e.id||0] = e;
     }
 });
@@ -292,7 +292,7 @@ let BattleAssist = {
 	 */
     ShowArmyAdviceConfig: () => {
         //clean up old entries - remove at some point
-        for ([key, value] of Object.entries(BattleAssist.armyAdvice)) {
+        for (let [key, value] of Object.entries(BattleAssist.armyAdvice)) {
             if (/^GE5/.test(key)) {
                 BattleAssist.armyAdvice[key.replace(/^GE5/,"defense%")]=structuredClone(value);
                 delete BattleAssist.armyAdvice[key];
@@ -369,7 +369,7 @@ let BattleAssist = {
                     }
                 }
 
-                PlayerName = (/^pvp_arena%(.*?)#/.exec(id)||[""])[1];
+                let PlayerName = (/^pvp_arena%(.*?)#/.exec(id)||[""])[1];
                 if (PlayerName) html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
 
                 html += `</div></td><td class="AASetBonus" data-id="${id}">${advice.bonus ? advice.bonus + "%" : ""}`
@@ -430,7 +430,7 @@ let BattleAssist = {
         let elm = e.target;
         let td = elm.parentElement;
         let bonus = Number(elm.value);
-        test = BattleAssist.armyAdvice[td.dataset.id]
+        let test = BattleAssist.armyAdvice[td.dataset.id]
         if (test) {
             test.bonus = bonus;
         } else {
@@ -496,8 +496,11 @@ let BattleAssist = {
     },
 
     SaveAASettings: () => {
-        BattleAssist.AASettings.lostUnits = Number($('#AAlostUnits').val()) || 2;
-		BattleAssist.AASettings.lostHP = Number($('#AAlostHP').val()) || 40;
+        // empty or invalid input falls back to the default, 0 is a valid value
+        let lostUnits = parseInt($('#AAlostUnits').val()),
+            lostHP = parseInt($('#AAlostHP').val());
+        BattleAssist.AASettings.lostUnits = isNaN(lostUnits) ? 2 : lostUnits;
+		BattleAssist.AASettings.lostHP = isNaN(lostHP) ? 40 : lostHP;
         BattleAssist.AASettings.battleLost = $('#AAbattleLost')[0].checked;
 		BattleAssist.AASettings.battleSurrendered = $('#AAbattleSurrendered')[0].checked;
 		localStorage.setItem('BattleAssistAASettings', JSON.stringify(BattleAssist.AASettings));
@@ -538,7 +541,7 @@ let BattleAssist = {
         let i= BattleAssist.armyRecent.findIndex(x => x.id==id);
         if (i>-1) BattleAssist.armyRecent.splice(i,1);
         BattleAssist.armyRecent.unshift(army);
-        if (BattleAssist.armyRecent.length>5) BattleAssist.armyRecent.pop;
+        if (BattleAssist.armyRecent.length>5) BattleAssist.armyRecent.pop();
         let advice = BattleAssist.armyAdvice[id]?.advice
         let aBonus = BattleAssist.armyAdvice[id]?.bonus;
         if (!advice) {//process old advice data

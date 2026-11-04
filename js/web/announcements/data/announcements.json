@@ -1,0 +1,17 @@
+[
+	{
+		"id": "2026-11-prestige-rework",
+		"version": "4.8.4.0",
+		"date": "2026-11-04",
+		"link": "https://foe-helper.com/extension/update"
+	},
+	{
+		"id": "2026-11-help-links",
+		"version": "4.8.4.0",
+		"date": "2026-11-04",
+		"link": {
+			"de": "https://docs.foe-helper.com/de/",
+			"en": "https://docs.foe-helper.com/en/"
+		}
+	}
+]
