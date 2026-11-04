@@ -628,6 +628,7 @@
     "Boxes.GBBonuses.ColLevel": "Level __lvl__",
     "Boxes.GBBonuses.ColCurrent": "Current",
     "Boxes.GBBonuses.Unlocked": "__max__ levels unlocked",
+    "Boxes.GBBonuses.MinValueTT": "For other players' great buildings the helper only knows the last reached breakpoint (level 1, 101, 201, 301, 400). Between the breakpoints the value grows irregularly, so “≥” shows the minimum",
     "Boxes.GBBonuses.NotBuilt": "not built",
     "Boxes.GBBonuses.Count": "__count__ great buildings, __built__ of them built",
     "Boxes.GBBonuses.NoData": "No bonus data found in the game data — this overview requires the great building update.",
