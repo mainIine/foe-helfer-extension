@@ -85,7 +85,6 @@ let Negotiation = {
 			HTML.Box({
 				id: 'negotiationBox',
 				title: i18n('Boxes.Negotiation.Title'),
-				ask: i18n('Boxes.Negotiation.HelpLink'),
 				auto_close: true,
 				minimize: true,
 				dragdrop: true,

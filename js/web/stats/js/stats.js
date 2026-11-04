@@ -342,7 +342,6 @@ let Stats = {
 			HTML.Box({
 				id: 'stats',
 				title: i18n('Boxes.Stats.Title'),
-				ask: i18n('Boxes.Stats.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				popout: () => MainParser.PopOut('stats', 1100, 600),

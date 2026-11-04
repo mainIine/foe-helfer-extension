@@ -2609,7 +2609,6 @@ let MainParser = {
 				HTML.Box({
 					id: 'inactivesSettingsBox',
 					title: i18n('Boxes.InactivesSettings.Title'),
-					//ask: i18n('Boxes.AuctionSettings.HelpLink'),
 					auto_close: true,
 					dragdrop: true,
 					minimize: true,

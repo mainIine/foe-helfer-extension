@@ -48,7 +48,6 @@ let WebRequest = {
 			HTML.Box({
 				id: 'WebRequest',
 				title: i18n('Boxes.WebRequest.Title'),
-				ask: i18n('Boxes.WebRequest.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				resize: true

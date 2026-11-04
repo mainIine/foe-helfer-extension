@@ -151,7 +151,6 @@ let CityMap = {
 				resize: true,
 				minimize: true,
 				popout: () => MainParser.PopOut('citymap-main', 1100, 580),
-				ask: i18n('Boxes.CityMap.HelpLink'),
 			});
 
 			setTimeout(() => {
