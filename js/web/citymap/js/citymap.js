@@ -256,6 +256,7 @@ let CityMap = {
 			menu.append($('<div class="btn-group" />')
 				.append($('<button class="btn ml-auto" id="copy-meta-infos" onclick="CityMap.copyMetaInfos()" style="margin-left:auto" />').text(i18n('Boxes.CityMap.CopyMetaInfos')))
 				.append($('<button class="btn ml-auto" id="download-meta-infos" onclick="CityMap.downloadMetaInfos()" />').text(i18n('Boxes.CityMap.DownloadMetaInfos')))
+				.append($('<button class="btn ml-auto" id="show-submit-box" onclick="CityMap.showSubmitBox()" />').text(i18n('Boxes.CityMap.ShowSubmitBox')))
 			);
 			$('#sidebar').append(CityMap.showQIBuildingList());
 		}
@@ -1304,7 +1305,8 @@ let CityMap = {
 				blockedAreas: CityMap.removeDoubleUnderscoreKeys(blockedAreas),
 				goods: GoodsData,
 				cityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
-				allEntities: CityMap.removeDoubleUnderscoreKeys(Outposts.Advancements),
+				// settlement catalog only, the QI buildings are already part of cityEntities
+				allEntities: (ActiveMap === 'guild_raids' ? null : CityMap.removeDoubleUnderscoreKeys(Outposts.Advancements)),
 				mainEntities: (CityMap.isOutpostMap() ? CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData) : null),
 				selectionKits: MainParser.SelectionKits || null,
 			};
