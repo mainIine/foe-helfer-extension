@@ -82,3 +82,9 @@
 #greatbuildings #gbInvestTable tr.gb-maxed td {
 	opacity: 0.55;
 }
+
+#greatbuildings .header .snapshot-info {
+	margin-left: 8px;
+	font-size: 85%;
+	opacity: 0.7;
+}

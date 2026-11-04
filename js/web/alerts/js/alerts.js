@@ -1549,7 +1549,6 @@ let Alerts = function(){
 					HTML.Box( {
 						id: 'Alerts',
 						title: i18n( 'Boxes.Alerts.Title', 'Alerts' ),
-						ask: i18n('Boxes.Alerts.HelpLink'),
 						auto_close: true,
 						dragdrop: true,
 						minimize: true,

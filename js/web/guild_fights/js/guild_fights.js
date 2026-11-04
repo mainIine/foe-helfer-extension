@@ -2814,7 +2814,7 @@ let Guild_fights = {
 
 		c.push(`<div id="gbgsettings-sending" class="hidden-tab">`);
 		c.push(`<p>`);
-			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><span class="settings-ask" onclick="window.open('${i18n('Boxes.Discord.HelpLink')}', '_blank')"></span><br />`);
+			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><span class="settings-ask" onclick="window.open('${HTML.DocsUrlForBox('Discord')}', '_blank')"></span><br />`);
 			if (Discord.WebHooksUrls.length === 0)
 				c.push(`${i18n('Boxes.GuildFights.DiscordSetup')}: <span class="btn btn-slim" onclick="Discord.BuildBox()">${i18n('General.Open')}</span>`);
 			else {
@@ -2849,7 +2849,7 @@ let Guild_fights = {
 			c.push(`</p>`);
 
 		c.push(`<hr><p>`);
-			c.push(`<label for="gbgWebRequest"><b>${i18n('Menu.WebRequest.Title')}</b></label><span class="settings-ask" onclick="window.open('${i18n('Boxes.WebRequest.HelpLink')}', '_blank')"></span><br />`);
+			c.push(`<label for="gbgWebRequest"><b>${i18n('Menu.WebRequest.Title')}</b></label><span class="settings-ask" onclick="window.open('${HTML.DocsUrlForBox('WebRequest')}', '_blank')"></span><br />`);
 			if (WebRequest.Profiles.length === 0)
 				c.push(`${i18n('Boxes.GuildFights.WebRequestSetup')}: <span class="btn btn-slim" onclick="WebRequest.BuildBox()">${i18n('General.Open')}</span>`);
 			else {

@@ -122,16 +122,19 @@ let QiProgress = {
 
 		await QiProgress.SetBoxNavigation(qiRound);
 
-		let CurrentSnapshot = await QiProgress.db.snapshots
-			.where({
-				qiround: QiProgress.CurrentQISeason
-			})
-			.first();
+		// the round is only known after the game delivered the QI state, a null key would break the queries
+		if (QiProgress.CurrentQISeason !== null) {
+			let CurrentSnapshot = await QiProgress.db.snapshots
+				.where({
+					qiround: QiProgress.CurrentQISeason
+				})
+				.first();
 
-		if (CurrentSnapshot === undefined) {
-			newRound = true;
-			// if there is a new round delete previous snapshots
-			QiProgress.DeleteOldSnapshots(QiProgress.CurrentQISeason);
+			if (CurrentSnapshot === undefined) {
+				newRound = true;
+				// if there is a new round delete previous snapshots
+				QiProgress.DeleteOldSnapshots(QiProgress.CurrentQISeason);
+			}
 		}
 
 		let t = [],
@@ -151,13 +154,19 @@ let QiProgress = {
 
 		if (qiRound && qiRound !== null && qiRound !== QiProgress.CurrentQISeason) {
 			let d = await QiProgress.db.history.where({ qiround: qiRound }).toArray();
-			QiProgress.qiRound = d[0].participation?.sort(function (a, b) {
+			QiProgress.qiRound = d[0]?.participation?.sort(function (a, b) {
 				return a.rank - b.rank;
-			});
+			}) || [];
 			histView = true;
 		}
 		else {
-			QiProgress.qiRound = QiProgress.NewAction;
+			QiProgress.qiRound = QiProgress.NewAction || [];
+		}
+
+		// nothing stored yet: the box only fills from the guild ranking opened in the game
+		if (QiProgress.qiRound.length === 0) {
+			$('#qiContentWrapper').html('<p class="dark-bg text-center" style="padding:5px;margin:0;">' + i18n('Boxes.QiProgress.NoData') + '</p>');
+			return;
 		}
 
 		for (let i in QiProgress.qiRound) {
@@ -372,6 +381,12 @@ let QiProgress = {
 
 		if (content === "player") {
 			detaildata = await QiProgress.db.snapshots.where({ qiround: qiround, player_id: player_id }).toArray();
+
+			// a member that joined after the first snapshot of the round has no entries yet
+			if (detaildata.length === 0) {
+				$('#QiProgressPlayerDetailsBody').html('<p class="dark-bg text-center" style="padding:5px;margin:0;">' + i18n('Boxes.QiProgress.NoPlayerData') + '</p>');
+				return;
+			}
 
 			playerName = detaildata[0].name;
 			dailyProgress = detaildata.reduce(function (res, obj) {

@@ -59,7 +59,6 @@ let findGB = {
                 dragdrop: true,
                 minimize: true,
                 resize: true,
-                //ask: i18n('Boxes.findGB.HelpLink'),
             });
         }
 

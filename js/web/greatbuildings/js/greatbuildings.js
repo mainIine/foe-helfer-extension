@@ -22,6 +22,39 @@
 			GreatBuildings.RenderInvest();
 		}, 250);
 	});
+
+	// keep the great building overview of other players (opened in the game)
+	// as a snapshot, so the box can show their buildings as well
+	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data) => {
+		const rows = (Array.isArray(data.responseData) ? data.responseData : []).filter(row => row['city_entity_id'] !== undefined && row['player']?.['player_id'] !== undefined);
+		if (rows.length === 0) return;
+
+		const playerID = rows[0]['player']['player_id'];
+		if (playerID === ExtPlayerID) return;
+
+		GreatBuildings.Overviews[playerID] = {
+			id: playerID,
+			name: rows[0]['player']['name'] || PlayerDict[playerID]?.['PlayerName'] || String(playerID),
+			time: Date.now(),
+			rows: rows,
+		};
+
+		FoEproxy.triggerFoeHelperHandler('OtherPlayerGBsUpdated');
+	});
+
+	// a great building of another player opened in the game delivers its placed
+	// bonuses, the only exact values the helper gets for foreign buildings
+	FoEproxy.addHandler('OtherPlayerService', 'getOtherPlayerCityMapEntity', (data) => {
+		const entity = data.responseData;
+		if (entity?.['type'] !== 'greatbuilding' || !entity['player_id'] || entity['player_id'] === ExtPlayerID) return;
+
+		(GreatBuildings.OpenedGBs[entity['player_id']] ??= {})[entity['cityentity_id']] = entity;
+		FoEproxy.triggerFoeHelperHandler('OtherPlayerGBsUpdated');
+	});
+
+	FoEproxy.addFoeHelperHandler('OtherPlayerGBsUpdated', () => {
+		if ($('#greatbuildings').length !== 0) GreatBuildings.RenderInvest();
+	});
 }
 
 
@@ -33,6 +66,27 @@
  * and the tier bonuses of the multi-tier rework where the game provides them.
  */
 let GreatBuildings = {
+
+    /**
+     * Great building overviews of other players by player id, filled from the
+     * game's overview window: { name, time (ms), rows (overview rows) }.
+     * @type {Object<number, {name: string, time: number, rows: Object[]}>}
+     */
+    Overviews: {},
+
+    /**
+     * Great buildings of other players opened in the game, by player id and
+     * city entity id: the city map entity with its placed `bonuses`.
+     * @type {Object<number, Object<string, Object>>}
+     */
+    OpenedGBs: {},
+
+    /**
+     * Player whose great buildings the box shows, null for the own city.
+     * Shared by the GB bonus overview, which keeps its own selection.
+     * @type {?number}
+     */
+    PlayerID: null,
 
     /**
      * First place patron reward (in FP) per era and level.
@@ -173,11 +227,11 @@ let GreatBuildings = {
         GreatBuildings.BonusTarget = localStorage.getItem('GreatBuildingsBonusTarget') || GreatBuildings.BonusTarget;
         GreatBuildings.HideNewGBs = (localStorage.getItem('GreatBuildingsHideNew') === 'true');
         GreatBuildings.InvestSort = JSON.parse(localStorage.getItem('GreatBuildingsSort') || '{"col":"costs","order":"ascending"}');
+        GreatBuildings.PlayerID = null;
 
         HTML.Box({
             id: 'greatbuildings',
             title: i18n('Boxes.GreatBuildings.Title'),
-            ask: i18n('Boxes.GreatBuildings.HelpLink'),
             auto_close: true,
             dragdrop: true,
             minimize: true,
@@ -186,6 +240,12 @@ let GreatBuildings = {
         });
 
         HTML.AddCssFile('greatbuildings');
+
+        $('#greatbuildings').on('change', '#gbInvestPlayer', function () {
+            const value = String($(this).val());
+            GreatBuildings.PlayerID = (value === '' ? null : parseInt(value));
+            GreatBuildings.RenderInvest();
+        });
 
         $('#greatbuildings').on('change', '#gbInvestMode', function () {
             GreatBuildings.InvestMode = String($(this).val());
@@ -424,9 +484,10 @@ let GreatBuildings = {
             if (meta['strategy_points_for_upgrade'] === undefined) continue;
 
             const placed = placedById[meta['id']] || null;
-            if (GreatBuildings.HideNewGBs && !placed) continue;
+            if (GreatBuildings.HidesNew() && !placed) continue;
 
-            const building = (placed ? buildingsByEntityId[meta['id']] : null);
+            // the normalized city data only covers the own city
+            const building = (placed && !placed.foreign ? buildingsByEntityId[meta['id']] : null);
             const GBData = GreatBuildings.GreatBuildingsData.find(data => data.ID === meta['id']);
             const level = (placed ? placed['level'] : 0);
             const values = {};
@@ -448,9 +509,11 @@ let GreatBuildings = {
                     }
                 }
                 else if (GBData && curveTypes[def.key] && GreatBuildings.StandardTargetOffered(meta, def.key)) {
-                    const first = GreatBuildings.ClassicValue(GBData, curveTypes[def.key], 0);
-                    if (first > 0) {
-                        value = { current: 0, delta: first, avg: (staticAverages[meta['id']] || []).includes(def.key) };
+                    // unbuilt or foreign building: plain static curve at its level
+                    const now = GreatBuildings.ClassicValue(GBData, curveTypes[def.key], level - 1);
+                    const next = GreatBuildings.ClassicValue(GBData, curveTypes[def.key], level);
+                    if (next > 0) {
+                        value = { current: now, delta: next - now, avg: (staticAverages[meta['id']] || []).includes(def.key) };
                     }
                 }
 
@@ -525,13 +588,21 @@ let GreatBuildings = {
         const entries = [];
         for (const row of rows) {
             const match = row.bonuses.find(entry => entry.key === GreatBuildings.BonusTarget);
-            if (!match || (GreatBuildings.HideNewGBs && !row.placed)) continue;
+            if (!match || (GreatBuildings.HidesNew() && !row.placed)) continue;
 
             const bonus = match.bonus;
             const max = bonus['values'][bonus['values'].length - 1];
-            const current = (row.placed
-                ? (CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'] && !!entry['isBonusMultiplier'] === !!bonus['isBonusMultiplier'])?.['value'] || 0)
-                : (bonus['valuesMap'][1]?.['value'] || 0));
+            // other players without an opened building: only the reached breakpoint is known,
+            // the value in between is at least that high
+            let current, lowerBound = false;
+            const live = (row.placed ? CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'] && !!entry['isBonusMultiplier'] === !!bonus['isBonusMultiplier']) : null);
+            if (!row.placed) current = (bonus['valuesMap'][1]?.['value'] || 0);
+            else if (live) current = (live['value'] || 0);
+            else if (row.placed.foreign) {
+                current = GreatBuildings.MetaBonusValue(bonus, row.placed['level']);
+                lowerBound = (bonus['valuesMap'][row.placed['level']] === undefined);
+            }
+            else current = 0;
 
             // first level the bonus becomes active on
             const startLevel = Math.min(...Object.keys(bonus['valuesMap']).map(Number).filter(level => bonus['valuesMap'][level]['value'] > 0), Infinity);
@@ -544,6 +615,7 @@ let GreatBuildings = {
                 meta: row.meta,
                 placed: row.placed,
                 current: current,
+                lowerBound: lowerBound,
                 second: max,
                 state: state,
                 startLevel: startLevel,
@@ -648,12 +720,13 @@ let GreatBuildings = {
         CityBuildings.createBuildings();
 
         const hasRework = GreatBuildings.HasReworkData();
-        const mode = (hasRework && GreatBuildings.InvestMode === 'rework' ? 'rework' : 'standard');
+        const foreign = (GreatBuildings.PlayerID !== null && GreatBuildings.Overviews[GreatBuildings.PlayerID] !== undefined);
+        // on rework worlds the classic production tables are outdated, other players only get the tier bonuses
+        const mode = (hasRework && (GreatBuildings.InvestMode === 'rework' || foreign) ? 'rework' : 'standard');
 
-        const placedById = {};
-        for (const entity of Object.values(MainParser.CityMapData)) {
-            if (entity['type'] === 'greatbuilding') placedById[entity['cityentity_id']] = entity;
-        }
+        const overview = (GreatBuildings.PlayerID !== null ? GreatBuildings.Overviews[GreatBuildings.PlayerID] : null);
+        if (GreatBuildings.PlayerID !== null && !overview) GreatBuildings.PlayerID = null;
+        const placedById = GreatBuildings.PlacedBuildings(overview);
 
         const harvest = GreatBuildings.DailyHarvest();
         const { targets, entries } = (mode === 'rework'
@@ -700,13 +773,27 @@ let GreatBuildings = {
         const h = [];
         h.push('<div class="text-center dark-bg header">');
 
+        // player selection: the own city plus every overview opened in the game
+        const players = Object.entries(GreatBuildings.Overviews).sort((a, b) => a[1].name.localeCompare(b[1].name));
+        h.push('<div class="invest-row"><label for="gbInvestPlayer">' + i18n('Boxes.GreatBuildings.Player') + '</label> <select id="gbInvestPlayer" class="game-cursor" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.PlayerHint')) + '">');
+        h.push('<option value=""' + (overview ? '' : ' selected') + '>' + i18n('Boxes.GreatBuildings.OwnCity') + '</option>');
+        for (const [playerID, entry] of players) {
+            h.push('<option value="' + playerID + '"' + (parseInt(playerID) === GreatBuildings.PlayerID ? ' selected' : '') + '>' + HTML.escapeHtml(entry.name) + '</option>');
+        }
+        if (players.length === 0) h.push('<option disabled>' + i18n('Boxes.GreatBuildings.PlayerHint') + '</option>');
+        h.push('</select>');
+        if (overview) {
+            h.push(' <span class="snapshot-info">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.Snapshot'), { time: moment(overview.time).format('LT') }) + '</span>');
+        }
+        h.push('</div>');
+
         h.push('<div class="invest-row"><label for="gbInvestTarget">' + i18n('Boxes.GreatBuildings.InvestTarget') + '</label> <select id="gbInvestTarget" class="game-cursor">');
         for (const [key, label] of targets.entries()) {
             h.push('<option value="' + key + '"' + (key === selected ? ' selected' : '') + '>' + label + '</option>');
         }
         h.push('</select>');
 
-        if (hasRework) {
+        if (hasRework && !overview) {
             h.push(' <select id="gbInvestMode" class="game-cursor">');
             h.push('<option value="standard"' + (mode === 'standard' ? ' selected' : '') + '>' + i18n('Boxes.GreatBuildings.ModeStandard') + '</option>');
             h.push('<option value="rework"' + (mode === 'rework' ? ' selected' : '') + '>' + i18n('Boxes.GreatBuildings.ModeRework') + '</option>');
@@ -715,7 +802,7 @@ let GreatBuildings = {
         h.push('</div>');
 
         h.push('<div class="invest-row">' + i18n('Boxes.GreatBuildings.ArcBonus') + ' <input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
-        h.push(' <span class="invest-hide"><input id="HideNewGBs" class="hidenewgbs game-cursor" type="checkbox"' + (GreatBuildings.HideNewGBs ? ' checked' : '') + '> <label for="HideNewGBs">' + i18n('Boxes.GreatBuildings.HideNewGBs') + '</label></span></div>');
+        h.push(' <span class="invest-hide"' + (overview ? ' title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.ForeignHideNewTT')) + '"' : '') + '><input id="HideNewGBs" class="hidenewgbs game-cursor" type="checkbox"' + (GreatBuildings.HidesNew() ? ' checked' : '') + (overview ? ' disabled' : '') + '> <label for="HideNewGBs">' + i18n('Boxes.GreatBuildings.HideNewGBs') + '</label></span></div>');
 
         // harvest summary the "harvests" column is based on
         let harvestInfo = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.HarvestInfo'), { fp: HTML.Format(Math.round(harvest.total)) });
@@ -751,7 +838,9 @@ let GreatBuildings = {
                 h.push('<td class="text-center">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.PendingFrom'), { lvl: entry.startLevel }) + '</td>');
             }
             else {
-                h.push('<td class="text-center"' + (entry.state === 'maxed' ? ' title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.MaxReached')) + '"' : '') + '>' + avgSign + GBBonuses.FormatValue(entry.cellBonus, entry.current) + (entry.state === 'maxed' ? ' ✔' : '') + '</td>');
+                const minimum = (entry.lowerBound && entry.current > 0 && entry.state !== 'maxed');
+                const currentTT = (entry.state === 'maxed' ? 'Boxes.GreatBuildings.MaxReached' : (minimum ? 'Boxes.GBBonuses.MinValueTT' : null));
+                h.push('<td class="text-center"' + (currentTT ? ' title="' + HTML.i18nTooltip(i18n(currentTT)) + '"' : '') + '>' + avgSign + (minimum ? '≥ ' : '') + GBBonuses.FormatValue(entry.cellBonus, entry.current) + (entry.state === 'maxed' ? ' ✔' : '') + '</td>');
             }
 
             let second = GBBonuses.FormatValue(entry.cellBonus, entry.second);
@@ -759,7 +848,7 @@ let GreatBuildings = {
             h.push('<td class="text-center">' + (entry.second > 0 ? avgSign : '') + second + '</td>');
 
             if (entry.costs) {
-                const costsTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.CostsTT'), {
+                const costsTT = HTML.i18nReplacer(i18n(overview ? 'Boxes.GreatBuildings.CostsTTForeign' : 'Boxes.GreatBuildings.CostsTT'), {
                     level: (entry.costs.level + 1),
                     brutto: HTML.Format(entry.costs.brutto),
                     arc: GreatBuildings.ForderBonus,
@@ -788,6 +877,82 @@ let GreatBuildings = {
         h.push('</tbody></table>');
 
         $('#greatbuildingsBody').html(h.join(''));
+    },
+
+
+    /**
+     * Opened great building of another player, as long as it is not older than
+     * the overview row (a lower level than the row means the building levelled
+     * up since it was opened, its bonuses are outdated then).
+     *
+     * @param {number} playerID Owner of the building
+     * @param {Object} row Overview row of the building
+     * @returns {?Object} City map entity or null
+     */
+    OpenedGB: (playerID, row) => {
+        const entity = GreatBuildings.OpenedGBs[playerID]?.[row['city_entity_id']];
+        return (entity && entity['level'] >= (row['level'] || 0) ? entity : null);
+    },
+
+
+    /**
+     * Placed great buildings by city entity id: the own city map entities, or
+     * for another player the rows of their overview snapshot shaped like city
+     * map entities (level and level costs, flagged `foreign`); a building
+     * opened in the game additionally carries its exact `bonuses`.
+     *
+     * @param {?{rows: Object[]}} overview Overview snapshot of another player, null for the own city
+     * @returns {Object<string, Object>}
+     */
+    PlacedBuildings: (overview) => {
+        const placedById = {};
+
+        if (!overview) {
+            for (const entity of Object.values(MainParser.CityMapData)) {
+                if (entity['type'] === 'greatbuilding') placedById[entity['cityentity_id']] = entity;
+            }
+            return placedById;
+        }
+
+        for (const row of overview.rows) {
+            const opened = GreatBuildings.OpenedGB(overview.id, row);
+            placedById[row['city_entity_id']] = {
+                type: 'greatbuilding',
+                foreign: true,
+                cityentity_id: row['city_entity_id'],
+                level: (opened ? opened['level'] : (row['level'] || 0)),
+                bonuses: (opened ? opened['bonuses'] : undefined),
+                state: (opened && opened['level'] > (row['level'] || 0)
+                    ? opened['state']
+                    : { forge_points_for_level_up: row['max_progress'], invested_forge_points: row['current_progress'] }),
+            };
+        }
+        return placedById;
+    },
+
+
+    /**
+     * Whether unbuilt great buildings are hidden: by the user's filter, and
+     * always for other players, whose unbuilt buildings are unknown.
+     *
+     * @returns {boolean}
+     */
+    HidesNew: () => GreatBuildings.HideNewGBs || GreatBuildings.PlayerID !== null,
+
+
+    /**
+     * Bonus value of a tier bonus at a completed level from the metadata:
+     * the value of the highest listed level not above the given one. Values
+     * between the breakpoints are not interpolable, so off the breakpoints
+     * this is a lower bound.
+     *
+     * @param {Object} bonus Tier bonus entry with `valuesMap` keyed by level
+     * @param {number} level Completed level of the building
+     * @returns {number}
+     */
+    MetaBonusValue: (bonus, level) => {
+        const key = Object.keys(bonus['valuesMap'] || {}).map(Number).filter(entry => entry <= level).sort((a, b) => b - a)[0];
+        return (key !== undefined ? (bonus['valuesMap'][key]?.['value'] || 0) : 0);
     },
 
 

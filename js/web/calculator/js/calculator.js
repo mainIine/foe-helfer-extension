@@ -119,7 +119,6 @@ let Calculator = {
 			HTML.Box({
 				id: 'CalculatorBox',
 				title: i18n('Boxes.Calculator.Title'),
-				ask: i18n('Boxes.Calculator.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,

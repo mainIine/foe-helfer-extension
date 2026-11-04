@@ -42,7 +42,6 @@ let Discord = {
 			HTML.Box({
 				id: 'Discord',
 				title: i18n('Boxes.Discord.Title'),
-				ask: i18n('Boxes.Discord.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				resize: true
