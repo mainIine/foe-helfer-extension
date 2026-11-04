@@ -542,17 +542,19 @@ let Unit = {
 	 * @constructor
 	 */
 	RefreshAlca: (data) => {
-		if (!Unit.alca) {
-			Unit.alca = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'))
-		}
+		const updated = (data && Array.isArray(data['updatedEntities']) ? data['updatedEntities'].find(e => e && e['cityentity_id'] === 'X_ProgressiveEra_Landmark1') : null);
+
+		// the city map entries are replaced on every update, so never keep an old copy:
+		// after a pickup the old one still says "production finished"
+		Unit.alca = updated || Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
 
 		// update next harvest time if pickup
-		if (data && data['updatedEntities'] && data['updatedEntities'][0] && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
+		if (updated && updated['state'])
 		{
-			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
+			Unit.NextHarvest = updated['state']['next_state_transition_at'];
 			Unit.BuildTimer();
 		}
-    },
+	},
 
 
 	/**
@@ -814,7 +816,7 @@ let Unit = {
 	*
 	*/
 	LoadSettings: () => {
-		cachedSettings = JSON.parse(localStorage.getItem('UnitOverviewSettings')) || Unit.Settings;
+		let cachedSettings = JSON.parse(localStorage.getItem('UnitOverviewSettings')) || Unit.Settings;
 		Unit.Settings.pictogramScaling = (cachedSettings && cachedSettings.pictogramScaling !== undefined) ? cachedSettings.pictogramScaling : Unit.Settings.pictogramScaling;
 	},
 

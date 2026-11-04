@@ -555,15 +555,20 @@ let Outposts = {
 		/** @type {number} */
 		let LastStartedTime = 0;
 
-		let currentOutpost = outposts.find(
-			outpost => outpost.startedAt !== undefined && outpost.startedAt > LastStartedTime
-		);
+		// pick the most recently started outpost
+		let currentOutpost = null;
+		for (const outpost of outposts) {
+			if (outpost.startedAt !== undefined && outpost.startedAt > LastStartedTime) {
+				LastStartedTime = outpost.startedAt;
+				currentOutpost = outpost;
+			}
+		}
 
 		if (currentOutpost) {
 			let OldOutpostType = localStorage.getItem('OutpostType'),
 				NewOutpostType = currentOutpost.content;
 
-			if (OldOutpostType === undefined || OldOutpostType !== NewOutpostType) {
+			if (OldOutpostType === null || OldOutpostType !== NewOutpostType) {
 				localStorage.setItem('OutpostType', NewOutpostType);
 				localStorage.removeItem('OutpostBuildings'); //Typ des Außenpostens hat sich geändert => Gebäude löschen => führt dazu, dass Button erst nach dem Besuch des Außenpostens grün wird
 				Outposts.Advancements = null;
@@ -660,6 +665,7 @@ let Outposts = {
 				],
 				type: 'error',
 				hideAfter: 10000,
+				show: true, // the user clicked something - show it even with notifications switched off
 			});
 
 			return;

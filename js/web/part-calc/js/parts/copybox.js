@@ -122,17 +122,17 @@ Object.assign(Parts, {
 		}
 
 		if (Parts.CopyModeAll) {
-			for (let i = 0; i < 5; i++) {
+			for (let i = 0; i < Parts.PlaceCount; i++) {
 				Parts.CopyPlaces[i] = true;
 			}
 		}
 		else if (Parts.CopyModeAuto) {
-			for (let i = 0; i < 5; i++) {
+			for (let i = 0; i < Parts.PlaceCount; i++) {
 				Parts.CopyPlaces[i] = (Parts.SafePlaces.includes(i));
 			}
 		}
 		else if (Parts.CopyModeAutoUnsafe) {
-			for (let i = 0; i < 5; i++) {
+			for (let i = 0; i < Parts.PlaceCount; i++) {
 				Parts.CopyPlaces[i] = (Parts.PlaceAvailables[i]);
 			}
 		}
@@ -185,13 +185,12 @@ Object.assign(Parts, {
 		h.push('</section><section class="p2">');
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong>');
 
-		let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.CopyPlaces[0] ? 'checked' : '') + '> <span>1</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.CopyPlaces[1] ? 'checked' : '') + '> <span>2</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.CopyPlaces[2] ? 'checked' : '') + '> <span>3</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.CopyPlaces[3] ? 'checked' : '') + '> <span>4</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.CopyPlaces[4] ? 'checked' : '') + '> <span>5</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.CopyModeAll ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.All') + '</span></label>' +
+		// one checkbox per reward place of the shown level-up (up to 7 with the prestige rework)
+		let cb = '<div class="checkboxes">';
+		for (let i = 0; i < Parts.PlaceCount; i++) {
+			cb += '<label class="form-check-label game-cursor" for="chain-p' + (i + 1) + '"><input type="checkbox" class="form-check-input" id="chain-p' + (i + 1) + '" data-place="' + (i + 1) + '" ' + (Parts.CopyPlaces[i] ? 'checked' : '') + '> <span>' + (i + 1) + '</span></label>';
+		}
+		cb += '<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.CopyModeAll ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.All') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.CopyModeAuto ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Auto') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="chain-auto-unsafe"><input type="checkbox" class="form-check-input" id="chain-auto-unsafe" data-place="auto-unsafe" ' + (Parts.CopyModeAutoUnsafe ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.AutoWithUnsafe') + '</span></label>' +
 		'</div>';
@@ -229,7 +228,7 @@ Object.assign(Parts, {
 	 * Builds a copy string from explicit data (also used by the power leveling box).
 	 * Which pieces are included is controlled by the Parts.CopyInclude* settings.
 	 *
-	 * @param {boolean[]} Places - The places (P1-P5) to include
+	 * @param {boolean[]} Places - The places (P1-P5, up to P7 with the prestige rework) to include
 	 * @param {number[]} Maezens - FP values of the places
 	 * @param {number} Level - Current level of the GB
 	 * @param {number} OwnPart - Remaining own part of the owner
@@ -254,13 +253,13 @@ Object.assign(Parts, {
 		if (Parts.CopyIncludeLevel) Ret.push(Level + '→' + (Level + 1));
 
 		let NoPlacesSelected = true;
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < Places.length; i++) {
 			if (Places[i]) NoPlacesSelected = false;
 		}
 
 		if (!NoPlacesSelected) {
-			for (let i = 0; i < 5; i++) {
-				let Place = (Parts.CopyDescending ? 5 - i - 1 : i);
+			for (let i = 0; i < Places.length; i++) {
+				let Place = (Parts.CopyDescending ? Places.length - i - 1 : i);
 
 				if (!Places[Place]) continue;
 				if (PlaceAll && Maezens[Place] === 0) continue;

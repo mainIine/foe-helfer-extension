@@ -62,7 +62,33 @@ let Calculator = {
 	 *
 	 * @returns {boolean} true if the column is visible
 	 */
-	ShowBoostColumn: () => (MainParser.ArkBonus > 0 && localStorage.getItem('CalculatorShowBoostColumn') !== 'false'),
+	ShowBoostColumn: () => (Calculator.ArkBonus() > 0 && localStorage.getItem('CalculatorShowBoostColumn') !== 'false'),
+
+
+	/**
+	 * Tier (copper/gold) of the shown level-up: set by lgUpdate from the tier metadata, the
+	 * overview or the rewards, otherwise from the GB overview as long as its data still
+	 * matches the current level.
+	 *
+	 * @returns {?Object} GreatBuildingTier enum, e.g. {value: 'gold'}, or null
+	 */
+	CurrentTier: () => {
+		const GB = MainParser.CurrentGB;
+
+		if (GB.Tier) return GB.Tier;
+		if (GB.OverviewRow && GB.Entity && GB.OverviewRow['level'] === GB.Entity['level']) return GB.OverviewRow['currentTier'] || null;
+
+		return null;
+	},
+
+
+	/**
+	 * Own contribution boost for the shown level-up: gold tier level-ups use the
+	 * separate gold boost, everything else the classic one.
+	 *
+	 * @returns {number} Boost in percent
+	 */
+	ArkBonus: () => MainParser.GetArkBonus(Calculator.CurrentTier()),
 
 
 	/**
@@ -263,10 +289,8 @@ let Calculator = {
 		let Level = (MainParser.CurrentGB.Entity.level !== undefined ? MainParser.CurrentGB.Entity.level : 0);
 		let MaxLevel = (MainParser.CurrentGB.Entity.max_level !== undefined ? MainParser.CurrentGB.Entity.max_level : 0);
 
-		// Tier (copper/silver/gold) preferably from the current rankings,
-		// otherwise from getOtherPlayerOverview, as long as its data still matches the current level
-		let Tier = MainParser.CurrentGB.Tier
-			|| ((MainParser.CurrentGB.OverviewRow && MainParser.CurrentGB.OverviewRow['level'] === MainParser.CurrentGB.Entity['level']) ? MainParser.CurrentGB.OverviewRow['currentTier'] : null);
+		// Tier (copper/gold) of the shown level-up
+		let Tier = Calculator.CurrentTier();
 		let TierBadge = GreatBuildings.TierBadge(Tier);
 
 		h.push('<div id="gbCalc"><div class="header text-center dark-bg p5">');
@@ -288,14 +312,14 @@ let Calculator = {
 		// different arc bonus-buttons, the own arc bonus is always one of them
 		let customButtons = localStorage.getItem('CustomCalculatorButtons'),
 			investmentSteps = Calculator.SettingsSanitizeButtons(customButtons ? JSON.parse(customButtons) : Calculator.DefaultButtons)
-				.map(bonus => (bonus === 'ark' ? MainParser.ArkBonus : bonus));
+				.map(bonus => (bonus === 'ark' ? Calculator.ArkBonus() : bonus));
 
 		h.push('<div class="costFactorWrapper">');
 		h.push('<div class="btn-group">');
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-mid btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === MainParser.ArkBonus ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-mid btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === Calculator.ArkBonus() ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
 		h.push(`<span data-original-title="${i18n('Boxes.Calculator.FriendlyInvestment')} x%">  <input type="number" id="costFactor" step="0.1" min="-100" max="200" value="${Calculator.ForderBonus}"></span>`);
@@ -346,7 +370,7 @@ let Calculator = {
 		let h = [];
 
 		let BestKurs = 999999,
-			arc = 1 + (MainParser.ArkBonus / 100),
+			arc = 1 + (Calculator.ArkBonus() / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100),
 			ShowBoost = Calculator.ShowBoostColumn();
 
@@ -573,10 +597,10 @@ let Calculator = {
 			}
 
 			if (ForderGewinn >= 0) {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn })]
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + Calculator.ArkBonus()), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn })]
 			}
 			else {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'loss': 0-ForderGewinn })]
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + Calculator.ArkBonus()), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'loss': 0-ForderGewinn })]
 			}
 
 			if (ForderStates[Rank] === 'Self') {
@@ -609,10 +633,10 @@ let Calculator = {
 				}
 
 				if (ForderGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'profit': ForderGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + Calculator.ArkBonus()), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'profit': ForderGewinn })]
 				}
 				else {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + Calculator.ArkBonus()), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
 				}
 
 				GewinnClass = 'info';

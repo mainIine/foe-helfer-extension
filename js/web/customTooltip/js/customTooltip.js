@@ -361,9 +361,10 @@ let Tooltips = {
             onlyEra = null;
         }
 
+        // thousand separator of the helper language
         let numberWithCommas = (x) => {
             if (!x) return "";
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return isNaN(Number(x)) ? String(x) : Number(x).toLocaleString(i18n('Local'));
         };
 
         let minEra = onlyEra || "BronzeAge";

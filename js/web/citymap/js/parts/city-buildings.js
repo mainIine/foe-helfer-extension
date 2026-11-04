@@ -23,7 +23,7 @@ let CityBuildings = {
 	 * @returns {Object[]} The bonus list, empty for buildings without bonuses.
 	 */
 	getGBBonuses(data) {
-		return (data.bonuses?.length ? data.bonuses : (data.bonus ? [data.bonus] : []));
+		return MainParser.GetGBBonuses(data);
 	},
 
 
@@ -298,6 +298,8 @@ let CityBuildings = {
 			feature: rawBoost.targetedFeature,
 			type: Boosts.Mapper[rawBoost.type] || [rawBoost.type],
 			value: rawBoost.value,
+			// prestige rework: "multiplies and adds your total attack by X%" instead of a flat bonus
+			isMultiplier: !!(rawBoost.isBonusMultiplier || rawBoost.isBoostMultiplier),
 			...extra
 		});
 
@@ -325,12 +327,13 @@ let CityBuildings = {
 
 			if (metaData.type === 'greatbuilding') {
 				// production bonuses (rework `bonuses` array) are covered by the
-				// production state and must not be counted as boosts
+				// production state and must not be counted as boosts; the targeted
+				// feature and the multiplier flag come from the metadata (getGBBonuses)
 				for (const gbBonus of this.getGBBonuses(data)) {
 					if (!gbBonus.type || gbBonus.type === 'happiness_amount' || gbBonus.type === 'population') continue;
 					if (gbBonus.bonusCategory?.value === 'productionBonus') continue;
 
-					boosts.push(mapBoost({ targetedFeature: 'all', type: gbBonus.type, value: gbBonus.value }));
+					boosts.push(mapBoost({ targetedFeature: gbBonus.targetedFeature || 'all', type: gbBonus.type, value: gbBonus.value, isBonusMultiplier: gbBonus.isBonusMultiplier }));
 				}
 			}
 			else if (metaData.id.includes('CastleSystem')) {

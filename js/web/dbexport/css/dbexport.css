@@ -41,39 +41,47 @@ table {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: var(--black-60);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	background: #000000d9;
+	backdrop-filter: blur(3px);
 	z-index: 100;
-	opacity: 1;
-
 }
 
 #DBExport #dbex-loading-data .message {
-	position: relative;
-	top: 47%;
-	width: 100%;
-	height: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
 	text-align: center;
+	color: var(--beige);
 }
 
 #DBExport #dbex-loading-data .message .progress {
-	display: block;
 	font-size: 1.4rem;
 }
 
-#DBExport #dbex-loading-data .progressbar {
-	min-width: 80px;
-	width: fit-content;
-	background: transparent;
-	margin: 0 auto;
-	font-size: 1.0rem;
+#DBExport #dbex-loading-data .message .label {
+	min-height: 1.2em;
+	font-size: 0.9rem;
+}
 
+#DBExport #dbex-loading-data .progressbar {
+	width: 220px;
+	height: 9px;
+	background: var(--black-30);
+	border-radius: 5px;
+	overflow: hidden;
 }
 
 #DBExport #dbex-loading-data .progressbar .state {
-	width: 80px;
+	width: 0;
+	height: 100%;
 	background-color: var(--sunflower);
-	height: 9px;
-	margin-top: 5px;
+	transition: width 0.2s linear;
 }
 
 #DBExport #debex_import_wrapper {
@@ -115,12 +123,10 @@ table {
 
 #dbex-loading-data .loadericon {
 	display: block;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	width: 150px;
-	height: 150px;
-	margin: -75px 0 0 -75px;
+	position: relative;
+	flex: none;
+	width: 70px;
+	height: 70px;
 	border-radius: 50%;
 	border: 3px solid transparent;
 	border-top-color: var(--text-dark);

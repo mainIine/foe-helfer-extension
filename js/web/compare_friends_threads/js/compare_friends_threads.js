@@ -118,6 +118,11 @@ let CompareFriendsThreads = {
 
 		let key = CompareFriendsThreads.Threads.findIndex(t => t.id === CompareFriendsThreads.CurrentThread);
 
+		// thread not in the social list (e.g. list not loaded yet)
+		if (key === -1) {
+			return;
+		}
+
 		CompareFriendsThreads.Threads[key]['participants'] = data;
 	},
 
@@ -154,7 +159,7 @@ let CompareFriendsThreads = {
 		}
 
 		// no threads visited
-		if(CompareFriendsThreads.Threads[0]?.participants.length === undefined){
+		if(!CompareFriendsThreads.Threads.some(t => t.participants.length > 0)){
 			let info = `<div class="text-center text-warning" style="margin-top:2em">${i18n('Boxes.CompareFriendsThreads.Information')}</div>`;
 
 			$('#friendsCompareBoxBody').html(info);

@@ -90,7 +90,7 @@ let GBBonuses = {
 		'military_boost', 'fierce_resistance', 'advanced_tactics', 'critical_hit_chance',
 		'first_strike', 'double_collection', 'missile_launch', 'plunder_and_pillage',
 		'plunder_goods', 'plunder_repel', 'spoils_of_war', 'helping_hands', 'algorithmic_core',
-		'money_boost', 'supplies_boost', 'aid_boost', 'quest_boost', 'contribution_boost',
+		'money_boost', 'supplies_boost', 'aid_boost', 'quest_boost', 'contribution_boost', 'contribution_boost_gold',
 	]),
 
 
@@ -331,7 +331,7 @@ let GBBonuses = {
 					for (const level of breakpoints) {
 						row['level_' + level] = bonus.valuesMap[level]?.value ?? '';
 					}
-					row.current = (card.level !== null ? (card.currentBonuses.find(entry => entry.type === bonus.type)?.value ?? '') : '');
+					row.current = (card.level !== null ? (card.currentBonuses.find(entry => entry.type === bonus.type && !!entry.isBonusMultiplier === !!bonus.isBonusMultiplier)?.value ?? '') : '');
 					rows.push(row);
 				}
 			}
@@ -434,7 +434,7 @@ let GBBonuses = {
 					h.push(`<td class="gbb-tier-cell" rowspan="${tier.bonuses.length}">${GreatBuildings.TierBadge(tier.tier)}</td>`);
 					firstRow = false;
 				}
-				h.push(`<td class="gbb-bonus-name">${GBBonuses.TypeIcon(bonus.type)}${GBBonuses.TypeName(bonus.type)}</td>`);
+				h.push(`<td class="gbb-bonus-name">${GBBonuses.TypeIcon(bonus.type, bonus.targetedFeature, bonus.isBonusMultiplier)}${GBBonuses.TypeName(bonus.type)}${GBBonuses.MultiplierMark(bonus)}</td>`);
 
 				for (const level of breakpoints) {
 					const value = bonus.valuesMap[level]?.value;
@@ -442,7 +442,7 @@ let GBBonuses = {
 				}
 
 				if (card.level !== null) {
-					const current = card.currentBonuses.find(entry => entry.type === bonus.type);
+					const current = card.currentBonuses.find(entry => entry.type === bonus.type && !!entry.isBonusMultiplier === !!bonus.isBonusMultiplier);
 					h.push(`<td class="text-center gbb-current">${GBBonuses.FormatValue(bonus, current?.value)}</td>`);
 				}
 				h.push('</tr>');
@@ -493,17 +493,27 @@ let GBBonuses = {
 
 	/**
 	 * Game icon of a bonus type as <img>, empty string when the asset is not
-	 * part of the ForgeHX file index.
+	 * part of the ForgeHX file index. Military boosts have feature specific
+	 * (_gbg/_gex/_gr) and multiplier (_multiplier) variants like in the game,
+	 * missing variants fall back to the plain icon of the type.
 	 * @param {string} type e.g. 'fierce_resistance'
+	 * @param {string} [feature='all'] targeted feature (battleground, guild_expedition, guild_raids)
+	 * @param {boolean} [isMultiplier=false] multiplier variant of the prestige rework
 	 * @returns {string} HTML or empty string
 	 */
-	TypeIcon: (type) => {
-		const file = GBBonuses.IconMap[type] || type;
-		const link = srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_${file}.png`, true, true);
+	TypeIcon: (type, feature = 'all', isMultiplier = false) => {
+		const base = GBBonuses.IconMap[type] || type;
+		const suffix = ({ battleground: '_gbg', guild_expedition: '_gex', guild_raids: '_gr' })[feature] || '';
+		const candidates = [...new Set([base + suffix + (isMultiplier ? '_multiplier' : ''), base + suffix, base])];
 
-		if (link.includes('antiquedealer_flag') || link.includes('-undefined.')) return '';
+		for (const file of candidates) {
+			const link = srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_${file}.png`, true, true);
+			if (link.includes('antiquedealer_flag') || link.includes('-undefined.')) continue;
 
-		return `<img class="gbb-bonus-icon" src="${link}" alt="">`;
+			return `<img class="gbb-bonus-icon" src="${link}" alt="">`;
+		}
+
+		return '';
 	},
 
 
@@ -521,10 +531,23 @@ let GBBonuses = {
 		if (bonus.bonusCategory?.value === 'productionBonus') {
 			return `${HTML.Format(value)}<span class="per-day">${i18n('Boxes.GBBonuses.PerDay')}</span>`;
 		}
-		if (GBBonuses.PercentTypes.has(bonus.type)) {
-			return `+${HTML.Format(value)}%`;
+		if (GBBonuses.PercentTypes.has(bonus.type) || bonus.isBonusMultiplier) {
+			return `+${HTML.Format(value)}%${GBBonuses.MultiplierMark(bonus)}`;
 		}
 
 		return HTML.Format(value);
+	},
+
+
+	/**
+	 * Marker for the multiplier boosts of the prestige rework ("multiplies and adds
+	 * your total attack by X%"), empty for additive bonuses.
+	 * @param {Object} bonus GreatBuildingBonus metadata entry
+	 * @returns {string} HTML or empty string
+	 */
+	MultiplierMark: (bonus) => {
+		if (!bonus?.isBonusMultiplier) return '';
+
+		return ` <span class="gbb-multiplier" title="${HTML.i18nTooltip(i18n('Boxes.GBBonuses.MultiplierTT'))}">×</span>`;
 	},
 };

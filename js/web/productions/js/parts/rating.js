@@ -370,7 +370,7 @@ Object.assign(Productions, {
 		updateTypes: () => {
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data)
 				.sort((a,b) => {
-					Productions.Rating.Data[a].order - Productions.Rating.Data[b].order
+					return Productions.Rating.Data[a].order - Productions.Rating.Data[b].order
 				});
 		},
 
@@ -639,7 +639,8 @@ Object.assign(Productions, {
 
 			HTML.AddCssFile('productions');
 
-			$('body').on('click', '.toggle-tab', async function () {
+			// bound once per box opening, so drop the handler of a previous opening first
+			$('body').off('click.productionsRating').on('click.productionsRating', '.toggle-tab', async function () {
 				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
 
@@ -908,7 +909,7 @@ Object.assign(Productions, {
 					'</i></th>');
 			}
 
-			h.push('<th data-type="ratinglist" data-export="Items" class="no-sort items">Items</th>');
+			h.push('<th data-type="ratinglist" data-export="Items" class="no-sort items">' + i18n('General.Items') + '</th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -1114,12 +1115,6 @@ Object.assign(Productions, {
 				Productions.Rating.deletePreset(activeId);
 				Productions.Rating.savePresets();
 				Productions.Rating.load();
-				Productions.CalcRatingBody();
-			});
-			$('#ratingPresetReset').on('click', () => {
-				if (!window.confirm(i18n('Boxes.ProductionsRating.PresetConfirmReset'))) return;
-				Productions.Rating.resetActivePreset();
-				Productions.Rating.save();
 				Productions.CalcRatingBody();
 			});
 			$('#ratingPresetExport').on('click', () => {
@@ -1550,6 +1545,12 @@ Object.assign(Productions, {
 
 				if (boost.needsLink && building.setBuilding !== undefined) {
 					if (boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)) continue;
+				}
+
+				// multiplier boost of the prestige rework: rated by the percent it adds on top of the additive city boosts
+				if (boost.isMultiplier) {
+					bsum += Boosts.AdditiveSum(bType, feature) * boost.value / 100;
+					continue;
 				}
 
 				bsum += boost.value;

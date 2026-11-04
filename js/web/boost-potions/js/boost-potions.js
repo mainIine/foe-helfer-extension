@@ -85,13 +85,14 @@ let BoostPotions = {
 				BoostPotions.active[b]=null;
 				continue;
 			}
-			[h,m,s]=[duration.hours(),duration.minutes(),duration.seconds()];
+			let [h,m,s]=[duration.hours(),duration.minutes(),duration.seconds()];
 			let all= BoostPotions.active[b].target == undefined || BoostPotions.active[b].target == "all";
 			active += `<span>${all ? "":`<img src="${srcLinks.get(`/shared/icons/booster_target_${BoostPotions.active[b].target}.png`,true)}">`}<img src="${srcLinks.get(`/shared/icons/${b}.png`,true)}">${BoostPotions.active[b].value}% - ${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}</span>`;
 			a=true;
 			let e=BoostPotions.active[b].expire;
 			if ((d<e && d!=null) || !e) continue;
-			if (!BoostPotions.activeMapRelevance[all ? "all" : BoostPotions.active[b].target].includes(ActiveMap)) continue;
+			// unknown target features are not relevant for any map
+			if (!BoostPotions.activeMapRelevance[all ? "all" : BoostPotions.active[b].target]?.includes(ActiveMap)) continue;
 			d=e;
 			$('#BoostPotions .shortest').html(shortest+`<span><img src="${srcLinks.get(`/shared/icons/${b}.png`,true)}">${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}</span>`).addClass("boosted");
 		}
@@ -142,7 +143,7 @@ let BoostPotions = {
 			table += `<tr><td><img src="${srcLinks.get(target=="all"?"/shared/icons/quest_icons/icon_quest_battle.png":`/shared/icons/booster_target_${target}.png`,true)}"></td>`;
 			for (let t of Object.keys(BoostPotions.list)) {
 				table += `<td>`
-				sorted = (BoostPotions.list[t][target]||[]).sort((a,b)=> {
+				let sorted = (BoostPotions.list[t][target]||[]).sort((a,b)=> {
 					let r = a.value-b.value;
 					if (r!=0) return r;
 					return a.duration-b.duration;
@@ -153,9 +154,9 @@ let BoostPotions = {
 				table += `</td><td>`
 				table += sorted.map(b=>{
 					let duration = moment.duration(b.duration*1000);
-					h=duration.hours();
-					m=duration.minutes();
-					s=duration.seconds();
+					let h=duration.hours(),
+						m=duration.minutes(),
+						s=duration.seconds();
 					return `${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}`;
 				}).join(`\n`);
 				table += `</td>`

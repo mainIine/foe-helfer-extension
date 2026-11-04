@@ -109,7 +109,8 @@ let GexStat = {
 			return;
 		}
 
-		$('#GexStat').on('click', '.toggle-statistic', function () {
+		// BuildBox also runs on data updates of an open box, bind the tab handler only once
+		$('#GexStat').off('click', '.toggle-statistic').on('click', '.toggle-statistic', function () {
 
 			GexStat.CurrentStatGroup = $(this).data('value');
 
@@ -520,7 +521,7 @@ let GexStat = {
 
 		let chart = echarts.getInstanceByDom(container);
 		if (!chart) {
-			chart = echarts.init(container, 'foe');
+			chart = echarts.init(container, 'foe', { locale: Stats.chartLocale() });
 			new ResizeObserver(() => chart.resize()).observe(container);
 		}
 		GexStat.Chart = chart;
@@ -532,13 +533,15 @@ let GexStat = {
 					' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')',
 				left: 'center'
 			},
-			legend: { top: 48 },
+			legend: { top: 64 },
 			tooltip: {
 				trigger: 'axis',
 				confine: true,
-				axisPointer: { type: 'cross' }
+				axisPointer: { type: 'cross' },
+				valueFormatter: (v) => Stats.formatNumber(v)
 			},
-			grid: { top: 90, left: 70, right: 70, bottom: 40 },
+			// second left axis (encounters) needs room next to the points axis
+			grid: { top: 106, left: (showLabel && series.yaxis.includes(2)) ? 124 : 70, right: 70, bottom: 40 },
 			xAxis: {
 				type: 'category',
 				data: CourseData.weeks
@@ -546,7 +549,7 @@ let GexStat = {
 			yAxis: [
 				yAxis(0, i18n('Boxes.GexStat.Points'), { position: 'left' }),
 				yAxis(1, i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'), { position: 'right', splitLine: { show: false } }),
-				yAxis(2, i18n('Boxes.GexStat.Encounters'), { position: 'left', offset: 46, splitLine: { show: false } }),
+				yAxis(2, i18n('Boxes.GexStat.Encounters'), { position: 'left', offset: 66, splitLine: { show: false } }),
 				{ type: 'value', inverse: true, show: false }
 			],
 			series: series.data
@@ -766,7 +769,8 @@ let GexStat = {
 			$(this).remove();
 			if (GexStat.Chart !== undefined)
 			{
-				GexStat.Chart.destroy();
+				GexStat.Chart.dispose();
+				GexStat.Chart = undefined;
 			}
 			GexStat.ShowTabContent(GexStat.CurrentStatGroup, GexStat.CurrentGexWeek);
 		});

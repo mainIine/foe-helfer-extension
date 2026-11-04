@@ -1,0 +1,61 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#announcementsBoxBody {
+	width: 420px;
+	max-height: 60vh;
+	overflow-y: auto;
+	padding: 6px;
+}
+
+#announcementsBox .announcement {
+	padding: 8px 10px;
+}
+
+#announcementsBox .announcement + .announcement {
+	margin-top: 6px;
+}
+
+#announcementsBox .announcement-head strong {
+	color: var(--sunflower);
+	font-size: 15px;
+}
+
+#announcementsBox .announcement-head small {
+	display: block;
+	opacity: .75;
+	margin: 2px 0 6px;
+}
+
+#announcementsBox .announcement-text p {
+	margin: 0 0 6px;
+}
+
+#announcementsBox .announcement-text ul {
+	margin: 4px 0 0 18px;
+	padding: 0;
+}
+
+#announcementsBox .announcement-text li {
+	margin-bottom: 3px;
+}
+
+#announcementsBox .announcement-link {
+	margin-top: 6px;
+	text-align: right;
+}
+
+#announcementsBox .announcements-footer {
+	margin-top: 8px;
+	text-align: center;
+}

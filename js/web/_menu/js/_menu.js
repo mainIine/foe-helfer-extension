@@ -321,7 +321,7 @@ let _menu = {
 		{ id: 'productionsRating', title: i18n('Menu.ProductionsRating.Title'), description: i18n('Menu.ProductionsRating.Desc') },
 		{ id: 'negotiation', title: i18n('Menu.Negotiation.Title'), description: i18n('Menu.Negotiation.Desc'), warning: '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' },
 		{ id: 'playerProfile', title: i18n('Menu.PlayerProfile.Title'), description: i18n('Menu.PlayerProfile.Desc'), warning: '<em id="PlayerProfile-Btn-closed" class="tooltip-error">' + i18n('Menu.PlayerProfile.Warning') + '<br></em>' },
-		{ id: 'guildMemberstat', title: i18n('Menu.GuildMemberStat.Title'), description: i18n('Menu.GuildMemberStat.Desc'), warning: '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' },
+		{ id: 'guildMemberstat', title: i18n('Menu.GuildMemberStat.Title'), description: i18n('Menu.GuildMemberStat.Desc'), warning: '<em id="guildMemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' },
 		{ id: 'gildFight', title: i18n('Menu.Gildfight.Title'), description: i18n('Menu.Gildfight.Desc'), warning: i18n('Menu.Gildfight.Warning') },
 		{ id: 'market', title: i18n('Menu.Market.Title'), description: i18n('Menu.Market.Desc'), warning: '<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' },
 		{ id: 'allies', title: i18n('Menu.Allies.Title'), description: i18n('Menu.Allies.Desc') },
@@ -749,7 +749,7 @@ let _menu = {
 
 		// no BG => display none
 		if (!OwnGalaxy) {
-			let index = _menu.Items.indexOf('bluegalaxy');
+			let index = _menu.Items.indexOf('blueGalaxy');
 			delete _menu.Items[index];
 			return;
 		}
@@ -831,7 +831,7 @@ let _menu = {
 		let btn = _menu.MakeButton('guildMemberstat',true);
 
 		let btn_sp = $('<span />').bind('click', function () {
-			if ($('#guildmemberstat-Btn').hasClass('hud-btn-red') === false) {
+			if ($('#guildMemberstat-Btn').hasClass('hud-btn-red') === false) {
 				GuildMemberStat.BuildBox(false);
 			}
 		});
@@ -843,7 +843,7 @@ let _menu = {
 		let btn = _menu.MakeButton('gexStat');
 
 		let btn_sp = $('<span />').bind('click', function () {
-			if ($('#gexstat-Btn').hasClass('hud-btn-red') === false) {
+			if ($('#gexStat-Btn').hasClass('hud-btn-red') === false) {
 				GexStat.BuildBox(false);
 			}
 		});

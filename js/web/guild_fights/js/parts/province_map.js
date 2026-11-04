@@ -156,7 +156,7 @@ let ProvinceMap = {
 			});
 
 			// add css to the dom
-			HTML.AddCssFile('guildfights');
+			HTML.AddCssFile('guild_fights');
 		}
 		else {
 			HTML.CloseOpenBox('ProvinceMap')

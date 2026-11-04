@@ -163,7 +163,7 @@ let Kits = {
 						class: 'game-cursor',
 						type: 'text',
 						'data-type': 'filter-sets-text',
-						placeholder: 'e.g. sent||cherry||winter'
+						placeholder: i18n('Boxes.Kits.FilterSetsPlaceholder')
 					}).on('change', Kits._filter)
 				),
 				$('<label />').attr({class: 'game-cursor'}).text(i18n('Boxes.General.FilterItems') + ':\xA0').append(
@@ -171,7 +171,7 @@ let Kits = {
 						class: 'game-cursor',
 						type: 'text',
 						'data-type': 'filter-items-text',
-						placeholder: 'e.g. car||field'
+						placeholder: i18n('Boxes.Kits.FilterItemsPlaceholder')
 					}).on('change', Kits._filter)
 				)
 			);
@@ -191,6 +191,7 @@ let Kits = {
 		}
 		else {
 			HTML.CloseOpenBox('kits');
+			return;
 		}
 
 		Kits.ReadSets();
@@ -902,7 +903,14 @@ let Kits = {
 	 */
 	_filterSets: () => {
 		const filterRegExps = $('#kitsBodyTopbar input[data-type="filter-sets-text"]').val()
-			.split('||').filter(it => it.trim().length > 0).map(it => new RegExp(it, 'i'));
+			.split('||').filter(it => it.trim().length > 0).map(it => {
+				// invalid patterns fall back to a plain text search
+				try {
+					return new RegExp(it, 'i');
+				} catch (e) {
+					return { test: (text) => text.toLowerCase().includes(it.toLowerCase()) };
+				}
+			});
 
 		if (filterRegExps.length < 1) return;
 
@@ -920,7 +928,14 @@ let Kits = {
 	 */
 	_filterItems: () => {
 		const filterRegExps = $('#kitsBodyTopbar input[data-type="filter-items-text"]').val()
-			.split('||').filter(it => it.trim().length > 0).map(it => new RegExp(it, 'i'));
+			.split('||').filter(it => it.trim().length > 0).map(it => {
+				// invalid patterns fall back to a plain text search
+				try {
+					return new RegExp(it, 'i');
+				} catch (e) {
+					return { test: (text) => text.toLowerCase().includes(it.toLowerCase()) };
+				}
+			});
 
 		if (filterRegExps.length < 1) return;
 

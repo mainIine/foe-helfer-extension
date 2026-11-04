@@ -193,6 +193,7 @@ let HTML = {
 	 * @param {boolean|Function} [args.settings=false] - Whether the box includes a settings button. Can also accept a callback function for custom settings behavior.
 	 * @param {boolean|Function} [args.popout=false] - Whether the box includes a popout button. Can also accept a callback function for custom behavior.
 	 * @param {boolean|Function} [args.map=false] - Whether the box includes a map button. Can also accept a callback function for custom behavior.
+	 * @param {string} [args.mapId] - ID of the box opened by the map callback (toggled by the map button). Defaults to `<id>MapBox`.
 	 * @param {boolean|Function} [args.dragdrop=false] - Whether the box is draggable. Can include a callback function to save the box's new position.
 	 * @param {boolean} [args.saveCords=false] - Whether the box's position should be saved and restored on reload.
 	 * @param {boolean} [args.resize=false] - Whether the box should be resizable.
@@ -347,11 +348,13 @@ let HTML = {
 			}
 
 			if (args.map && typeof args.map !== 'boolean') {
+				const mapId = args.mapId || `${args.id}MapBox`;
+
 				$(`#${args.id}`).on('click', `#${args.id}-map`, function () {
 
 					// exists? remove! otherwise create a new one
-					if ($(`#${args.id}MapBox`).length > 0) {
-						$(`#${args.id}MapBox`).fadeToggle('fast', function () {
+					if ($(`#${mapId}`).length > 0) {
+						$(`#${mapId}`).fadeToggle('fast', function () {
 							$(this).remove();
 						});
 					} else {

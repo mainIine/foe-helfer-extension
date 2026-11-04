@@ -319,7 +319,11 @@ let GreatBuildings = {
                 // only boosts that count everywhere; combined boosts (e.g. attack
                 // and defense of the attacking army) are one value like in the game
                 if (boost['feature'] && boost['feature'] !== 'all') continue;
-                if (boost['type'].some(type => boostTypes.includes(type))) sum += boost['value'];
+                const matching = boost['type'].filter(type => boostTypes.includes(type));
+                if (matching.length === 0) continue;
+
+                // multiplier boosts of the prestige rework count by the percent they add on top of the additive city boosts
+                sum += (boost['isMultiplier'] ? Boosts.AdditiveSum(matching[0], 'all') * boost['value'] / 100 : boost['value']);
             }
             return { amount: sum, average: false };
         }
@@ -504,7 +508,7 @@ let GreatBuildings = {
             rows.push({
                 meta: meta,
                 placed: placedById[meta['id']] || null,
-                bonuses: meta['bonuses'].flatMap(tier => tier['bonuses']).map(bonus => ({ key: bonus['type'] + '|' + (bonus['targetedFeature'] || 'all'), bonus: bonus })),
+                bonuses: meta['bonuses'].flatMap(tier => tier['bonuses']).map(bonus => ({ key: GreatBuildings.BonusKey(bonus), bonus: bonus })),
             });
         }
 
@@ -526,7 +530,7 @@ let GreatBuildings = {
             const bonus = match.bonus;
             const max = bonus['values'][bonus['values'].length - 1];
             const current = (row.placed
-                ? (CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'])?.['value'] || 0)
+                ? (CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'] && !!entry['isBonusMultiplier'] === !!bonus['isBonusMultiplier'])?.['value'] || 0)
                 : (bonus['valuesMap'][1]?.['value'] || 0));
 
             // first level the bonus becomes active on
@@ -626,7 +630,7 @@ let GreatBuildings = {
 
         const era = Technologies.Eras[GreatBuildings.GetEraName(meta['asset_id'])];
         const p1 = GreatBuildings.GetP1(era, level);
-        const patrons = (p1 !== undefined ? GreatBuildings.GetMaezen(p1, GreatBuildings.ForderBonus).reduce((sum, reward) => sum + reward, 0) : 0);
+        const patrons = (p1 !== undefined ? GreatBuildings.GetMaezen(p1, GreatBuildings.ForderBonus, 5, GreatBuildings.IsRework(meta['id'])).reduce((sum, reward) => sum + reward, 0) : 0);
 
         return { level: level, brutto: brutto, patrons: patrons, netto: brutto - patrons };
     },
@@ -688,8 +692,9 @@ let GreatBuildings = {
         });
 
         const selected = (mode === 'rework' ? GreatBuildings.BonusTarget : GreatBuildings.StandardTarget);
+        const [targetType, targetFeature, targetFlag] = GreatBuildings.BonusTarget.split('|');
         const icon = (mode === 'rework'
-            ? GBBonuses.TypeIcon(GreatBuildings.BonusTarget.split('|')[0])
+            ? GBBonuses.TypeIcon(targetType, targetFeature, targetFlag === 'x')
             : GreatBuildings.StandardTargetIcon(GreatBuildings.StandardTarget));
 
         const h = [];
@@ -798,26 +803,42 @@ let GreatBuildings = {
 
 
     /**
-     * Display name of an investment target: the translated bonus type plus a
-     * short feature suffix for the guild expedition/battleground variants.
+     * Key of an investment target of the rework mode: bonus type, targeted feature
+     * and a marker for the multiplier variant ("type|targetedFeature" or "type|targetedFeature|x").
      *
-     * @param {string} key Investment target as "type|targetedFeature"
+     * @param {Object} bonus GreatBuildingBonus metadata entry
+     * @returns {string}
+     */
+    BonusKey: (bonus) => {
+        return bonus['type'] + '|' + (bonus['targetedFeature'] || 'all') + (bonus['isBonusMultiplier'] ? '|x' : '');
+    },
+
+
+    /**
+     * Display name of an investment target: the translated bonus type plus a
+     * short feature suffix for the guild expedition/battleground variants and
+     * a marker for the multiplier boosts of the prestige rework.
+     *
+     * @param {string} key Investment target as "type|targetedFeature[|x]"
      * @returns {string}
      */
     BonusLabel: (key) => {
-        const [type, feature] = key.split('|');
+        const [type, feature, flag] = key.split('|');
         let label = GBBonuses.TypeName(type);
 
         if (feature === 'guild_expedition') label += ' – ' + i18n('Boxes.GreatBuildings.FeatureGE');
         else if (feature === 'battleground') label += ' – ' + i18n('Boxes.GreatBuildings.FeatureGBG');
+        else if (feature === 'guild_raids') label += ' – ' + i18n('Boxes.GreatBuildings.FeatureQI');
+
+        if (flag === 'x') label += ' (' + i18n('Boxes.GBBonuses.Multiplier') + ')';
 
         return label;
     },
 
 
     /**
-     * Prestige icon (copper/silver/gold) of the multi-tier great buildings as <img>,
-     * falls back to text if the asset is not part of the ForgeHX file index
+     * Prestige icon of the multi-tier great buildings as <img> (the game only has
+     * one for gold), falls back to text if the asset is not part of the ForgeHX file index
      *
      * @param Tier GreatBuildingTier enum, e.g. {value: 'copper'}
      * @returns {string} HTML or empty string
@@ -990,31 +1011,49 @@ let GreatBuildings = {
 
 
     /**
-     * Calculates the patron rewards of the places 1-5 including arc bonus.
+     * Whether a great building carries the prestige rework metadata (`bonuses` per tier).
+     *
+     * @param {string} EntityID City entity id of the great building
+     * @returns {boolean}
+     */
+    IsRework: (EntityID) => {
+        const meta = MainParser.CityEntities?.[EntityID];
+
+        return !!(meta && Array.isArray(meta['bonuses']) && meta['bonuses'].length > 0);
+    },
+
+
+    /**
+     * Calculates the patron rewards of the places including arc bonus. Place n
+     * gets the reward of place n-1 divided by n: classic worlds round the result
+     * to multiples of 5, the prestige rework rounds plainly (verified on beta:
+     * 11502 → 5751 → 1917 → 479 → 96 → 16 → 2).
      *
      * @param {number} P1 Base reward of the first place (without arc bonus)
      * @param {number|number[]} ArcBoni Arc bonus in percent — a single value for all places or one value per place
-     * @returns {number[]} Rewards of the places 1-5
+     * @param {number} [Count=5] Number of reward places (the prestige rework grants up to 7)
+     * @param {boolean} [PlainRounding=false] true for the rounding of the prestige rework
+     * @returns {number[]} Rewards of the places
      */
-    GetMaezen: (P1, ArcBoni) => {
+    GetMaezen: (P1, ArcBoni, Count = 5, PlainRounding = false) => {
         let Ret = [];
 
         let arcs = [];
-        for (let i = 0; i < 5; i++) {
-            if (ArcBoni.length) { //Array
-                arcs[i] = 1 + (ArcBoni[i] / 100);
+        for (let i = 0; i < Count; i++) {
+            if (Array.isArray(ArcBoni)) {
+                arcs[i] = 1 + ((parseFloat(ArcBoni[i] ?? ArcBoni[ArcBoni.length - 1]) || 0) / 100);
             }
             else {
-                arcs[i] = 1 + (ArcBoni / 100);
+                arcs[i] = 1 + ((parseFloat(ArcBoni) || 0) / 100);
             }
         }
 
         Ret[0] = P1;
-        for (let i = 1; i < 5; i++) {
-            Ret[i] = MainParser.round(Ret[i - 1] / (i + 1) / 5) * 5;
+        for (let i = 1; i < Count; i++) {
+            Ret[i] = (PlainRounding ? MainParser.round(Ret[i - 1] / (i + 1)) : MainParser.round(Ret[i - 1] / (i + 1) / 5) * 5);
         }
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < Count; i++) {
             Ret[i] = MainParser.round(Ret[i] * arcs[i]);
         }
 

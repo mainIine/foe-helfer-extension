@@ -463,7 +463,7 @@ let Market = {
         let Rate = Trade['offer']['value'] / Trade['need']['value'];
         let Rating = Rate * Math.pow(2, EraDiff);
 
-        CurrentTradeAdvantage = (IsOwnOffer ? Market.TradeDisadvantage : Market.TradeAdvantage);
+        let CurrentTradeAdvantage = (IsOwnOffer ? Market.TradeDisadvantage : Market.TradeAdvantage);
         if (Rating > 1 && !CurrentTradeAdvantage) {
             return false;
         }
@@ -484,8 +484,8 @@ let Market = {
             }
         }
 
-        CurrentTradeDisdvantage = (IsOwnOffer ? Market.TradeAdvantage : Market.TradeDisadvantage);
-        if (Rating < 1 && !Market.TradeDisadvantage) {
+        let CurrentTradeDisdvantage = (IsOwnOffer ? Market.TradeAdvantage : Market.TradeDisadvantage);
+        if (Rating < 1 && !CurrentTradeDisdvantage) {
             return false;
         }
 

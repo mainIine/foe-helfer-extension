@@ -146,7 +146,8 @@ Object.assign(Productions, {
 					let building = CityBuildings.getBuildingById(b.id)
 					if (building?.player_id !== ExtPlayerID) continue;
 					// makes random productions with resources and others disappear from the item list
-					if (type === 'items' && Productions.showBuildingItems(true, building)[0] === "" || building.chainBuilding?.type === "linked") continue;
+					// showBuildingItems returns false for buildings currently producing goods, skip them as well
+					if (type === 'items' && (Productions.showBuildingItems(true, building) || [""])[0] === "" || building.chainBuilding?.type === "linked") continue;
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
@@ -182,7 +183,7 @@ Object.assign(Productions, {
 
 							rowA.push('<td data-number="'+amount+'" exportvalue="'+amount+'" class="textright">')
 							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount))
-							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount))
+							let parsedAmount = (amount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount))
 
 							if (generalProductionByCategory.units.length>0 || currentProductionByCategory.units.length>0) {
 								if (currentProductionByCategory.units.length > 0)
@@ -200,7 +201,7 @@ Object.assign(Productions, {
 								if (currentAmount < amount && building.type !== 'production')
 									rowA.push(parsedCurrentAmount + ' / ' + (hasRandomProductions ? 'Ø' : '') + parsedAmount)
 								else {
-									unitType = currentProductionByCategory.type
+									let unitType = currentProductionByCategory.type
 									if (unitType !== null){
 										rowA.push('<span class="unit_skill ' + unitType.replace(/next./,"") + '" title="'+ i18n("Boxes.Units." + unitType.replace(/next./,"") ) + '"></span> ')
 									}
@@ -213,9 +214,6 @@ Object.assign(Productions, {
 							typeCurrentSum += currentAmount
 
 							for (let u of generalProductionByCategory.units) {
-								if (u.type.includes("next")) {
-									a=a+1
-								}
 								let n = (u.type !== "rogue" ? u.era : "") + u.type;
 								if (Sum[n]) {
 									if(!Sum[n].theory) {
@@ -229,9 +227,6 @@ Object.assign(Productions, {
 								}
 							}
 							for (let u of currentProductionByCategory.units) {
-								if (u.type.includes("next")) {
-									a=a+1
-								}
 								let n = (u.type !== "rogue" ? u.era : "") + u.type;
 								if (Sum[n]?.current) {
 									Sum[n].current.amount += u.amount || 0
@@ -321,7 +316,7 @@ Object.assign(Productions, {
 							if (showRelativeProductionTime)
 								time = moment.unix(building.state.times?.at).fromNow()
 							else if (showAMPMTime)
-								time = moment.unix(building.state.times?.at).format('LTS')
+								time = moment.unix(building.state.times?.at).locale('en').format('h:mm:ss A') // 12 hour clock independent of the helper language
 							else {
 								if (building.state.times?.at <= inADay)
 									time = moment.unix(building.state.times?.at).format('HH:mm:ss')
@@ -543,7 +538,7 @@ Object.assign(Productions, {
 				if (showRelativeProductionTime)
 					time = moment.unix(building.state.times?.at).fromNow()
 				else if (showAMPMTime)
-					time = moment.unix(building.state.times?.at).format('LTS')
+					time = moment.unix(building.state.times?.at).locale('en').format('h:mm:ss A') // 12 hour clock independent of the helper language
 				else {
 					if (building.state.times?.at <= inADay)
 						time = moment.unix(building.state.times?.at).format('HH:mm:ss')
@@ -564,7 +559,7 @@ Object.assign(Productions, {
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="5"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
-		table.push(`<th colspan=${eras.length+1} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))} 	<button class="typeBoost btn btn-slim"><a href="#special_goods" class="game-cursor">★</a></button> </th>`)
+		table.push(`<th colspan=${eras.length+1} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))} 	<button class="typeBoost btn btn-slim"><a href="#special_goods" class="game-cursor">★</a></button> </th>`)
 		table.push('</tr>')
 
 		table.push('<tr class="sorter-header exportheader">')
@@ -589,7 +584,7 @@ Object.assign(Productions, {
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
-		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
+		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))}</th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -645,7 +640,7 @@ Object.assign(Productions, {
 			inADay = Math.floor(Date.now() / 1000) + 86400
 
 		// gather all different eras
-		eras = Productions.getRelevantGoodsByEra(buildingIds, guildGoods = true);
+		eras = Productions.getRelevantGoodsByEra(buildingIds, true);
 
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
@@ -714,7 +709,7 @@ Object.assign(Productions, {
 				if (showRelativeProductionTime)
 					time = moment.unix(building.state.times?.at).fromNow()
 				else if (showAMPMTime)
-					time = moment.unix(building.state.times?.at).format('LTS')
+					time = moment.unix(building.state.times?.at).locale('en').format('h:mm:ss A') // 12 hour clock independent of the helper language
 				else {
 					if (building.state.times?.at <= inADay)
 						time = moment.unix(building.state.times?.at).format('HH:mm:ss')
@@ -730,7 +725,7 @@ Object.assign(Productions, {
 			rowA.push('</tr>')
 		}
 
-		Profile.guildGoods = Object.values(erasTotal).reduce((a,b)=>a+b);
+		Profile.guildGoods = Object.values(erasTotal).reduce((a,b)=>a+b, 0);
 		Profile.update();
 
 		// single view table
@@ -738,7 +733,7 @@ Object.assign(Productions, {
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="'+(6+eras.length)+'"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">')
-		table.push(`<span style="float:right;">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</span></th>`)
+		table.push(`<span style="float:right;">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))}</span></th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header exportheader">')
 		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
@@ -761,7 +756,7 @@ Object.assign(Productions, {
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
-		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
+		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))}</th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -840,7 +835,7 @@ Object.assign(Productions, {
 					if (building.currentValues === building.values)
 						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'</td>')
 					else {
-						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+(groupedBuildings.hasRandomProductions ? 'Ø' : '')+HTML.Format(building.values)+'</td>')
+						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+(building.hasRandomProductions ? 'Ø' : '')+HTML.Format(building.values)+'</td>')
 					}
 				}
 				rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
@@ -883,7 +878,7 @@ Object.assign(Productions, {
 		table.push('</tr>')
 		table.push('</thead>')
 		table.push('<tbody>')
-		for (e of elements) {
+		for (let e of elements) {
 			if (type === "items") {
 				let amount = (e.amount ? parseFloat(Math.round(e.amount*100)/100) : "")
 							+ (e.random && e.amount ? " + " : "")

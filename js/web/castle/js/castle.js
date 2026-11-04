@@ -479,7 +479,7 @@ let Castle = {
                 rtype = 'negotiation';
             }
 
-            nextlevel = Castle.curLevel && Castle.curlLevel < d.level;
+            nextlevel = Castle.curLevel && Castle.curLevel < d.level;
 
             Castle.curLevel = d.level !== undefined ? d.level : Castle.curLevel;
             Castle.NextWinningBattlesPoints = n.castlePointsWinBattle !== undefined ? n.castlePointsWinBattle : Castle.NextWinningBattlesPoints;
@@ -859,10 +859,11 @@ let Castle = {
 
         if ($('#Castle #casPointsWrapper').length === 1)
         {
-            let CastleLimit = MainParser.CastleSystemLevels[Castle.curLevel].requiredPoints;
+            // no entry for the max level (or levels not loaded yet)
+            let CastleLimit = MainParser.CastleSystemLevels?.[Castle.curLevel]?.requiredPoints;
 
             $('#Castle #casPointsWrapper').html(`
-                <div><span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(CastleLimit)}</span>
+                <div><span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)}${CastleLimit !== undefined ? ' / ' + HTML.Format(CastleLimit) : ''}</span>
                 <span id="casPointsDiff">${diff ? '+' + diff : ''}</span><br />
                 <span>${i18n('Boxes.Castle.Level')}: ${Castle.curLevel}</span></div>
                 <div><span id="casLogBtn"><button id="casSwitchView" class="btn"${!Castle.CastlePointLog || Castle.CastlePointLog.length === 0 ? ' disabled' : ''}>${Castle.CurrentView === 'log' ? i18n('Boxes.Castle.Overview') : i18n('Boxes.Castle.Log')}</button></span></div>

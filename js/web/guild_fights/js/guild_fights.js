@@ -170,6 +170,8 @@ let Guild_fights = {
 	PrevActionTimestamp: null,
 	NewAction: null,
 	NewActionTimestamp: null,
+	// true while the latest leaderboard data has not been written as snapshot yet
+	SnapshotPending: false,
 	MapData: null,
 	AutoOpenedOnMap: false,
 	AutoOpenPending: false,
@@ -418,6 +420,7 @@ let Guild_fights = {
 		await Guild_fights.UpdateDB('history', { participation: players, sumNegotiations: sumNegotiations, sumBattles: sumBattles });
 
 		Guild_fights.GBGHistoryView = false;
+		Guild_fights.SnapshotPending = true;
 		Guild_fights.NewAction = players;
 		localStorage.setItem('GuildFights.NewAction', JSON.stringify(Guild_fights.NewAction));
 
@@ -530,7 +533,7 @@ let Guild_fights = {
 	SetBoxNavigation: async (gbground) => {
 		let h = [];
 		let i = 0;
-		let PlayerBoxSettings = JSON.parse(localStorage.getItem('GuildFightsPlayerBoxSettings')) || '{}';
+		let PlayerBoxSettings = JSON.parse(localStorage.getItem('GuildFightsPlayerBoxSettings')) || {};
 
 		Guild_fights.PlayerBoxSettings.showRoundSelector = (PlayerBoxSettings.showRoundSelector !== undefined) ? PlayerBoxSettings.showRoundSelector : Guild_fights.PlayerBoxSettings.showRoundSelector;
 		Guild_fights.PlayerBoxSettings.showLogButton = (PlayerBoxSettings.showLogButton !== undefined) ? PlayerBoxSettings.showLogButton : Guild_fights.PlayerBoxSettings.showLogButton;
@@ -1048,6 +1051,14 @@ let Guild_fights = {
 
 			// add css to the dom
 			HTML.AddCssFile('guild_fights');
+
+			// scheduled automatic Discord sends belong to the open window
+			$('#LiveGildFighting').on('remove', function () {
+				for (let timerId of Guild_fights.DiscordAutoTimers) {
+					clearTimeout(timerId);
+				}
+				Guild_fights.DiscordAutoTimers = [];
+			});
 		}
 		else if (!reload) {
 			HTML.CloseOpenBox('LiveGildFighting');
@@ -1122,6 +1133,12 @@ let Guild_fights = {
 
 		let newRound = false;
 		let updateDetailView = false;
+
+		// only fresh leaderboard data creates snapshots, a rebuild of the box must not repeat them
+		let recordSnapshot = Guild_fights.SnapshotPending && Guild_fights.GBGHistoryView === false;
+		if (recordSnapshot) {
+			Guild_fights.SnapshotPending = false;
+		}
 
 		await Guild_fights.SetBoxNavigation(gbground);
 
@@ -1213,7 +1230,7 @@ let Guild_fights = {
 				}
 			}
 
-			if ((change === true || newRound === true) && Guild_fights.GBGHistoryView === false)
+			if ((change === true || newRound === true) && recordSnapshot)
 			{
 				await Guild_fights.UpdateDB('player', {
 						gbground: Guild_fights.CurrentGBGRound,
@@ -1414,9 +1431,8 @@ let Guild_fights = {
 			h.push('</thead><tbody class="gbg-playerlog-group">');
 
 			dailyFights.forEach(day => {
-				let id = moment.unix(day.time).format(i18n('DateTime'));
 				let sum = (day.battles + day.negotiations * 2);
-				h.push('<tr id="gbgdetail_' + id + '" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + id + '">');
+				h.push('<tr id="gbgdetail_' + day.date + '" class="hasdetail" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + day.date + '">');
 				h.push(`<td class="is-number" data-number="${day.time}">${moment.unix(day.time).format(i18n('Date'))}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.negotiations}">${HTML.Format(day.negotiations)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.battles}">${HTML.Format(day.battles)}</td>`);
@@ -1527,7 +1543,7 @@ let Guild_fights = {
 	 */
 	BuildDetailViewLog: async (data) => {
 		let h = [];
-		let d = await Guild_fights.db.snapshots.where({ player_id: data.player, date: data.date }).reverse().sortBy('date');
+		let d = await Guild_fights.db.snapshots.where({ player_id: data.player, date: data.date }).reverse().sortBy('time');
 
 		if (!d) return;
 
@@ -1535,7 +1551,7 @@ let Guild_fights = {
 			data.width = { a: 50, b: 20, c: 20, d: 20 }
 		}
 
-		h.push(`<tr class="detailview dark-bg"><td class="nopadding" colspan="${$('#GildPlayersDetailViewBody > .foe-table thead tr').find("th").length}"><table class="foe-table log"><body>`);
+		h.push(`<tr class="detailview dark-bg"><td class="nopadding" colspan="${$('#GildPlayersDetailViewBody > .foe-table thead tr').find("th").length}"><table class="foe-table log"><tbody>`);
 
 		d.forEach(e => {
 			h.push(`<tr>`);
@@ -2149,7 +2165,7 @@ let Guild_fights = {
 			$('.copybutton').html(i18n('Boxes.GuildFights.Copy'));
 			$('.copybutton').removeClass('all');
 			$('.dcbutton').show();
-			if (Guild_fights.discordWebhook.bulkTemplate == "")
+			if (Guild_fights.discordWebhook.bulkTemplate == "" || !Discord.WebHooks.some(x => x.name == Guild_fights.discordWebhook.bulkTemplate))
 				$('.dcbutton.custom').hide();
 			if (Guild_fights.discordWebhook.url == "")
 				$('.dcbutton.discord').hide();

@@ -521,9 +521,9 @@ let CityBuilder = {
         let mapData = MainParser.CityMapData;
         const entities = MainParser.CityEntities;
 
-        if (ActiveMap === 'era_outpost') mapData = CityMap.EraOutpostData;
-        else if (ActiveMap === 'guild_raids') mapData = CityMap.QIData;
-        else if (ActiveMap === 'cultural_outpost') mapData = CityMap.CulturalOutpostData;
+        if (ActiveMap === 'era_outpost') mapData = CityMap.EraOutpost.data;
+        else if (ActiveMap === 'guild_raids') mapData = CityMap.QI.data;
+        else if (ActiveMap === 'cultural_outpost') mapData = CityMap.CulturalOutpost.data;
 
         if (!mapData || typeof mapData !== 'object' || !entities || typeof entities !== 'object') {
             console.error("Daten nicht gefunden oder ungültig!", {mapData, entities, ActiveMap});

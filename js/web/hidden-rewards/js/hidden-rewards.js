@@ -50,7 +50,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
  */
 let HiddenRewards = {
 
-    Cache: null,
+    Cache: [], // filled by HiddenRewardService.getOverview; empty until then so RefreshGui works before the first update
     FilteredCache : null,
     FirstCycle: true,
     GEprogress:0,

@@ -975,7 +975,7 @@ const idleGame = {
 	/**
 	 * Evaluates a single strategy condition against the current game state
 	 *
-	 * @param {string} condition e.g. "T#42" (task done), "W#42" (task active), "M1#5" (manager level), "L1#10" (building level)
+	 * @param {string} condition e.g. "T:42" (task done), "W:42" (task active or done), "M1:5" (manager level), "L1:10" (building level) — the separator after type/station can be any character except "#", which separates the conditions of a step
 	 * @returns {boolean} true if the condition is fulfilled
 	 */
 	checkCondition: (condition) => {

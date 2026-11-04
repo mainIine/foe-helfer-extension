@@ -49,10 +49,10 @@ let Treasury = {
             });
         }
 
-        let LogArray = Logs['responseData']['logs'].map(x=>{
-            let date = EventHandler.ParseDate(x.createdAt)
-            x.createdAt = date||x.createdAt
-            return x
+        // copy the entries: LastNewLogs is processed again on "reset" and must keep the original date strings
+        let LogArray = Logs['responseData']['logs'].map(x => {
+            let date = typeof x.createdAt === 'string' ? EventHandler.ParseDate(x.createdAt) : null;
+            return Object.assign({}, x, { createdAt: date || x.createdAt });
         });
         Treasury.Logs = Treasury.Logs.concat(LogArray);
 
@@ -117,7 +117,7 @@ let Treasury = {
 		let autoOpen = Settings.GetSetting('ShowGuildTreasuryLogExport');
 
         let h = [];
-        h.push(`<p><input id="autoStartTreasuryExport" name="autoStartTreasuryExport" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Settings.Autostart')}</label></p>`);
+        h.push(`<p><input id="autoStartTreasuryExport" name="autoStartTreasuryExport" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartTreasuryExport">${i18n('Boxes.Settings.Autostart')}</label></p>`);
         h.push(`<p><button onclick="Treasury.SaveSettings()" id="save-treasury-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#treasurySettingsBox').html(h.join(''));
@@ -128,7 +128,7 @@ let Treasury = {
     */
     SaveSettings: () => {
         let value = false;
-		if ($("#autoStartMarket").is(':checked'))
+		if ($("#autoStartTreasuryExport").is(':checked'))
 			value = true;
 
 		localStorage.setItem('ShowGuildTreasuryLogExport', value);

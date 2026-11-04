@@ -39,7 +39,7 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
             if(AztecsHelper.ResourcesLeft == 0){
                 if (!$('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
                     $('#minigame_aztecs-Btn').addClass('hud-btn-red');
-                    _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper -BETA-');
+                    _menu.toolTipp($('#minigame_aztecs-Btn'), i18n('Menu.AztecMiniGame.Title'), i18n('Menu.AztecMiniGame.Desc'));
                 }
                 if ($('#aztecsHelper').length === 1){
                     HTML.CloseOpenBox('aztecsHelper');
@@ -601,7 +601,7 @@ let AztecsHelper = {
         if(AztecsHelper.MovesLeft == 0 && $('#aztecsHelper').length > 0){
             if (!$('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
                 $('#minigame_aztecs-Btn').addClass('hud-btn-red');
-                _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper -BETA-');
+                _menu.toolTipp($('#minigame_aztecs-Btn'), i18n('Menu.AztecMiniGame.Title'), i18n('Menu.AztecMiniGame.Desc'));
             }
             HTML.CloseOpenBox('aztecsHelper');
         }

@@ -55,7 +55,7 @@ FoEproxy.addHandler('CampaignService', 'start', (data) => {
 
 	scoutingTimes.scoutPosition = data.responseData.scout?.current_province | 0;
 	scoutingTimes.scoutTarget = data.responseData.scout?.path[data.responseData.scout?.path?.length - 1] | 0;
-	scoutingTimes.scoutTraveltime = data.responseData.scout.time_to_target;
+	scoutingTimes.scoutTraveltime = data.responseData.scout?.time_to_target;
 
 	return scoutingTimes.ShowDialog();
 });
@@ -210,12 +210,12 @@ const scoutingTimes = {
 
 
 	/**
-	 * Formats a number with a thousand separator
+	 * Formats a number with the thousand separator of the helper language
 	 *
 	 * @param {number} x Number to format
 	 * @returns {string} Formatted number
 	 */
-	numberWithCommas: (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+	numberWithCommas: (x) => Number(x).toLocaleString(i18n('Local')),
 
 
 	/**

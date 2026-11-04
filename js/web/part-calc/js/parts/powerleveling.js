@@ -151,9 +151,9 @@ Object.assign(Parts, {
 			// For non-current levels, calculate the FPs for each spot...
 			// (the live values are also unusable when no level is open, e.g. a locked rework level)
 			if (i != Parts.Level || !Number.isFinite(Parts.RemainingOwnPart)) {
-				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.GetP1(Era, i), Parts.ArcPercents)
+				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.GetP1(Era, i), Parts.ArcPercents, 5, GreatBuildings.IsRework(EntityID))
 
-				EigenBruttos[i] = Totals[i] - Places[i][0] - Places[i][1] - Places[i][2] - Places[i][3] - Places[i][4]
+				EigenBruttos[i] = Totals[i] - Places[i].reduce((sum, fp) => sum + fp, 0)
 			}
 			// ...and for the current, it's already calculated
 			else {

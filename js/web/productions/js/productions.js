@@ -1172,7 +1172,7 @@ let Productions = {
         let h = `<div>
 					<table class="foe-table sortable-table">
 						<thead class="sticky">
-							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.General.FilterItems')}" /> Items</th></tr>
+							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.General.FilterItems')}" /> ${i18n('General.Items')}</th></tr>
 						</thead>
 						<tbody class="itemSourcesList">`
 							for (let item of Object.values(items)) {
@@ -1348,8 +1348,8 @@ let Productions = {
 			$(itemId).html('')
 			return
 		}
-		h=`<ul class="foe-table">`
-		for (b of item.buildings) {
+		let h=`<ul class="foe-table">`
+		for (let b of item.buildings) {
 			h+=`<li class="fh-tooltip" data-era=${CurrentEra} data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
 		}
 		h+=`</ul>`

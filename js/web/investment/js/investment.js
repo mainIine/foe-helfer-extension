@@ -475,12 +475,12 @@ let Investment = {
 
 	UpdateData: async (LGData, FullSync) => {
 
-		let arc = 1 + (MainParser.ArkBonus / 100);
 		let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
 		let UpdatedList = false;
 		let playerSyncGbKeys = null;
-		let arcLevelCheck = JSON.parse(localStorage.getItem('InvestmentArcBonus'));
-		let forceFullUpdate = !arcLevelCheck || arcLevelCheck != MainParser.ArkBonus ? true : false;
+		// both contribution boosts (classic/copper and gold tier) decide the rewards, a change forces a full update
+		let arcLevelCheck = JSON.stringify(JSON.parse(localStorage.getItem('InvestmentArcBonus')));
+		let forceFullUpdate = (arcLevelCheck !== JSON.stringify([MainParser.ArkBonus, MainParser.ArkBonusGold]));
 
 		for (let i in LGData)
 		{
@@ -519,6 +519,9 @@ let Investment = {
 				let GbhasUpdate = false;
 				let arrfphistory = [];
 				let isHidden = 0;
+
+				// gold tier level-ups (overview row `currentTier`) use the gold contribution boost
+				const arc = 1 + (MainParser.GetArkBonus(LGData[i]['currentTier']) / 100);
 
 				if (undefined !== LGData[i]['reward']) {
 					Medals = MainParser.round(LGData[i]['reward']['resources'] !== undefined && LGData[i]['reward']['resources']['medals'] !== undefined ?  LGData[i]['reward']['resources']['medals'] * arc : 0);
@@ -639,7 +642,7 @@ let Investment = {
 			let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings') || '{}');
 			InvestmentSettings['lastupdate'] = MainParser.getCurrentDate();
 			localStorage.setItem('InvestmentSettings', JSON.stringify(InvestmentSettings));
-			localStorage.setItem('InvestmentArcBonus', MainParser.ArkBonus);
+			localStorage.setItem('InvestmentArcBonus', JSON.stringify([MainParser.ArkBonus, MainParser.ArkBonusGold]));
 		}
 	},
 

@@ -294,3 +294,6 @@ input.hidden {
 #Alerts #AlertsBody .tabs ul {
     display: none;
 }
+#Alerts #alerts-table .alert-body {
+	color: var(--dark-beige);
+}

@@ -173,6 +173,16 @@ let InventoryOverview = {
 			$('<div />').attr('id', 'inventoryOverviewBottombar')
 		);
 
+		// the filter state survives closing the box, so restore it in the rebuilt controls
+		$('#inventoryOverviewSearch').val(InventoryOverview.SearchText);
+		$('#inventoryOverviewKind').val(InventoryOverview.KindFilter);
+		$('#inventoryOverviewProperty').val(InventoryOverview.FilterType);
+		if ($('#inventoryOverviewProperty').val() === null) {
+			InventoryOverview.FilterType = '';
+			$('#inventoryOverviewProperty').val('');
+		}
+		$('#inventoryOverviewSort').text(InventoryOverview.SortDescending ? '▼' : '▲');
+
 		$('#inventoryOverview [data-toggle="tooltip"]').tooltip({
 			html: true,
 			container: '#inventoryOverview'
@@ -702,6 +712,8 @@ let InventoryOverview = {
 		}));
 		buildings.sort((a, b) => (b.value - a.value) || a.meta.name.localeCompare(b.meta.name));
 
+		// names of all contained buildings, taken before truncating the list
+		const buildingNames = new Set(buildings.map(b => b.meta.name));
 		const hidden = Math.max(0, buildings.length - 12);
 		buildings = buildings.slice(0, 12);
 
@@ -712,7 +724,6 @@ let InventoryOverview = {
 		}).join('');
 
 		// remaining options without an own entity (upgrade kits, nested kits)
-		const buildingNames = new Set(buildings.map(b => b.meta.name));
 		const others = contents.names.filter(name => !buildingNames.has(name));
 		let footer = '';
 		if (hidden > 0 || others.length > 0) {
