@@ -91,19 +91,25 @@ let GBBonuses = {
 		random_goods: 'goods',
 		previous_era_goods: 'previous_era_good_production',
 		clan_goods: 'guild_goods',
+		clan_goods_extended: 'guild_goods_adjacent_era',
 		happiness: 'happy',
 		double_collection: 'double_collect',
 		quest_boost: 'scroll',
+		allies_quest_boost: 'scroll',
 		aid_boost: 'aid_blueprints',
+		totem_drop: 'relic_hunt',
 	},
 
 	// passive bonuses displayed as a percentage, everything else is an absolute amount
 	PercentTypes: new Set([
 		'attack_boost', 'attacker_defense_boost', 'defender_attack_boost', 'defense_boost',
-		'military_boost', 'fierce_resistance', 'advanced_tactics', 'critical_hit_chance',
-		'first_strike', 'double_collection', 'missile_launch', 'plunder_and_pillage',
-		'plunder_goods', 'plunder_repel', 'spoils_of_war', 'helping_hands', 'algorithmic_core',
-		'money_boost', 'supplies_boost', 'aid_boost', 'quest_boost', 'contribution_boost', 'contribution_boost_gold',
+		'military_boost', 'fierce_resistance', 'advanced_tactics', 'critical_hit_chance', 'all_units_critical_hit_chance',
+		'first_strike', 'second_strike', 'double_collection', 'guild_raids_double_collection',
+		'missile_launch', 'missile_launch_wave_2', 'plunder_and_pillage', 'plunder_repel',
+		'spoils_of_war', 'spoils_of_war_enhanced', 'helping_hands', 'helping_hands_boosted', 'algorithmic_core',
+		'money_boost', 'supplies_boost', 'goods_production_boost', 'special_goods_production_boost',
+		'aid_boost', 'quest_boost', 'allies_quest_boost', 'contribution_boost', 'contribution_boost_gold',
+		'totem_drop', 'mysterious_shards', 'diplomatic_gifts',
 	]),
 
 
@@ -356,8 +362,8 @@ let GBBonuses = {
 	/**
 	 * Current value of one bonus of a built card: the live value of the placed
 	 * building (own city, or another player's building opened in the game),
-	 * otherwise the reached breakpoint of the metadata, which is only a lower
-	 * bound off the breakpoints.
+	 * otherwise the value of the metadata bonus curve, which can be off by one
+	 * off the breakpoints.
 	 * @param {GBBonusCard} card
 	 * @param {Object} bonus GreatBuildingBonus metadata entry
 	 * @returns {{value: (number|undefined), exact: boolean}}
@@ -550,7 +556,7 @@ let GBBonuses = {
 
 				if (card.level !== null) {
 					const current = GBBonuses.CurrentValue(card, bonus);
-					h.push(`<td class="text-center gbb-current">${(!current.exact && current.value ? '≥ ' : '') + GBBonuses.FormatValue(bonus, current.value)}</td>`);
+					h.push(`<td class="text-center gbb-current">${(!current.exact && current.value ? '≈ ' : '') + GBBonuses.FormatValue(bonus, current.value)}</td>`);
 				}
 				h.push('</tr>');
 			}

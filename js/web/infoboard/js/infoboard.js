@@ -599,21 +599,17 @@ let Info = {
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
         let newFP = -1;
         let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === d['great_building_name'])),
-            EntityID = Entity?.['id'],
-            IsRework = (EntityID ? GreatBuildings.IsRework(EntityID) : false),
-            PlaceCount = (IsRework ? 7 : 5); // the prestige rework rewards up to seven places
+            EntityID = Entity?.['id'];
 
-        if (!EntityID || d['rank'] > PlaceCount)
+        if (!EntityID)
             newFP = 0;
         else {
-            let EraName = GreatBuildings.GetEraName(EntityID),
-                Era = Technologies.Eras[EraName],
-                Level = d['level'] - 1,
-                P1 = GreatBuildings.GetP1(Era, Level) || 0,
+            let Level = d['level'] - 1,
                 Tier = MainParser.GetGBTierForLevel(Entity, Level), // gold tier level-ups use the gold contribution boost
-                FPRewards = GreatBuildings.GetMaezen(P1, MainParser.GetArkBonus(Tier), PlaceCount, IsRework);
+                FPRewards = GreatBuildings.GetPatronRewards(EntityID, Level, MainParser.GetArkBonus(Tier));
 
-            newFP = FPRewards[d['rank'] - 1];
+            // ranks beyond the reward places (five, seven on gold tier levels) get nothing
+            if (FPRewards) newFP = FPRewards[d['rank'] - 1] || 0;
         }
 
         let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);

@@ -1,5 +1,21 @@
 ## Extension Changelog
 
+##### 4.8.6.0
+**Update**
+
+- GB Calculator, Power leveling and GB Investment Overview: on worlds with the prestige update the costs and patron rewards of upcoming levels match the game exactly, far beyond level 100 as well
+- Power leveling: gold levels show all 7 reward places
+- GB Bonus Overview: the new gold bonuses appear with their name, icon and percentage like in the game
+- GB Bonus Overview and GB Investment Overview: great buildings of other players now show their current bonus value between the breakpoints as well (accurate to 1) instead of a minimum only
+
+**Bugfixes**
+
+- Infoboard: the "GB was leveled" message states the correct reward for the reached place on worlds with the prestige update
+- Power leveling: on worlds with the prestige update the double collection uses the new FP productions per level
+- GB Investment Overview: on worlds with the prestige update the gain of the next level matches the new bonus values
+
+---
+
 ##### 4.8.5.0
 **Update**
 
