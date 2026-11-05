@@ -94,7 +94,8 @@ Object.assign(Parts, {
 			box.on('click', '.button-powerlevel-copy', function () {
 				let gb_level = parseInt($(this).parent().find(".hidden-text").html());
 
-				let CopyParts = Parts.GetCopyStringEx(Places=[true, true, true, true, true], Maezens=Parts.PowerLevelingData.Places[gb_level], Level=gb_level, OwnPart=Parts.PowerLevelingData.EigenNettos[gb_level], PlaceAll=true, PlaceAuto=false, PlaceAutoUnsafe=false, DangerPlaces=[0, 0, 0, 0, 0], LeveltLG=[false, false, false, false, false]);
+				let PlaceCount = Parts.PowerLevelingData.Places[gb_level].length;
+				let CopyParts = Parts.GetCopyStringEx(Places=Array(PlaceCount).fill(true), Maezens=Parts.PowerLevelingData.Places[gb_level], Level=gb_level, OwnPart=Parts.PowerLevelingData.EigenNettos[gb_level], PlaceAll=true, PlaceAuto=false, PlaceAutoUnsafe=false, DangerPlaces=Array(PlaceCount).fill(0), LeveltLG=Array(PlaceCount).fill(false));
 				helper.str.copyToClipboardLegacy(CopyParts);
 			});
 		}
@@ -109,18 +110,25 @@ Object.assign(Parts, {
 
 	/**
 	 * Calculates the power leveling table data for the configured level range:
-	 * the total FP per level, the FP of the five patron spots, the own part
-	 * (gross and net) and the double collection of FP producing GBs.
+	 * the total FP per level, the FP of the patron spots (five, seven on gold
+	 * tier levels), the own part (gross and net) and the double collection of
+	 * FP producing GBs.
 	 *
-	 * @returns {{HasDoubleCollection: boolean, Places: number[][], CityEntity: object, OwnPartSum: number, StartLevel: number, EndLevel: number, EigenBruttos: number[], DoubleCollections: number[], EigenNettos: number[]}}
+	 * @returns {{HasDoubleCollection: boolean, Places: number[][], PlaceCount: number, CityEntity: object, OwnPartSum: number, StartLevel: number, EndLevel: number, EigenBruttos: number[], DoubleCollections: number[], EigenNettos: number[], IsEstimated: boolean}}
 	 */
 	CalcBodyPowerLevelingData: () => {
 		let EntityID = Parts.CurrentGB.Entity['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
 			EraName = GreatBuildings.GetEraName(EntityID),
 			Era = Technologies.Eras[EraName],
+			IsRework = GreatBuildings.IsRework(EntityID),
+			// classic worlds end with the reward table, the prestige rework with the maximum level (capped to keep the table usable)
+			MaxLevel = (IsRework ? Math.min(GreatBuildings.GetReworkMaxLevel(EntityID), 1000) : GreatBuildings.GetP1MaxLevel(Era)),
 			StartLevel = Parts.PowerLevelingStartLevel,
-			EndLevel = Math.min(Parts.PowerLevelingEndLevel, GreatBuildings.GetP1MaxLevel(Era));
+			EndLevel = Math.min(Parts.PowerLevelingEndLevel, MaxLevel);
+
+		// without a chosen end level the table of an uncapped gold building ends with the last bonus breakpoint
+		if (IsRework && Parts.PowerLevelingEndLevel === 999999 && StartLevel < 500) EndLevel = Math.min(EndLevel, 500);
 
 		// Limit minimum value for the power leveling range
 		StartLevel = StartLevel < 0 ? 0 : StartLevel;
@@ -136,22 +144,30 @@ Object.assign(Parts, {
 			DoubleCollections = [],
 			EigenNettos = [];
 
-		let OwnPartSum = 0;
+		let OwnPartSum = 0,
+			PlaceCount = 5;
+
+		// prestige rework: the FP production is a tier bonus of the metadata
+		const ReworkFPBonus = (IsRework ? (CityEntity['bonuses'] || []).flatMap(Tier => Tier['bonuses'] || [])
+			.find(Bonus => Bonus['type'] === 'strategy_points' && Bonus['bonusCategory']?.['value'] === 'productionBonus') : undefined);
 
 		for (let i = StartLevel; i < EndLevel; i++) {
 			// How many FPs are needed in total to level the GB
-			if (i < 10) {
-				Totals[i] = CityEntity['strategy_points_for_upgrade'][i];
-			}
-			else {
-				Totals[i] = Math.ceil(CityEntity['strategy_points_for_upgrade'][9] * Math.pow(1.025, i - 9));
-			}
+			Totals[i] = GreatBuildings.GetBruttoCosts(EntityID, i);
 
 			// How many FPs are needed for each spot.
 			// For non-current levels, calculate the FPs for each spot...
 			// (the live values are also unusable when no level is open, e.g. a locked rework level)
 			if (i != Parts.Level || !Number.isFinite(Parts.RemainingOwnPart)) {
-				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.GetP1(Era, i), Parts.ArcPercents, 5, GreatBuildings.IsRework(EntityID))
+				Places[i] = (Totals[i] !== undefined ? GreatBuildings.GetPatronRewards(EntityID, i, Parts.ArcPercents, Totals[i]) : undefined);
+
+				// no cost or reward data from this level on: the table ends here
+				if (!Places[i]) {
+					delete Totals[i];
+					delete Places[i];
+					EndLevel = i;
+					break;
+				}
 
 				EigenBruttos[i] = Totals[i] - Places[i].reduce((sum, fp) => sum + fp, 0)
 			}
@@ -162,8 +178,15 @@ Object.assign(Parts, {
 				EigenBruttos[i] = Parts.RemainingOwnPart;
 			}
 
-			let FPGreatBuilding = GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID && obj.FPProductions));
-			if (FPGreatBuilding && !['X_FutureEra_Landmark1','X_AllAge_Expedition'].includes(EntityID)) { //FP produzierende LGs ohne Arche
+			PlaceCount = Math.max(PlaceCount, Places[i].length);
+
+			let FPGreatBuilding = (IsRework ? undefined : GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID && obj.FPProductions)));
+			if (ReworkFPBonus) {
+				// prestige rework: FP production of the reached level from the bonus curve of the metadata
+				HasDoubleCollection = true;
+				DoubleCollections[i] = GreatBuildings.MetaBonusValue(ReworkFPBonus, i + 1);
+			}
+			else if (FPGreatBuilding && !['X_FutureEra_Landmark1','X_AllAge_Expedition'].includes(EntityID)) { //FP produzierende LGs ohne Arche
 				HasDoubleCollection = true;
 				if (i < FPGreatBuilding.FPProductions.length) {
 					DoubleCollections[i] = FPGreatBuilding.FPProductions[i];
@@ -184,6 +207,7 @@ Object.assign(Parts, {
 		return {
 			HasDoubleCollection,
 			Places,
+			PlaceCount,
 			CityEntity,
 			OwnPartSum,
 			StartLevel,
@@ -191,7 +215,7 @@ Object.assign(Parts, {
 			EigenBruttos,
 			DoubleCollections,
 			EigenNettos,
-			IsEstimated: !GreatBuildings.Rewards[Era]
+			IsEstimated: (!IsRework && !GreatBuildings.Rewards[Era])
 		};
 	},
 
@@ -205,6 +229,7 @@ Object.assign(Parts, {
 		const {
 			HasDoubleCollection,
 			Places,
+			PlaceCount,
 			StartLevel,
 			EndLevel,
 			EigenBruttos,
@@ -217,11 +242,14 @@ Object.assign(Parts, {
 		for (let i = StartLevel; i < EndLevel; i++) {
 			h.push('<tr>');
 			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
-			h.push('<td><span class="hidden-text"> - #1 (</span>' + HTML.Format(Places[i][0]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td class="text-light"><span class="hidden-text"> - #2 (</span>' + HTML.Format(Places[i][1]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td><span class="hidden-text"> - #3 (</span>' + HTML.Format(Places[i][2]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td class="text-light"><span class="hidden-text"> - #4 (</span>' + HTML.Format(Places[i][3]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td><span class="hidden-text"> - #5 (</span>' + HTML.Format(Places[i][4]) + '<span class="hidden-text">)</span></td>');
+			for (let Place = 0; Place < PlaceCount; Place++) {
+				// copper tier levels have fewer reward places than the gold tier ones
+				if (Places[i][Place] === undefined) {
+					h.push('<td' + (Place % 2 ? ' class="text-light"' : '') + '></td>');
+					continue;
+				}
+				h.push('<td' + (Place % 2 ? ' class="text-light"' : '') + '><span class="hidden-text"> - #' + (Place + 1) + ' (</span>' + HTML.Format(Places[i][Place]) + '<span class="hidden-text">)</span></td>');
+			}
 			if (HasDoubleCollection) {
 				h.push('<td class="success no-select"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
 				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
@@ -277,6 +305,7 @@ Object.assign(Parts, {
 
 		const {
 			HasDoubleCollection,
+			PlaceCount,
 			CityEntity,
 			OwnPartSum,
 			StartLevel,
@@ -303,11 +332,9 @@ Object.assign(Parts, {
 		h.push('<thead class="sticky">');
 		h.push('<tr>');
 		h.push('<th>' + i18n('Boxes.PowerLeveling.Level') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P1') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P2') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P3') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P4') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P5') + '</th>');
+		for (let Place = 1; Place <= PlaceCount; Place++) {
+			h.push('<th>' + i18n('Boxes.PowerLeveling.P' + Place) + '</th>');
+		}
 		if (HasDoubleCollection) {
 			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
 			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');

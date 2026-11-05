@@ -892,6 +892,7 @@ GetFights = () =>{
 
 		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
 		MainParser.CurrentGB.Rankings = Rankings;
+		GreatBuildings.VerifyReworkCosts(MainParser.CurrentGB.Entity['cityentity_id'], MainParser.CurrentGB.Entity['level'], MainParser.CurrentGB.Entity['state']?.['forge_points_for_level_up']);
 		MainParser.CurrentGB.OverviewRow = MainParser.GreatBuildingsOverview[MainParser.CurrentGB.Entity['player_id'] + '_' + MainParser.CurrentGB.Entity['id']];
 
 		// Derive the current building tier (copper/gold) like the game: from the tier metadata and the

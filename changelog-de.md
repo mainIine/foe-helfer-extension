@@ -1,5 +1,21 @@
 ## Extension Changelog
 
+##### 4.8.6.0
+**Update**
+
+- LG Rechner, Powerleveln und LG Investitionen: Auf Welten mit dem Prestige-Update stimmen die Kosten und Mäzen-Belohnungen kommender Stufen genau mit dem Spiel überein, auch weit über Stufe 100 hinaus
+- Powerleveln: Gold-Stufen zeigen alle 7 Belohnungsplätze
+- LG-Bonusübersicht: Die neuen Gold-Boni erscheinen mit Namen, Symbol und Prozentangabe wie im Spiel
+- LG-Bonusübersicht und LG Investitionen: Für LG von Mitspielern steht jetzt auch zwischen den Stützpunkten der aktuelle Bonuswert (auf 1 genau) statt nur eines Mindestwerts
+
+**Bugfixes**
+
+- Infoboard: Die Meldung „LG wurde gelevelt“ nennt auf Welten mit dem Prestige-Update die richtige Belohnung für den erreichten Platz
+- Powerleveln: Die Doppelernte rechnet auf Welten mit dem Prestige-Update mit den neuen FP-Produktionen je Stufe
+- LG Investitionen: Der Zuwachs der nächsten Stufe passt auf Welten mit dem Prestige-Update zu den neuen Bonuswerten
+
+---
+
 ##### 4.8.5.0
 **Update**
 
