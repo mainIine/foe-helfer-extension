@@ -1962,11 +1962,25 @@ let MainParser = {
 	 * @param {?Object|string} Tier GreatBuildingTier enum ({value: 'gold'}) or the plain tier name
 	 * @returns {number} Boost in percent
 	 */
-	GetArkBonus: (Tier) => {
-		const value = (Tier && typeof Tier === 'object' ? Tier['value'] : Tier);
+	GetArkBonus: (Tier) => (MainParser.IsGoldTier(Tier) ? MainParser.ArkBonusGold : MainParser.ArkBonus),
 
-		return (value === 'gold' ? MainParser.ArkBonusGold : MainParser.ArkBonus);
-	},
+
+	/**
+	 * Whether a tier is the gold tier of the prestige rework.
+	 *
+	 * @param {?Object|string} Tier GreatBuildingTier enum ({value: 'gold'}) or the plain tier name
+	 * @returns {boolean}
+	 */
+	IsGoldTier: (Tier) => ((Tier && typeof Tier === 'object' ? Tier['value'] : Tier) === 'gold'),
+
+
+	/**
+	 * Whether the great buildings of this world have a gold tier (prestige rework): its
+	 * level-ups use an own contribution boost, so the calculators keep own percent values for them.
+	 *
+	 * @returns {boolean}
+	 */
+	HasGoldTier: () => ((MainParser.GreatBuildingTiers || []).some(row => MainParser.IsGoldTier(row?.['tier'])) && GreatBuildings.HasReworkData()),
 
 
 	/**

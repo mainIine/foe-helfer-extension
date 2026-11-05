@@ -143,6 +143,7 @@ let Parts = {
 
 	PlaceCount: 5, // reward places of the shown level-up (the prestige rework grants up to 7)
 	ArcPercents: [90, 90, 90, 90, 90],
+	ArcPercentsGold: null, // tier ArcPercents belongs to: true = gold, false = copper/classic, null = not loaded yet
 	Exts: [0, 0, 0, 0, 0],
 
 	//Settings Copybox
@@ -255,7 +256,7 @@ let Parts = {
 				});
 
 				Parts.ArcPercents = ArcPercents;
-				localStorage.setItem(Parts.GetStorageKey('ArcPercents', null), JSON.stringify(ArcPercents));
+				localStorage.setItem(Parts.ArcPercentsKey(), JSON.stringify(ArcPercents));
 
 				Parts.CalcBody(Parts.Level);
 			});
@@ -279,7 +280,7 @@ let Parts = {
 					$('.arc-percent-input').eq(i).val(ArkBonus);
 				}
 
-				localStorage.setItem(Parts.GetStorageKey('ArcPercents', null), JSON.stringify(Parts.ArcPercents));
+				localStorage.setItem(Parts.ArcPercentsKey(), JSON.stringify(Parts.ArcPercents));
 
 				Parts.CalcBody(Parts.Level);
 			});
@@ -559,8 +560,7 @@ let Parts = {
 
 		// Restore Default settings
 		if (Parts.FirstCycle) {
-			let SavedArcPercents = localStorage.getItem(Parts.GetStorageKey('ArcPercents', null));
-			if (SavedArcPercents !== null) Parts.ArcPercents = JSON.parse(SavedArcPercents);
+			Parts.ArcPercentsGold = null;
 
 			let SavedCopyOwnPlayerName = localStorage.getItem(Parts.GetStorageKey('CopyOwnPlayerName', null));
 			if (SavedCopyOwnPlayerName !== null) {
@@ -603,6 +603,11 @@ let Parts = {
 				if (SavedCopyDescending !== null) Parts.CopyDescending = (SavedCopyDescending === 'true');
 			}
 		}
+
+		// arc percents of the tier of the shown level-up, gold tier level-ups have their own
+		const IsGold = Parts.IsGoldLevel();
+		Parts.ArcPercents = Parts.GetArcPercents(IsGold);
+		Parts.ArcPercentsGold = IsGold;
 
 		// reward places of this level-up: one per ranking row with a reward, at least the classic five;
 		// the per place settings follow the count (saved values of older versions only cover five)
@@ -896,11 +901,11 @@ let Parts = {
 		h.push('</div>');
 		h.push('</div>');
 
+		if (MainParser.HasGoldTier()) h.push(Calculator.TierMarker(IsGold));
 		h.push('<span class="btn-group">');
-		// different arc bonus-buttons, the own arc bonus is always one of them
-		let customButtons = localStorage.getItem('CustomPartCalcButtons'),
-			investmentSteps = Calculator.SettingsSanitizeButtons(customButtons ? JSON.parse(customButtons) : Parts.DefaultButtons)
-				.map(bonus => (bonus === 'ark' ? MainParser.GetArkBonus(Parts.CurrentGB.Tier) : bonus)); // gold tier level-ups use the gold contribution boost
+		// different arc bonus-buttons (own list for gold tier level-ups), the own arc bonus is always one of them
+		let investmentSteps = Calculator.GetButtons('CustomPartCalcButtons', Parts.DefaultButtons, IsGold)
+				.map(bonus => (bonus === 'ark' ? MainParser.GetArkBonus(IsGold ? 'gold' : null) : bonus)); // gold tier level-ups use the gold contribution boost
 
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
@@ -1168,6 +1173,48 @@ let Parts = {
 		while (Result.length < Count) Result.push(Fill);
 
 		return Result;
+	},
+
+
+	/**
+	 * Whether a level-up of the opened great building belongs to the gold tier of
+	 * the prestige rework: the open level by the tier of the building, a browsed
+	 * level by the tier metadata.
+	 *
+	 * @param {number} [Level] Level the level-up starts from, default: the shown one
+	 * @returns {boolean}
+	 */
+	IsGoldLevel: (Level = Parts.Level) => {
+		const Entity = Parts.CurrentGB.Entity,
+			Tier = (Level !== Entity['level'] ? MainParser.GetGBTierForLevel(MainParser.CityEntities[Entity['cityentity_id']], Level) : null);
+
+		return MainParser.IsGoldTier(Tier || Parts.CurrentGB.Tier);
+	},
+
+
+	/**
+	 * localStorage key of the arc percents per place of a tier.
+	 *
+	 * @param {boolean} [Gold] Gold tier, default: the tier of the shown level-up
+	 * @returns {string} The localStorage key
+	 */
+	ArcPercentsKey: (Gold = Parts.ArcPercentsGold) => Parts.GetStorageKey('ArcPercents' + (Gold ? 'Gold' : ''), null),
+
+
+	/**
+	 * Arc percents per place of a tier: the ones in use when the shown level-up
+	 * belongs to it, otherwise the saved ones. Gold tier level-ups follow the
+	 * copper percents until own ones have been set.
+	 *
+	 * @param {boolean} Gold Gold tier
+	 * @returns {number[]}
+	 */
+	GetArcPercents: (Gold) => {
+		if (Gold === Parts.ArcPercentsGold) return Parts.ArcPercents;
+
+		const Saved = (Gold ? localStorage.getItem(Parts.ArcPercentsKey(true)) : null) ?? localStorage.getItem(Parts.ArcPercentsKey(false));
+
+		return (Saved !== null ? JSON.parse(Saved) : Array(5).fill(90));
 	},
 
 
