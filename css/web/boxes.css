@@ -339,6 +339,25 @@ a[target="_blank"] svg {
 	background: var(--btn-bg-active);
 }
 
+.percent-chip.arc.copper .chip-value {
+	background: #a8622e;
+}
+
+.percent-chip.arc.gold .chip-value {
+	background: var(--sunflower);
+	color: var(--black);
+	text-shadow: none;
+}
+
+/* tier marker (copper / gold) in front of the percent buttons */
+.percent-tier {
+	display: inline-flex;
+	align-items: center;
+	margin-right: 4px;
+	font-size: 9pt;
+	cursor: default;
+}
+
 .percent-chip .chip-del {
 	display: inline-flex;
 	align-items: center;

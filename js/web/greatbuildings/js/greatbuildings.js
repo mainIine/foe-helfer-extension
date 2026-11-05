@@ -179,6 +179,9 @@ let GreatBuildings = {
     /** @type {number} Arc bonus in percent, used to calculate the patron rewards */
     ForderBonus: 90,
 
+    /** @type {?number} Arc bonus in percent for gold tier level-ups of the prestige rework, null = same as ForderBonus */
+    ForderBonusGold: null,
+
     /** @type {boolean} Hide great buildings that are not built yet */
     HideNewGBs: false,
 
@@ -326,6 +329,9 @@ let GreatBuildings = {
         let ForderBonus = localStorage.getItem('GreatBuildingsForderBonus');
         if (ForderBonus !== null) GreatBuildings.ForderBonus = parseFloat(ForderBonus);
 
+        let ForderBonusGold = localStorage.getItem('GreatBuildingsForderBonusGold');
+        if (ForderBonusGold !== null) GreatBuildings.ForderBonusGold = parseFloat(ForderBonusGold);
+
         GreatBuildings.InvestMode = localStorage.getItem('GreatBuildingsInvestMode') || GreatBuildings.InvestMode;
         GreatBuildings.StandardTarget = localStorage.getItem('GreatBuildingsStandardTarget') || GreatBuildings.StandardTarget;
         GreatBuildings.BonusTarget = localStorage.getItem('GreatBuildingsBonusTarget') || GreatBuildings.BonusTarget;
@@ -372,10 +378,13 @@ let GreatBuildings = {
             GreatBuildings.RenderInvest();
         });
 
-        $('#greatbuildings').on('blur', '#costFactor', function () {
-            GreatBuildings.ForderBonus = parseFloat($(this).val());
-            if (isNaN(GreatBuildings.ForderBonus)) GreatBuildings.ForderBonus = 0;
-            localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
+        // arc bonus of the copper (#costFactor) and the gold tier level-ups (#costFactorGold)
+        $('#greatbuildings').on('blur', '#costFactor, #costFactorGold', function () {
+            const Field = (this.id === 'costFactorGold' ? 'ForderBonusGold' : 'ForderBonus');
+
+            GreatBuildings[Field] = parseFloat($(this).val());
+            if (isNaN(GreatBuildings[Field])) GreatBuildings[Field] = 0;
+            localStorage.setItem('GreatBuildings' + Field, GreatBuildings[Field]);
             GreatBuildings.RenderInvest();
         });
 
@@ -842,7 +851,7 @@ let GreatBuildings = {
      *
      * @param {Object} meta City entity metadata of the great building
      * @param {?Object} placed The placed city entity, null when not built yet
-     * @returns {?{level: number, brutto: number, patrons: number, netto: number}} null when no cost data is available
+     * @returns {?{level: number, brutto: number, arc: number, patrons: number, netto: number}} null when no cost data is available
      */
     InvestCosts: (meta, placed) => {
         const level = (placed ? placed['level'] : 0);
@@ -850,10 +859,24 @@ let GreatBuildings = {
         if (brutto === undefined) brutto = GreatBuildings.GetBruttoCosts(meta['id'], level);
         if (brutto === undefined) return null;
 
-        const rewards = GreatBuildings.GetPatronRewards(meta['id'], level, GreatBuildings.ForderBonus, brutto);
+        // gold tier level-ups have their own arc bonus
+        const arc = GreatBuildings.GetForderBonus(MainParser.IsGoldTier(MainParser.GetGBTierForLevel(meta, level)));
+        const rewards = GreatBuildings.GetPatronRewards(meta['id'], level, arc, brutto);
         const patrons = (rewards ? rewards.reduce((sum, reward) => sum + reward, 0) : 0);
 
-        return { level: level, brutto: brutto, patrons: patrons, netto: brutto - patrons };
+        return { level: level, brutto: brutto, arc: arc, patrons: patrons, netto: brutto - patrons };
+    },
+
+
+    /**
+     * Configured arc bonus of the investment box for a tier. Gold tier level-ups
+     * follow the copper value until an own one has been set.
+     *
+     * @param {boolean} [Gold=false] Gold tier of the prestige rework
+     * @returns {number} Arc bonus in percent
+     */
+    GetForderBonus: (Gold = false) => {
+        return (Gold ? GreatBuildings.ForderBonusGold : null) ?? GreatBuildings.ForderBonus;
     },
 
 
@@ -950,7 +973,10 @@ let GreatBuildings = {
         }
         h.push('</div>');
 
-        h.push('<div class="invest-row">' + i18n('Boxes.GreatBuildings.ArcBonus') + ' <input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
+        // one arc bonus per tier on worlds with the prestige rework
+        const hasGold = MainParser.HasGoldTier();
+        h.push('<div class="invest-row">' + i18n('Boxes.GreatBuildings.ArcBonus') + ' ' + (hasGold ? Calculator.TierMarker(false) : '') + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
+        if (hasGold) h.push(' ' + Calculator.TierMarker(true) + '<input type="number" id="costFactorGold" step="0.1" min="12" max="200" value="' + GreatBuildings.GetForderBonus(true) + '">%');
         h.push(' <span class="invest-hide"' + (overview ? ' title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.ForeignHideNewTT')) + '"' : '') + '><input id="HideNewGBs" class="hidenewgbs game-cursor" type="checkbox"' + (GreatBuildings.HidesNew() ? ' checked' : '') + (overview ? ' disabled' : '') + '> <label for="HideNewGBs">' + i18n('Boxes.GreatBuildings.HideNewGBs') + '</label></span></div>');
 
         // harvest summary the "harvests" column is based on
@@ -1000,7 +1026,7 @@ let GreatBuildings = {
                 const costsTT = HTML.i18nReplacer(i18n(overview ? 'Boxes.GreatBuildings.CostsTTForeign' : 'Boxes.GreatBuildings.CostsTT'), {
                     level: (entry.costs.level + 1),
                     brutto: HTML.Format(entry.costs.brutto),
-                    arc: GreatBuildings.ForderBonus,
+                    arc: entry.costs.arc,
                     patrons: HTML.Format(entry.costs.patrons),
                     netto: HTML.Format(MainParser.round(entry.costs.netto)),
                 });
