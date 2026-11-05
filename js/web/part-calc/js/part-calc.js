@@ -541,9 +541,7 @@ let Parts = {
 
 		let PlayerID = Parts.CurrentGB.Entity['player_id'],
 			EntityID = Parts.CurrentGB.Entity['cityentity_id'],
-			CityEntity = MainParser.CityEntities[EntityID],
-			EraName = GreatBuildings.GetEraName(CityEntity['asset_id']),
-			Era = Technologies.Eras[EraName];
+			CityEntity = MainParser.CityEntities[EntityID];
 
 		let Total; // Total FP of the current level
 
@@ -608,7 +606,7 @@ let Parts = {
 
 		// reward places of this level-up: one per ranking row with a reward, at least the classic five;
 		// the per place settings follow the count (saved values of older versions only cover five)
-		Parts.PlaceCount = Parts.GetPlaceCount(Parts.CurrentGB.Rankings);
+		Parts.PlaceCount = (Parts.IsNextLevel ? GreatBuildings.GetPlaceCount(EntityID, Parts.Level) : Parts.GetPlaceCount(Parts.CurrentGB.Rankings));
 		Parts.ArcPercents = Parts.FillPlaces(Parts.ArcPercents, Parts.PlaceCount, Parts.ArcPercents[Parts.ArcPercents.length - 1] ?? 90);
 		Parts.Exts = Parts.FillPlaces(Parts.Exts, Parts.PlaceCount, 0);
 		Parts.CopyPlaces = Parts.FillPlaces(Parts.CopyPlaces, Parts.PlaceCount, false);
@@ -741,11 +739,9 @@ let Parts = {
 			}
 		}
 		else {
-			let P1 = GreatBuildings.GetP1(Era, Parts.Level) || 0;
-
-			// estimate of a future level: the classic P1 curve with the place count and rounding of this world
+			// future level: rewards from the reward table (classic) or the level costs (prestige rework)
 			Parts.Maezens = Array(Parts.PlaceCount).fill(0);
-			FPRewards = GreatBuildings.GetMaezen(P1, Parts.ArcPercents, Parts.PlaceCount, GreatBuildings.IsRework(EntityID));
+			FPRewards = GreatBuildings.GetPatronRewards(EntityID, Parts.Level, Parts.ArcPercents, Total) || Array(Parts.PlaceCount).fill(0);
 			MedalRewards = Array(Parts.PlaceCount).fill(0);
 			BPRewards = Array(Parts.PlaceCount).fill(0);
 			BPTierRewards = [];
@@ -894,7 +890,7 @@ let Parts = {
 
 			h.push(Parts.Level + ' &rarr; ' + (parseInt(Parts.Level) + 1));
 
-			if (GreatBuildings.GetP1(Era, Parts.Level + 1))
+			if (GreatBuildings.GetPatronRewards(EntityID, Parts.Level + 1) !== undefined)
 				h.push(' <button class="btn btn-slim btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 		}
 		h.push('</div>');
