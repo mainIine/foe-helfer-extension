@@ -56,7 +56,7 @@ Object.assign(Calculator, {
 
 	/**
 	 * Percent buttons of a calculator for a tier. Gold tier level-ups have their
-	 * own list, as long as none has been saved they follow the copper list.
+	 * own list, without saved values it only holds the own gold arc bonus.
 	 *
 	 * @param {string} StorageKey - localStorage key of the copper list, the gold list uses the suffix "Gold"
 	 * @param {Array} Defaults - Default button list
@@ -64,9 +64,9 @@ Object.assign(Calculator, {
 	 * @returns {Array} Cleaned and sorted list, 'ark' marks the own arc bonus
 	 */
 	GetButtons: (StorageKey, Defaults, Gold = false)=> {
-		const Saved = (Gold ? localStorage.getItem(StorageKey + 'Gold') : null) ?? localStorage.getItem(StorageKey);
+		const Saved = localStorage.getItem(StorageKey + (Gold ? 'Gold' : ''));
 
-		return Calculator.SettingsSanitizeButtons(Saved ? JSON.parse(Saved) : Defaults, Gold);
+		return Calculator.SettingsSanitizeButtons(Saved ? JSON.parse(Saved) : (Gold ? [] : Defaults), Gold);
 	},
 
 
@@ -187,16 +187,13 @@ Object.assign(Calculator, {
 
 
 	/**
-	 * Saves the percent buttons of the editor of a settings dialog. An empty
-	 * copper row restores the default buttons; the gold list is only stored
-	 * while it differs from the copper list, otherwise it keeps following it.
+	 * Saves the percent buttons of the editor of a settings dialog, one list
+	 * per tier. An empty copper row restores the default buttons.
 	 *
 	 * @param {jQuery} $settings - Container of the settings dialog
 	 * @param {string} StorageKey - localStorage key of the copper list
 	 */
 	SettingsSaveButtons: ($settings, StorageKey)=> {
-		let copper = '[]';
-
 		// adopt typed but not yet added values
 		$settings.find('.percent-add-input').each(function(){
 			if(this.value !== '') Calculator.SettingsAddValue(this);
@@ -205,13 +202,10 @@ Object.assign(Calculator, {
 		$settings.find('.percent-chips').each(function(){
 			let Gold = ($(this).attr('data-gold') === 'true'),
 				// the arc bonus entry is not stored, it is added while the player has one
-				values = $(this).find('.settings-values').toArray().map(el => parseFloat(el.value)).filter(isFinite),
-				json = JSON.stringify(values);
+				values = $(this).find('.settings-values').toArray().map(el => parseFloat(el.value)).filter(isFinite);
 
-			if(!Gold) copper = json;
-
-			if(values.length && (!Gold || json !== copper)){
-				localStorage.setItem(StorageKey + (Gold ? 'Gold' : ''), json);
+			if(values.length){
+				localStorage.setItem(StorageKey + (Gold ? 'Gold' : ''), JSON.stringify(values));
 			}
 			else {
 				localStorage.removeItem(StorageKey + (Gold ? 'Gold' : ''));

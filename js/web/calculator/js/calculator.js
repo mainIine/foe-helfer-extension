@@ -18,7 +18,7 @@
 
 let Calculator = {
 	ForderBonus: 90,
-	ForderBonusFromGold: false, // the rate in memory was saved for gold tier level-ups
+	ForderBonusIsGold: false, // the rate in memory belongs to gold tier level-ups
     PlayerName: undefined,
     LastPlayerID: 0,
     PlayInfoSound: false,
@@ -94,17 +94,17 @@ let Calculator = {
 
 	/**
 	 * localStorage keys of the friendly invest rate of the shown level-up, most
-	 * specific first: per conversation before the global one, gold tier
-	 * level-ups have their own rate and follow the copper rate until one is set.
-	 * The first key is the one a changed rate is saved to.
+	 * specific first: per conversation before the global one. Gold tier
+	 * level-ups have their own rate. The first key is the one a changed rate
+	 * is saved to.
 	 *
 	 * @returns {string[]} Key names
 	 */
 	ForderBonusKeys: () => {
 		const Conversation = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? '_' + MainParser.OpenConversation : ''),
-			Tiers = (MainParser.IsGoldTier(Calculator.CurrentTier()) ? ['Gold', ''] : ['']);
+			Tier = (MainParser.IsGoldTier(Calculator.CurrentTier()) ? 'Gold' : '');
 
-		return [...new Set(Tiers.flatMap(Tier => ['CalculatorForderBonus' + Tier + Conversation, 'CalculatorForderBonus' + Tier]))];
+		return [...new Set(['CalculatorForderBonus' + Tier + Conversation, 'CalculatorForderBonus' + Tier])];
 	},
 
 
@@ -263,16 +263,21 @@ let Calculator = {
 	 */
 	ShowBody: () => {
 		// saved rate of the conversation or the global one, for the tier of the shown level-up
-		const StorageKey = Calculator.ForderBonusKeys().find(Key => localStorage.getItem(Key) !== null);
+		const RateIsGold = MainParser.IsGoldTier(Calculator.CurrentTier()),
+			StorageKey = Calculator.ForderBonusKeys().find(Key => localStorage.getItem(Key) !== null);
 
 		if (StorageKey) {
 			Calculator.ForderBonus = parseFloat(localStorage.getItem(StorageKey));
 		}
-		// nothing saved: the last rate stays, but a gold rate must not leak into copper level-ups
-		else if (Calculator.ForderBonusFromGold) {
+		// nothing saved: gold tier level-ups start with the own gold contribution boost ...
+		else if (RateIsGold) {
+			Calculator.ForderBonus = MainParser.ArkBonusGold;
+		}
+		// ... copper ones keep the last rate, but never a gold one
+		else if (Calculator.ForderBonusIsGold) {
 			Calculator.ForderBonus = 90;
 		}
-		Calculator.ForderBonusFromGold = !!StorageKey?.startsWith('CalculatorForderBonusGold');
+		Calculator.ForderBonusIsGold = RateIsGold;
 
 		let PlayerID = MainParser.CurrentGB.Entity.player_id,
             h = [];
