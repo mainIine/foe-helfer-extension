@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.8.7.0
+**Update**
+
+- GB Calculator, GB Cost Calc, Power leveling and GB Investment Overview: on worlds with the prestige update gold levels have their own percentages – separately configurable percent buttons (🟤 copper, 🟡 gold) and a separately remembered rate per tier; gold starts with your gold contribution boost
+
+---
+
 ##### 4.8.6.0
 **Update**
 

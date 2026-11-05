@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.8.7.0
+**Update**
+
+- LG Rechner, LG Fördern, Powerleveln und LG Investitionen: Auf Welten mit dem Prestige-Update gibt es für Gold-Stufen eigene Prozentwerte – getrennt einstellbare Prozent-Buttons (🟤 Kupfer, 🟡 Gold) und ein eigener gemerkter Satz je Rang; Gold startet mit deinem Gold-Mäzen-Bonus
+
+---
+
 ##### 4.8.6.0
 **Update**
 

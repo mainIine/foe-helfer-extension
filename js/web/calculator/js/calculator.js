@@ -18,6 +18,7 @@
 
 let Calculator = {
 	ForderBonus: 90,
+	ForderBonusIsGold: false, // the rate in memory belongs to gold tier level-ups
     PlayerName: undefined,
     LastPlayerID: 0,
     PlayInfoSound: false,
@@ -92,6 +93,22 @@ let Calculator = {
 
 
 	/**
+	 * localStorage keys of the friendly invest rate of the shown level-up, most
+	 * specific first: per conversation before the global one. Gold tier
+	 * level-ups have their own rate. The first key is the one a changed rate
+	 * is saved to.
+	 *
+	 * @returns {string[]} Key names
+	 */
+	ForderBonusKeys: () => {
+		const Conversation = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? '_' + MainParser.OpenConversation : ''),
+			Tier = (MainParser.IsGoldTier(Calculator.CurrentTier()) ? 'Gold' : '');
+
+		return [...new Set(['CalculatorForderBonus' + Tier + Conversation, 'CalculatorForderBonus' + Tier])];
+	},
+
+
+	/**
 	 * Shows the cost calculator for the currently opened GB: loads the settings,
 	 * creates the own box in split view when missing and renders the content
 	 * (or a hint while no GB has been opened yet).
@@ -161,16 +178,14 @@ let Calculator = {
 		$box.on('click', '.btn-toggle-arc', function () {
 			Calculator.ForderBonus = parseFloat($(this).data('value'));
 			$('#costFactor').val(Calculator.ForderBonus);
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
-			localStorage.setItem(StorageKey, Calculator.ForderBonus);
+			localStorage.setItem(Calculator.ForderBonusKeys()[0], Calculator.ForderBonus);
 			Calculator.Show();
 		});
 
 		// the arc bonus value has been changed
 		$box.on('blur', '#costFactor', function () {
 			Calculator.ForderBonus = parseFloat($('#costFactor').val());
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
-			localStorage.setItem(StorageKey, Calculator.ForderBonus);
+			localStorage.setItem(Calculator.ForderBonusKeys()[0], Calculator.ForderBonus);
 			Calculator.Show();
 		});
 
@@ -247,23 +262,22 @@ let Calculator = {
 	 * Overlays a hint when the next level is locked or no street is connected.
 	 */
 	ShowBody: () => {
-		let ForderBonusLoaded = false;
+		// saved rate of the conversation or the global one, for the tier of the shown level-up
+		const RateIsGold = MainParser.IsGoldTier(Calculator.CurrentTier()),
+			StorageKey = Calculator.ForderBonusKeys().find(Key => localStorage.getItem(Key) !== null);
 
-		if(Calculator.ForderBonusPerConversation && MainParser.OpenConversation){
-			let StorageKey = 'CalculatorForderBonus_' + MainParser.OpenConversation,
-				StorageValue = localStorage.getItem(StorageKey);
-
-			if(StorageValue !== null){
-				Calculator.ForderBonus = parseFloat(StorageValue);
-				ForderBonusLoaded = true;
-			}
+		if (StorageKey) {
+			Calculator.ForderBonus = parseFloat(localStorage.getItem(StorageKey));
 		}
-
-		if(!ForderBonusLoaded){
-			let ab = localStorage.getItem('CalculatorForderBonus');
-			if (ab !== null)
-				Calculator.ForderBonus = parseFloat(ab);
+		// nothing saved: gold tier level-ups start with the own gold contribution boost ...
+		else if (RateIsGold) {
+			Calculator.ForderBonus = MainParser.ArkBonusGold;
 		}
+		// ... copper ones keep the last rate, but never a gold one
+		else if (Calculator.ForderBonusIsGold) {
+			Calculator.ForderBonus = 90;
+		}
+		Calculator.ForderBonusIsGold = RateIsGold;
 
 		let PlayerID = MainParser.CurrentGB.Entity.player_id,
             h = [];
@@ -308,12 +322,13 @@ let Calculator = {
 			h.push('</span></strong>');
 		}
 
-		// different arc bonus-buttons, the own arc bonus is always one of them
-		let customButtons = localStorage.getItem('CustomCalculatorButtons'),
-			investmentSteps = Calculator.SettingsSanitizeButtons(customButtons ? JSON.parse(customButtons) : Calculator.DefaultButtons)
+		// different arc bonus-buttons (own list for gold tier level-ups), the own arc bonus is always one of them
+		let IsGold = MainParser.IsGoldTier(Tier),
+			investmentSteps = Calculator.GetButtons('CustomCalculatorButtons', Calculator.DefaultButtons, IsGold)
 				.map(bonus => (bonus === 'ark' ? Calculator.ArkBonus() : bonus));
 
 		h.push('<div class="costFactorWrapper">');
+		if (MainParser.HasGoldTier()) h.push(Calculator.TierMarker(IsGold));
 		h.push('<div class="btn-group">');
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);

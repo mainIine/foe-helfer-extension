@@ -23,21 +23,12 @@ Object.assign(Calculator, {
 	 */
 	ShowCalculatorSettings: ()=> {
 		let c = [],
-			sB = localStorage.getItem('CustomCalculatorButtons'),
 			allGB = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs')),
 			// split view: own auto open setting for this box, combined view: the shared box setting
 			autoOpen = localStorage.getItem(Calculator.AutoOpenKey()),
-			autoOpenLabel = i18n('Settings.ShowOwnPartAutoOpen.Desc') + (Calculator.IsSplitView() ? ' (' + i18n('Boxes.Calculator.Title') + ')' : ''),
-			buttons = Calculator.SettingsSanitizeButtons(sB ? JSON.parse(sB) : Calculator.DefaultButtons);
+			autoOpenLabel = i18n('Settings.ShowOwnPartAutoOpen.Desc') + (Calculator.IsSplitView() ? ' (' + i18n('Boxes.Calculator.Title') + ')' : '');
 
-		c.push('<div class="percent-chips bbd">');
-		buttons.forEach(bonus => c.push(Calculator.SettingsChip(bonus)));
-
-		c.push(`<span class="percent-add">
-			<input type="number" class="percent-add-input" step="0.1" min="-100" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Calculator.SettingsAddValue();event.preventDefault();}">
-			<span class="btn btn-green btn-slim" title="${i18n('Boxes.Calculator.Settings.newValue')}" onclick="Calculator.SettingsAddValue()">+</span>
-		</span>`);
-		c.push('</div>');
+		c.push(Calculator.SettingsChipRows('CustomCalculatorButtons', Calculator.DefaultButtons));
 
 		// own ids: in split view this dialog can be open next to the own part settings, ids must not collide
 		c.push(`<p class="bbd p5">
@@ -55,37 +46,89 @@ Object.assign(Calculator, {
 
 
 	/**
-	 * Removes duplicates and invalid entries from a stored button list and sorts
-	 * it by percent value. The own arc bonus is always part of the list while
-	 * the player has one ('ark' entry, resolved to the current bonus), it can
-	 * neither be removed nor be missing.
+	 * Marker of a prestige tier for the percent buttons and their settings rows.
 	 *
-	 * @param {Array} buttons - Raw button list from storage or defaults
-	 * @returns {Array} Cleaned and sorted list
+	 * @param {boolean} Gold - Gold tier instead of copper
+	 * @returns {string} Icon with the tier name as tooltip
 	 */
-	SettingsSanitizeButtons: (buttons)=> {
-		buttons = buttons.filter((item, index) => isFinite(item) && buttons.indexOf(item) === index);
+	TierMarker: (Gold)=> `<span class="percent-tier${Gold ? ' gold' : ''}" title="${i18n('Boxes.OwnpartCalculator.Tier')}: ${i18n(Gold ? 'Boxes.OwnpartCalculator.TierGold' : 'Boxes.OwnpartCalculator.TierCopper')}">${Gold ? '🟡' : '🟤'}</span>`,
 
-		if(MainParser.ArkBonus > 0){
-			buttons.push('ark');
-		}
 
-		return buttons.sort((a, b) => (a === 'ark' ? MainParser.ArkBonus : a) - (b === 'ark' ? MainParser.ArkBonus : b));
+	/**
+	 * Percent buttons of a calculator for a tier. Gold tier level-ups have their
+	 * own list, without saved values it only holds the own gold arc bonus.
+	 *
+	 * @param {string} StorageKey - localStorage key of the copper list, the gold list uses the suffix "Gold"
+	 * @param {Array} Defaults - Default button list
+	 * @param {boolean} [Gold=false] - List of the gold tier
+	 * @returns {Array} Cleaned and sorted list, 'ark' marks the own arc bonus
+	 */
+	GetButtons: (StorageKey, Defaults, Gold = false)=> {
+		const Saved = localStorage.getItem(StorageKey + (Gold ? 'Gold' : ''));
+
+		return Calculator.SettingsSanitizeButtons(Saved ? JSON.parse(Saved) : (Gold ? [] : Defaults), Gold);
 	},
 
 
 	/**
-	 * Returns the markup of one percent chip in this settings dialog. The arc
-	 * bonus chip is fixed and has no delete button.
+	 * Removes duplicates and invalid entries from a stored button list and sorts
+	 * it by percent value. The own arc bonus of the tier is always part of the
+	 * list while the player has one ('ark' entry, resolved to the current bonus),
+	 * it can neither be removed nor be missing.
+	 *
+	 * @param {Array} buttons - Raw button list from storage or defaults
+	 * @param {boolean} [Gold=false] - List of the gold tier (uses the gold contribution boost)
+	 * @returns {Array} Cleaned and sorted list
+	 */
+	SettingsSanitizeButtons: (buttons, Gold = false)=> {
+		const Ark = MainParser.GetArkBonus(Gold ? 'gold' : null);
+
+		buttons = buttons.filter((item, index) => isFinite(item) && buttons.indexOf(item) === index);
+
+		if(Ark > 0){
+			buttons.push('ark');
+		}
+
+		return buttons.sort((a, b) => (a === 'ark' ? Ark : a) - (b === 'ark' ? Ark : b));
+	},
+
+
+	/**
+	 * Percent button editor of a settings dialog, shared by both calculators: one
+	 * row of chips with an input for new values, on worlds with the prestige
+	 * rework one row per tier (copper and gold).
+	 *
+	 * @param {string} StorageKey - localStorage key of the copper list
+	 * @param {Array} Defaults - Default button list
+	 * @returns {string} Editor HTML
+	 */
+	SettingsChipRows: (StorageKey, Defaults)=> {
+		const HasGold = MainParser.HasGoldTier();
+
+		return (HasGold ? [false, true] : [false]).map(Gold => `<div class="percent-chips bbd" data-gold="${Gold}">
+			${HasGold ? Calculator.TierMarker(Gold) : ''}
+			${Calculator.GetButtons(StorageKey, Defaults, Gold).map(bonus => Calculator.SettingsChip(bonus, Gold)).join('')}
+			<span class="percent-add">
+				<input type="number" class="percent-add-input" step="0.1" min="-100" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Calculator.SettingsAddValue(this);event.preventDefault();}">
+				<span class="btn btn-green btn-slim" title="${i18n('Boxes.Calculator.Settings.newValue')}" onclick="Calculator.SettingsAddValue(this)">+</span>
+			</span>
+		</div>`).join('');
+	},
+
+
+	/**
+	 * Returns the markup of one percent chip of the editor. The arc bonus chip
+	 * is fixed and has no delete button.
 	 *
 	 * @param {number|string} bonus - Percent value or 'ark' for the arc bonus entry
+	 * @param {boolean} [Gold=false] - Chip of the gold tier row
 	 * @returns {string} Chip HTML
 	 */
-	SettingsChip: (bonus)=> {
+	SettingsChip: (bonus, Gold = false)=> {
 		if(bonus === 'ark'){
-			return `<span class="percent-chip arc" title="${i18n('Boxes.Calculator.Settings.ArkInfo')}">
+			return `<span class="percent-chip arc${MainParser.HasGoldTier() ? (Gold ? ' gold' : ' copper') : ''}" title="${i18n('Boxes.Calculator.Settings.ArkInfo')}">
 				<input type="hidden" class="settings-values" value="ark">
-				<span class="chip-value">${i18n('Boxes.OwnpartCalculator.Arc')} ${MainParser.ArkBonus}%</span>
+				<span class="chip-value">${i18n('Boxes.OwnpartCalculator.Arc')} ${MainParser.GetArkBonus(Gold ? 'gold' : null)}%</span>
 			</span>`;
 		}
 
@@ -98,41 +141,32 @@ Object.assign(Calculator, {
 
 
 	/**
-	 * Inserts a chip into this settings dialog, sorted by its percent value.
+	 * Adds the value of an input field of the editor as a new percent chip to
+	 * its row, sorted by the percent value.
 	 *
-	 * @param {number|string} bonus - Percent value or 'ark'
+	 * @param {HTMLElement} el - The input field or the add button of the row
 	 */
-	SettingsInsertChip: (bonus)=> {
-		let $box = $('#' + Calculator.BoxId() + 'SettingsBox'),
-			value = (bonus === 'ark' ? MainParser.ArkBonus : bonus),
-			$next = $box.find('.percent-chip').filter(function(){
-				let v = $(this).find('.settings-values').val();
-				return ((v === 'ark' ? MainParser.ArkBonus : parseFloat(v)) > value);
-			}).first();
-
-		if($next.length){
-			$(Calculator.SettingsChip(bonus)).insertBefore($next);
-		}
-		else {
-			$(Calculator.SettingsChip(bonus)).insertBefore($box.find('.percent-add'));
-		}
-	},
-
-
-	/**
-	 * Adds the value of the input field as a new percent chip.
-	 */
-	SettingsAddValue: ()=> {
-		let $box = $('#' + Calculator.BoxId() + 'SettingsBox'),
-			$input = $box.find('.percent-add-input'),
+	SettingsAddValue: (el)=> {
+		let $row = $(el).closest('.percent-chips'),
+			$input = $row.find('.percent-add-input'),
+			Gold = ($row.attr('data-gold') === 'true'),
+			Ark = MainParser.GetArkBonus(Gold ? 'gold' : null),
+			chipValue = (chip) => {
+				let v = $(chip).find('.settings-values').val();
+				return (v === 'ark' ? Ark : parseFloat(v));
+			},
 			v = parseFloat($input.val());
 
 		if(isFinite(v) && v >= -100 && v <= 200){
 			v = Math.round(v * 10) / 10;
 
-			let exists = $box.find('.percent-chip .settings-values').toArray().some(el => parseFloat(el.value) === v);
+			let $chips = $row.find('.percent-chip'),
+				exists = $chips.toArray().some(chip => parseFloat($(chip).find('.settings-values').val()) === v);
+
 			if(!exists){
-				Calculator.SettingsInsertChip(v);
+				let $next = $chips.filter(function(){ return (chipValue(this) > v); }).first();
+
+				$(Calculator.SettingsChip(v, Gold)).insertBefore($next.length ? $next : $row.find('.percent-add'));
 			}
 		}
 
@@ -141,7 +175,7 @@ Object.assign(Calculator, {
 
 
 	/**
-	 * Removes a percent chip from this settings dialog.
+	 * Removes a percent chip from the editor.
 	 *
 	 * @param {HTMLElement} $this - The clicked delete button
 	 */
@@ -153,39 +187,43 @@ Object.assign(Calculator, {
 
 
 	/**
+	 * Saves the percent buttons of the editor of a settings dialog, one list
+	 * per tier. An empty copper row restores the default buttons.
+	 *
+	 * @param {jQuery} $settings - Container of the settings dialog
+	 * @param {string} StorageKey - localStorage key of the copper list
+	 */
+	SettingsSaveButtons: ($settings, StorageKey)=> {
+		// adopt typed but not yet added values
+		$settings.find('.percent-add-input').each(function(){
+			if(this.value !== '') Calculator.SettingsAddValue(this);
+		});
+
+		$settings.find('.percent-chips').each(function(){
+			let Gold = ($(this).attr('data-gold') === 'true'),
+				// the arc bonus entry is not stored, it is added while the player has one
+				values = $(this).find('.settings-values').toArray().map(el => parseFloat(el.value)).filter(isFinite);
+
+			if(values.length){
+				localStorage.setItem(StorageKey + (Gold ? 'Gold' : ''), JSON.stringify(values));
+			}
+			else {
+				localStorage.removeItem(StorageKey + (Gold ? 'Gold' : ''));
+			}
+		});
+	},
+
+
+	/**
 	 * Saves all values of the cost calculator settings dialog and re-renders the
 	 * boxes. Reads only from its own settings container, the own part settings
 	 * can be open at the same time in split view.
 	 */
 	SettingsSaveValues: ()=> {
 		// read only from the own settings dialog, the own part settings can be open at the same time
-		let $settings = $('#' + Calculator.BoxId() + 'SettingsBox'),
-			values = [];
+		let $settings = $('#' + Calculator.BoxId() + 'SettingsBox');
 
-		// adopt a typed but not yet added value
-		Calculator.SettingsAddValue();
-
-		$settings.find('.settings-values').each(function(){
-			let v = $(this).val().trim();
-
-			if(v === 'ark'){
-				values.push(v);
-			}
-			else if(v !== '' && isFinite(parseFloat(v))){
-				values.push( parseFloat(v) );
-			}
-		});
-
-		// keeps the arc bonus entry even if the dialog was built without one
-		values = Calculator.SettingsSanitizeButtons(values);
-
-		if(values.length){
-			localStorage.setItem('CustomCalculatorButtons', JSON.stringify(values));
-		}
-		else {
-			// everything removed: back to the default buttons
-			localStorage.removeItem('CustomCalculatorButtons');
-		}
+		Calculator.SettingsSaveButtons($settings, 'CustomCalculatorButtons');
 
 		Calculator.ForderBonusPerConversation = $settings.find('.forderbonusperconversation').prop('checked');
 		localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);

@@ -151,6 +151,9 @@ Object.assign(Parts, {
 		const ReworkFPBonus = (IsRework ? (CityEntity['bonuses'] || []).flatMap(Tier => Tier['bonuses'] || [])
 			.find(Bonus => Bonus['type'] === 'strategy_points' && Bonus['bonusCategory']?.['value'] === 'productionBonus') : undefined);
 
+		// arc percents per tier, gold tier level-ups have their own
+		const ArcPercents = { false: Parts.GetArcPercents(false), true: Parts.GetArcPercents(true) };
+
 		for (let i = StartLevel; i < EndLevel; i++) {
 			// How many FPs are needed in total to level the GB
 			Totals[i] = GreatBuildings.GetBruttoCosts(EntityID, i);
@@ -159,7 +162,7 @@ Object.assign(Parts, {
 			// For non-current levels, calculate the FPs for each spot...
 			// (the live values are also unusable when no level is open, e.g. a locked rework level)
 			if (i != Parts.Level || !Number.isFinite(Parts.RemainingOwnPart)) {
-				Places[i] = (Totals[i] !== undefined ? GreatBuildings.GetPatronRewards(EntityID, i, Parts.ArcPercents, Totals[i]) : undefined);
+				Places[i] = (Totals[i] !== undefined ? GreatBuildings.GetPatronRewards(EntityID, i, ArcPercents[Parts.IsGoldLevel(i)], Totals[i]) : undefined);
 
 				// no cost or reward data from this level on: the table ends here
 				if (!Places[i]) {

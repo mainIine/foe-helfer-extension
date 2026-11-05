@@ -32,7 +32,6 @@ Object.assign(Parts, {
 		}
 
 		let c = [],
-			sB = localStorage.getItem('CustomPartCalcButtons'),
 			allGB = localStorage.getItem('ShowOwnPartOnAllGBs') || 'false',
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
@@ -40,17 +39,10 @@ Object.assign(Parts, {
 			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
 			// split view: name the box, the cost calculator has its own auto open setting
 			autoOpenLabel = i18n('Settings.ShowOwnPartAutoOpen.Desc') + (Calculator.IsSplitView() ? ' (' + i18n('Boxes.OwnpartCalculator.Title') + ')' : ''),
-			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
-			buttons = Calculator.SettingsSanitizeButtons(sB ? JSON.parse(sB) : Parts.DefaultButtons);
+			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true';
 
-		c.push('<div class="percent-chips bbd">');
-		buttons.forEach(bonus => c.push(Parts.SettingsChip(bonus)));
-
-		c.push(`<span class="percent-add">
-			<input type="number" class="percent-add-input" step="0.1" min="-100" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Parts.SettingsAddValue();event.preventDefault();}">
-			<span class="btn btn-green btn-slim" title="${i18n('Boxes.Calculator.Settings.newValue')}" onclick="Parts.SettingsAddValue()">+</span>
-		</span>`);
-		c.push('</div>');
+		// percent button editor, shared with the cost calculator
+		c.push(Calculator.SettingsChipRows('CustomPartCalcButtons', Parts.DefaultButtons));
 
 		c.push(`<p class="bbd p5">
 				<input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen !== 'false') ? 'checked' : '')}> <label for="autoOpen">${autoOpenLabel}</label><br>
@@ -70,117 +62,15 @@ Object.assign(Parts, {
 
 
 	/**
-	 * Returns the markup of one percent chip in this settings dialog. The arc
-	 * bonus chip is fixed and has no delete button.
-	 *
-	 * @param {number|string} bonus - Percent value or 'ark' for the arc bonus entry
-	 * @returns {string} Chip HTML
-	 */
-	SettingsChip: (bonus)=> {
-		if(bonus === 'ark'){
-			return `<span class="percent-chip arc" title="${i18n('Boxes.Calculator.Settings.ArkInfo')}">
-				<input type="hidden" class="settings-values" value="ark">
-				<span class="chip-value">${i18n('Boxes.OwnpartCalculator.Arc')} ${MainParser.ArkBonus}%</span>
-			</span>`;
-		}
-
-		return `<span class="percent-chip">
-			<input type="hidden" class="settings-values" value="${bonus}">
-			<span class="chip-value">${bonus}%</span>
-			<span class="chip-del" onclick="Parts.SettingsRemoveRow(this)">&times;</span>
-		</span>`;
-	},
-
-
-	/**
-	 * Inserts a chip into this settings dialog, sorted by its percent value.
-	 *
-	 * @param {number|string} bonus - Percent value or 'ark'
-	 */
-	SettingsInsertChip: (bonus)=> {
-		let $box = $('#OwnPartBoxSettingsBox'),
-			value = (bonus === 'ark' ? MainParser.ArkBonus : bonus),
-			$next = $box.find('.percent-chip').filter(function(){
-				let v = $(this).find('.settings-values').val();
-				return ((v === 'ark' ? MainParser.ArkBonus : parseFloat(v)) > value);
-			}).first();
-
-		if($next.length){
-			$(Parts.SettingsChip(bonus)).insertBefore($next);
-		}
-		else {
-			$(Parts.SettingsChip(bonus)).insertBefore($box.find('.percent-add'));
-		}
-	},
-
-
-	/**
-	 * Adds the value of the input field as a new percent chip.
-	 */
-	SettingsAddValue: ()=> {
-		let $box = $('#OwnPartBoxSettingsBox'),
-			$input = $box.find('.percent-add-input'),
-			v = parseFloat($input.val());
-
-		if(isFinite(v) && v >= -100 && v <= 200){
-			v = Math.round(v * 10) / 10;
-
-			let exists = $box.find('.percent-chip .settings-values').toArray().some(el => parseFloat(el.value) === v);
-			if(!exists){
-				Parts.SettingsInsertChip(v);
-			}
-		}
-
-		$input.val('').trigger('focus');
-	},
-
-
-	/**
-	 * Removes a percent chip from this settings dialog.
-	 *
-	 * @param {HTMLElement} $this - The clicked delete button
-	 */
-	SettingsRemoveRow: ($this)=> {
-		$($this).closest('.percent-chip').fadeOut('fast', function(){
-			$(this).remove();
-		});
-	},
-
-
-	/**
 	 * Saves all values of the own part settings dialog and re-renders the box.
 	 * Reads only from #OwnPartBoxSettingsBox, the cost calculator settings can
 	 * be open at the same time in split view.
 	 */
 	SettingsSaveValues: ()=> {
 		// read only from the own settings dialog, the cost calculator settings can be open at the same time
-		let $settings = $('#OwnPartBoxSettingsBox'),
-			values = [];
+		let $settings = $('#OwnPartBoxSettingsBox');
 
-		// adopt a typed but not yet added value
-		Parts.SettingsAddValue();
-
-		$settings.find('.settings-values').each(function() {
-			let v = $(this).val().trim();
-
-			if(v === 'ark'){
-				values.push(v);
-			}
-			else if(v !== '' && isFinite(parseFloat(v))){
-				values.push( parseFloat(v) );
-			}
-		});
-
-		// keeps the arc bonus entry even if the dialog was built without one
-		values = Calculator.SettingsSanitizeButtons(values);
-
-		if(values.length){
-			localStorage.setItem('CustomPartCalcButtons', JSON.stringify(values));
-		}
-		else {
-			// everything removed: back to the default buttons
-			localStorage.removeItem('CustomPartCalcButtons');
-		}
+		Calculator.SettingsSaveButtons($settings, 'CustomPartCalcButtons');
 
 		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
 		Parts.CopyFormatPerGB = $settings.find('.copyformatpergb').prop('checked');
