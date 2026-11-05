@@ -179,7 +179,7 @@ let GreatBuildings = {
     /** @type {number} Arc bonus in percent, used to calculate the patron rewards */
     ForderBonus: 90,
 
-    /** @type {?number} Arc bonus in percent for gold tier level-ups of the prestige rework, null = same as ForderBonus */
+    /** @type {?number} Arc bonus in percent for gold tier level-ups of the prestige rework, null = the own gold contribution boost */
     ForderBonusGold: null,
 
     /** @type {boolean} Hide great buildings that are not built yet */
@@ -870,13 +870,13 @@ let GreatBuildings = {
 
     /**
      * Configured arc bonus of the investment box for a tier. Gold tier level-ups
-     * follow the copper value until an own one has been set.
+     * use the own gold contribution boost until a value has been set.
      *
      * @param {boolean} [Gold=false] Gold tier of the prestige rework
      * @returns {number} Arc bonus in percent
      */
     GetForderBonus: (Gold = false) => {
-        return (Gold ? GreatBuildings.ForderBonusGold : null) ?? GreatBuildings.ForderBonus;
+        return (Gold ? GreatBuildings.ForderBonusGold ?? MainParser.ArkBonusGold : GreatBuildings.ForderBonus);
     },
 
 
@@ -976,7 +976,7 @@ let GreatBuildings = {
         // one arc bonus per tier on worlds with the prestige rework
         const hasGold = MainParser.HasGoldTier();
         h.push('<div class="invest-row">' + i18n('Boxes.GreatBuildings.ArcBonus') + ' ' + (hasGold ? Calculator.TierMarker(false) : '') + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
-        if (hasGold) h.push(' ' + Calculator.TierMarker(true) + '<input type="number" id="costFactorGold" step="0.1" min="12" max="200" value="' + GreatBuildings.GetForderBonus(true) + '">%');
+        if (hasGold) h.push(' ' + Calculator.TierMarker(true) + '<input type="number" id="costFactorGold" step="0.1" min="0" max="200" value="' + GreatBuildings.GetForderBonus(true) + '">%');
         h.push(' <span class="invest-hide"' + (overview ? ' title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.ForeignHideNewTT')) + '"' : '') + '><input id="HideNewGBs" class="hidenewgbs game-cursor" type="checkbox"' + (GreatBuildings.HidesNew() ? ' checked' : '') + (overview ? ' disabled' : '') + '> <label for="HideNewGBs">' + i18n('Boxes.GreatBuildings.HideNewGBs') + '</label></span></div>');
 
         // harvest summary the "harvests" column is based on

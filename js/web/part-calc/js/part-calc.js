@@ -1203,8 +1203,8 @@ let Parts = {
 
 	/**
 	 * Arc percents per place of a tier: the ones in use when the shown level-up
-	 * belongs to it, otherwise the saved ones. Gold tier level-ups follow the
-	 * copper percents until own ones have been set.
+	 * belongs to it, otherwise the saved ones. Without saved values gold tier
+	 * level-ups start with the own gold contribution boost, copper ones with 90%.
 	 *
 	 * @param {boolean} Gold Gold tier
 	 * @returns {number[]}
@@ -1212,9 +1212,9 @@ let Parts = {
 	GetArcPercents: (Gold) => {
 		if (Gold === Parts.ArcPercentsGold) return Parts.ArcPercents;
 
-		const Saved = (Gold ? localStorage.getItem(Parts.ArcPercentsKey(true)) : null) ?? localStorage.getItem(Parts.ArcPercentsKey(false));
+		const Saved = localStorage.getItem(Parts.ArcPercentsKey(Gold));
 
-		return (Saved !== null ? JSON.parse(Saved) : Array(5).fill(90));
+		return (Saved !== null ? JSON.parse(Saved) : Array(5).fill(Gold ? MainParser.ArkBonusGold : 90));
 	},
 
 
