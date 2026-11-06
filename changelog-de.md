@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.7.1
+**Bugfixes**
+
+- Spielerprofil: Kampfboosts für Gildengefechte und Gildenexpedition stimmen wieder mit dem Spiel überein
+- Historische Verbündete: Bei Gebäuden mit Ablaufzeit zählen wieder alle Boosts eines Verbündeten
+- Effizienzbewertung: Multiplikator-Boni für Gildengefechte und Gildenexpedition werden korrekt bewertet
+
+---
+
 ##### 4.8.7.0
 **Update**
 

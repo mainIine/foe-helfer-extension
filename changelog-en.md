@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.7.1
+**Bugfixes**
+
+- Player profile: battle boosts for Guild Battlegrounds and Guild Expedition match the game again
+- Historical Allies: on buildings with an expiry time all boosts of an ally count again
+- Efficiency rating: multiplier bonuses for Guild Battlegrounds and Guild Expedition are rated correctly
+
+---
+
 ##### 4.8.7.0
 **Update**
 

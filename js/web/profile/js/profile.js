@@ -397,20 +397,20 @@ const Profile = {
             cc.push('<tr>'
                 +'<td>'+
                     '<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.General.Guild_Battlegrounds.short')+':&nbsp;</span>'+
-                    '<span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['battleground-att_boost_attacker']+Boosts.Sums.att_boost_attacker))+'</span><span class="hidden-text">/</span>'
-                    +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['battleground-def_boost_attacker']+Boosts.Sums.def_boost_attacker))+'</span><span class="hidden-text">🔴</span>'+
+                    '<span class="aAtt">'+HTML.Format(parseInt(Boosts.Total('att_boost_attacker', 'battleground')))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Total('def_boost_attacker', 'battleground')))+'</span><span class="hidden-text">🔴</span>'+
                 '</td><td class="gbg"></td><td>'
-                    +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.Sums['battleground-att_boost_defender']+Boosts.Sums.att_boost_defender))+'</span><span class="hidden-text">/</span>'
-                    +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['battleground-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span>'+
+                    +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.Total('att_boost_defender', 'battleground')))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Total('def_boost_defender', 'battleground')))+'</span>'+
                 '</td></tr>');
             cc.push('<tr>'
                 +'<td>'
                     +'<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.General.Guild_Expedition.short')+':&nbsp;</span>'
-                    +'<span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-att_boost_attacker']+Boosts.Sums.att_boost_attacker))+'</span><span class="hidden-text">/</span>'
-                    +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_attacker']+Boosts.Sums.def_boost_attacker))+'</span><span class="hidden-text">🔴</span>'
+                    +'<span class="aAtt">'+HTML.Format(parseInt(Boosts.Total('att_boost_attacker', 'guild_expedition')))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Total('def_boost_attacker', 'guild_expedition')))+'</span><span class="hidden-text">🔴</span>'
                 +'</td><td class="ge"></td><td>'
-                    +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-att_boost_defender']+Boosts.Sums.att_boost_defender))+'</span><span class="hidden-text">/</span>'
-                    +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span> </td></tr>');
+                    +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.Total('att_boost_defender', 'guild_expedition')))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Total('def_boost_defender', 'guild_expedition')))+'</span> </td></tr>');
 
             if (Boosts.noSettlement['guild_raids-att_boost_attacker'] > 0 || Boosts.noSettlement['guild_raids-def_boost_attacker'] > 0 || Boosts.noSettlement['guild_raids-att_boost_defender'] > 0 || Boosts.noSettlement['guild_raids-def_boost_defender'] > 0)
                 cc.push('<tr><td>'
