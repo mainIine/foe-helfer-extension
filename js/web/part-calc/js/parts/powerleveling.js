@@ -40,7 +40,7 @@ Object.assign(Parts, {
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true,
-			    active_maps:"main",
+				active_maps: 'main',
 			});
 
 			const box = $('#PowerLevelingBox');

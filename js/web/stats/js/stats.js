@@ -34,6 +34,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 		return;
 	}
 	let [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
+	rewardIncidentSource = MainParser.NormalizeRewardSource(rewardIncidentSource);
 	await IndexDB.getDB();
 
 	if (rewardIncidentSource === 'event_pass') {
@@ -642,6 +643,7 @@ let Stats = {
 				'spoilsOfWar', // Himeji Castle
 				'diplomaticGifts', // Space Carrier
 				'shards', // Flying Island
+				'great_buildings', // GB refinery (gold blueprints)
 			].map(it => Stats.RenderTab({
 				name: i18n('Boxes.Stats.Rewards.Source.' + it),
 				title: i18n('Boxes.Stats.Rewards.SourceTitle.' + it),

@@ -206,10 +206,11 @@ let Productions = {
 		for (const building of Productions.BuildingsAll) {
 			if (building.player_id !== ExtPlayerID || building.chainBuilding?.type === "linked") continue
 
-			let fp = parseFloat(Productions.getBuildingProductionByCategory(false, building, 'strategy_points').amount)
+			const fpProd = Productions.getBuildingProductionByCategory(false, building, 'strategy_points')
+			let fp = parseFloat(fpProd.amount)
 			if (building.isBoostable)
 				fp = Math.round(fp + (fp * Boosts.Sums.forge_points_production / 100))
-			fpSum += fp
+			fpSum += fp + Math.round(fpProd.packageFP)
 
 			unitSum += parseFloat(Productions.getBuildingProductionByCategory(false, building, 'units').amount)
 
@@ -353,7 +354,7 @@ let Productions = {
 								if (Productions.BuildingsProducts.units.find(x => x.id === building.id) === undefined)
 									Productions.BuildingsProducts["units"].push(saveBuilding)
 							}
-							if (resource.type === "forgepoint_package" || resource.subType === "forgepoint_package") { // e.g. grilling grove
+							if (resource.fp || resource.type === "forgepoint_package" || resource.subType === "forgepoint_package") { // e.g. grilling grove
 								if (Productions.BuildingsProducts.strategy_points.find(x => x.id === building.id) === undefined)
 									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 							}
@@ -420,6 +421,10 @@ let Productions = {
 					if (production.resources?.type === "consumable") {
 						if (Productions.BuildingsProducts.items.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts["items"].push(saveBuilding)
+					}
+					if (production.type === "genericReward" && production.resources?.fp) { // fixed forge point packages
+						if (Productions.BuildingsProducts.strategy_points.find(x => x.id === building.id) === undefined)
+							Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 					}
 				})
 			}
@@ -613,7 +618,9 @@ let Productions = {
 	 * @param {boolean} [current=false] - If true, calculates based on current production state; otherwise, base production.
 	 * @param {Object} building - The building object to analyze.
 	 * @param {string} category - The production category (e.g., "strategy_points", "clan_goods", "units").
-	 * @returns {Object} An object containing production amount, type, and unit details.
+	 * @returns {Object} An object containing production amount, type, and unit details;
+	 *     doubledAmount is the part of amount that motivation doubles, packageFP the average forge points
+	 *     from forge point packages (items, not part of amount and not boosted).
 	 */
 	getBuildingProductionByCategory(current = false, building, category) {
 		let prod = {
@@ -621,7 +628,9 @@ let Productions = {
 			type: null, // units
 			units: [],
 			hasRandomProductions: false,
-			doubleWhenMotivated: false
+			doubleWhenMotivated: false,
+			doubledAmount: 0,
+			packageFP: 0
 		}
 		let productions = (current ? building.state.production : building.production);
 
@@ -651,23 +660,33 @@ let Productions = {
 							prod.amount += resource.amount * resource.dropChance;
 							prod.hasRandomProductions = true;
 						}
+						if (resource.fp && category === "strategy_points") {
+							prod.packageFP += resource.fp * resource.dropChance;
+							prod.hasRandomProductions = true;
+						}
 					})
+				}
+
+				// forge point packages of fixed or already rolled productions
+				if (production.type === "genericReward" && production.resources?.fp && category === "strategy_points") {
+					prod.packageFP += production.resources.fp
 				}
 
 				if (production.type === "resources" && category !== "goods") {
 					if (production.resources[category]) {
-						prod.doubleWhenMotivated = production.doubleWhenMotivated
-						prod.amount += production.resources[category] //* doubleMoney
+						prod.amount += production.resources[category]
+						if (production.doubleWhenMotivated) {
+							prod.doubleWhenMotivated = true
+							prod.doubledAmount += production.resources[category]
+						}
 					}
 				}
 
 				if (production.type === "special_goods" && category === "special_goods") {
-					let combinedValues = Object.entries(production.resources).length === 1 ? Math.round(prod.amount * Boosts.Sums.special_goods_production/100) : 0;
-					for (let [type,value] of Object.entries(production.resources)) {
-						let boostedValue = Math.round(value * Boosts.Sums.special_goods_production/100);
-						combinedValues += value+boostedValue;
+					const boost = Boosts.Sums.special_goods_production || 0
+					for (const value of Object.values(production.resources)) {
+						prod.amount += value + Math.round(value * boost / 100)
 					}
-					prod.amount = combinedValues;
 				}
 
 				if (production.type+"s" === category) { // units
@@ -722,7 +741,11 @@ let Productions = {
 			return CityBuildings.getBuildingGoodsByEra(current, building, true);
 		}
 		if (category === "forge_points_production" || category === "coin_production" || category === "supply_production") {
-			prod.amount = building.boosts.filter(x => x.type[0] === category)[0].value // not really rock solid like this
+			// sum all sources (base boost + set/chain bonuses), skip set bonuses without enough neighbours
+			prod.amount = (building.boosts || [])
+				.filter(boost => boost.type.includes(category))
+				.filter(boost => !(boost.needsLink && building.setBuilding !== undefined && boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)))
+				.reduce((sum, boost) => sum + boost.value, 0)
 		}
 		return prod
 	},

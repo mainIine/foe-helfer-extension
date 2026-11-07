@@ -174,19 +174,25 @@ let Allies = {
 
 	/**
 	 * Boosts of an ally at a given level from the `allies` metadata: per rarity one
-	 * entry per boost with the value for every level. The new game client no longer
-	 * delivers the boosts with the ally itself (`currentLevel.boosts` is empty).
+	 * entry per boost with the value for every level. A rarity only lists the boosts
+	 * it adds, an ally keeps the boosts of all lower rarities as well. The new game
+	 * client no longer delivers the boosts with the ally itself (`currentLevel.boosts` is empty).
 	 *
 	 * @param {Object} ally Ally (or assembled fragment reward) with `allyId` and `rarity`
 	 * @param {number} level Ally level
 	 * @returns {?Object[]} Boost objects with `type`, `value` and `targetedFeature`, null when unknown
 	 */
 	metaBoosts: (ally, level) => {
-		const rarityValue = ally.rarity?.value ?? ally.rarity;
-		const rarity = Allies.meta[ally.allyId]?.rarityInfo?.find(r => r.rarity?.value === rarityValue);
-		if (!rarity) return null;
+		const order = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
+		const rankOf = (r) => order.indexOf(r?.value ?? r);
+		const rank = rankOf(ally.rarity);
+		const info = Allies.meta[ally.allyId]?.rarityInfo;
+		if (rank < 0 || !info?.some(r => rankOf(r.rarity) === rank)) return null;
 
-		const boosts = rarity.rarityBoosts.map(b => b.boost?.[level]).filter(Boolean);
+		const boosts = info
+			.filter(r => rankOf(r.rarity) >= 0 && rankOf(r.rarity) <= rank)
+			.sort((a, b) => rankOf(a.rarity) - rankOf(b.rarity))
+			.flatMap(r => r.rarityBoosts.map(b => b.boost?.[level]).filter(Boolean));
 		return boosts.length ? boosts : null;
 	},
 

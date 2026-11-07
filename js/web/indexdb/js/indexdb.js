@@ -32,7 +32,7 @@
 * Structure of "statsRewards" db
 * {
 *   date: Date,
-*   type: 'battlegrounds_conquest' | 'guildExpedition' | 'spoilsOfWar' | 'diplomaticGifts',
+*   type: 'battlegrounds_conquest' | 'guildExpedition' | 'spoilsOfWar' | 'diplomaticGifts', // legacy names, see MainParser.NormalizeRewardSource
 *   amount: number,
 *   reward: string, // eg. resource#strategy_points#10
 * }
@@ -402,6 +402,15 @@ let IndexDB = {
                 });
             IndexDB.db.statsRewards.bulkPut(y);
             localStorage.setItem("HiddenRewardOverwrite","done");
+        }
+
+        // prestige update (11/2026): reward sources arrive in snake_case, rename them back to the stored legacy names
+        const renameFlag = 'RewardSourceRename_' + IndexDB.db.name;
+        if (!localStorage.getItem(renameFlag)) {
+            await IndexDB.db.statsRewards
+                .filter(r => MainParser.NormalizeRewardSource(r.type) !== r.type)
+                .modify(r => { r.type = MainParser.NormalizeRewardSource(r.type); });
+            localStorage.setItem(renameFlag, 'done');
         }
     },
 

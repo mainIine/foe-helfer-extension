@@ -1984,6 +1984,31 @@ let MainParser = {
 
 
 	/**
+	 * Reward sources the game sent in camelCase before the prestige update (11/2026).
+	 * Stored statistics, tabs and translations use these names.
+	 */
+	LegacyRewardSources: new Set([
+		'antiquesDealer', 'chestEvent', 'chestEventGrandPrize', 'dailyChallenges', 'diplomaticGifts',
+		'explorationSite', 'forgeBowlEvent', 'grandPrize', 'guildExpedition', 'halloweenEvent',
+		'halloweenEventAutoCollect', 'pickupAll', 'spoilsOfWar', 'summerEventGrandPrize', 'winterEvent',
+	]),
+
+
+	/**
+	 * Maps a reward source of RewardService.collectReward to its pre-update name
+	 * (e.g. spoils_of_war → spoilsOfWar), so old and new entries stay one group.
+	 *
+	 * @param {string} Source Reward source as sent by the game
+	 * @returns {string} Legacy camelCase name if known, otherwise the source unchanged
+	 */
+	NormalizeRewardSource: (Source) => {
+		if (typeof Source !== 'string') return Source;
+		const Camel = Source.replace(/_([a-z])/g, (m, c) => c.toUpperCase());
+		return MainParser.LegacyRewardSources.has(Camel) ? Camel : Source;
+	},
+
+
+	/**
 	 * Bonuses of a placed great building. Supports the classic single `bonus` field and the
 	 * `bonuses` array of the prestige rework (classic worlds already carry `bonuses` as an EMPTY
 	 * array next to the filled field). The placed entries only carry type and value, therefore the

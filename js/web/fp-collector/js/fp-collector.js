@@ -47,8 +47,8 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
 
 FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 	const d = data.responseData[0][0];
-	let eventCheck = data.responseData[1],
-		event = data.responseData[1],
+	let eventCheck = MainParser.NormalizeRewardSource(data.responseData[1]),
+		event = eventCheck,
 		notes = null,
 		amount = d['amount'];
 

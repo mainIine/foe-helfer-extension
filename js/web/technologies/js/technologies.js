@@ -26,9 +26,9 @@ FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
 	Technologies.UnlockedTechnologies = data.responseData;
 });
 
-// pick up eras the game client already knows but the extension does not yet
-FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {
-	Technologies.DetectGameEras();
+// era list of the game (id, index, localized name, short code): picks up eras the extension does not know yet
+FoEproxy.addMetaHandler('research_eras', (xhr, postData) => {
+	Technologies.ApplyResearchEras(JSON.parse(xhr.responseText));
 });
 
 FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
@@ -127,9 +127,9 @@ let Technologies = {
 
     /**
      * Ordered list of playable era ids, oldest first. Mirrors the game
-     * client's EraConstants.ERA_IDS and acts as the single source for all
-     * era lookup maps. DetectGameEras() extends it at runtime with eras the
-     * game client knows but this list does not yet.
+     * game's research_eras metadata and acts as the single source for all
+     * era lookup maps. ApplyResearchEras() extends it at runtime with eras the
+     * game knows but this list does not yet.
      * @type {string[]}
      */
     EraList: [
@@ -201,90 +201,63 @@ let Technologies = {
 
 
     /**
-     * Reads the era constants straight from the game client so new eras work
-     * without an extension update: fetches the ForgeHX client script (served
-     * from the browser cache, parsed once per client version) and extracts
-     * the ordered era id list plus the gettext key and short code of every
-     * era name. Newly discovered eras are appended to EraList, the lookup
-     * maps are rebuilt and i18n fallbacks are registered.
+     * Applies the game's research_eras metadata, so new eras work without an
+     * extension update: newly listed eras are appended to EraList, the lookup
+     * maps are rebuilt and missing i18n entries (full and short era name) are
+     * registered from the localized name and the era code of the metadata.
+     * @param {{era:string, index:number, name:string, code:string, isTeaser?:boolean}[]} researchEras
+     * @param {number} [retries=60] Attempts left while the extension translations are still loading
      */
-    DetectGameEras: async (retries = 60) => {
+    ApplyResearchEras: (researchEras, retries = 60) => {
+        if (!Array.isArray(researchEras)) return;
+
+        if (!i18n_loaded) { // translations must be loaded before missing era names can be detected
+            if (retries > 0) setTimeout(() => Technologies.ApplyResearchEras(researchEras, retries - 1), 1000);
+            return;
+        }
+
         try {
-            if (!i18n_loaded) { // translations must be loaded before missing era names can be detected
-                if (retries > 0) setTimeout(() => Technologies.DetectGameEras(retries - 1), 1000);
-                return;
-            }
+            localStorage.removeItem('TechnologiesGameEras'); // cache of the former client script parser
 
-            const src = [...document.scripts].map(s => s.src).find(s => /ForgeHX.*\.js/.test(s));
-            if (!src) return;
+            // teaser eras ("The Unknown") are not playable yet
+            const eras = researchEras.filter(e => e.era && !e.isTeaser).sort((a, b) => a.index - b.index),
+                gameList = eras.map(e => e.era);
 
-            let cache = JSON.parse(localStorage.getItem('TechnologiesGameEras') || 'null');
-
-            if (!cache || cache.src !== src) {
-                const js = await fetch(src).then(r => r.text());
-
-                // EraConstants.ERA_IDS, e.g. ERA_IDS="StoneAge BronzeAge ... SpaceAgeSpaceHub StellarAgeDiscovery"
-                const idsMatch = js.match(/\bERA_IDS="([A-Za-z ]+)"/);
-                if (!idsMatch) return;
-
-                // EraNames lookup entries, e.g. new xl(t.gettext("STEL|Stellar Age Discovery"),"stel",23);a.h.StellarAgeDiscovery=b
-                const names = {};
-                for (const m of js.matchAll(/new [\w$]+\([\w$]+\.gettext\("([^"]+)"\),\s*"([a-z]+)",\d+\);[\w$]+\.h\.(\w+)=/g)) {
-                    names[m[3]] = { key: m[1], code: m[2] };
-                }
-
-                cache = { src: src, eraIds: idsMatch[1].split(' '), names: names };
-                localStorage.setItem('TechnologiesGameEras', JSON.stringify(cache));
-            }
-
-            // accept the game's list only if it extends the known one (placeholder eras excluded)
-            const gameList = cache.eraIds.filter(id => id !== 'TheUnknownEra');
-            if (!Technologies.EraList.every((id, i) => gameList[i] === id)) return;
-
-            if (gameList.length > Technologies.EraList.length) {
+            // accept the game's list only if it extends the known one
+            if (Technologies.EraList.every((id, i) => gameList[i] === id) && gameList.length > Technologies.EraList.length) {
                 Technologies.EraList = gameList;
                 Technologies.BuildEraMaps();
 
-                // StartUp resolves CurrentEraID synchronously and may have run before the
-                // maps knew this era (async detection) — refresh it from the extended maps
+                // StartUp may have resolved CurrentEraID before the maps knew this era
                 if (typeof CurrentEra === 'string' && Technologies.Eras[CurrentEra] !== undefined) {
                     CurrentEraID = Technologies.Eras[CurrentEra];
                 }
             }
 
-            Technologies.AddEraTranslations(cache.names || {});
+            Technologies.AddEraTranslations(eras);
         }
         catch (err) {
-            console.warn('DetectGameEras failed:', err);
+            console.warn('ApplyResearchEras failed:', err);
         }
     },
 
 
     /**
      * Registers i18n fallbacks (full and short era name) for eras the
-     * extension's language files do not cover yet. Full names are resolved
-     * through the game's own translation catalog (window.gettextCatalog),
-     * so they appear in the game language.
-     * @param {Object<string,{key:string,code:string}>} names Era name data extracted from the client script
+     * extension's language files do not cover yet. The full name comes
+     * localized from the metadata, so it appears in the game language.
+     * @param {{era:string, name:string, code:string}[]} eras Playable eras of the research_eras metadata
      */
-    AddEraTranslations: (names) => {
-        const catalog = window.gettextCatalog?.strings,
-            strings = catalog?.h || catalog || {},
-            values = {};
+    AddEraTranslations: (eras) => {
+        const values = {};
 
-        for (const [eraName, data] of Object.entries(names)) {
-            const eraId = Technologies.Eras[eraName];
+        for (const { era, name, code } of eras) {
+            const eraId = Technologies.Eras[era];
             if (eraId === undefined) continue;
 
-            if (i18n('Eras.' + eraId) === 'Eras.' + eraId) {
-                let translated = strings[data.key];
-                translated = (Array.isArray(translated) ? translated[0] : translated) || data.key;
-                values['Eras.' + eraId] = String(translated).split('|').pop(); // cut off gettext context prefix
-            }
-
-            if (i18n('Eras.' + eraId + '.short') === 'Eras.' + eraId + '.short') {
-                values['Eras.' + eraId + '.short'] = data.code.toUpperCase();
-            }
+            const key = 'Eras.' + eraId;
+            if (name && i18n(key) === key) values[key] = name;
+            if (code && i18n(key + '.short') === key + '.short') values[key + '.short'] = code.toUpperCase();
         }
 
         if (Object.keys(values).length > 0) {

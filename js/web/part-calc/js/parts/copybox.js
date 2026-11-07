@@ -119,6 +119,8 @@ Object.assign(Parts, {
 			else {
 				Parts.CopyDescending = true;
 			}
+
+			Parts.CopyIncludeTier = (localStorage.getItem(Parts.GetStorageKey('CopyIncludeTier', Parts.CurrentGB.Entity['cityentity_id'])) === 'true');
 		}
 
 		if (Parts.CopyModeAll) {
@@ -171,6 +173,8 @@ Object.assign(Parts, {
 			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (Parts.CopyIncludeOwnPart ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-prep"><input type="checkbox" class="form-check-input" id="options-prep" data-options="prep" ' + (Parts.CopyPreP ? 'checked' : '') + '> <span>P(xx)</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-danger"><input type="checkbox" class="form-check-input" id="options-danger" data-options="danger" ' + (Parts.CopyIncludeDanger ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</span></label>' +
+			// copper/gold tag of the level-up, only on worlds with the prestige rework
+			(MainParser.HasGoldTier() ? '<label class="form-check-label game-cursor" for="options-tier"><input type="checkbox" class="form-check-input" id="options-tier" data-options="tier" ' + (Parts.CopyIncludeTier ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Tier') + ' [' + i18n('Boxes.OwnpartCalculator.TierCopperShort') + '/' + i18n('Boxes.OwnpartCalculator.TierGoldShort') + ']</span></label>' : '') +
 			'</div>';
 
 		h.push(Options)
@@ -251,6 +255,8 @@ Object.assign(Parts, {
 		if (Parts.CopyIncludeLevelString) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
 
 		if (Parts.CopyIncludeLevel) Ret.push(Level + '→' + (Level + 1));
+
+		if (Parts.CopyIncludeTier && MainParser.HasGoldTier()) Ret.push('[' + i18n(Parts.IsGoldLevel(Level) ? 'Boxes.OwnpartCalculator.TierGoldShort' : 'Boxes.OwnpartCalculator.TierCopperShort') + ']');
 
 		let NoPlacesSelected = true;
 		for (let i = 0; i < Places.length; i++) {

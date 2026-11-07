@@ -75,6 +75,18 @@ let StrategyPoints = {
 		});
 
 		StrategyPoints.db.open();
+
+		// prestige update (11/2026): reward sources arrive in snake_case, rename them back to the stored legacy names
+		const renameFlag = 'RewardSourceRename_' + FP_DBName;
+		if (localStorage.getItem(renameFlag)) return;
+		try {
+			await StrategyPoints.db.ForgePointsStats
+				.filter(r => MainParser.NormalizeRewardSource(r.event) !== r.event)
+				.modify(r => { r.event = MainParser.NormalizeRewardSource(r.event); });
+			localStorage.setItem(renameFlag, 'done');
+		} catch (e) {
+			console.error(e);
+		}
 	},
 
 
