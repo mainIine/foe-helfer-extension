@@ -863,6 +863,7 @@ let CityBuildings = {
 										subType: subType,
 										amount: amount,
 										dropChance: reward.dropChance,
+										fp: this.getForgePointPackageValue(reward.product.reward.id, lookupData, metaData, era),
 									});
 								}
 								else if (reward.product.type === 'resources') {
@@ -949,10 +950,11 @@ let CityBuildings = {
 								type: (product.name === 'special_goods' ? 'special_goods' : 'resources'), // space carrier produces special goods
 							});
 						}
-						if (product.goods && data.type === 'greatbuilding' && product.name === 'clan_goods') {
+						// clan_goods_extended: adjacent era goods of the gold tier (e.g. Observatory)
+						if (product.goods && data.type === 'greatbuilding' && ['clan_goods', 'clan_goods_extended'].includes(product.name)) {
 							const resources = {};
 							product.goods.forEach(good => {
-								resources[good.good_id] = good.value;
+								resources[good.good_id] = (resources[good.good_id] || 0) + good.value;
 							});
 							productions.push({
 								resources: resources,
@@ -1153,6 +1155,9 @@ let CityBuildings = {
 		else if (lookupData?.type === 'chest' && lookupData.id.search('fragment') !== -1) {
 			lookupData.type = 'consumable';
 		}
+		// forge points of packages, read before sets are turned into consumables
+		const fp = (lookupData ? this.getForgePointPackageValue(product.reward.id, lookupData, metaData, era) : undefined);
+
 		// self aid kits have type set
 		if (lookupData?.type === 'set') {
 			lookupData.type = 'consumable';
@@ -1166,7 +1171,8 @@ let CityBuildings = {
 				type: lookupData?.type || product.reward.type || 'consumable',
 				subType: lookupData?.subType || product.reward.subType,
 				amount: amount, // amount can be undefined for blueprints or units if building is not motivated
-				icon: lookupData?.iconAssetName || product.reward.iconAssetName
+				icon: lookupData?.iconAssetName || product.reward.iconAssetName,
+				fp: fp
 			};
 		}
 		// chain attachments with generic production need extra handling
@@ -1262,6 +1268,32 @@ let CityBuildings = {
 		}
 
 		return { [type]: amount };
+	},
+
+
+	/**
+	 * Forge points of a forge point package reward: the subType holds the points
+	 * per package, a set (e.g. "large_forgepoint_package_40") bundles totalAmount
+	 * packages of the base package.
+	 *
+	 * @param {string} rewardId - The reward id.
+	 * @param {Object} lookupData - The lookup data of the reward.
+	 * @param {Object} metaData - The city entity meta data.
+	 * @param {string} era - The era of the building.
+	 * @returns {number|undefined} The forge points, or undefined if the reward is no forge point package.
+	 */
+	getForgePointPackageValue(rewardId, lookupData, metaData, era) {
+		if (lookupData.type === 'forgepoint_package') {
+			return (parseInt(lookupData.subType) || 0) * (lookupData.amount || 1);
+		}
+		if (lookupData.type === 'set' && rewardId.includes('forgepoint_package')) {
+			const baseId = rewardId.replace(/_\d+$/, ''),
+				base = metaData.components[era]?.lookup.rewards[baseId] || metaData.components.AllAge?.lookup.rewards[baseId];
+			if (base?.type === 'forgepoint_package') {
+				return (parseInt(base.subType) || 0) * (lookupData.totalAmount || lookupData.amount || 1);
+			}
+		}
+		return undefined;
 	},
 
 
@@ -1419,10 +1451,8 @@ let CityBuildings = {
 		};
 
 		if (productions) {
-			let goodsBoost = 0;
-			if (boosted) {
-				goodsBoost = Boosts.Sums.goods_production || 1;
-			}
+			// the goods production boost does not apply to great buildings
+			const goodsBoost = (boosted && building.isBoostable ? Boosts.Sums.goods_production || 0 : 0);
 
 			// only evaluate 1 day production for production buildings
 			if (building.type === 'production') {
@@ -1524,10 +1554,8 @@ let CityBuildings = {
 		};
 
 		if (productions) {
-			let goodsBoost = 0;
-			if (boosted) {
-				goodsBoost = Boosts.Sums.guild_goods_production || 1;
-			}
+			// the guild goods production boost does not apply to great buildings
+			const goodsBoost = (boosted && building.type !== 'greatbuilding' ? Boosts.Sums.guild_goods_production || 0 : 0);
 
 			for (const production of productions) {
 				if (production.type !== 'guildResources' || production.resources === undefined) continue;
@@ -1550,10 +1578,6 @@ let CityBuildings = {
 						let boostedExtra = Math.round(production.resources[resourceName] * goodsBoost / 100);
 						if (resourceName.includes('all_goods_of_')) {
 							boostedExtra = Math.round(production.resources[resourceName] / 5 * goodsBoost / 100) * 5;
-						}
-						// dont apply boost to GBs
-						if (building.type === 'greatbuilding') {
-							boostedExtra = 0;
 						}
 
 						goods.eras[goodEra] = (goods.eras[goodEra] || 0) + parseInt(production.resources[resourceName]) + boostedExtra;

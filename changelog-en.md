@@ -1,11 +1,21 @@
 ## Extension Changelog
 
-##### 4.8.7.1
+##### 4.8.8.0
+**Update**
+
+- GB Calculator: the copy text can include the tier of the level – [C] for copper, [G] for gold; the setting is remembered like the other copy options (per GB if enabled)
+
 **Bugfixes**
 
 - Player profile: battle boosts for Guild Battlegrounds and Guild Expedition match the game again
 - Historical Allies: on buildings with an expiry time all boosts of an ally count again
 - Efficiency rating: multiplier bonuses for Guild Battlegrounds and Guild Expedition are rated correctly
+- Statistics and FP collector: finds of Himeji Castle, the Space Carrier and daily challenges are recorded again, the entries missing since the prestige update reappear automatically; new tab for the gold blueprints from the GB refinery
+- Collect-all blocker: no longer blocks after a manual collection and reliably detects motivated buildings
+- Production overview and guild member statistics: the Observatory counts the guild goods of the adjacent eras, great buildings with the prestige update are listed in the guild goods list again
+- Power leveling: the box adapts its width to the table, so all seven reward places are visible
+- Eras: names and short names of new eras are taken from the game automatically again, STEL is shown instead of "Eras.24.short"
+- Production overview: coins and supplies of buildings that double only part of their production when motivated are no longer overstated, goods and guild goods without a production boost no longer get an extra 1 %, the goods boost no longer applies to great buildings, special goods of several productions are added up correctly, the FP/coin/supply boost tabs include all boosts of a building, forge point packages (e.g. Momijidori Shrine) count in the FP tab and the daily production
 
 ---
 

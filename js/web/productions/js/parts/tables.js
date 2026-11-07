@@ -166,19 +166,25 @@ Object.assign(Productions, {
 							currentAmount = parseFloat(currentProductionByCategory.amount)
 							amount = parseFloat(generalProductionByCategory.amount)
 							hasRandomProductions = generalProductionByCategory.hasRandomProductions
-							let doubled = generalProductionByCategory.doubleWhenMotivated
+							// motivation doubles only the productions flagged for it, not the whole sum
+							let doubledAmount = generalProductionByCategory.doubledAmount || 0
 
 							if (type === 'money' && building.isBoostable) {
-								amount = Math.round(amount + (amount * ((Boosts.Sums.coin_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
+								amount = Math.round((amount + doubledAmount) * (1 + (Boosts.Sums.coin_production + (Productions.HappinessBoost * 100)) / 100))
 								currentAmount = Math.round(currentAmount + (currentAmount * ((Boosts.Sums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type === 'supplies' && building.isBoostable) {
-								amount = Math.round(amount + (amount * ((Boosts.Sums.supply_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
+								amount = Math.round((amount + doubledAmount) * (1 + (Boosts.Sums.supply_production + (Productions.HappinessBoost * 100)) / 100))
 								currentAmount = Math.round(currentAmount + (currentAmount *((Boosts.Sums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type === 'strategy_points' && building.isBoostable) {
 								amount = Math.round(amount + (amount *((Boosts.Sums.forge_points_production) / 100)))
 								currentAmount = Math.round(currentAmount + (currentAmount *((Boosts.Sums.forge_points_production) / 100)))
+							}
+							// forge point packages are items: added without the FP boost
+							if (type === 'strategy_points') {
+								amount = Math.round(amount + (generalProductionByCategory.packageFP || 0))
+								currentAmount = Math.round(currentAmount + (currentProductionByCategory.packageFP || 0))
 							}
 
 							rowA.push('<td data-number="'+amount+'" exportvalue="'+amount+'" class="textright">')

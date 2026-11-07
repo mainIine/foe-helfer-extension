@@ -162,6 +162,7 @@ let Parts = {
 	CopyPreP: true,
 	CopyDescending: true,
 	CopyIncludeLevelString: false,
+	CopyIncludeTier: false,
 
 	CopyModeAll: false,
 	CopyModeAuto: true,
@@ -444,6 +445,11 @@ let Parts = {
 						StorageKey = Parts.GetStorageKey('CopyPreP', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyPreP);
 					}
+					else if (OptionsName === 'tier') {
+						Parts.CopyIncludeTier = !Parts.CopyIncludeTier;
+						StorageKey = Parts.GetStorageKey('CopyIncludeTier', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
+						localStorage.setItem(StorageKey, Parts.CopyIncludeTier);
+					}
 				}
 
 				Parts.CalcBackgroundBody();
@@ -601,6 +607,9 @@ let Parts = {
 
 				let SavedCopyDescending = localStorage.getItem(Parts.GetStorageKey('CopyDescending', null));
 				if (SavedCopyDescending !== null) Parts.CopyDescending = (SavedCopyDescending === 'true');
+
+				let SavedCopyIncludeTier = localStorage.getItem(Parts.GetStorageKey('CopyIncludeTier', null));
+				if (SavedCopyIncludeTier !== null) Parts.CopyIncludeTier = (SavedCopyIncludeTier === 'true');
 			}
 		}
 

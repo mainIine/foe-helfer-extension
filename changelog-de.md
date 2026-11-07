@@ -1,11 +1,21 @@
 ## Extension Changelog
 
-##### 4.8.7.1
+##### 4.8.8.0
+**Update**
+
+- LG Rechner: Der Kopiertext kann den Rang der Stufe enthalten – [K] für Kupfer, [G] für Gold; die Einstellung wird wie die übrigen Kopier-Optionen (auf Wunsch pro LG) gemerkt
+
 **Bugfixes**
 
 - Spielerprofil: Kampfboosts für Gildengefechte und Gildenexpedition stimmen wieder mit dem Spiel überein
 - Historische Verbündete: Bei Gebäuden mit Ablaufzeit zählen wieder alle Boosts eines Verbündeten
 - Effizienzbewertung: Multiplikator-Boni für Gildengefechte und Gildenexpedition werden korrekt bewertet
+- Statistik und FP-Sammler: Funde der Burg Himeji, des Weltraumfrachters und der täglichen Herausforderungen werden wieder erfasst, die seit dem Prestige-Update fehlenden Einträge erscheinen automatisch wieder; neuer Reiter für die Gold-Blaupausen aus der LG-Raffinerie
+- Alles-Einsammeln-Blocker: blockiert nicht mehr nach manuellem Abholen und erkennt motivierte Gebäude zuverlässig
+- Produktionsübersicht und Gildenmitglieder-Statistik: Das Observatorium zählt die Gildengüter der angrenzenden Zeitalter mit, Legendäre Bauwerke mit Prestige-Update erscheinen wieder in der Gildengüter-Liste
+- Powerleveln: Die Box passt ihre Breite an die Tabelle an, damit alle sieben Belohnungsplätze sichtbar sind
+- Zeitalter: Namen und Kurzformen neuer Zeitalter werden wieder automatisch aus dem Spiel übernommen, statt „Eras.24.short“ erscheint wieder STEL
+- Produktionsübersicht: Münzen und Vorräte von Gebäuden, die bei Motivation nur einen Teil ihrer Produktion verdoppeln, werden nicht mehr zu hoch angezeigt, Güter und Gildengüter ohne Produktionsboost bekommen kein zusätzliches 1 % mehr, der Güterboost wirkt nicht mehr auf Legendäre Bauwerke, Spezialgüter aus mehreren Produktionen werden richtig addiert, die Boost-Reiter für FP/Münzen/Vorräte zählen alle Boosts eines Gebäudes, Forge-Punkt-Pakete (z. B. Momijidori-Schrein) zählen im FP-Reiter und in der Tagesproduktion mit
 
 ---
 
