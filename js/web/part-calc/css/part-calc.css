@@ -319,11 +319,12 @@
 #PowerLevelingBox {
 	top: 30%;
 	left: 100px;
-	max-width: 700px;
+	width: max-content; /* follows the table, gold levels show seven reward places */
+	max-width: calc(100vw - 40px);
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody {
-	overflow-x: hidden;
+	overflow-x: auto;
 	overflow-y: auto;
 	max-height: 500px;
 	user-select: text;

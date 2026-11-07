@@ -64,6 +64,8 @@ let Boosts = {
     // ("multiplies and adds your total attack by X%": effective = floor(additive * (1 + multiplier / 100)))
     Additive: {},
     Multipliers: {},
+    // features the general boosts count in as well (quantum incursion has its own boosts only)
+    GeneralFeatures: ['battleground', 'guild_expedition'],
     percent: (x) => {
         return [
             "diplomacy",
@@ -224,7 +226,7 @@ let Boosts = {
      * @returns {number}
      */
     effective: (additive, multiplier) => {
-        return (multiplier ? Math.floor(additive * (1 + multiplier / 100)) : additive);
+        return (multiplier ? Math.floor(Math.max(0, additive) * (1 + multiplier / 100)) : additive);
     },
 
     /**
@@ -237,7 +239,26 @@ let Boosts = {
      */
     AdditiveSum: (type, feature = 'all') => {
         const key = Boosts.getFeatureType({ type: type, feature: feature });
-        return Boosts.Additive[key] || 0;
+        return (Boosts.Additive[key] || 0) + (Boosts.GeneralFeatures.includes(feature) ? (Boosts.Additive[type] || 0) : 0);
+    },
+
+    /**
+     * Total of a boost type within a feature like the game (BoostModel._getArmyUnitsBoosts):
+     * the general and the feature boosts form one pool, the multipliers of both apply to the
+     * additive sum of both — not each multiplier to its own share.
+     *
+     * @param {string} type e.g. 'att_boost_attacker'
+     * @param {string} [feature='all']
+     * @returns {number}
+     */
+    Total: (type, feature = 'all') => {
+        const key = Boosts.getFeatureType({ type: type, feature: feature });
+        if (!Boosts.GeneralFeatures.includes(feature)) return Boosts.Sums[key] || 0;
+
+        return Boosts.effective(
+            (Boosts.Additive[type] || 0) + (Boosts.Additive[key] || 0),
+            (Boosts.Multipliers[type] || 0) + (Boosts.Multipliers[key] || 0)
+        );
     },
 
     updateSums: () => {
