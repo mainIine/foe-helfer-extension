@@ -1579,7 +1579,8 @@ Object.assign(Productions, {
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 
 		else if (type.includes("goods") && !type.includes("guild_raids_")) {
-			let allGoods = CityBuildings.getBuildingGoodsByEra(false, building);
+			// boosted like FP, coins and supplies, so the values match the game
+			let allGoods = CityBuildings.getBuildingGoodsByEra(false, building, true);
 			let era = (ActiveMap === "OtherPlayer" ? CityMap.OtherPlayer.eraName : CurrentEra)
 
 			if (allGoods !== undefined) {

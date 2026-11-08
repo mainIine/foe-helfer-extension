@@ -1,5 +1,15 @@
 ## Extension Changelog
 
+##### 4.8.8.1
+**Bugfixes**
+
+- Effizienzbewertung: Dasselbe Gebäude in verschiedenen Zeitaltern (z. B. ein herabgestuftes Erhabenes Gebäude) wird in eigenen Zeilen mit eigener Anzahl bewertet, die Ersatzvorschläge rechnen mit der Anzahl des passenden Zeitalters
+- Effizienzbewertung: Güter werden wie im Spiel mit dem Güterproduktionsboost bewertet
+- Effizienzbewertung und Produktionsübersicht: Güter aller Sorten eines Zeitalters aus Zufallsproduktionen werden wie im Spiel gerundet
+- LG-Rechner und Legendäre Bauwerke: Stufe 0 zählt wie im Spiel als Kupfer statt als Gold
+
+---
+
 ##### 4.8.8.0
 **Update**
 

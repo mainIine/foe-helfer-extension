@@ -1,5 +1,15 @@
 ## Extension Changelog
 
+##### 4.8.8.1
+**Bugfixes**
+
+- Efficiency rating: the same building in different eras (e.g. an aged down ascended building) is rated in its own row with its own count, the replacement suggestions use the count of the matching era
+- Efficiency rating: goods are rated with the goods production boost like in the game
+- Efficiency rating and production overview: all goods of an era from random productions are rounded like in the game
+- GB calculator and great buildings: level 0 counts as copper like in the game instead of gold
+
+---
+
 ##### 4.8.8.0
 **Update**
 

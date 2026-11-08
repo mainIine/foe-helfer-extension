@@ -1515,7 +1515,10 @@ let CityBuildings = {
 								goodEra = Technologies.getEraIdByCurrentEraName(building.eraName);
 							}
 
-							const boostedExtra = Math.round(resource.amount * goodsBoost / 100);
+							// all goods of an era are boosted per good, like the game does
+							const boostedExtra = ((resource.subType || resource.id || '').includes('all_goods_of_')
+								? Math.round(resource.amount / 5 * goodsBoost / 100) * 5
+								: Math.round(resource.amount * goodsBoost / 100));
 							goods.eras[goodEra] = (goods.eras[goodEra] || 0) + parseFloat((resource.amount + boostedExtra) * resource.dropChance);
 						}
 					}
