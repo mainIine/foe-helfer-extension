@@ -1926,6 +1926,7 @@ let MainParser = {
 	 * the tier whose metadata level range contains the level, capped at the building's maxTier.
 	 * The ranges overlap (beta 11/2026: copper 1-200, gold 101-∞), the game checks them by
 	 * descending start level and takes the first match, i.e. the highest tier.
+	 * Levels outside all ranges (e.g. level 0) are copper like in the game.
 	 * Only the game's great_building_tiers metadata is used, without it the result is null.
 	 *
 	 * @param {?Object} meta City entity metadata of the great building
@@ -1938,7 +1939,7 @@ let MainParser = {
 
 		const TierOrder = { copper: 1, silver: 2, gold: 3 },
 			MaxTier = meta['maxTier']?.['value'] || meta['maxTier'] || 'gold';
-		let Tier = null;
+		let Tier = 'copper';
 
 		const Rows = MainParser.GreatBuildingTiers.slice().sort((a, b) => (b['startLevel'] || 0) - (a['startLevel'] || 0));
 		for (const row of Rows) {
@@ -1947,7 +1948,6 @@ let MainParser = {
 			Tier = value;
 			break;
 		}
-		if (!Tier) return null;
 
 		if ((TierOrder[Tier] || 0) > (TierOrder[MaxTier] || 0)) Tier = MaxTier;
 
