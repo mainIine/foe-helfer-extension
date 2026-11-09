@@ -846,14 +846,17 @@ GetFights = () =>{
 		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	});
 
+	// storing a building with a store item sends no city map message,
+	// so the building is removed here and the city modules are notified
 	FoEproxy.addRequestHandler('InventoryService', 'useItem', (postData) => {
-		if (postData?.requestData?.[0]?.__class__=="UseItemOnBuildingPayload") {
-			if (MainParser.Inventory[postData?.requestData?.[0]?.itemId].itemAssetName =="store_building") {
-				let id= postData?.requestData?.[0]?.mapEntityId
-				if (MainParser.CityMapData[id]) delete MainParser.CityMapData[id]
-				if (MainParser.CityBuildingsData[id]) delete MainParser.CityBuildingsData[id]
-			}
-		}
+		const payload = postData?.requestData?.[0];
+		if (payload?.__class__ !== 'UseItemOnBuildingPayload') return;
+		if (MainParser.Inventory[payload.itemId]?.itemAssetName !== 'store_building') return;
+
+		const id = payload.mapEntityId;
+		delete MainParser.CityMapData[id];
+		delete MainParser.CityBuildingsData[id];
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	});
 
 

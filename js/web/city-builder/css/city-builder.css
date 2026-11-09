@@ -43,8 +43,23 @@
 	border-radius: 4px;
 	border: 1px solid var(--black-65);
 	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 4px;
+}
+.optimized-city-controls .controls-row {
+	display: flex;
 	align-items: center;
 	gap: 8px;
+}
+.optimized-city-controls .saved-plan {
+	white-space: nowrap;
+	color: var(--sunflower);
+}
+.optimized-city-controls .delete-plan {
+	margin-left: 4px;
+	cursor: pointer;
+	font-weight: bold;
 }
 .optimized-city-controls input[type="range"] {
 	width: 100px;
@@ -61,6 +76,13 @@
 .optimized-city-controls .control-toggle input[type="checkbox"] {
 	cursor: pointer;
 	margin: 0;
+}
+.optimized-city-controls .reserve-input {
+	width: 3.5em;
+	padding: 0 3px;
+}
+.optimized-city-controls .reserve-input:disabled {
+	opacity: 0.5;
 }
 .optimized-city-controls .recalc-btn {
 	margin-left: 8px;
@@ -165,6 +187,18 @@ body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
 /* box listing the buildings the optimizer could not fit into the layout */
 #CityBuilderUnplacedBox {
 	width: 320px;
+	max-height: 60vh;
+	display: flex;
+	flex-direction: column;
+}
+#CityBuilderUnplacedBox.sized {
+	max-height: none;
+}
+#CityBuilderUnplacedBox .window-body {
+	height: auto;
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-y: auto;
 }
 #CityBuilderUnplacedBox .unplaced-hint {
 	padding: 6px 8px;
@@ -172,6 +206,18 @@ body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
 }
 #CityBuilderUnplacedBox .unplaced-table td {
 	padding: 3px 8px;
+}
+#CityBuilderUnplacedBox .unplaced-table tr.done td {
+	opacity: 0.45;
+	text-decoration: line-through;
+}
+#CityBuilderUnplacedBox .plan-progress,
+#CityBuilderUnplacedBox .done-count {
+	font-style: normal;
+	color: #8be28b;
+}
+#CityBuilderUnplacedBox .done-count {
+	font-size: 11px;
 }
 #CityBuilderUnplacedBox .removed-restore {
 	cursor: pointer;

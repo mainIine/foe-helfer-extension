@@ -32,6 +32,25 @@
  * present in the city; both search modes are exclusive.
  * @namespace
  */
+{
+	// keep the box in sync while rebuilding: stored, sold or placed buildings
+	// update the index and repeat the last search; a debounce collapses bursts
+	let refreshTimer = null;
+	FoEproxy.addFoeHelperHandler('CityMapUpdated', () => {
+		clearTimeout(refreshTimer);
+		refreshTimer = setTimeout(() => {
+			if ($('#citysearch').length === 0) return;
+			if (CitySearch.LastSearch) {
+				CitySearch.LastSearch();
+				return;
+			}
+			CitySearch.BuildIndex();
+			CitySearch.RenderSizes();
+		}, 250);
+	});
+}
+
+
 let CitySearch = {
 
 	/** @type {CitySearchGroup[]} distinct building names of the city, sorted */
@@ -45,6 +64,9 @@ let CitySearch = {
 
 	/** @type {number} index of the keyboard-highlighted suggestion (-1 = none) */
 	Highlight: -1,
+
+	/** @type {?function} repeats the last search when the city changes (null = none) */
+	LastSearch: null,
 
 	/**
 	 * Entity types without a position on the city grid (e.g. the space
@@ -74,6 +96,7 @@ let CitySearch = {
 	 */
 	OpenBox: () => {
 		HTML.AddCssFile('citysearch');
+		CitySearch.LastSearch = null;
 
 		HTML.Box({
 			id: 'citysearch',
@@ -135,7 +158,10 @@ let CitySearch = {
 					autocomplete: 'off',
 					spellcheck: 'false'
 				})
-					.on('input', () => CitySearch.UpdateSuggestions())
+					.on('input', () => {
+						CitySearch.LastSearch = null;
+						CitySearch.UpdateSuggestions();
+					})
 					.on('keydown', (e) => CitySearch.HandleKey(e)),
 				$('<select />').attr({id: 'citysearchSize', class: 'game-cursor fh-tooltip', title: HTML.i18nTooltip(i18n('Boxes.CitySearch.SizeTT'))})
 					.on('change', (e) => CitySearch.SearchSize(Number($(e.currentTarget).val()))),
@@ -262,6 +288,7 @@ let CitySearch = {
 		if (!group) return;
 
 		$('#citysearchInput').val(group.name);
+		CitySearch.LastSearch = () => CitySearch.Search(group.name);
 		CitySearch.Current = [];
 		CitySearch.Highlight = -1;
 		CitySearch.RenderSuggestions();
@@ -284,6 +311,7 @@ let CitySearch = {
 			return;
 		}
 
+		CitySearch.LastSearch = () => CitySearch.Search(term);
 		$('#citysearchSize').val('');
 		CitySearch.BuildIndex();
 		CitySearch.RenderSizes();
@@ -309,6 +337,7 @@ let CitySearch = {
 		CitySearch.Current = [];
 		CitySearch.Highlight = -1;
 		CitySearch.RenderSuggestions();
+		CitySearch.LastSearch = area > 0 ? () => CitySearch.SearchSize(area) : null;
 
 		if (!(area > 0)) {
 			$('#citysearchResult').empty();
@@ -331,6 +360,7 @@ let CitySearch = {
 	 */
 	Mark: (ids) => {
 		if (ids.length === 0) {
+			BuildingMarker.hide();
 			$('#citysearchResult').html(`<span class="citysearch-nomatch">${i18n('Boxes.CitySearch.NoMatch')}</span>`);
 			return;
 		}
