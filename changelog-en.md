@@ -7,6 +7,8 @@
 - Efficiency rating: goods are rated with the goods production boost like in the game
 - Efficiency rating and production overview: all goods of an era from random productions are rounded like in the game
 - GB calculator and great buildings: level 0 counts as copper like in the game instead of gold
+- Efficiency rating: opens again for buildings with forge point packages whose data is incomplete
+- GBG sector alerts: with the game open, the helper sound plays along with the notification (setting "Enable sound")
 
 ---
 

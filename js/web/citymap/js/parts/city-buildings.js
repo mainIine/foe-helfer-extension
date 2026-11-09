@@ -1288,7 +1288,9 @@ let CityBuildings = {
 		}
 		if (lookupData.type === 'set' && rewardId.includes('forgepoint_package')) {
 			const baseId = rewardId.replace(/_\d+$/, ''),
-				base = metaData.components[era]?.lookup.rewards[baseId] || metaData.components.AllAge?.lookup.rewards[baseId];
+				base = metaData.components[era]?.lookup?.rewards?.[baseId]
+					|| metaData.components.AllAge?.lookup?.rewards?.[baseId]
+					|| lookupData.rewards?.find(r => r.type === 'forgepoint_package');
 			if (base?.type === 'forgepoint_package') {
 				return (parseInt(base.subType) || 0) * (lookupData.totalAmount || lookupData.amount || 1);
 			}

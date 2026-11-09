@@ -7,6 +7,8 @@
 - Effizienzbewertung: Güter werden wie im Spiel mit dem Güterproduktionsboost bewertet
 - Effizienzbewertung und Produktionsübersicht: Güter aller Sorten eines Zeitalters aus Zufallsproduktionen werden wie im Spiel gerundet
 - LG-Rechner und Legendäre Bauwerke: Stufe 0 zählt wie im Spiel als Kupfer statt als Gold
+- Effizienzbewertung: Öffnet sich wieder bei Gebäuden mit Forgepunkte-Paketen, deren Daten unvollständig sind
+- GG-Sektor-Alarme: Bei offenem Spiel ertönt zur Benachrichtigung der Helfer-Ton (Einstellung „Ton aktivieren“)
 
 ---
 
