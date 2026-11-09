@@ -1,5 +1,20 @@
 [
 	{
+		"id": "2026-11-city-builder",
+		"version": "4.8.9.0",
+		"date": "2026-11-09",
+		"link": {
+			"de": "https://docs.foe-helper.com/de/module/city-map/#city-builder",
+			"en": "https://docs.foe-helper.com/en/module/city-map/#city-builder"
+		}
+	},
+	{
+		"id": "2026-11-marketplace",
+		"version": "4.8.9.0",
+		"date": "2026-11-07",
+		"link": "https://foe-helper.com/invest/marketplace"
+	},
+	{
 		"id": "2026-11-prestige-rework",
 		"version": "4.8.4.0",
 		"date": "2026-11-04",

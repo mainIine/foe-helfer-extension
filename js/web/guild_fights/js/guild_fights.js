@@ -1709,13 +1709,16 @@ let Guild_fights = {
 			// on the next rebuild anyway and would overflow the setTimeout range
 			if (fireIn <= 0 || fireIn > 86400000) continue;
 
-			const timerId = setTimeout(() => {
-				MainParser.sendExtMessage({
+			const timerId = setTimeout(async () => {
+				const fired = await MainParser.sendExtMessage({
 					type: 'alerts',
 					playerId: ExtPlayerID,
 					action: 'triggerNow',
 					id: alert.alertId,
-				});
+				}).catch(() => false);
+
+				// desktop notifications are often silent, the game tab plays the helper sound
+				if (fired) helper.sounds.play('ping');
 			}, fireIn);
 
 			Guild_fights.AlertTimers.push(timerId);

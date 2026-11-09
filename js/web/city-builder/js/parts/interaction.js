@@ -120,7 +120,7 @@ CityBuilder.Interaction = {
      * @param {Object|null} b - Hovered layout entry.
      */
     setHighlight: (b) => {
-        const removable = b && CityBuilder.EditMode && b.type !== 'main_building';
+        const removable = b && CityBuilder.EditMode && b.type !== 'main_building' && b.type !== 'reserved';
         CityBuilder.Renderer.Highlight = b ? { building: b, mode: removable ? 'remove' : 'hover' } : null;
         CityBuilder.Renderer.render();
     },
@@ -185,7 +185,7 @@ CityBuilder.Interaction = {
         if (!CityBuilder.EditMode) return;
 
         const b = my.hitTest(e.offsetX, e.offsetY);
-        if (!b || b.type === 'main_building') return;
+        if (!b || b.type === 'main_building' || b.type === 'reserved') return;
 
         my.removeBuilding(b);
     },
