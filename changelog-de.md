@@ -1,6 +1,13 @@
 ## Extension Changelog
 
-##### 4.8.8.1
+##### 4.8.9.0
+**Update**
+
+- City Builder: komplett überarbeitet – Gebäude optimieren tauscht schwache Gebäude gegen bessere aus Inventar und Kits, Freifläche für neue Gebäude freihalten, Pläne pro Welt speichern und zwischen mehreren Layout-Varianten wechseln, Vorlagen aus einer Datei importieren, Plan als Bild herunterladen, Listen der nicht platzierten, entfernten und neuen Gebäude haken sich beim Nachbauen automatisch ab
+- City Builder: Beim Umbauen zeigt die Karte live den Fortschritt – grün auf dem geplanten Platz, orange knapp daneben, rot woanders abgestellt
+- Umbau-Menü Größenliste: Suchfeld, neue Spalte mit dem Fundort im Umbau-Menü (Reiter, Seite, Platz), Karten und Reiter in derselben Reihenfolge wie im Spiel
+- Gebäudesuche: Wiederholt die letzte Suche, wenn du die Stadt wechselst
+
 **Bugfixes**
 
 - Effizienzbewertung: Dasselbe Gebäude in verschiedenen Zeitaltern (z. B. ein herabgestuftes Erhabenes Gebäude) wird in eigenen Zeilen mit eigener Anzahl bewertet, die Ersatzvorschläge rechnen mit der Anzahl des passenden Zeitalters
@@ -9,6 +16,7 @@
 - LG-Rechner und Legendäre Bauwerke: Stufe 0 zählt wie im Spiel als Kupfer statt als Gold
 - Effizienzbewertung: Öffnet sich wieder bei Gebäuden mit Forgepunkte-Paketen, deren Daten unvollständig sind
 - GG-Sektor-Alarme: Bei offenem Spiel ertönt zur Benachrichtigung der Helfer-Ton (Einstellung „Ton aktivieren“)
+- Umbau-Menü Größenliste: Kein Fehler mehr bei Gebäuden, die noch nicht im Umbau-Entwurf stehen, Größenangaben brechen nicht mehr um
 
 ---
 
