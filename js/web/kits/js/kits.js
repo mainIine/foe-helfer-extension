@@ -1138,6 +1138,10 @@ let Kits = {
 			}
 		}
 
+		// flat stock of buildings and kits (fragments assembled, sets unpacked) for
+		// callers that distribute shared kits themselves, e.g. the city builder
+		Kits.InventoryStock = Object.assign({}, Inventory);
+
 		// flatten the placed city buildings
 		const cityBuildings = {};
 		Object.values(MainParser.CityMapData).forEach(entity => {

@@ -168,6 +168,8 @@ CityBuilder.Renderer = {
      */
     buildingColor: (b, cache) => {
         let type = b.type || 'generic_building';
+        // space kept free on purpose, e.g. for a quest building
+        if (type === 'reserved') return 'rgba(124, 230, 76, 0.75)';
         if (type.includes('street') || b.name === 'Road') type = 'street';
         if (b.street_level === 0 && type !== 'street') type = 'roadless';
 

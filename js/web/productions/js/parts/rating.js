@@ -37,8 +37,17 @@ Object.assign(Productions, {
 	/** @type {Object<string, string|null>} cached replacement tooltips per inventory building, reset on each table rebuild */
 	RatingReplacementCache: {},
 
-	/** @type {Object<string, number>} city/inventory counts per entity id ("<id>C" / "<id>I"), filled by CalcRatingBody */
+	/** @type {Object<string, number>} city/inventory counts per entity id ("<id>C" / "<id>I") and city counts per entity and era ("<id>|<era>C"), filled by CalcRatingBody */
 	RatingBuildingCount: {},
+
+
+	/**
+	 * Key of the per-era city count of a building in RatingBuildingCount
+	 *
+	 * @param {Object} building building with entityId and eraName
+	 * @returns {string} count key
+	 */
+	RatingEraCountKey: (building) => building.entityId + '|' + building.eraName + 'C',
 
 
 	/**
@@ -99,7 +108,7 @@ Object.assign(Productions, {
 				l: b.size.length,
 				w: b.size.width,
 				score: b.rating.totalScore,
-				avail: counts[b.entityId + 'C'] || 1
+				avail: counts[Productions.RatingEraCountKey(b)] || 1
 			}));
 
 		// single buildings may waste at most half the target area, otherwise huge
@@ -740,7 +749,7 @@ Object.assign(Productions, {
 			buildingCount[id+"I"] = data.amount||1;
 		}
 
-		// get one of each building, only highest available era
+		// one row per building and era: copies in other eras (e.g. aged down ascended buildings) are rated separately
 		for (const building of Productions.BuildingsAll) {
 			if (building === undefined || building.type === 'street' || building.type === 'military' || building.id >= 2000000000 || building.type.includes('hub')) {
 				continue
@@ -751,25 +760,22 @@ Object.assign(Productions, {
 				compare += "+" + Object.keys(Allies.buildingList?.[building.id]).join("+");
 			}
 
-			let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !Allies.buildingList?.[x.id])
-			if (!withAllies) {
-				foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory)
-			}
+			const isSameRow = x => x.name === compare && x.isInInventory === building.isInInventory && x.eraName === building.eraName
+				&& (!withAllies || !Allies.buildingList?.[x.id]);
 
-			let inventoryIdentifier = (building.isInInventory ? "I" : "C");
-
-			if (foundBuildingIndex === -1) {
-				uniqueBuildings.push(building)
-				if (buildingCount[building.entityId+inventoryIdentifier] === undefined)
-					buildingCount[building.entityId+inventoryIdentifier] = 1;
-				delete Productions.AdditionalSpecialBuildings[building.entityId];
+			if (building.isInInventory) {
+				// inventory amount was preset above
+				buildingCount[building.entityId + 'I'] ??= 1;
 			}
 			else {
-				let foundBuilding = uniqueBuildings[foundBuildingIndex]
-				buildingCount[building.entityId+inventoryIdentifier] += 1
+				const eraKey = Productions.RatingEraCountKey(building);
+				buildingCount[building.entityId + 'C'] = (buildingCount[building.entityId + 'C'] || 0) + 1;
+				buildingCount[eraKey] = (buildingCount[eraKey] || 0) + 1;
+			}
 
-				if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName])
-					uniqueBuildings[foundBuildingIndex] = building;
+			if (!uniqueBuildings.some(isSameRow)) {
+				uniqueBuildings.push(building);
+				delete Productions.AdditionalSpecialBuildings[building.entityId];
 			}
 
 			// gather building sizes
@@ -980,10 +986,10 @@ Object.assign(Productions, {
 				h.push("</div></td>");
 
 				// show amount in city if > 1
-				let buildingAmount = (Allies.buildingList?.[building.id] && withAllies ? 1 : (buildingCount[building.entityId+"C"] || 1));
+				let buildingAmount = (Allies.buildingList?.[building.id] && withAllies ? 1 : (buildingCount[Productions.RatingEraCountKey(building)] || 1));
 				h.push('<td exportvalue="'+buildingAmount+'" data-number="'+buildingAmount+'"><div class="text-right">')
 				if (buildingAmount > 1)
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span>')
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingAmount + 'x</span>')
 				h.push("</div></td>");
 
 				// export whether the row is a built city building (1) or an inventory item (0) (#3529)
@@ -1573,7 +1579,8 @@ Object.assign(Productions, {
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 
 		else if (type.includes("goods") && !type.includes("guild_raids_")) {
-			let allGoods = CityBuildings.getBuildingGoodsByEra(false, building);
+			// boosted like FP, coins and supplies, so the values match the game
+			let allGoods = CityBuildings.getBuildingGoodsByEra(false, building, true);
 			let era = (ActiveMap === "OtherPlayer" ? CityMap.OtherPlayer.eraName : CurrentEra)
 
 			if (allGoods !== undefined) {

@@ -1,5 +1,25 @@
 ## Extension Changelog
 
+##### 4.8.9.0
+**Update**
+
+- City Builder: completely reworked – optimize buildings swaps weak buildings for better ones from your inventory and kits, keep free space for new buildings, save plans per world and switch between several layout variants, import templates from a file, download the plan as an image, lists of unplaced, removed and new buildings tick themselves off as you rebuild
+- City Builder: while you rebuild, the map shows your progress live – green on its planned spot, orange right next to it, red parked elsewhere
+- Reconstruction size list: search field, new column with the location in the reconstruction menu (tab, page, slot), cards and tabs in the same order as in the game
+- Building search: repeats the last search when you switch cities
+
+**Bugfixes**
+
+- Efficiency rating: the same building in different eras (e.g. an aged down ascended building) is rated in its own row with its own count, the replacement suggestions use the count of the matching era
+- Efficiency rating: goods are rated with the goods production boost like in the game
+- Efficiency rating and production overview: all goods of an era from random productions are rounded like in the game
+- GB calculator and great buildings: level 0 counts as copper like in the game instead of gold
+- Efficiency rating: opens again for buildings with forge point packages whose data is incomplete
+- GBG sector alerts: with the game open, the helper sound plays along with the notification (setting "Enable sound")
+- Reconstruction size list: no more error for buildings that are not in the reconstruction draft yet, sizes no longer wrap
+
+---
+
 ##### 4.8.8.0
 **Update**
 
