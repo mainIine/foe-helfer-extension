@@ -1768,19 +1768,13 @@ let GuildMemberStat = {
 		ErasGuildGoods = ErasGuildGoods.reduce(function (res, obj) {
 
 			if (obj.era !== undefined && obj.resources !== undefined && obj.resources.goods !== undefined && obj.resources.goods !== null) {
-				let eraId = Technologies.Eras[obj['era']];
-
-				if (!(eraId in res)) {
-					res[eraId] = {};
-					obj.resources.goods.forEach(good => {
-						res[eraId][good.good_id] = { good: good.good_id, name: GoodsData[good.good_id].name, value: good.value };
-					});
-				}
-				else {
-					obj.resources.goods.forEach(good => {
-						res[eraId][good.good_id].value += good.value;
-					});
-				}
+				// goods are listed under their own era, buildings can also produce adjacent era goods
+				obj.resources.goods.forEach(good => {
+					const eraId = Technologies.Eras[GoodsData[good.good_id]?.era || obj['era']];
+					res[eraId] ??= {};
+					res[eraId][good.good_id] ??= { good: good.good_id, name: GoodsData[good.good_id]?.name || good.good_id, value: 0 };
+					res[eraId][good.good_id].value += good.value;
+				});
 			}
 			return res;
 

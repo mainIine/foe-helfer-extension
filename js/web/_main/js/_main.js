@@ -894,6 +894,8 @@ GetFights = () =>{
 		}
 
 		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
+		// the server omits zero values, a GB on level 0 has no level field
+		MainParser.CurrentGB.Entity['level'] ??= 0;
 		MainParser.CurrentGB.Rankings = Rankings;
 		GreatBuildings.VerifyReworkCosts(MainParser.CurrentGB.Entity['cityentity_id'], MainParser.CurrentGB.Entity['level'], MainParser.CurrentGB.Entity['state']?.['forge_points_for_level_up']);
 		MainParser.CurrentGB.OverviewRow = MainParser.GreatBuildingsOverview[MainParser.CurrentGB.Entity['player_id'] + '_' + MainParser.CurrentGB.Entity['id']];
@@ -1939,6 +1941,7 @@ let MainParser = {
 	GetGBTierForLevel: (meta, Level) => {
 		if (!meta || !Array.isArray(meta['bonuses']) || meta['bonuses'].length === 0) return null; // classic world
 		if (!Array.isArray(MainParser.GreatBuildingTiers) || MainParser.GreatBuildingTiers.length === 0) return null;
+		Level ??= 0; // level 0 comes without a level field
 
 		const TierOrder = { copper: 1, silver: 2, gold: 3 },
 			MaxTier = meta['maxTier']?.['value'] || meta['maxTier'] || 'gold';
