@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.9.1
+**Bugfixes**
+
+- Gildenmitglieder-Übersicht: Der Reiter Gildengüter lädt wieder, statt sich endlos zu drehen; Güter angrenzender Zeitalter stehen beim richtigen Zeitalter
+- GG-Sektor-Alarme: Der Helfer-Ton ertönt jetzt zuverlässig zur Benachrichtigung
+- LG-Rechner: Legendäre Bauwerke auf Stufe 0 werden jetzt wirklich als Kupfer erkannt, die Stufe wird wieder angezeigt
+
+---
+
 ##### 4.8.9.0
 **Update**
 

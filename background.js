@@ -641,7 +641,12 @@ alertsDB.version(1).stores({
 							// browser alarms are only accurate to roughly a minute, so an open
 							// game tab fires the alert on time and cancels the pending alarm
 							const fired = await Alerts.triggerNow(id);
-							return APIsuccess(fired);
+							if (fired) return APIsuccess(true);
+
+							// the alarm usually wins the race by a few ms; report its recent
+							// trigger anyway so the tab still plays the sound
+							const current = await Alerts.get(id);
+							return APIsuccess(!!current?.triggered && Math.abs(Date.now() - current.data.expires) < 60000);
 						}
 
 						case 'delete': { // action

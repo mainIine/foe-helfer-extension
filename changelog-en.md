@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.9.1
+**Bugfixes**
+
+- Guild Member Overview: the guild goods tab loads again instead of spinning forever; goods of adjacent eras are listed under their own era
+- GBG sector alerts: the helper sound now plays reliably with the notification
+- GB calculator: great buildings on level 0 are now really treated as copper, the level is shown again
+
+---
+
 ##### 4.8.9.0
 **Update**
 
