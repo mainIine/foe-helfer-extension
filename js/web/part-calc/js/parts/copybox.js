@@ -220,11 +220,13 @@ Object.assign(Parts, {
 
 	/**
 	 * Builds the copy string for the currently shown GB from the current copy settings.
+	 * Only the reward places of the shown level-up count: Parts.CopyPlaces keeps the
+	 * ticks of places 6 and 7 from a gold level, a copper level has no such places.
 	 *
 	 * @returns {string} The formatted copy string
 	 */
 	GetCopyString: () => {
-		return Parts.GetCopyStringEx(Places=Parts.CopyPlaces, Maezens=Parts.Maezens, Level=Parts.Level, OwnPart=Parts.RemainingOwnPart, PlaceAll=Parts.CopyModeAll, PlaceAuto=Parts.CopyModeAuto, PlaceAutoUnsafe=Parts.CopyModeAutoUnsafe, DangerPlaces=Parts.DangerPlaces, LeveltLG=Parts.LeveltLG)
+		return Parts.GetCopyStringEx(Parts.CopyPlaces.slice(0, Parts.PlaceCount), Parts.Maezens, Parts.Level, Parts.RemainingOwnPart, Parts.CopyModeAll, Parts.CopyModeAuto, Parts.CopyModeAutoUnsafe, Parts.DangerPlaces, Parts.LeveltLG);
 	},
 
 

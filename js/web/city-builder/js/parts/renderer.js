@@ -105,7 +105,8 @@ CityBuilder.Renderer = {
 
 
     /**
-     * Collects everything the layers need: the unlocked map areas, the map
+     * Collects everything the layers need: the unlocked map areas (normalized
+     * to numeric { x, y, width, height }), the map
      * extent and the sized, cleared canvas context.
      *
      * @param {HTMLCanvasElement} canvas - The map canvas.
@@ -123,12 +124,18 @@ CityBuilder.Renderer = {
         } catch (err) {
             console.error('CityBuilder: Error accessing CityMap', err);
         }
-        if (!areas) areas = [];
+        // the game omits zero values: areas on the map edge come without x or y
+        areas = Object.values(areas || {}).map(area => ({
+            x: parseInt(area.x || 0),
+            y: parseInt(area.y || 0),
+            width: parseInt(area.width || 16),
+            height: parseInt(area.length || area.height || 16)
+        }));
 
         let maxX = 0, maxY = 0;
         for (const area of areas) {
-            maxX = Math.max(maxX, parseInt(area.x || 0) + parseInt(area.width || 16));
-            maxY = Math.max(maxY, parseInt(area.y || 0) + parseInt(area.length || area.height || 16));
+            maxX = Math.max(maxX, area.x + area.width);
+            maxY = Math.max(maxY, area.y + area.height);
         }
 
         // fallback: derive the extent from the buildings when areas are missing
@@ -274,33 +281,33 @@ CityBuilder.Renderer = {
 
     /**
      * Draws the outline around the unlocked areas: shared edges of adjacent
-     * areas cancel out, only the true border of the city remains.
+     * areas cancel out, only the true border of the city remains. The edges
+     * are split into tile-long pieces, so the 16x16 start area cancels
+     * against its 4x4 neighbours as well.
      *
      * @param {CanvasRenderingContext2D} ctx - Canvas context.
-     * @param {Array<Object>} areas - Unlocked area rectangles.
+     * @param {Array<Object>} areas - Unlocked area rectangles { x, y, width, height } from buildView.
      * @param {number} scale - Canvas pixels per map tile.
      */
     drawOutline: (ctx, areas, scale) => {
         const edges = {};
 
-        const addEdge = (x1, y1, x2, y2) => {
-            const key = x1 < x2 || (x1 === x2 && y1 < y2)
-                ? `${x1},${y1}-${x2},${y2}`
-                : `${x2},${y2}-${x1},${y1}`;
+        // tile-long edge starting at x/y, horizontal or vertical
+        const toggleEdge = (x, y, horizontal) => {
+            const key = `${x},${y},${horizontal ? 'h' : 'v'}`;
             if (edges[key]) delete edges[key];
-            else edges[key] = { x1, y1, x2, y2 };
+            else edges[key] = { x1: x, y1: y, x2: x + (horizontal ? 1 : 0), y2: y + (horizontal ? 0 : 1) };
         };
 
-        for (const area of areas) {
-            const x = parseInt(area.x);
-            const y = parseInt(area.y);
-            const w = parseInt(area.width || 16);
-            const h = parseInt(area.length || area.height || 16);
-
-            addEdge(x, y, x + w, y);
-            addEdge(x + w, y, x + w, y + h);
-            addEdge(x + w, y + h, x, y + h);
-            addEdge(x, y + h, x, y);
+        for (const { x, y, width: w, height: h } of areas) {
+            for (let i = 0; i < w; i++) {
+                toggleEdge(x + i, y, true);
+                toggleEdge(x + i, y + h, true);
+            }
+            for (let i = 0; i < h; i++) {
+                toggleEdge(x, y + i, false);
+                toggleEdge(x + w, y + i, false);
+            }
         }
 
         ctx.strokeStyle = '#CCFF00';
@@ -328,12 +335,7 @@ CityBuilder.Renderer.Layers = [
             if (v.areas.length > 0) {
                 v.ctx.fillStyle = 'rgba(124, 230, 76, 0.3)';
                 for (const area of v.areas) {
-                    v.ctx.fillRect(
-                        parseInt(area.x) * v.scale,
-                        parseInt(area.y) * v.scale,
-                        parseInt(area.width || 16) * v.scale,
-                        parseInt(area.length || area.height || 16) * v.scale
-                    );
+                    v.ctx.fillRect(area.x * v.scale, area.y * v.scale, area.width * v.scale, area.height * v.scale);
                 }
             } else {
                 v.ctx.fillStyle = 'rgba(200, 200, 200, 0.2)';
@@ -368,12 +370,7 @@ CityBuilder.Renderer.Layers = [
             v.ctx.beginPath();
             if (v.areas.length > 0) {
                 for (const area of v.areas) {
-                    v.ctx.rect(
-                        parseInt(area.x) * v.scale,
-                        parseInt(area.y) * v.scale,
-                        parseInt(area.width || 16) * v.scale,
-                        parseInt(area.length || area.height || 16) * v.scale
-                    );
+                    v.ctx.rect(area.x * v.scale, area.y * v.scale, area.width * v.scale, area.height * v.scale);
                 }
             } else {
                 for (let x = 0; x <= v.maxX; x += 4) {

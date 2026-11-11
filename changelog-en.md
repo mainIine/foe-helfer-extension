@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.9.2
+**Bugfixes**
+
+- GB calculator: the copy text no longer contains places 6 and 7 with "undefined" on copper levels after a gold great building was opened
+- City Builder: the city border and the building area are drawn completely again, areas on the map edge were missing
+- Tooltips: the helper tooltips keep working when another extension brings its own tooltips
+
+---
+
 ##### 4.8.9.1
 **Bugfixes**
 

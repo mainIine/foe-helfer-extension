@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.8.9.2
+**Bugfixes**
+
+- LG-Rechner: Der Kopiertext enthält bei Kupfer-Stufen keine Plätze 6 und 7 mit „undefined“ mehr, wenn vorher ein goldenes Legendäres Bauwerk geöffnet war
+- City Builder: Stadtgrenze und Bauflächen werden wieder vollständig gezeichnet, Gebiete am Kartenrand fehlten
+- Tooltips: Die Tooltips des Helfers funktionieren auch dann, wenn eine andere Erweiterung eigene Tooltips mitbringt
+
+---
+
 ##### 4.8.9.1
 **Bugfixes**
 
