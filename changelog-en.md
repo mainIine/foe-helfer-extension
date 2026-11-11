@@ -10,7 +10,7 @@
 - Production overview: an open boost view stays open when you collect a building
 - Power leveling: the table now shows the unlock costs of each level (blueprint sets, goods, coins, supplies, medals) and, above it, the total for the chosen range compared with your stock – whatever is missing is marked red
 - Guild Battlegrounds: your guild's next focus targets now appear in a small, freely movable overview right on the battleground map – with countdown, conquest progress and alert button. The menu button also shows the time until the next target
-- City overview: new efficiency heatmap – colours every rated building by its score per tile or per building (colour-blind friendly), with a legend, the city average and the area taken up by below-average buildings
+- City overview: new efficiency heatmap – colours every rated building by its score per tile or per building, from red (weak) over yellow to green (strong), with a legend, the city average and the area taken up by below-average buildings
 - Message Checklist: the new button "My last message" lists the places you took in a thread with your last message, ready to tick off while paying in. Optionally (box settings) the list appears automatically as soon as you send your message
 - Guild member overview: the GE and GBG columns now show the result of the last finished round, plus a new QI column – with rank and details in the tooltip, round dates in the column header and in the export; the inactivity marking now also takes QI into account
 

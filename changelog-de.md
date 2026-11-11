@@ -10,7 +10,7 @@
 - Produktionsübersicht: Eine geöffnete Boost-Ansicht bleibt offen, wenn du ein Gebäude abholst
 - Powerleveln: Die Tabelle zeigt jetzt je Level die Freischaltkosten (Blaupausen-Sets, Güter, Münzen, Vorräte, Medaillen) und darüber die Summe für den gewählten Bereich im Vergleich zu deinem Bestand – was fehlt, ist rot markiert
 - Gildengefechte: Die nächsten Fokus-Ziele deiner Gilde stehen jetzt in einer kleinen, frei verschiebbaren Übersicht direkt auf der Gefechtskarte – mit Countdown, Eroberungsfortschritt und Alarm-Knopf. Der Menü-Button zeigt zusätzlich die Zeit bis zum nächsten Ziel
-- Stadtübersicht: Neue Effizienz-Heatmap – färbt alle bewerteten Gebäude nach ihrer Bewertung pro Feld oder pro Gebäude ein (auch für Farbfehlsichtige lesbar), mit Legende, Stadtschnitt und der Fläche, die unterdurchschnittliche Gebäude belegen
+- Stadtübersicht: Neue Effizienz-Heatmap – färbt alle bewerteten Gebäude nach ihrer Bewertung pro Feld oder pro Gebäude ein, von Rot (schwach) über Gelb bis Grün (stark), mit Legende, Stadtschnitt und der Fläche, die unterdurchschnittliche Gebäude belegen
 - Nachrichten-Checkliste: Der neue Button „Meine letzte Nachricht“ listet die Plätze auf, die du in einem Thread mit deiner letzten Nachricht genommen hast – zum Abhaken beim Einzahlen. Auf Wunsch (Einstellungen der Box) erscheint die Liste automatisch, sobald du deine Nachricht abschickst
 - Gildenmitglieder-Übersicht: Die Spalten für GEX und GG zeigen jetzt das Ergebnis der letzten beendeten Runde, neu dazu kommt eine QI-Spalte – mit Rang und Details im Tooltip, Rundendatum in der Spaltenüberschrift und im Export; die Inaktivitäts-Markierung berücksichtigt nun auch die QI
 
