@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.8.9.3
+**Bugfixes**
+
+- Menüleiste: Beim Sortieren blättert die Leiste erst, wenn das Symbol eine volle Sekunde über dem Pfeil bleibt, auch wenn es zwischendurch kurz vom Pfeil weg war
+
+---
+
 ##### 4.8.9.2
 **Bugfixes**
 

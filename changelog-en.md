@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.8.9.3
+**Bugfixes**
+
+- Menu bar: while sorting, the bar only scrolls once the icon has stayed over the arrow for a full second, even if it briefly left the arrow before
+
+---
+
 ##### 4.8.9.2
 **Bugfixes**
 
