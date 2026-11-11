@@ -378,4 +378,22 @@
 		return this
 	}
 
+
+	/* TOOLTIP GUARD
+	 * ============= */
+
+	// Other extensions register their own tooltip plugin (e.g. Bootstrap 5) on the
+	// jQuery of the page and would replace this one, on which all helper boxes rely.
+	// Later assignments are ignored, so the helper tooltips keep working.
+	var helperTooltip = $.fn.tooltip
+
+	Object.defineProperty($.fn, 'tooltip', {
+		configurable: true,
+		enumerable: true,
+		get: function () {
+			return helperTooltip
+		},
+		set: function () {}
+	})
+
 }(window.jQuery);
