@@ -525,7 +525,7 @@ let Settings = {
 				localStorage.removeItem('MenuLength');
 			}
 
-			_menu.SetMenuHeight(true);
+			_menu.ApplyMenuLength();
 		});
 
 		return ip;

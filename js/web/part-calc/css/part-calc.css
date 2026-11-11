@@ -346,3 +346,44 @@
 #PowerLevelingBox #PowerLevelingBoxBody .success {
 	color: var(--success);
 }
+
+#PowerLevelingBox input[type=checkbox] {
+	width: auto;
+	margin: 0 3px 0 0;
+	vertical-align: middle;
+}
+
+/* unlock costs: summary of the level range and the cells of the level rows */
+#PowerLevelingBox #PowerLevelingBoxBody .unlock-sum {
+	width: auto;
+	margin: 5px auto 3px;
+}
+
+#PowerLevelingBox #PowerLevelingBoxBody .unlock-sum td:first-child, #PowerLevelingBox #PowerLevelingBoxBody .unlock-sum th:first-child {
+	text-align: left;
+}
+
+#PowerLevelingBox #PowerLevelingBoxBody .unlock-sum td:nth-child(6) {
+	border-right: 0;
+}
+
+/* the unlock costs make the table wide: scroll sideways instead of wrapping the rows */
+#PowerLevelingBox #PowerLevelingBoxTableBody td {
+	white-space: nowrap;
+}
+
+/* the hint wraps to the width of the tables instead of widening the box */
+#PowerLevelingBox .unlock-hint {
+	width: 0;
+	min-width: 100%;
+}
+
+#PowerLevelingBox .unlock-cost {
+	margin: 0 2px;
+}
+
+#PowerLevelingBox .unlock-cost img, #PowerLevelingBox .unlock-sum th img {
+	height: 18px;
+	vertical-align: text-bottom;
+	margin-left: 1px;
+}

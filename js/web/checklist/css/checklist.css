@@ -33,8 +33,14 @@
 }
 
 #checklist #checklistTopbar .picker-hint {
+	flex: 1 1 auto;
 	font-size: 90%;
 	color: var(--beige);
+}
+
+#checklist #checklistTopbar #checklistClaims {
+	flex: 0 0 auto;
+	max-width: none;
 }
 
 #checklist #checklistTopbar .checklist-source {
@@ -66,6 +72,13 @@
 }
 
 /* Picker view */
+#checklist .checklist-notice {
+	padding: 6px 8px;
+	color: var(--beige);
+	background-color: var(--table-bg-info);
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
 #checklist .checklist-thread .thread-head {
 	display: flex;
 	align-items: baseline;
@@ -158,6 +171,11 @@
 	display: flex;
 	align-items: baseline;
 	gap: 6px;
+}
+
+#checklist .checklist-pick.is-claims .pick-head strong,
+#checklist .checklist-line .taken {
+	color: var(--sunflower);
 }
 
 #checklist .checklist-pick .pick-time {

@@ -628,3 +628,132 @@
     0% {transform: scale(1,1);}
     100% {transform: scale(1.2,1.2);}
 }
+/* ------------------------------ efficiency heatmap ------------------------------ */
+
+/* diverging scale that does not rely on red/green: orange = below, grey = at, blue = above the reference */
+:root {
+	--citymap-eff-below-3: var(--orange);
+	--citymap-eff-below-2: #ca7933;
+	--citymap-eff-below-1: #976640;
+	--citymap-eff-even: var(--grey);
+	--citymap-eff-above-1: #537592;
+	--citymap-eff-above-2: #5992c3;
+	--citymap-eff-above-3: var(--info-blue);
+	--citymap-eff-unrated: var(--background-color-decayed);
+	--citymap-eff-edge: var(--black-65);
+}
+
+[data-eff-step] {
+	--citymap-eff-fill: var(--citymap-eff-even);
+	--citymap-eff-ink: var(--white);
+}
+[data-eff-step="-3"] { --citymap-eff-fill: var(--citymap-eff-below-3); --citymap-eff-ink: var(--text-darkest); }
+[data-eff-step="-2"] { --citymap-eff-fill: var(--citymap-eff-below-2); --citymap-eff-ink: var(--text-darkest); }
+[data-eff-step="-1"] { --citymap-eff-fill: var(--citymap-eff-below-1); }
+[data-eff-step="1"] { --citymap-eff-fill: var(--citymap-eff-above-1); }
+[data-eff-step="2"] { --citymap-eff-fill: var(--citymap-eff-above-2); --citymap-eff-ink: var(--text-darkest); }
+[data-eff-step="3"] { --citymap-eff-fill: var(--citymap-eff-above-3); --citymap-eff-ink: var(--text-darkest); }
+
+/* dark canvas, so only the rated buildings carry colour */
+#grid-outer.eff-map span.map-bg, #grid-outer.eff-map.desaturate span.map-bg {
+	filter: brightness(0.35) saturate(0.6) !important;
+}
+
+/* the heatmap owns the fill colour; unrated entities (streets, town hall, ...) stay neutral */
+#grid-outer.eff-map span.entity {
+	background-color: var(--citymap-eff-unrated) !important;
+}
+#grid-outer.eff-map span.entity[data-eff-step] {
+	background-color: var(--citymap-eff-fill) !important;
+}
+
+/* :where() keeps the specificity below the highlight rules: they keep their border colour and show as outline */
+#grid-outer:where(.eff-map) span.entity {
+	border-color: var(--citymap-eff-edge);
+}
+#grid-outer.eff-map span.highlight, #grid-outer.eff-map span.highlight2, #grid-outer.eff-map span.highlight3, #grid-outer.eff-map span.highlight4,
+#grid-outer.eff-map.showGBG .fromGBG, #grid-outer.eff-map.showQI .fromQI, #grid-outer.eff-map.showChains .chain, #grid-outer.eff-map.showSets .set {
+	border-width: 2px;
+	box-shadow: inset 0 0 0 1px var(--citymap-eff-edge);
+}
+#grid-outer.eff-map span:not(.street).highlight4 {
+	background-image: none;
+}
+
+/* score on buildings that are large enough */
+#grid-outer.eff-map span.entity[data-eff-score]::after {
+	content: attr(data-eff-score);
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.6em;
+	font-weight: bold;
+	line-height: 1;
+	color: var(--citymap-eff-ink);
+	/* halo in the fill colour keeps the score readable on top of highlight patterns */
+	text-shadow: 0 0 2px var(--citymap-eff-fill), 0 0 2px var(--citymap-eff-fill), 0 0 3px var(--citymap-eff-fill);
+	pointer-events: none;
+}
+/* inverse of rotate(33deg) skew(-30deg,-5deg): keeps the score upright in the skewed view */
+#grid-outer.eff-map[data-view="skew"] span.entity[data-eff-score]::after {
+	transform: matrix(1.0532, 0.0921, 0.6081, 1.0532, 0, 0) rotate(-33deg);
+}
+
+#area-state .eff-map-icon {
+	display: inline-block;
+	width: 22px;
+	height: 8px;
+	margin-right: 5px;
+	border-radius: 3px;
+	background: linear-gradient(90deg, var(--citymap-eff-below-3), var(--citymap-eff-even), var(--citymap-eff-above-3));
+}
+
+#eff-map-panel {
+	margin: 0 -4px 6px;
+	padding: 4px;
+	background-color: var(--black-30);
+	border-radius: 3px;
+}
+#eff-map-panel select {
+	width: 100%;
+	margin-bottom: 3px;
+}
+
+.eff-map-scale {
+	display: flex;
+	gap: 2px;
+	margin-top: 3px;
+}
+.eff-map-scale span {
+	flex: 1;
+	height: 10px;
+	border-radius: 2px;
+	background-color: var(--citymap-eff-fill);
+}
+.eff-map-ticks {
+	display: flex;
+	justify-content: space-between;
+	margin: 2px 0 4px;
+	font-size: 85%;
+}
+.eff-map-ticks span:nth-child(2) {
+	color: var(--sunflower);
+}
+#eff-map-legend li {
+	font-size: 90%;
+}
+
+/* heatmap line in the building tooltip of the map */
+.buildingTT .eff-map-tt {
+	padding: 0.2em 0.5em;
+}
+.eff-map-tt span[data-eff-step] {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin-right: 5px;
+	border-radius: 3px;
+	background-color: var(--citymap-eff-fill);
+}

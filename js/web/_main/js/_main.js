@@ -2584,12 +2584,11 @@ let MainParser = {
 			}
 			MainParser.Inactives.list = [...new Set(list.map(x=>MainParser.CityMapData[x].cityentity_id))];
 
-			//remove tracked buildings if time ran out
+			//remove tracked buildings if time ran out, the stored value is the local time of their alert in ms
 			for (let x in LB) {
-				if (!LB[x]) continue;
-				if (LB[x]<(GameTime-GameTime.Offset)*1000) delete LB[x];
-				localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
+				if (LB[x] && LB[x] < Date.now()) delete LB[x];
 			}
+			localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
 			if(!Settings.GetSetting('ShowBuildingsExpired')){
 				return;
 			}

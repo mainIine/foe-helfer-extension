@@ -26,9 +26,13 @@ let ProvinceMap = {
 
 	Provinces: [],
 	StrokeColor: '#111',
-	selectedProvince: null,
 	HighlightedSector: null,
 	HighlightPulse: null,
+	// sector under the pointer on the map, its rows in the live fight box follow it
+	HoveredSector: null,
+	HoverTimer: null,
+	// colour of the selection band, read from the --sunflower variable
+	AccentColor: '',
 	SignalImages: {},
 
 
@@ -80,10 +84,6 @@ let ProvinceMap = {
 
 			document.addEventListener('mousemove', mouseMoveHandler);
 			document.addEventListener('mouseup', mouseUpHandler);
-			const canvasPos = ProvinceMap.getCanvasPoint(e);
-			ProvinceMap.selectedProvince = ProvinceMap.findProvinceAt(canvasPos.x, canvasPos.y);
-			if (ProvinceMap.selectedProvince)
-				ProvinceMap.showProvinceDetails();
 		};
 
 		const mouseMoveHandler = function(e) {
@@ -206,9 +206,11 @@ let ProvinceMap = {
 			id: 'province-map-wrap',
 		});
 		$(wrapper).html(stack);
-		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span><div id="provDetails"></div>');
+		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
 
 		ProvinceMap.mapDrag();
+		ProvinceMap.BindPointer();
+		ProvinceMap.AccentColor = getComputedStyle(document.documentElement).getPropertyValue('--sunflower').trim();
 
 		$('#zoomGBGMap').click(function (e) {
 			$('#province-map-stack').toggleClass('zoomed');
@@ -632,32 +634,20 @@ let ProvinceMap = {
 
 
 	/**
-	 * Calculates the canvas point coordinates from a given event.
+	 * Translates the pointer position of an event into canvas pixels. The point
+	 * stays in the untransformed canvas space: isPointInPath() expects it that
+	 * way and applies the translation of the volcano map to the path itself
 	 *
-	 * This function determines the relative position on the canvas based on
-	 * the event's client coordinates and the canvas's bounding rectangle.
-	 * It also adjusts the coordinates if the current map is "volcano_archipelago."
-	 *
-	 * @param {MouseEvent | TouchEvent} e - The event containing client coordinates.
-	 * @returns {Object} An object containing the computed canvas coordinates:
-	 *                   - `x` {number}: X-coordinate on the canvas.
-	 *                   - `y` {number}: Y-coordinate on the canvas.
+	 * @param {MouseEvent} e Event carrying the client coordinates
+	 * @returns {{x: number, y: number}} Position on the canvas
 	 */
 	getCanvasPoint: (e) => {
 		const rect = ProvinceMap.Map.getBoundingClientRect();
 
-		const scaleX = ProvinceMap.Map.width / rect.width;
-		const scaleY = ProvinceMap.Map.height / rect.height;
-
-		let x = (e.clientX - rect.left) * scaleX;
-		let y = (e.clientY - rect.top) * scaleY;
-
-		if (Guild_fights.MapData.map['id'] === "volcano_archipelago") {
-			x -= ProvinceMap.Size.width / 2;
-			y -= ProvinceMap.Size.height / 2;
-		}
-
-		return { x, y };
+		return {
+			x: (e.clientX - rect.left) * ProvinceMap.Map.width / rect.width,
+			y: (e.clientY - rect.top) * ProvinceMap.Map.height / rect.height
+		};
 	},
 
 
@@ -686,30 +676,6 @@ let ProvinceMap = {
 		return null;
 	},
 
-
-	/**
-	 * Displays detailed information about the selected province.
-	 *
-	 * This function retrieves additional data for the currently selected province
-	 * from the map data, such as its victory points. It then updates the
-	 * HTML element with ID `provDetails` to display the province's name,
-	 * owner's name, and victory points. The border color of the element is
-	 * also updated to match the base color of the province's owner.
-	 */
-	showProvinceDetails: () => {
-		let additionalData = Guild_fights.MapData.map.provinces.find(x => x.id === ProvinceMap.selectedProvince.id);
-
-		let elem = document.querySelector("#provDetails");
-		elem.style.borderColor = ProvinceMap.selectedProvince.owner.colors.base;
-		elem.replaceChildren();
-		const heading = document.createElement('h2');
-		heading.textContent = ProvinceMap.selectedProvince.short;
-		const owner = document.createElement('p');
-		owner.textContent = ProvinceMap.selectedProvince.owner.name;
-		const points = document.createElement('p');
-		points.textContent = additionalData.victoryPoints;
-		elem.append(heading, owner, points);
-	},
 
 
 	/**
@@ -812,8 +778,242 @@ let ProvinceMap = {
 
 
 	/**
-	 * Repaints the overlay canvas: signal watermarks of the own guild plus the
-	 * hover outline. Cheap compared to a full map rebuild, so it never flickers
+	 * Links the pointer on the map to the sector lists of the live fight box:
+	 * hovering marks the rows of a sector, a click toggles its selection for the
+	 * copy/Discord function. The listeners sit on the canvas and go away with it
+	 */
+	BindPointer: () => {
+		let pressedAt = null;
+
+		/**
+		 * Id of the sector under the pointer
+		 *
+		 * @param {MouseEvent} e
+		 * @returns {?number} null outside of all sectors
+		 */
+		const sectorAt = (e) => {
+			const point = ProvinceMap.getCanvasPoint(e);
+
+			return ProvinceMap.findProvinceAt(point.x, point.y)?.id ?? null;
+		};
+
+		ProvinceMap.Map.addEventListener('pointermove', e => ProvinceMap.HoverSector(sectorAt(e), e));
+		ProvinceMap.Map.addEventListener('pointerleave', () => ProvinceMap.HoverSector(null));
+		ProvinceMap.Map.addEventListener('pointerdown', e => { pressedAt = e; });
+		ProvinceMap.Map.addEventListener('click', e => {
+			const $row = $(`#timer-${sectorAt(e)}`);
+
+			// dragging the zoomed map is no click on a sector
+			if ($row.length > 0 && pressedAt && Math.hypot(e.clientX - pressedAt.clientX, e.clientY - pressedAt.clientY) <= 5)
+				Guild_fights.ToggleRowSelection($row);
+		});
+	},
+
+
+	/**
+	 * Sets the sector under the pointer: marks its list rows, outlines it on the
+	 * overlay and shows the tooltip. A ticker keeps the tooltip countdown running,
+	 * scrolls to the row once the pointer rests and cleans up after a closed box
+	 *
+	 * @param {?number} provinceId null when the pointer left the sectors
+	 * @param {PointerEvent} [e] Event the tooltip gets positioned with
+	 */
+	HoverSector: (provinceId, e) => {
+		if (provinceId === ProvinceMap.HoveredSector) return;
+
+		clearInterval(ProvinceMap.HoverTimer);
+		ProvinceMap.HoveredSector = provinceId;
+		ProvinceMap.MarkListRows();
+		ProvinceMap.DrawOverlay();
+		$(ProvinceMap.Map).toggleClass('game-cursor', $(`#timer-${provinceId}`).length > 0);
+
+		if (provinceId === null) {
+			Tooltips.deactivate();
+			return;
+		}
+
+		let tooltip = ProvinceMap.GetSectorTooltip(provinceId),
+			rested = false;
+
+		Tooltips.activate(Tooltips.contexts.get(ProvinceMap.Map.ownerDocument.defaultView));
+		Tooltips.set(tooltip);
+		Tooltips.followMouse(e);
+
+		ProvinceMap.HoverTimer = setInterval(() => {
+			if ($('#ProvinceMap').length === 0) {
+				ProvinceMap.HoverSector(null);
+				return;
+			}
+
+			if (!rested) {
+				rested = true;
+				ProvinceMap.MarkListRows(true);
+			}
+
+			// countdown, progress and selection state move on while the pointer rests
+			const current = ProvinceMap.GetSectorTooltip(provinceId);
+
+			if (current !== tooltip) {
+				tooltip = current;
+				Tooltips.set(tooltip);
+			}
+		}, 250);
+	},
+
+
+	/**
+	 * Brings map and sector lists in line after a selection change or a rebuild
+	 * of the live fight box: row markers on the new rows, selection bands on the map
+	 */
+	SyncList: () => {
+		ProvinceMap.MarkListRows(true);
+
+		if ($('#ProvinceMap').length > 0 && ProvinceMap.Overlay instanceof HTMLCanvasElement)
+			ProvinceMap.DrawOverlay();
+	},
+
+
+	/**
+	 * Marks the rows of the sector under the pointer in the live fight box. Rows
+	 * of a tab that is not shown flag their tab handle instead
+	 *
+	 * @param {boolean} [scroll] Scroll the row into view when it is outside the visible area
+	 */
+	MarkListRows: (scroll = false) => {
+		const $body = $('#LiveGildFightingBody');
+
+		$body.find('.map-hover').removeClass('map-hover');
+
+		if (ProvinceMap.HoveredSector === null) return;
+
+		const $rows = $body.find(`tr[data-id="${ProvinceMap.HoveredSector}"]`).addClass('map-hover'),
+			row = $rows.filter(':visible')[0];
+
+		if (!row) {
+			$rows.each((i, hidden) => $body.find(`li.${$(hidden).closest('.gbg-tabs > div').attr('id')}`).addClass('map-hover'));
+			return;
+		}
+
+		if (!scroll) return;
+
+		// only the nearest scrolling ancestor inside the box moves, scrollIntoView() would shift the game page as well
+		let $view = $(row).parent();
+		while (!$view.is($body) && !(/auto|scroll/.test($view.css('overflow-y')) && $view[0].scrollHeight > $view[0].clientHeight))
+			$view = $view.parent();
+
+		const view = $view[0].getBoundingClientRect(),
+			pos = row.getBoundingClientRect(),
+			offset = pos.top < view.top ? pos.top - view.top : Math.max(0, pos.bottom - view.bottom);
+
+		if (offset !== 0)
+			$view.stop(true).animate({ scrollTop: $view.scrollTop() + offset }, 250);
+	},
+
+
+	/**
+	 * Adjacent sectors of a locked sector that open earlier than it, soonest first:
+	 * from there it can be reached first. Reads the live map data, the sector
+	 * objects of the map keep expired locks
+	 *
+	 * @param {number} provinceId
+	 * @returns {Object[]} Provinces of the battleground map data
+	 */
+	GetEarlierNeighbors: (provinceId) => {
+		const provinces = Guild_fights.MapData.map.provinces,
+			now = GameTime.get(),
+			lockedUntil = provinces[provinceId]?.lockedUntil,
+			links = ProvinceMap.Provinces.find(p => p.id === provinceId)?.links || [];
+
+		if (!(lockedUntil > now)) return [];
+
+		return links
+			.map(link => provinces[link])
+			.filter(p => p?.lockedUntil > now && p.lockedUntil < lockedUntil)
+			.sort((a, b) => a.lockedUntil - b.lockedUntil);
+	},
+
+
+	/**
+	 * Builds the tooltip of a sector from the live map data: owner, unlock time
+	 * and countdown, attrition chance, victory points, building slots of own
+	 * sectors, running attacks and the adjacent sectors that open earlier
+	 *
+	 * @param {number} provinceId
+	 * @returns {string} Tooltip markup
+	 */
+	GetSectorTooltip: (provinceId) => {
+		const province = Guild_fights.MapData.map.provinces[provinceId];
+		if (!province) return '';
+
+		const owner = Guild_fights.MapData.battlegroundParticipants.find(p => p.participantId === province.ownerId),
+			isOwn = province.ownerId === Guild_fights.MapData.currentParticipantId,
+			unlock = moment.unix(province.lockedUntil - 2),
+			remaining = unlock.diff(moment.unix(GameTime.get())),
+			showServerTime = JSON.parse(localStorage.getItem('LiveFightSettings'))?.showServerTime,
+			$row = $(`#timer-${provinceId}`);
+
+		/**
+		 * Unlock time as the upcoming tab shows it, in server time when set so
+		 *
+		 * @param {moment.Moment} date
+		 * @returns {string}
+		 */
+		const timeOf = (date) => moment(date).add(showServerTime ? -60 * (Guild_fights.serverOffset ?? 0) : 0, 'seconds').format('HH:mm:ss');
+
+		/**
+		 * Colour square of a guild, the same one the list rows carry
+		 *
+		 * @param {number} [participantId]
+		 * @returns {string}
+		 */
+		const colorDot = (participantId) => `<span class="province-color" style="background-color:${ProvinceMap.getSectorColors(participantId)?.main || '#555'}"></span>`;
+
+		/**
+		 * Value cell of a tooltip row
+		 *
+		 * @param {string} content
+		 * @returns {string}
+		 */
+		const cell = (content) => `<td class="text-center">${content}</td>`;
+
+		const rows = [[i18n('Boxes.GuildFights.Owner'), cell(owner ? HTML.escapeHtml(owner.clan.name) : `<em>${i18n('Boxes.GuildFights.NoOwner')}</em>`)]];
+
+		if (remaining > 0) {
+			rows.push([i18n('Boxes.GuildFights.Time'), cell(timeOf(unlock))]);
+			rows.push([i18n('Boxes.GuildFights.Count'), cell(moment.utc(remaining).format('HH:mm:ss'))]);
+		}
+		else if (province.conquestProgress?.length > 0) {
+			rows.push([i18n('Boxes.GuildFights.Progress'), cell(province.conquestProgress.map(p => `${colorDot(p.participantId)} ${p.progress}/${p.maxProgress}`).join('<br>'))]);
+		}
+
+		if (isOwn) {
+			rows.push(['Slots', cell(`${province.usedBuildingSlots || 0}/${province.totalBuildingSlots || 0}`)]);
+		}
+		else if (Guild_fights.GetEffectiveAttrition(province) !== undefined) {
+			rows.push([i18n('Boxes.GuildFights.Attrition'), Guild_fights.GetAttritionCell(province)]);
+		}
+
+		rows.push(['VP', Guild_fights.GetVPCell(province)]);
+
+		const earlier = ProvinceMap.GetEarlierNeighbors(provinceId);
+		if (earlier.length > 0) {
+			rows.push([i18n('Boxes.GuildFights.OpensEarlier'), cell(earlier.map(p => `${colorDot(p.ownerId)} ${p.title} ${timeOf(moment.unix(p.lockedUntil - 2))}`).join('<br>'))]);
+		}
+
+		return `<div class="gbgSectorTT">
+			<h2>${colorDot(province.ownerId)} <span class="battletype ${province.isAttackBattleType ? 'BTattack' : 'BTdefence'}"></span> ${Guild_fights.GetFocusIcon(provinceId)}<b>${province.title}</b> ${province.name}</h2>
+			<table class="foe-table">
+				${rows.map(([label, value]) => `<tr><td>${label}</td>${value}</tr>`).join('')}
+				${$row.length > 0 ? `<tr><td colspan="2" class="text-center text-warning">${i18n($row.hasClass('highlight-row') ? 'Boxes.GuildFights.MapDeselect' : 'Boxes.GuildFights.MapSelect')}</td></tr>` : ''}
+			</table>
+		</div>`;
+	},
+
+
+	/**
+	 * Repaints the overlay canvas: signal watermarks of the own guild, the bands
+	 * of selected and earlier opening sectors plus the hover outline. Cheap
+	 * compared to a full map rebuild, so it never flickers
 	 *
 	 * @param {number} [now] rAF timestamp driving the outline pulse
 	 */
@@ -834,14 +1034,57 @@ let ProvinceMap = {
 			province.drawSignal(center.x, center.y);
 		});
 
-		if (ProvinceMap.HighlightedSector !== null) {
-			const province = ProvinceMap.Provinces.find(p => p.id === ProvinceMap.HighlightedSector);
+		/**
+		 * Paints a band along the inside of a sector outline, adjacent sectors stay untouched
+		 *
+		 * @param {number} provinceId
+		 * @param {string} color
+		 * @param {number[]} [dash] Dash pattern, a dashed sector also gets a light tint
+		 */
+		const drawBand = (provinceId, color, dash = []) => {
+			const path = ProvinceMap.Provinces.find(p => p.id === provinceId)?.drawSectorShape(mapType);
+			if (!path) return;
+
+			ctx.save();
+			ctx.clip(path);
+
+			if (dash.length > 0) {
+				ctx.globalAlpha = 0.25;
+				ctx.fillStyle = color;
+				ctx.fill(path);
+				ctx.globalAlpha = 1;
+			}
+
+			// the dark underlay keeps the band readable on every guild colour
+			ctx.lineWidth = 16;
+			ctx.strokeStyle = '#000a';
+			ctx.stroke(path);
+
+			ctx.lineWidth = 10;
+			ctx.strokeStyle = color;
+			ctx.setLineDash(dash);
+			ctx.stroke(path);
+			ctx.restore();
+		};
+
+		// sectors selected for the copy/Discord function in the upcoming tab
+		$('.timer.highlight-row').each((i, row) => drawBand($(row).data('id'), ProvinceMap.AccentColor));
+
+		// adjacent sectors that open before the locked sector under the pointer
+		if (ProvinceMap.HoveredSector !== null)
+			ProvinceMap.GetEarlierNeighbors(ProvinceMap.HoveredSector).forEach(neighbor => drawBand(neighbor.id || 0, '#fff', [14, 10]));
+
+		// a row hovered in the list wins over the pointer on the map
+		const outlined = ProvinceMap.HighlightedSector ?? ProvinceMap.HoveredSector;
+
+		if (outlined !== null) {
+			const province = ProvinceMap.Provinces.find(p => p.id === outlined);
 
 			if (province) {
 				const path = province.drawSectorShape(mapType);
 
-				// soft sine pulse (~1.9s cycle) on width and opacity
-				const pulse = (Math.sin(now / 300) + 1) / 2;
+				// soft sine pulse (~1.9s cycle) on width and opacity, steady for the pointer on the map
+				const pulse = ProvinceMap.HighlightedSector !== null ? (Math.sin(now / 300) + 1) / 2 : 0.5;
 
 				ctx.save();
 				ctx.strokeStyle = province.owner.colors?.shadow || '#000';

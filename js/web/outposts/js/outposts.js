@@ -116,7 +116,10 @@ let Outposts = {
 
 
 	/**
-	 * Setzt den Inhalt der Box zusammen
+	 * Builds the content of the box: info line, one-click alerts for the running
+	 * productions and constructions, cost table of the advancements
+	 *
+	 * @returns {void}
 	 */
 	BuildInfoBoxContent: () => {
 		Outposts.GUINeedsUpdate = false;
@@ -240,6 +243,9 @@ let Outposts = {
 			+ '</span>'
 		);
 		t.push('</p>');
+
+		// collection and construction times of the settlement with their alert bells
+		t.push(MapAlerts.Box());
 
 
 		// Kosten Tabelle

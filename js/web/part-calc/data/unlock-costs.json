@@ -1,0 +1,92 @@
+{
+	"_info": "Unlock costs of great building levels after the prestige rework, by the level that gets unlocked. blueprints: [first level, copper sets, gold sets]; resources: [first level, amount at that level, step per level], goods = amount of each good of the building. A segment ends where the next one starts. buildings: [blueprint profile, resource profile, last level with data]. Read by Parts.GetModelUnlockCosts.",
+	"blueprints": {
+		"copper2": [[11, 1, 0], [101, 2, 0]],
+		"copper3": [[11, 1, 0], [101, 3, 0]],
+		"gold": [[11, 1, 0], [101, 3, 2], [201, 8, 3], [301, 16, 8], [401, 24, 11]]
+	},
+	"resources": {
+		"gold": {
+			"goods": [[101, 92, 46], [201, 4652, 46], [301, 9289, 123], [401, 21514, 28]],
+			"money": [[101, 2253489, 5635], [201, 2816969, 5635], [301, 3800006, 425192], [401, 46150951, 256937]],
+			"supplies": [[101, 2253489, 5635], [201, 2816969, 5635], [301, 3800006, 425192], [401, 46150951, 256937]],
+			"medals": [[101, 1126744, 2817], [201, 1408484, 2817], [301, 1900003, 212596], [401, 23075475, 128468]]
+		},
+		"catalyst": {
+			"goods": [[11, 150, 150]]
+		},
+		"centaurus": {
+			"goods": [[11, 80, 80]],
+			"money": [[11, 4000000, 4000000]]
+		},
+		"hydra": {
+			"goods": [[11, 100, 100]],
+			"money": [[11, 5000000, 5000000]]
+		},
+		"pegasus": {
+			"goods": [[11, 60, 60]],
+			"money": [[11, 3000000, 3000000]]
+		},
+		"siphon": {
+			"goods": [[11, 275, 275], [201, 52250, 275]],
+			"money": [[11, 97200, 97200], [201, 18468000, 97200]],
+			"supplies": [[11, 97200, 97200], [201, 18468000, 97200]],
+			"medals": [[11, 97200, 97200], [201, 18468000, 97200]]
+		},
+		"warship": {
+			"goods": [[11, 125, 125]],
+			"supplies": [[11, 4000000, 4000000]]
+		}
+	},
+	"buildings": {
+		"X_AllAge_EasterBonus4": ["gold", "gold", 500],
+		"X_AllAge_Expedition": ["copper2", null, 200],
+		"X_AllAge_Oracle": ["copper2", null, 200],
+		"X_ArcticFuture_Landmark1": ["copper3", null, 200],
+		"X_ArcticFuture_Landmark2": ["gold", "gold", 500],
+		"X_ArcticFuture_Landmark3": ["gold", "gold", 500],
+		"X_BronzeAge_Landmark1": ["copper2", null, 200],
+		"X_BronzeAge_Landmark2": ["gold", "gold", 500],
+		"X_ColonialAge_Landmark1": ["copper2", null, 200],
+		"X_ColonialAge_Landmark2": ["gold", "gold", 500],
+		"X_ContemporaryEra_Landmark1": ["gold", "gold", 500],
+		"X_ContemporaryEra_Landmark2": ["copper3", null, 200],
+		"X_EarlyMiddleAge_Landmark1": ["copper2", null, 200],
+		"X_EarlyMiddleAge_Landmark2": ["gold", "gold", 500],
+		"X_EarlyMiddleAge_Landmark3": ["copper2", null, 200],
+		"X_FutureEra_Landmark1": ["gold", "gold", 500],
+		"X_FutureEra_Landmark2": ["copper3", null, 200],
+		"X_HighMiddleAge_Landmark1": ["gold", "gold", 500],
+		"X_HighMiddleAge_Landmark3": ["copper2", null, 200],
+		"X_IndustrialAge_Landmark1": ["gold", "gold", 500],
+		"X_IndustrialAge_Landmark2": ["copper2", null, 200],
+		"X_IronAge_Landmark1": ["gold", "gold", 500],
+		"X_IronAge_Landmark2": ["copper2", null, 200],
+		"X_LateMiddleAge_Landmark1": ["copper2", null, 200],
+		"X_LateMiddleAge_Landmark3": ["gold", "gold", 500],
+		"X_ModernEra_Landmark1": ["copper2", null, 200],
+		"X_ModernEra_Landmark2": ["copper2", null, 200],
+		"X_OceanicFuture_Landmark1": ["copper3", null, 200],
+		"X_OceanicFuture_Landmark2": ["gold", "gold", 500],
+		"X_OceanicFuture_Landmark3": ["gold", "gold", 500],
+		"X_PostModernEra_Landmark1": ["copper3", null, 200],
+		"X_PostModernEra_Landmark2": ["copper3", null, 200],
+		"X_ProgressiveEra_Landmark1": ["gold", "gold", 500],
+		"X_ProgressiveEra_Landmark2": ["gold", "gold", 500],
+		"X_SpaceAgeAsteroidBelt_Landmark1": ["gold", "gold", 500],
+		"X_SpaceAgeJupiterMoon_Landmark1": ["copper3", null, 200],
+		"X_SpaceAgeMars_Landmark1": ["copper3", null, 200],
+		"X_SpaceAgeMars_Landmark2": ["gold", "gold", 500],
+		"X_SpaceAgeSpaceHub_Landmark1": ["copper3", "warship", 200],
+		"X_SpaceAgeSpaceHub_Landmark2": ["copper3", "catalyst", 200],
+		"X_SpaceAgeTitan_Landmark1": ["copper3", "centaurus", 200],
+		"X_SpaceAgeTitan_Landmark2": ["copper3", "pegasus", 200],
+		"X_SpaceAgeTitan_Landmark3": ["copper3", "hydra", 200],
+		"X_SpaceAgeVenus_Landmark1": ["copper3", null, 200],
+		"X_StellarAgeDiscovery_Landmark1": ["gold", "siphon", 500],
+		"X_TomorrowEra_Landmark1": ["copper3", null, 200],
+		"X_TomorrowEra_Landmark2": ["copper3", null, 200],
+		"X_VirtualFuture_Landmark1": ["gold", "gold", 500],
+		"X_VirtualFuture_Landmark2": ["gold", "gold", 500]
+	}
+}

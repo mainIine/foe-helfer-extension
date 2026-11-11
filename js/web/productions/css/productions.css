@@ -26,7 +26,7 @@
 #ProductionsRatingBody {
 	opacity: 1;
 }
-#ProductionsRatingBody .gb-icon {
+#ProductionsRatingBody .gb-icon, #Productions .gb-icon {
 	height: 16px;
 	vertical-align: text-bottom;
 }
@@ -122,11 +122,29 @@
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span, #BoostList table .boost {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }
-#Productions #ProductionsBody table, #Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.special_goods, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
+#Productions #ProductionsBody table, #Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.special_goods, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production,
+#Productions #ProductionsBody .tabs ul li.goods_production, #Productions #ProductionsBody .tabs ul li.special_goods_production, #Productions #ProductionsBody .tabs ul li.guild_goods_production {
 	display: none;
 }
 #Productions #ProductionsBody .btn-slim.typeBoost {
 	border-radius: 3px;
+}
+#Productions #ProductionsBody .boost-views {
+	margin: 0 8px 0 2px;
+	vertical-align: middle;
+}
+#Productions #ProductionsBody .boost-views .typeBoost {
+	border-radius: 0;
+	max-width: none;
+}
+#Productions #ProductionsBody .boost-views .typeBoost:first-child {
+	border-radius: 3px 0 0 3px;
+}
+#Productions #ProductionsBody .boost-views .typeBoost:last-child {
+	border-radius: 0 3px 3px 0;
+}
+#Productions #ProductionsBody .boost-views .btn-active {
+	color: var(--sunflower);
 }
 #Productions th.boost span {
 	height: 25px;

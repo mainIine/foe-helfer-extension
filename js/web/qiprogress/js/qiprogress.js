@@ -513,7 +513,10 @@ let QiProgress = {
 
 
 	/**
-	 * @param qiRound
+	 * Builds the head of the box: round selector, progress filter and the
+	 * one-click alerts for the productions of the QI settlement
+	 *
+	 * @param {number} qiRound Round end timestamp of the round to show
 	 * @returns {Promise<void>}
 	 */
 	SetBoxNavigation: async (qiRound) => {
@@ -567,6 +570,7 @@ let QiProgress = {
 			h.push(`</div>`);
 		}
 
+		h.push(MapAlerts.Box());
 		h.push(`<div id="qiContentWrapper"></div>`);
 
 		$('#QiProgressListBody').html(h.join('')).promise().done(function () {

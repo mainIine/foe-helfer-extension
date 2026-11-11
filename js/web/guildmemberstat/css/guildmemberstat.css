@@ -113,6 +113,16 @@
 	background-image: url('../../x_img/qi.png');
 	background-size: contain;
 }
+
+#GuildMemberStatBody tr th span.qi {
+	background: url(../../x_img/qi.png) center no-repeat;
+	background-size: contain;
+}
+
+/* a newer round has ended, the shown one is not the latest */
+#GuildMemberStatBody tr th.updaterequired span {
+	box-shadow: 0 2px 0 var(--sunflower);
+}
 [id*=GuildMember] .summary span.goods::before {
 	background-image: url('../../x_img/guildGoods.png');
 	background-size: contain;

@@ -107,7 +107,7 @@ let CityMap = {
 
 	/**
 	 * Initializes the City Map based on the selected map type and user preferences.
-	 * Restores scale and view settings, resolves the map data of the active map
+	 * Restores scale, view and heatmap settings, resolves the map data of the active map
 	 * and creates or toggles the City Map box.
 	 *
 	 * @param {Object} [event] - Optional event object. Without it an already open box is closed (toggle behaviour).
@@ -118,11 +118,13 @@ let CityMap = {
 		// grid sizing and view
 		const scale = localStorage.getItem('CityMapScale'),
 			outpostScale = localStorage.getItem('OutpostMapScale'),
-			view = localStorage.getItem('CityMapView');
+			view = localStorage.getItem('CityMapView'),
+			efficiencyMap = localStorage.getItem('CityMapEfficiencyMap');
 
 		if (scale !== null) CityMap.map.scale = parseInt(scale);
 		if (view !== null) CityMap.map.view = view;
 		if (outpostScale !== null) CityMap.map.outpostScale = parseInt(outpostScale);
+		if (efficiencyMap !== null) Object.assign(CityMap.EfficiencyMap.options, JSON.parse(efficiencyMap));
 
 		let Data = MainParser.CityMapData;
 		if (ActiveMap === 'cultural_outpost') {
@@ -192,6 +194,9 @@ let CityMap = {
 				.append($('<div id="map-filters" />')));
 
 		$('#' + elemId + 'Header > .title').attr('id', 'map' + CityMap.hashCode(Title));
+
+		// CityMap is no known root of the tooltip paths, so the callback registers itself
+		Tooltips.register('CityMap.EfficiencyMap.tooltip', CityMap.EfficiencyMap.tooltip);
 
 		if (CityMap.isOutpostMap()) {
 			oB.addClass('outpost').addClass(ActiveMap);
@@ -731,8 +736,8 @@ let CityMap = {
 	 * Renders all buildings of the main city (or another player's city) on the map.
 	 * Clears the current map, rebuilds the grid, recalculates all metrics
 	 * (building counts, areas, street efficiency), applies highlight classes
-	 * (rating, era age, chains/sets, QI/GBG/GE origin) and attaches tooltips
-	 * and click handlers.
+	 * (rating, era age, chains/sets, QI/GBG/GE origin), the efficiency heatmap
+	 * and attaches tooltips and click handlers.
 	 *
 	 * Outpost maps are delegated to `SetOutpostBuildings`.
 	 *
@@ -741,6 +746,7 @@ let CityMap = {
 	 */
 	SetMapBuildings: async (Data = null) => {
 		if (CityMap.isOutpostMap()) {
+			CityMap.EfficiencyMap.collect([], false);
 			CityMap.SetOutpostBuildings();
 			return;
 		}
@@ -792,9 +798,12 @@ let CityMap = {
 			MaxX = 71,
 			MaxY = 71;
 
+		// own city: rate ally boosts like the rating box does, so both show the same scores
 		const buildingData = (ActiveMap === 'OtherPlayer'
 			? CityBuildings.createBuildings(Object.values(CityMap.OtherPlayer.mapData))
-			: CityBuildings.createBuildings(Object.values(MainParser.CityMapData)));
+			: CityBuildings.createBuildings(Object.values(MainParser.CityMapData), Productions.efficiencySettings.showallies));
+
+		CityMap.EfficiencyMap.collect(ActiveMap === 'OtherPlayer' ? [] : Object.values(buildingData), ActiveMap !== 'OtherPlayer');
 
 		// find rating percentiles over all buildings, roads excluded
 		const buildingRatings = Object.values(buildingData)
@@ -840,7 +849,7 @@ let CityMap = {
 					left: x + 'em',
 					top: y + 'em'
 				})
-				.attr('data-callback_tt', 'Tooltips.buildingTT')
+				.attr('data-callback_tt', 'CityMap.EfficiencyMap.tooltip')
 				.attr('data-era', building.eraName)
 				.attr('data-size', building.size.length + 'x' + building.size.width)
 				.attr('data-id', building.id)
@@ -947,6 +956,7 @@ let CityMap = {
 
 		gridOuter.draggable();
 		CityMap.getAreas();
+		CityMap.EfficiencyMap.refresh();
 
 		// .add() also covers the box while it is popped out as a separate window
 		$('[data-original-title]').add($('#citymap-main [data-original-title]')).tooltip({
@@ -996,8 +1006,8 @@ let CityMap = {
 	/**
 	 * Updates the sidebar with area statistics: free/total area, building type
 	 * counts with occupied area, the clickable highlight options (roadless, GBG,
-	 * QI, limited, ascendable, decayed, chain and set buildings) and the legend
-	 * for old building highlighting.
+	 * QI, limited, ascendable, decayed, chain and set buildings), the efficiency
+	 * heatmap toggle with its options and the legend for old building highlighting.
 	 */
 	getAreas: () => {
 		const unlockedAreas = (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.unlockedAreas : CityMap.Main.unlockedAreas);
@@ -1083,8 +1093,10 @@ let CityMap = {
 
 		if (ActiveMap !== 'OtherPlayer') {
 			areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`);
+			areaStats.push(`<li class="clickable"><label for="eff-map-toggle"><input type="checkbox" id="eff-map-toggle" onclick="CityMap.EfficiencyMap.set('active', this.checked)"${CityMap.EfficiencyMap.options.active ? ' checked' : ''}> <span class="eff-map-icon"></span>${i18n('Boxes.CityMap.EfficiencyMap')}</label></li>`);
 		}
 		areaStats.push('</ul>');
+		areaStats.push(CityMap.EfficiencyMap.panel());
 
 		$('.building-count-area').html(areaStats.join('')).promise().done(function () {
 			$('.building-count-area ul.highlight-map li').click(function () {
@@ -1219,6 +1231,305 @@ let CityMap = {
 	/** Toggles the highlight for the worst rated buildings (bottom 10/20/30%). */
 	highlightWorstBuildings: () => {
 		$('.rating10, .rating20, .rating30').toggleClass('highlight4');
+	},
+
+
+	/**
+	 * Efficiency heatmap of the own city: colours every rated building by its
+	 * score from the efficiency rating instead of only marking the worst ones.
+	 * The ratings are collected once per map refresh, changed options only
+	 * re-evaluate them.
+	 */
+	EfficiencyMap: {
+
+		/** Choices of the player, kept in localStorage (`CityMapEfficiencyMap`). */
+		options: {
+			active: false,
+			basis: 'tile', // 'tile' | 'building'
+			reference: 'relative', // 'relative' = city average | 'absolute' = target of the rating settings
+			type: 'all', // 'all' active rating types or a single one
+		},
+
+		/** Deviations from the reference value that separate the seven colour steps (-3 to +3). */
+		Steps: [-0.5, -0.3, -0.1, 0.1, 0.4, 1],
+
+		/** @type {Object[]} Buildings of the last map refresh, rated only once the heatmap needs them. */
+		source: [],
+
+		/** @type {boolean} The box currently shows the own city (it may stay open while the player is elsewhere). */
+		own: false,
+
+		/** @type {?{id: number, area: number, side: number, rating: Object, counted: boolean}[]} Rated buildings of the last map refresh, null until the heatmap asks for them. */
+		rows: null,
+
+		/** @type {?{items: Object, type: string, reference: number, avgTile: number, area: number, below: number, belowArea: number}} Outcome of the last `evaluate` run. */
+		result: null,
+
+
+		/**
+		 * Checks whether the heatmap is switched on and the box shows the own city.
+		 *
+		 * @returns {boolean}
+		 */
+		enabled: () => CityMap.EfficiencyMap.options.active && CityMap.EfficiencyMap.own,
+
+
+		/**
+		 * Lists the rating types that count in the rating box: active and with a target per tile.
+		 *
+		 * @returns {string[]}
+		 */
+		types: () => {
+			const data = Productions.Rating.Data;
+			return Object.keys(data).filter(type => data[type].active && parseFloat(data[type].perTile));
+		},
+
+
+		/**
+		 * Formats a score for legend and tooltip (`HTML.Format` would print 0 as "-").
+		 *
+		 * @param {number} value
+		 * @returns {string}
+		 */
+		format: (value) => (Math.round(value) || 0).toLocaleString(i18n('Local')),
+
+
+		/**
+		 * Names the reference value of the chosen mode: city average or target.
+		 *
+		 * @returns {string}
+		 */
+		referenceName: () => i18n(CityMap.EfficiencyMap.options.reference === 'relative' ? 'Boxes.CityMap.EfficiencyMapAverage' : 'Boxes.CityMap.EfficiencyMapTarget'),
+
+
+		/**
+		 * Remembers the buildings of a map refresh; they are rated when the heatmap is switched on,
+		 * so the overview does no extra work without it.
+		 *
+		 * @param {Object[]} buildings - Freshly processed buildings of the own city.
+		 * @param {boolean} [own=true] - False when the box shows an outpost or another player's city.
+		 */
+		collect: (buildings, own = true) => {
+			CityMap.EfficiencyMap.source = buildings;
+			CityMap.EfficiencyMap.rows = null;
+			CityMap.EfficiencyMap.own = own;
+		},
+
+
+		/**
+		 * Picks the buildings the rating box rates and returns their rating data.
+		 * Linked chain buildings share the rating of the whole chain, like in the rating box.
+		 *
+		 * @param {Object[]} buildings - Processed buildings of the own city.
+		 * @returns {{id: number, area: number, side: number, rating: Object, counted: boolean}[]}
+		 */
+		rate: (buildings) => {
+			const ratable = buildings.filter(building => !['street', 'military', 'main_building'].includes(building.type) && !building.type.includes('hub')
+				&& building.id < 2000000000 && (building.type !== 'greatbuilding' || Productions.efficiencySettings.gBs));
+			const chains = {};
+
+			for (const start of ratable) {
+				if (start.chainBuilding?.type !== 'start') continue;
+
+				const links = CityBuildings.hasLinks(start);
+				if (links.length < 2) continue;
+
+				// merge copies, the map keeps drawing the single buildings
+				const chain = CityBuildings.createChainedBuilding(links.map(link => ({ ...link, size: { ...link.size }, chainBuilding: { ...link.chainBuilding } })));
+				links.forEach((link, index) => chains[link.id] = { rating: chain.rating, counted: index === 0 });
+			}
+
+			return Productions.rateBuildings(ratable).map(building => ({
+				id: building.id,
+				area: building.size.width * building.size.length,
+				side: Math.min(building.size.width, building.size.length),
+				rating: chains[building.id]?.rating || building.rating,
+				counted: chains[building.id]?.counted ?? true,
+			}));
+		},
+
+
+		/**
+		 * Calculates score, deviation and colour step of every collected building
+		 * for the chosen options, plus the reference value and the legend numbers.
+		 * Summing the types in the order of the rating data reproduces `totalScore` exactly.
+		 */
+		evaluate: () => {
+			const heat = CityMap.EfficiencyMap,
+				data = Productions.Rating.Data,
+				active = heat.types(),
+				types = (active.includes(heat.options.type) ? [heat.options.type] : active),
+				perTile = (heat.options.basis === 'tile'),
+				score = (rating, suffix) => types.reduce((sum, type) => sum + (rating[type + suffix] || 0) / parseFloat(data[type].perTile), 0) * 100;
+
+			const items = {};
+			let area = 0,
+				tileSum = 0,
+				sum = 0,
+				count = 0;
+
+			for (const row of heat.rows) {
+				const tileScore = score(row.rating, '-tile');
+
+				items[row.id] = { score: (perTile ? tileScore : score(row.rating, '')), side: row.side, total: row.rating.totalScore * 100 };
+				area += row.area;
+				tileSum += tileScore * row.area;
+
+				// a linked chain counts as one building
+				if (row.counted) {
+					sum += items[row.id].score;
+					count++;
+				}
+			}
+
+			const avgTile = tileSum / area || 0,
+				average = (perTile ? avgTile : sum / count || 0),
+				// absolute: score 100 meets the targets of the rating settings, per building scaled to the average building size
+				reference = (heat.options.reference === 'relative' ? average : (perTile ? 100 : 100 * area / count || 0));
+
+			let below = 0,
+				belowArea = 0;
+
+			for (const row of heat.rows) {
+				const item = items[row.id];
+
+				item.deviation = (reference ? (item.score - reference) / Math.abs(reference) : Math.sign(item.score));
+				item.step = heat.Steps.filter(limit => item.deviation >= limit).length - 3;
+
+				if (item.score < reference) {
+					// a linked chain counts as one building, with the area of all its parts
+					if (row.counted) below++;
+					belowArea += row.area;
+				}
+			}
+
+			heat.result = { items, type: (types.length === 1 ? types[0] : 'all'), reference, avgTile, area, below, belowArea };
+		},
+
+
+		/**
+		 * Writes colour step and score onto the map entities, or removes both
+		 * while the heatmap is off. The score is only printed on buildings that
+		 * are large enough for it.
+		 */
+		paint: () => {
+			const heat = CityMap.EfficiencyMap,
+				items = (heat.enabled() ? heat.result.items : {});
+
+			$('#grid-outer').toggleClass('eff-map', heat.enabled());
+			$('#map-buildings .entity').each(function () {
+				const item = items[this.dataset.id],
+					label = (item ? String(Math.round(item.score) || 0) : '');
+
+				$(this).attr({
+					'data-eff-step': (item ? item.step : null),
+					'data-eff-score': (item && item.side >= 2 && label.length <= item.side * 2 ? label : null),
+					// the building tooltip shows this as efficiency, same value as the rating box
+					'data-eff': (item ? item.total : null),
+				});
+			});
+		},
+
+
+		/**
+		 * Re-evaluates the collected ratings and updates map and legend.
+		 */
+		refresh: () => {
+			const heat = CityMap.EfficiencyMap;
+
+			if (heat.enabled()) {
+				heat.rows ??= heat.rate(heat.source);
+				heat.evaluate();
+			}
+			heat.paint();
+			$('#eff-map-legend').html(heat.enabled() ? heat.legend() : '');
+		},
+
+
+		/**
+		 * Stores a changed choice and applies it to the map.
+		 *
+		 * @param {string} option - Key of `options`.
+		 * @param {boolean|string} value - The new value.
+		 */
+		set: (option, value) => {
+			const heat = CityMap.EfficiencyMap;
+
+			heat.options[option] = value;
+			localStorage.setItem('CityMapEfficiencyMap', JSON.stringify(heat.options));
+
+			$('#eff-map-panel').toggle(heat.options.active);
+			heat.refresh();
+		},
+
+
+		/**
+		 * Builds the option selects (basis, reference, rating type) and the
+		 * legend container for the sidebar of the own city.
+		 *
+		 * @returns {string} HTML string, empty while visiting another player.
+		 */
+		panel: () => {
+			const heat = CityMap.EfficiencyMap;
+			if (ActiveMap === 'OtherPlayer') return '';
+
+			const score = i18n('Boxes.ProductionsRating.Score');
+			const select = (name, entries) => `<select class="game-cursor" onchange="CityMap.EfficiencyMap.set('${name}', this.value)">` +
+				entries.map(([value, text]) => `<option class="game-cursor" value="${value}"${heat.options[name] === value ? ' selected' : ''}>${text}</option>`).join('') +
+				'</select>';
+
+			return `<div id="eff-map-panel"${heat.options.active ? '' : ' style="display:none"'}>` +
+				select('basis', [['tile', `${score} ${i18n('Boxes.ProductionsRating.PerTile')}`], ['building', `${score} ${i18n('Boxes.CityMap.EfficiencyMapPerBuilding')}`]]) +
+				select('reference', [['relative', i18n('Boxes.CityMap.EfficiencyMapRelative')], ['absolute', i18n('Boxes.CityMap.EfficiencyMapAbsolute')]]) +
+				select('type', [['all', i18n('Boxes.CityMap.EfficiencyMapAllTypes')], ...heat.types().map(type => [type, Productions.GetTypeName(type)])]) +
+				'<div id="eff-map-legend"></div></div>';
+		},
+
+
+		/**
+		 * Builds the legend: colour scale with the reference value, average score
+		 * per tile and the buildings below the reference with the area they occupy.
+		 *
+		 * @returns {string} HTML string.
+		 */
+		legend: () => {
+			const heat = CityMap.EfficiencyMap,
+				{ reference, avgTile, area, below, belowArea } = heat.result,
+				limit = (deviation) => heat.format(reference + Math.abs(reference) * deviation),
+				expansionIcon = `<img src="${srcLinks.get('/shared/gui/constructionmenu/icon_expansion.png', true)}" />`;
+
+			return `<div class="eff-map-scale">${[-3, -2, -1, 0, 1, 2, 3].map(step => `<span data-eff-step="${step}"></span>`).join('')}</div>
+				<div class="eff-map-ticks"><span>&lt; ${limit(heat.Steps[0])}</span><span>${heat.referenceName()} ${heat.format(reference)}</span><span>&ge; ${limit(heat.Steps[5])}</span></div>
+				<ul>
+					<li><span>${i18n('Boxes.CityMap.EfficiencyMapAvgPerTile')}</span> <span>${heat.format(avgTile)}</span></li>
+					<li><span>${HTML.i18nReplacer(i18n('Boxes.CityMap.EfficiencyMapBelow'), { reference: heat.referenceName() })}</span> <span>${below}</span></li>
+					<li><span>${i18n('Boxes.CityMap.EfficiencyMapBelowArea')}</span> <span>${expansionIcon}${belowArea} (${Math.round(100 * belowArea / area || 0)}%)</span></li>
+				</ul>`;
+		},
+
+
+		/**
+		 * Tooltip callback of the map entities: the standard building tooltip of
+		 * {@link Tooltips.buildingTT}, extended by the heatmap score while the heatmap is on.
+		 *
+		 * @param {Event} e - Pointer event of the hovered map entity.
+		 * @returns {Promise<string|undefined>} Tooltip HTML.
+		 */
+		tooltip: async (e) => {
+			const heat = CityMap.EfficiencyMap,
+				item = (heat.enabled() ? heat.result?.items[e.currentTarget.dataset.id] : undefined),
+				tooltip = await Tooltips.buildingTT(e);
+
+			if (!tooltip || !item) return tooltip;
+
+			const { reference, type } = heat.result,
+				percent = Math.round(item.deviation * 100),
+				title = i18n('Boxes.CityMap.EfficiencyMap') + (type === 'all' ? '' : ` (${Productions.GetTypeName(type)})`),
+				basis = i18n(heat.options.basis === 'tile' ? 'Boxes.ProductionsRating.PerTile' : 'Boxes.CityMap.EfficiencyMapPerBuilding');
+
+			return tooltip.replace('</h2>', `</h2><p class="eff-map-tt"><span data-eff-step="${item.step}"></span>${title}: <b>${heat.format(item.score)}</b> ${basis}, ` +
+				`${heat.referenceName()} ${heat.format(reference)}${reference ? ` (${percent > 0 ? '+' : ''}${percent}%)` : ''}</p>`);
+		},
 	},
 
 
@@ -1547,10 +1858,16 @@ let CityMap = {
 
 {
 	let mapRefreshTimer = null;
-	const queueMapRefresh = () => {
+
+	/**
+	 * Queues a debounced re-render of the open city map.
+	 *
+	 * @param {function(): boolean} [isDue] - Checked when the timer fires; by default the player has to be in the main city.
+	 */
+	const queueMapRefresh = (isDue = () => ActiveMap === 'main') => {
 		clearTimeout(mapRefreshTimer);
 		mapRefreshTimer = setTimeout(() => {
-			if ($('#citymap-main').length > 0 && ActiveMap === 'main') {
+			if ($('#citymap-main').length > 0 && isDue()) {
 				CityMap.SetMapBuildings(MainParser.CityMapData);
 			}
 		}, 250);
@@ -1560,6 +1877,28 @@ let CityMap = {
 		queueMapRefresh();
 	};
 
+	let heatRefreshTimer = null;
+
+	/**
+	 * Keeps the heatmap in sync without rebuilding the map: collected productions, motivations and
+	 * changed rating settings only alter the scores, so the other highlights of the player stay as they are.
+	 */
+	const queueEfficiencyMapRefresh = () => {
+		clearTimeout(heatRefreshTimer);
+		heatRefreshTimer = setTimeout(() => {
+			const heat = CityMap.EfficiencyMap;
+
+			if ($('#citymap-main').length === 0 || ActiveMap !== 'main' || !heat.enabled()) return;
+
+			heat.collect(Object.values(CityBuildings.createBuildings(Object.values(MainParser.CityMapData), Productions.efficiencySettings.showallies)));
+			heat.refresh();
+		}, 250);
+	};
+
 	FoEproxy.addHandler('CityMapService', 'placeBuilding', queueCityChangeRefresh);
 	FoEproxy.addHandler('CityMapService', 'removeBuilding', queueCityChangeRefresh);
+
+	// moves, upgrades etc. and changed rating settings alter the scores
+	FoEproxy.addFoeHelperHandler('CityMapUpdated', queueEfficiencyMapRefresh);
+	FoEproxy.addFoeHelperHandler('RatingSettingsUpdated', queueEfficiencyMapRefresh);
 }

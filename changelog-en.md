@@ -1,5 +1,33 @@
 ## Extension Changelog
 
+##### 4.8.10.0
+**Update**
+
+- Guild Battlegrounds: the map is now linked to the list – hovering a sector marks its row and shows a tooltip with owner, unlock time and attrition, a click selects the sector for copying/Discord, and for locked sectors you see which neighbours open earlier
+- Guild Battlegrounds: the sectors selected for copying stay selected when the list updates
+- Cultural settlements & Quantum Incursion: one click on the bell and the helper reminds you when productions are ready to collect, a construction has finished or simply everything is ready – available in the settlement box, the QI overview and the alerts box
+- Production overview: for goods, special goods and guild goods, clicking "Boost" now shows which buildings and other sources provide the production boost – with the total, a list view and a grouped view
+- Production overview: an open boost view stays open when you collect a building
+- Power leveling: the table now shows the unlock costs of each level (blueprint sets, goods, coins, supplies, medals) and, above it, the total for the chosen range compared with your stock – whatever is missing is marked red
+- Guild Battlegrounds: your guild's next focus targets now appear in a small, freely movable overview right on the battleground map – with countdown, conquest progress and alert button. The menu button also shows the time until the next target
+- City overview: new efficiency heatmap – colours every rated building by its score per tile or per building (colour-blind friendly), with a legend, the city average and the area taken up by below-average buildings
+- Message Checklist: the new button "My last message" lists the places you took in a thread with your last message, ready to tick off while paying in. Optionally (box settings) the list appears automatically as soon as you send your message
+- Guild member overview: the GE and GBG columns now show the result of the last finished round, plus a new QI column – with rank and details in the tooltip, round dates in the column header and in the export; the inactivity marking now also takes QI into account
+
+**Bugfixes**
+
+- Settings: the menu length takes effect immediately, without reloading the game
+- Guild Battlegrounds: the sector list countdowns no longer keep piling up in the background – the box stays smooth even after a long time on the map
+- QI overview: your own row is highlighted again
+- Guild member overview: clicking the activity column now sorts by activity
+- Guild member overview: in the member details the Guild Expedition column is now correctly labelled "Encounters"
+- Limited buildings: a building that is ascended again gets its expiry alert again; expired buildings still standing in the city are reported again when the game starts
+- Power leveling: the table head matches the columns again when the level range switches between copper and gold levels
+- Production overview: the boost buttons also work in views that are only built when opened
+- Helper windows keep responding quickly to clicks, even after many boxes have been opened
+
+---
+
 ##### 4.8.9.2
 **Bugfixes**
 

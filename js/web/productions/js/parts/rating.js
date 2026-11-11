@@ -385,11 +385,13 @@ Object.assign(Productions, {
 
 
 		/**
-		 * Saves all presets to the local storage.
+		 * Saves all presets to the local storage and tells the other modules
+		 * (e.g. the city map heatmap) that the rating settings changed.
 		 */
 		savePresets: () => {
 			if (!Productions.Rating.Presets) return;
 			localStorage.setItem(Productions.Rating.PresetStorageKey, JSON.stringify(Productions.Rating.Presets));
+			FoEproxy.triggerFoeHelperHandler('RatingSettingsUpdated');
 		},
 
 
@@ -1075,11 +1077,18 @@ Object.assign(Productions, {
 			h.push('Something went wrong');
 		}
 
+		/**
+		 * Stores a display option of the rating box, mirrors it as body class
+		 * and tells the other modules that the rating settings changed.
+		 *
+		 * @param {string} x - Key of the option in `Productions.efficiencySettings`.
+		 */
 		SaveSettings=(x)=>{
 			Productions.efficiencySettings[x] = $('#'+x).is(':checked')
 			if (x === "inventorybuildingscore")
 				Productions.efficiencySettings[x] = parseFloat($('#'+x).val())/100
 			localStorage.setItem("Productions.efficiencySettings",JSON.stringify(Productions.efficiencySettings))
+			FoEproxy.triggerFoeHelperHandler('RatingSettingsUpdated');
 			if (x === "inventorybuildingscore") return;
 
 			if ($('#'+x).is(':checked')) {

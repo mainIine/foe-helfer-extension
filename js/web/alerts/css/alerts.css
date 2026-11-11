@@ -297,3 +297,30 @@ input.hidden {
 #Alerts #alerts-table .alert-body {
 	color: var(--dark-beige);
 }
+
+/* One-click alerts of the settlement / QI map (MapAlerts), shown in several boxes */
+.map-alerts table.foe-table {
+	margin-bottom: 5px;
+}
+
+.map-alerts td:first-child {
+	white-space: nowrap;
+}
+
+.map-alerts tr.all-ready td {
+	color: var(--sunflower);
+	font-weight: 700;
+}
+
+.map-alerts .btn.bell {
+	background-image: url('../../../../css/images/menu/alerts.png'), var(--btn-bg);
+	background-size: 90%, 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+}
+
+.map-alerts .btn.bell.active {
+	background-image: url('../../../../css/images/menu/alerts.png'), var(--btn-bg-red);
+}

@@ -174,6 +174,50 @@ let GuildMemberStat = {
 	GuildPermission_Trusted: 16,
 	GuildPermission_GBGOfficer: 64,
 
+	// guild events of the member table: round length and distance between two rounds in days, texts and result per member
+	Rounds: {
+		gex: {
+			days: 7,
+			cycle: 7,
+			title: () => `${i18n('Boxes.General.Guild_Expedition')}: ${i18n('Boxes.GexStat.Encounters')}`,
+			hint: () => i18n('Boxes.GuildMemberStat.GexCollectHint'),
+			participation: () => i18n('Boxes.GuildMemberStat.GexParticipation'),
+			value: row => row.solvedEncounters || 0,
+			details: row => ({
+				'Boxes.GuildMemberStat.Rank': row.rank,
+				'Boxes.GuildMemberStat.Level': Math.ceil(row.solvedEncounters / 16),
+				'Boxes.GuildMemberStat.GexTrial': row.trial || 0
+			})
+		},
+		gbg: {
+			days: 11,
+			cycle: 14,
+			title: () => `${i18n('Boxes.General.Guild_Battlegrounds')}: ${i18n('Boxes.GuildMemberStat.Battles')} + ${i18n('Boxes.GuildMemberStat.Negotiations')}`,
+			hint: () => i18n('Boxes.GuildMemberStat.GbgCollectHint'),
+			participation: () => i18n('Boxes.GuildMemberStat.GbgParticipation'),
+			value: row => (row.battlesWon || 0) + (row.negotiationsWon || 0),
+			details: row => ({
+				'Boxes.GuildMemberStat.Battles': row.battlesWon || 0,
+				'Boxes.GuildMemberStat.Negotiations': row.negotiationsWon || 0,
+				'Boxes.GuildMemberStat.Rank': row.rank || undefined
+			})
+		},
+		qi: {
+			days: 11,
+			cycle: 14,
+			title: () => `${i18n('Boxes.General.Quantum_Incursion')}: ${i18n('Boxes.QiProgress.Progress')}`,
+			hint: () => i18n('Boxes.GuildMemberStat.QiCollectHint'),
+			participation: () => i18n('Boxes.GuildMemberStat.QiParticipation'),
+			value: row => row.progress || 0,
+			// actions without progress still are a participation
+			idle: row => !(row.progress > 0 || row.actions > 0),
+			details: row => ({
+				'Boxes.GuildMemberStat.Rank': row.rank,
+				'Boxes.QiProgress.Actions': row.actions || 0
+			})
+		}
+	},
+
 
 	/**
 	 * @returns {Promise<void>}
@@ -855,6 +899,117 @@ let GuildMemberStat = {
 	},
 
 
+	/**
+	 * Loads the results of the last finished GE, GBG and QI round; the QI rounds are read from the QI overview
+	 *
+	 * @returns {Promise<{gex: Object, gbg: Object, qi: Object, qiHistory: Object[]}>} Per event {end: number|undefined, members: Object<number, Object>}
+	 */
+	GetLastRounds: async () => {
+		const now = MainParser.round(+MainParser.getCurrentDate() / 1000);
+		const { gex, gbg } = GuildMemberStat.db;
+		const round = (end, rows = []) => ({ end, members: Object.fromEntries(rows.map(row => [row.player_id, row])) });
+
+		const gexEnd = (await gex.where('gexweek').below(now).last())?.gexweek;
+		const gbgEnd = (await gbg.where('gbgid').below(now).last())?.gbgid;
+		// the member table must not depend on the QI database being available
+		const qiHistory = await QiProgress.db?.history.toArray().catch(() => []) ?? [];
+		const qiLast = qiHistory.filter(season => season.qiround < now).pop();
+
+		return {
+			gex: round(gexEnd, gexEnd && await gex.where('gexweek').equals(gexEnd).toArray()),
+			gbg: round(gbgEnd, gbgEnd && await gbg.where('gbgid').equals(gbgEnd).toArray()),
+			qi: round(qiLast?.qiround, qiLast?.participation),
+			qiHistory
+		};
+	},
+
+
+	/**
+	 * Builds the column header of a guild event: icon plus tooltip with the shown value, the dates of the round and how the data is collected
+	 *
+	 * @param {string} type gex, gbg or qi
+	 * @param {number} [end] End of the last finished round (unix timestamp)
+	 * @returns {string}
+	 */
+	RoundHeader: (type, end) => {
+		const { days, cycle, title, hint } = GuildMemberStat.Rounds[type];
+		const outdated = end !== undefined && MainParser.round(+MainParser.getCurrentDate() / 1000) - end > cycle * 86400;
+		const lines = [`<strong>${title()}</strong>`];
+
+		if (end === undefined) {
+			lines.push(i18n('Boxes.GuildMemberStat.NoRoundData'));
+		}
+		else {
+			lines.push(HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.LastFinishedRound'), {
+				start: moment.unix(end).subtract(days, 'd').format(i18n('Date')),
+				end: moment.unix(end).format(i18n('Date'))
+			}));
+		}
+
+		if (outdated) lines.push(`<span class="text-warning">${i18n('Boxes.GuildMemberStat.RoundOutdated')}</span>`);
+		lines.push(hint());
+
+		return `<th class="is-number text-center gms-tooltip${outdated ? ' updaterequired' : ''}" data-type="gms-group" title="${HTML.i18nTooltip(lines.join('<br>'))}"><span class="${type}"></span></th>`;
+	},
+
+
+	/**
+	 * Returns the result of a member in the last finished round
+	 *
+	 * @param {string} type gex, gbg or qi
+	 * @param {{end: (number|undefined), members: Object}} round Last finished round
+	 * @param {number} id Player id
+	 * @returns {number|undefined} undefined if the member has no entry
+	 */
+	RoundValue: (type, round, id) => {
+		const row = round.members[id];
+
+		return row && GuildMemberStat.Rounds[type].value(row);
+	},
+
+
+	/**
+	 * Builds the table cell with the result of a member in the last finished round: number = result, 0 = did not take part, - = no data
+	 *
+	 * @param {string} type gex, gbg or qi
+	 * @param {{end: (number|undefined), members: Object}} round Last finished round
+	 * @param {number} id Player id
+	 * @param {number} count Recorded rounds the member took part in
+	 * @param {boolean} deleted Ex-members only keep the tooltip of their row
+	 * @returns {string}
+	 */
+	RoundCell: (type, round, id, count, deleted) => {
+		const { hint, participation, details, idle } = GuildMemberStat.Rounds[type];
+		const value = GuildMemberStat.RoundValue(type, round, id);
+		let lines;
+
+		if (round.end === undefined) {
+			lines = [i18n('Boxes.GuildMemberStat.NoRoundData'), hint()];
+		}
+		else if (value === undefined) {
+			lines = [i18n('Boxes.GuildMemberStat.NotListed')];
+		}
+		else if (idle ? idle(round.members[id]) : value === 0) {
+			lines = [i18n('Boxes.GuildMemberStat.NoParticipation')];
+		}
+		else {
+			lines = Object.entries(details(round.members[id]))
+				.filter(([, detail]) => detail !== undefined)
+				.map(([key, detail]) => `${i18n(key)}: ${HTML.Format(detail)}`);
+		}
+
+		lines.push(`${participation()}: ${count}`);
+
+		return `<td class="is-number text-center${deleted ? '' : ' gms-tooltip'}${value === undefined ? ' text-muted' : ''}" data-number="${value ?? -1}"` +
+			`${deleted ? '' : ` title="${HTML.i18nTooltip(lines.join('<br>'))}"`}>${value === undefined ? '-' : HTML.Format(value)}</td>`;
+	},
+
+
+	/**
+	 * Shows the member table with activity, messages and the results of the last finished GE, GBG and QI round
+	 *
+	 * @returns {Promise<void>}
+	 */
 	Show: async () => {
 		let h = [];
 
@@ -862,6 +1017,9 @@ let GuildMemberStat = {
 
 		GuildMemberStat.InitSettings();
 		GuildMemberStat.hasUpdateProgress = false;
+
+		const LastRounds = await GuildMemberStat.GetLastRounds();
+		const RoundTypes = Object.keys(GuildMemberStat.Rounds);
 
 		h.push('<div class="tabs dark-bg"><ul id="gmsTabs" class="horizontal">');
 		h.push(`<li${GuildMemberStat.CurrentStatGroup === 'Member' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Member"><span>${i18n('Boxes.GuildMemberStat.GuildMembers')}</span></a></li>`);
@@ -887,23 +1045,24 @@ let GuildMemberStat = {
 			h.push(`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Battles')}</th>`);
 		}
 
-		h.push(`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Eras')}</th>`);
+		// the hidden guild goods column comes right after the era, as in the rows; otherwise the activity header sorts by guild goods
+		h.push(`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Eras')}</th>` +
+			`<th style="display:none"></th>`);
 
 		if (GuildMemberStat.hasGuildMemberRights) {
 			h.push(`<th class="is-number gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberActiviy'))}"><span class="activity"></span></th>`);
 		}
 
-		h.push(`<th style="display:none"></th>` +
-			`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildMessages'))}"><span class="messages"></span></th>` +
-			`<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GexParticipation'))}"><span class="gex"></span></th>` +
-			`<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GbgParticipation'))}"><span class="gbg"></span></th>` +
+		h.push(`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildMessages'))}"><span class="messages"></span></th>` +
+			RoundTypes.map(type => GuildMemberStat.RoundHeader(type, LastRounds[type].end)).join('') +
 			'</tr>' +
 			'</thead><tbody class="gms-group">');
 
 		let CurrentMember = await GuildMemberStat.db.player.orderBy('score').reverse().toArray();
 		let exportData = GuildMemberStat.ExportData = [];
 
-		exportData.push(['rank', 'member_id', 'member', 'points', 'eraID', 'eraName', 'guildgoods', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation', 'won_battles', 'guildmember']);
+		// new columns go to the end, the position of the existing ones stays the same
+		exportData.push(['rank', 'member_id', 'member', 'points', 'eraID', 'eraName', 'guildgoods', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation', 'won_battles', 'guildmember', 'qi_participation', 'gex_last_round', 'gbg_last_round', 'qi_last_round']);
 
 		if (CurrentMember === undefined) return;
 
@@ -926,6 +1085,10 @@ let GuildMemberStat = {
 		}).reverse().sortBy('gbgid');
 
 		let CurrentForumActivity = await GuildMemberStat.db.forum.toArray();
+
+		const CurrentQiActivity = LastRounds.qiHistory
+			.flatMap(season => season.participation || [])
+			.filter(item => GuildMemberStat.Settings.showZeroValues === 1 || item.progress > 0 || item.actions > 0);
 
 		let data = CurrentMember;
 		let deletedCount = 0;
@@ -984,11 +1147,18 @@ let GuildMemberStat = {
 				forumActivityCount = forumActivity[0]['message_id'].length
 			}
 
+			// Get QI activities
+			const activityCount = {
+				gex: gexActivityCount,
+				gbg: gbgActivityCount,
+				qi: CurrentQiActivity.filter(item => item.player_id === MemberID).length
+			};
+
 			// Set warning, error Class for non active members
 			let stateClass = "normal";
 
 			// @Todo: set more specific criterias for warn and error level
-			if (forumActivityCount <= 5 && gbgActivityCount === 0 && gexActivityCount === 0) { stateClass = "warning"; }
+			if (forumActivityCount <= 5 && RoundTypes.every(type => activityCount[type] === 0)) { stateClass = "warning"; }
 
 			if (stateClass === "warning" && ActWarnCount > 0) {
 				stateClass = "error";
@@ -1046,11 +1216,11 @@ let GuildMemberStat = {
 				h.push(`<td class="is-number" data-number="${member['activity']}"><span class="activity activity_${member['activity']}"></span> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
 
 			h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>
-				<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>
-				<td class="is-number text-center" data-number="${gbgActivityCount}">${gbgActivityCount}</td>
+				${RoundTypes.map(type => GuildMemberStat.RoundCell(type, LastRounds[type], MemberID, activityCount[type], deletedMember)).join('')}
 			</tr>`);
 
-			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]+'.short'), member['guildgoods'], ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
+			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]+'.short'), member['guildgoods'], ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1,
+				activityCount.qi, ...RoundTypes.map(type => GuildMemberStat.RoundValue(type, LastRounds[type], MemberID))]);
 
 		}
 
@@ -1182,7 +1352,7 @@ let GuildMemberStat = {
 				<div class="foehelper-accordion-body">
 				<table class="foe-table">
 				<thead class="sticky"><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th>
-				<th>${i18n('Boxes.GuildMemberStat.Level')}</th><th>${i18n('Boxes.GuildMemberStat.GexTrial')}</th></th></tr></thead><tbody>`);
+				<th>${i18n('Boxes.GexStat.Encounters')}</th><th>${i18n('Boxes.GuildMemberStat.GexTrial')}</th></tr></thead><tbody>`);
 
 			let gex = Member.gex;
 			for (let i in gex) {
