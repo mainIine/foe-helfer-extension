@@ -29,6 +29,7 @@ let Productions = {
 	ShowDaily: false,
 	ActiveTab: 1,
 	ViewState: {},
+	ShownType: null,
 	RefreshTimer: null,
 
 	Tabs: [],
@@ -38,7 +39,9 @@ let Productions = {
 		'strategy_points',			// Forge Points
 		'forge_points_production', 	// FP Boost
 		'goods',					// Regular goods
+		'goods_production',			// Goods Boost
 		'special_goods', 			// *special* goods
+		'special_goods_production',	// Special goods Boost
 		'items',					// Fragments, blueprints, boosts etc
 		'money',					// Coins
 		'coin_production', 			// Coin Boost
@@ -54,9 +57,35 @@ let Productions = {
 		'att_boost_defender',
 		'def_boost_defender',
 		'clan_goods',
+		'guild_goods_production',	// Guild goods Boost
 		'guild_raids'
 	],
 	FSPqualifiedResources: ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"],
+
+	// production types with a boost view: a button in the table head opens the hidden tab of the boost type
+	BoostViews: {
+		strategy_points: 'forge_points_production',
+		goods: 'goods_production',
+		special_goods: 'special_goods_production',
+		money: 'coin_production',
+		supplies: 'supply_production',
+		clan_goods: 'guild_goods_production'
+	},
+	// boost types listed by source, with a switch between them: boost type => i18n key of the boosted production
+	SourceBoosts: {
+		goods_production: 'Boxes.Productions.Headings.goods',
+		special_goods_production: 'Boxes.GBBonuses.Type.special_goods',
+		guild_goods_production: 'Boxes.Productions.GuildGoods'
+	},
+	// boost origins that reuse an existing translation, all others: Boxes.Productions.BoostSource.<origin>
+	BoostOrigins: {
+		building: 'Boxes.BlueGalaxy.Building',
+		building_set_adjacency: 'Boxes.BlueGalaxy.Building',
+		building_chain_links: 'Boxes.BlueGalaxy.Building',
+		greatBuilding: 'General.GB',
+		ally: 'Boxes.AllyList.Ally',
+		castle_system: 'Boxes.Castle.Title'
+	},
 
 	HappinessBoost: 0,
 	PopulationSum: 0,
@@ -95,7 +124,7 @@ let Productions = {
 
 	/**
 	 * Re-renders the open box with the current city data, e.g. after a collection:
-	 * the current productions and timers would stay stale otherwise. Keeps the active tab,
+	 * the current productions and timers would stay stale otherwise. Keeps the active tab and view,
 	 * the search terms, the list/group view, the sort order and the scroll position.
 	 */
 	Refresh: () => {
@@ -112,10 +141,10 @@ let Productions = {
 
 	/**
 	 * Remembers the search terms, the list/group view and the sort order of every rendered tab
-	 * as well as the scroll position, so a re-render does not reset them.
+	 * as well as the shown view and the scroll position, so a re-render does not reset them.
 	 */
 	CaptureViewState: () => {
-		const state = { tabs: {}, scrollTop: $('#Productions #ProductionsBody').scrollTop() || 0 }
+		const state = { tabs: {}, shownType: Productions.ShownType, scrollTop: $('#Productions #ProductionsBody').scrollTop() || 0 }
 
 		$('#Productions #ProductionsBody .content').each(function () {
 			const $tables = $(this).children('table.sortable-table')
@@ -502,41 +531,11 @@ let Productions = {
 			let type = Productions.Types[0]
 			let firstTabContent = Productions.buildTableByType(type)
 			$("#Productions #"+type).html(firstTabContent)
+			Productions.ShownType = type
 
 			// fill other tables on demand
-			$('.production-tabs li, #Productions .typeBoost').click(function() {
-				let type = $("a", this).attr("href").replace("#","")
-
-				if ($("#Productions #"+type).html().length === 0) {
-					let content = Productions.buildTableByType(type)
-					$("#Productions #"+type).html(content).promise().done(() => {
-
-						$('#Productions .typeBoost').click(function(e) {
-							e.preventDefault()
-							let type = $("a", this).attr("href").replace("#","")
-
-							if ($("#Productions #"+type).html().length === 0) {
-								let content = Productions.buildTableByType(type)
-								$("#Productions #"+type).html(content)
-								$('.TSinactive').tableSorter()
-								$('.TSinactive').removeClass('TSinactive')
-								HTML.FilterTable('#Productions .filterCurrentList')
-								Productions.RestoreViewState(type)
-							}
-							$("#Productions .content").css('display','none')
-							$("#Productions #"+type).css('display','block')
-						});
-
-					})
-					$('.TSinactive').tableSorter()
-					$('.TSinactive').removeClass('TSinactive')
-					HTML.FilterTable('#Productions .filterCurrentList')
-					Productions.RestoreViewState(type)
-
-					//$('#Productions [data-original-title]').tooltip({container: "#Productions", html:true});
-				}
-				$("#Productions .content").css('display','none')
-				$("#Productions #"+type).css('display','block')
+			$('.production-tabs li').click(function() {
+				Productions.ShowType($("a", this).attr("href").replace("#",""))
 			});
 
 			// extra functionality
@@ -549,6 +548,12 @@ let Productions = {
 			// re-render (refresh, settings): only the first table is filled above, fill the restored tab as well
 			if (Productions.ActiveTab > 1) $('.production-tabs li').eq(Productions.ActiveTab - 1).trigger('click')
 
+			// a view without a visible tab (e.g. a boost view) was open: show it again
+			if (Productions.ViewState?.shownType) {
+				Productions.ShowType(Productions.ViewState.shownType)
+				Productions.ViewState.shownType = null
+			}
+
 			if (Productions.ViewState?.scrollTop) {
 				$('#Productions #ProductionsBody').scrollTop(Productions.ViewState.scrollTop)
 				Productions.ViewState.scrollTop = 0
@@ -557,6 +562,12 @@ let Productions = {
 			// remember the column the user sorted by, so a refresh can restore it
 			$('#Productions').off('click.productionsSort').on('click.productionsSort', 'tr.sorter-header th:not(.no-sort)', function () {
 				$(this).closest('table').data('sortedColumn', $(this).index())
+			})
+
+			// buttons inside the tables open the views without a visible tab (boosts, special goods)
+			$('#Productions').off('click.productionsType').on('click.productionsType', '.typeBoost', function (e) {
+				e.preventDefault()
+				Productions.ShowType($('a', this).attr('href').replace('#', ''))
 			})
 
 			// mark a building in the city, fall back to the city map box if unsupported
@@ -568,6 +579,28 @@ let Productions = {
 				}
 			});
 		});
+	},
+
+
+	/**
+	 * Shows the content of a production type, the table is built on first use.
+	 *
+	 * @param {string} type Production type (= id of the tab content)
+	 */
+	ShowType: (type) => {
+		const $content = $('#Productions #' + type)
+
+		if ($content.html().length === 0) {
+			$content.html(Productions.buildTableByType(type))
+			$('.TSinactive').tableSorter()
+			$('.TSinactive').removeClass('TSinactive')
+			HTML.FilterTable('#Productions .filterCurrentList')
+			Productions.RestoreViewState(type)
+		}
+
+		$('#Productions .content').css('display', 'none')
+		$content.css('display', 'block')
+		Productions.ShownType = type
 	},
 
 

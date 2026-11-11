@@ -1,5 +1,33 @@
 ## Extension Changelog
 
+##### 4.8.10.0
+**Update**
+
+- Gildengefechte: Die Karte ist jetzt mit der Liste verbunden – Sektor überfahren markiert die passende Zeile und zeigt einen Tooltip mit Besitzer, Öffnungszeit und Zermürbung, ein Klick wählt den Sektor zum Kopieren/für Discord aus, und bei gesperrten Sektoren siehst du, welche Nachbarn früher öffnen
+- Gildengefechte: Die zum Kopieren ausgewählten Sektoren bleiben ausgewählt, wenn sich die Liste aktualisiert
+- Kulturelle Siedlungen & Quanten-Invasion: Mit einem Klick auf die Glocke erinnert dich der Helfer, sobald Produktionen abholbereit sind, ein Bau fertig ist oder einfach alles fertig ist – zu finden in der Siedlungs-Box, der QI-Übersicht und der Alarm-Box
+- Produktionsübersicht: Bei Gütern, Spezialgütern und Gildengütern zeigt ein Klick auf „Boost“ jetzt, welche Gebäude und anderen Quellen den Produktionsbonus liefern – mit Gesamtwert, Einzel- und Gruppenansicht
+- Produktionsübersicht: Eine geöffnete Boost-Ansicht bleibt offen, wenn du ein Gebäude abholst
+- Powerleveln: Die Tabelle zeigt jetzt je Level die Freischaltkosten (Blaupausen-Sets, Güter, Münzen, Vorräte, Medaillen) und darüber die Summe für den gewählten Bereich im Vergleich zu deinem Bestand – was fehlt, ist rot markiert
+- Gildengefechte: Die nächsten Fokus-Ziele deiner Gilde stehen jetzt in einer kleinen, frei verschiebbaren Übersicht direkt auf der Gefechtskarte – mit Countdown, Eroberungsfortschritt und Alarm-Knopf. Der Menü-Button zeigt zusätzlich die Zeit bis zum nächsten Ziel
+- Stadtübersicht: Neue Effizienz-Heatmap – färbt alle bewerteten Gebäude nach ihrer Bewertung pro Feld oder pro Gebäude ein, von Rot (schwach) über Gelb bis Grün (stark), mit Legende, Stadtschnitt und der Fläche, die unterdurchschnittliche Gebäude belegen
+- Nachrichten-Checkliste: Der neue Button „Meine letzte Nachricht“ listet die Plätze auf, die du in einem Thread mit deiner letzten Nachricht genommen hast – zum Abhaken beim Einzahlen. Auf Wunsch (Einstellungen der Box) erscheint die Liste automatisch, sobald du deine Nachricht abschickst
+- Gildenmitglieder-Übersicht: Die Spalten für GEX und GG zeigen jetzt das Ergebnis der letzten beendeten Runde, neu dazu kommt eine QI-Spalte – mit Rang und Details im Tooltip, Rundendatum in der Spaltenüberschrift und im Export; die Inaktivitäts-Markierung berücksichtigt nun auch die QI
+
+**Bugfixes**
+
+- Einstellungen: Die Menü-Länge wirkt sofort, ohne das Spiel neu zu laden
+- Gildengefechte: Die Countdowns der Sektorliste laufen nicht mehr mehrfach im Hintergrund weiter – die Box bleibt auch nach langer Zeit auf der Karte flüssig
+- QI-Übersicht: Die eigene Zeile ist wieder hervorgehoben
+- Gildenmitglieder-Übersicht: Ein Klick auf die Spalte Aktivität sortiert jetzt nach der Aktivität
+- Gildenmitglieder-Übersicht: In den Mitglieder-Details heißt die Spalte der Gilden-Expedition jetzt richtig „Begegnungen“
+- Beschränkte Gebäude: Wird ein Gebäude erneut aufgewertet, bekommt es wieder einen Ablauf-Alarm; abgelaufene Gebäude, die noch in der Stadt stehen, werden beim Spielstart wieder gemeldet
+- Powerleveln: Die Kopfzeile passt wieder zu den Spalten, wenn der Level-Bereich zwischen Kupfer- und Gold-Stufen wechselt
+- Produktionsübersicht: Die Boost-Buttons funktionieren auch in Ansichten, die erst beim Öffnen aufgebaut werden
+- Fenster des Helfers reagieren auch nach vielen geöffneten Boxen zügig auf Klicks
+
+---
+
 ##### 4.8.9.2
 **Bugfixes**
 

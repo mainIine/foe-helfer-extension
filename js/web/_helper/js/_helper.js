@@ -202,6 +202,7 @@ let HTML = {
 		'GBGBuildings': 'module/gbg',
 		'GexStat': 'module/ge-results',
 		'GexStockWarning': 'module/ge-results',
+		'GildFocusTargets': 'module/gbg',
 		'GildPlayers': 'module/gbg',
 		'GildPlayersDetailView': 'module/gbg',
 		'GuildMemberDetail*': 'module/guild-members',
@@ -503,8 +504,8 @@ let HTML = {
 				e.stopPropagation();
 			});
 
-			// brings the clicked window to the front
-			$('body').on('click', '.window-box', function () {
+			// brings the clicked window to the front, one handler for all boxes
+			$('body').off('click.bringToFront').on('click.bringToFront', '.window-box', function () {
 				HTML.BringToFront($(this));
 			});
 

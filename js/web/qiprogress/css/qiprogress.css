@@ -21,6 +21,21 @@
     white-space: nowrap;
 }
 
+/* own row, framed like the own row of the GBG player list */
+#QiProgressTable tr.mark-player td {
+	border-top: 1px solid var(--sunflower);
+	border-bottom: 1px solid var(--sunflower);
+}
+
+/* the first cell is the hidden player id */
+#QiProgressTable tr.mark-player td:nth-child(2) {
+	border-left: 1px solid var(--sunflower);
+}
+
+#QiProgressTable tr.mark-player td:last-child {
+	border-right: 1px solid var(--sunflower);
+}
+
 #QiProgressPlayerDetails {
     width: 400px;
 }

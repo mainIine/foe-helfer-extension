@@ -214,7 +214,9 @@
 	font-size: 90%;
 }
 
-#LiveGildFightingBody .province-color, #LiveGildFightingBody .province-color-round {
+#LiveGildFightingBody .province-color, #LiveGildFightingBody .province-color-round,
+#TooltipContainer .gbgSectorTT .province-color,
+#GildFocusTargetsBody .province-color {
 	width: 13px;
 	height: 13px;
 	display: inline-block;
@@ -223,7 +225,9 @@
 	top: 2px;
 	position: relative;
 }
-#LiveGildFightingBody .battletype {
+#LiveGildFightingBody .battletype,
+#TooltipContainer .gbgSectorTT .battletype,
+#GildFocusTargetsBody .battletype {
 	width: 9px;
 	height: 9px;
 	box-shadow: 0 1px 1px var(--black-65);
@@ -231,10 +235,14 @@
 	display: inline-block;
 	position: relative;
 }
-#LiveGildFightingBody .battletype.BTattack {
+#LiveGildFightingBody .battletype.BTattack,
+#TooltipContainer .gbgSectorTT .battletype.BTattack,
+#GildFocusTargetsBody .battletype.BTattack {
 	background-color: rgb(209, 38, 38);
 }
-#LiveGildFightingBody .battletype.BTdefence {
+#LiveGildFightingBody .battletype.BTdefence,
+#TooltipContainer .gbgSectorTT .battletype.BTdefence,
+#GildFocusTargetsBody .battletype.BTdefence {
 	background-color: rgb(45, 77, 255);
 }
 
@@ -307,7 +315,8 @@
 	color: var(--sunflower);
 }
 
-#LiveGildFightingBody .focus-target {
+#LiveGildFightingBody .focus-target,
+#TooltipContainer .gbgSectorTT .focus-target {
 	width: 14px;
 	height: 14px;
 	margin-right: 2px;
@@ -347,21 +356,49 @@
 }
 
 /* attrition chance color coding: 20% light blue, 40/60% orange, 80/100% red */
-#LiveGildFightingBody .attrition-cell.attrition-low {
+#LiveGildFightingBody .attrition-cell.attrition-low,
+#TooltipContainer .gbgSectorTT .attrition-cell.attrition-low,
+#GildFocusTargetsBody .attrition-cell.attrition-low {
 	color: #7fd4ff;
 }
 
-#LiveGildFightingBody .attrition-cell.attrition-mid {
+#LiveGildFightingBody .attrition-cell.attrition-mid,
+#TooltipContainer .gbgSectorTT .attrition-cell.attrition-mid,
+#GildFocusTargetsBody .attrition-cell.attrition-mid {
 	color: #ffb84d;
 }
 
-#LiveGildFightingBody .attrition-cell.attrition-high {
+#LiveGildFightingBody .attrition-cell.attrition-high,
+#TooltipContainer .gbgSectorTT .attrition-cell.attrition-high,
+#GildFocusTargetsBody .attrition-cell.attrition-high {
 	color: #ff6a5e;
 }
 
 #LiveGildFightingBody tr.pulse td {
 	background-color: rgba(208, 200, 172, 0.3);
 	transition: background-color .6s;
+}
+
+/* row of the sector under the pointer on the province map */
+#LiveGildFightingBody tr.map-hover td {
+	background-color: var(--table-bg-hover);
+}
+
+#LiveGildFightingBody tr.map-hover td:first-child {
+	box-shadow: inset 3px 0 0 var(--sunflower);
+}
+
+/* that row sits in a tab which is not shown: dot on the tab handle */
+#LiveGildFightingBody .tabs ul li.map-hover::after {
+	content: '';
+	position: absolute;
+	top: -4px;
+	right: -4px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: var(--sunflower);
+	box-shadow: 0 1px 1px var(--black-65);
 }
 
 #LiveGildFightingBody .attack {
@@ -519,18 +556,6 @@
 	width: 100%;
 }
 
-#ProvinceMap #provDetails {
-	position: absolute;
-	bottom: 0.75em;
-	right: 0.75em;
-	padding: 0.75em;
-	background-color: #333;
-	border-radius: 5px;
-	border: 2px solid #222;
-	color: #eee;
-	display: none;
-}
-
 /* shrink-wraps the map canvas so the overlay canvas can sit exactly on top */
 #ProvinceMap #province-map-stack {
 	position: relative;
@@ -570,4 +595,67 @@
 	position: absolute;
 	top: 40px;
 	right: 3px;
+}
+
+/* sector tooltip of the province map, built from the cells of the live fight box */
+#TooltipContainer .gbgSectorTT {
+	white-space: nowrap;
+}
+
+#TooltipContainer .gbgSectorTT h2 {
+	font-weight: normal;
+}
+
+/*************************************************************************************************************/
+
+/* focus panel: compact list of the next focus targets on the battlegrounds map,
+   placed by the player via drag & drop like every other box */
+#GildFocusTargets {
+	width: max-content;
+	min-width: 170px;
+	height: auto;
+}
+
+#GildFocusTargetsBody {
+	height: auto;
+	font-size: 90%;
+	white-space: nowrap;
+}
+
+#GildFocusTargetsBody .focus-status small {
+	color: var(--dark-beige);
+}
+
+/* unlocks within the next minutes */
+#GildFocusTargetsBody tr.soon td:first-child {
+	box-shadow: inset 3px 0 0 var(--sunflower);
+}
+
+#GildFocusTargetsBody tr.soon .focus-status {
+	color: var(--sunflower);
+}
+
+/* open for attacks */
+#GildFocusTargetsBody tr.open .prov-name b {
+	color: var(--success);
+}
+
+/* carries an arrow on the battlegrounds map */
+#GildFocusTargetsBody tr.marked td {
+	background-color: var(--table-bg-bright);
+}
+
+/* menu button: time until the next focus target unlocks, wider than the round counters */
+.hud-btn #gildFight-count {
+	width: auto;
+	height: auto;
+	padding: 0 3px;
+	border-radius: 7px;
+	line-height: 14px;
+	font-size: 0.7rem;
+}
+
+.hud-btn #gildFight-count.soon {
+	background-color: var(--red);
+	box-shadow: 0 0 1px 1px var(--danger-red);
 }

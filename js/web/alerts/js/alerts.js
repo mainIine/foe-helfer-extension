@@ -715,6 +715,14 @@ let Alerts = function(){
 					renderContent: () => {
 						return tmp.web.body.tabs.content.join( '' );
 					},
+
+
+					/**
+					 * Markup of the list tab: the one-click alerts of the active map,
+					 * the table of all alerts and the create buttons
+					 *
+					 * @returns {string}
+					 */
 					tabListContent: () => {
 
 						let labels = {
@@ -734,6 +742,7 @@ let Alerts = function(){
 
 						// list alerts
 						let html = `<div class="scrollable">
+					${MapAlerts.Box()}
 					<table id="alerts-table" class="foe-table">
 						<thead>
 							<tr>
@@ -811,7 +820,18 @@ let Alerts = function(){
 					</div>
 				</div>`;
 					},
+
+
+					/**
+					 * Rebuilds the rows of the alert table, called whenever an alert was
+					 * created, changed, deleted or has fired
+					 *
+					 * @returns {void}
+					 */
 					updateAlerts: () => {
+
+						// the bells of the settlement / QI list reflect the same alerts
+						MapAlerts.Refresh();
 
 						// no need to update the alerts list if the alerts box is not shown
 						if ( ! tmp.web.visible() ) { return; }
@@ -1655,6 +1675,16 @@ let Alerts = function(){
 
 		getAll: () => {
 			return tmp.extAlerts.getAll();
+		},
+
+
+		/**
+		 * Brings everything that shows alerts up to date after an alert was created or deleted elsewhere
+		 *
+		 * @returns {void}
+		 */
+		refresh: () => {
+			tmp.web.body.tabs.updateAlerts();
 		}
 	};
 
@@ -1667,6 +1697,324 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 	Alerts.update.data.timers( data['responseData'] );
+});
+
+
+/**
+ * One-click alerts for the running productions and constructions of the cultural
+ * settlement and the Quantum Incursion settlement. Boxes place MapAlerts.Box() in
+ * their markup, the list in it always belongs to the active map.
+ */
+let MapAlerts = {
+
+	/** Building data of the supported maps, the map id is also the category that marks their alerts */
+	Maps: {
+		cultural_outpost: () => CityMap.CulturalOutpost.data,
+		guild_raids: () => CityMap.QI.data
+	},
+
+	/** Building states that end at a time worth an alert, with the i18n key of their text */
+	States: {
+		ProducingState: 'Boxes.Alerts.Map.Collect',
+		ConstructionState: 'Boxes.Alerts.Map.Construct'
+	},
+
+	/** Times within this many seconds of each other form one entry */
+	MergeSpan: 300,
+
+	/** Seconds a stored alert may be off its entry, the clock offset to the server drifts */
+	Slack: 10,
+
+	/** Entries of the active map as they are shown, each with its stored alerts */
+	Entries: [],
+
+	/** Rendered list, boxes that rebuild themselves start with it */
+	Html: '',
+
+	/** Time (ms) this list last set per alert id, kept in localStorage: tells its own alerts from ones the player moved by hand */
+	Known: JSON.parse(localStorage.getItem('MapAlertsKnown') || '{}'),
+
+	Busy: false,
+	RefreshTimer: null,
+	TickTimer: null,
+
+
+	/**
+	 * Upcoming collection and construction times of the active map. Times within
+	 * MergeSpan form one entry that ends with its latest time, anything due within
+	 * a minute (finished, one minute productions) is left out.
+	 *
+	 * @returns {{from: number, at: number, states: Set<string>, alerts: Object[]}[]} Entries in server time, ascending
+	 */
+	GetEntries: () => {
+		const now = GameTime.get(),
+			entries = [],
+			states = Object.values(MapAlerts.Maps[ActiveMap]?.() || {})
+				.filter(building => building.type !== 'main_building')
+				.map(building => building.state || {})
+				.filter(state => MapAlerts.States[state.__class__] && !state.pausedAt && state.next_state_transition_at - now > 60)
+				.sort((a, b) => a.next_state_transition_at - b.next_state_transition_at);
+
+		for (const state of states) {
+			const at = state.next_state_transition_at,
+				last = entries[entries.length - 1];
+
+			if (last && at - last.from <= MapAlerts.MergeSpan) {
+				last.at = at;
+				last.states.add(state.__class__);
+			}
+			else {
+				entries.push({ from: at, at, states: new Set([state.__class__]), alerts: [] });
+			}
+		}
+
+		// the last entry is the moment everything is ready, its alert names all that happened until then
+		if (entries.length > 1) {
+			entries[entries.length - 1].states = new Set(entries.flatMap(entry => [...entry.states]));
+		}
+
+		return entries;
+	},
+
+
+	/**
+	 * What is ready at the time of an entry, one text per kind
+	 *
+	 * @param {{states: Set<string>}} entry
+	 * @returns {string[]}
+	 */
+	GetTexts: (entry) => Object.keys(MapAlerts.States).filter(state => entry.states.has(state)).map(state => i18n(MapAlerts.States[state])),
+
+
+	/**
+	 * Name of the active map for the notification: the running settlement or the Quantum Incursion
+	 *
+	 * @returns {string}
+	 */
+	GetTitle: () => ActiveMap === 'guild_raids' ? i18n('Boxes.FPCollector.guild_raids') : (Outposts.OutpostData?.contentName || i18n('Menu.OutP.Title')),
+
+
+	/**
+	 * Alert data of an entry
+	 *
+	 * @param {{at: number, states: Set<string>}} entry
+	 * @returns {Object} Data as expected by the alerts API
+	 */
+	GetData: (entry, isAll = false) => ({
+		title: MapAlerts.GetTitle(),
+		body: MapAlerts.GetTexts(entry).join('\n'),
+		// the entry is server time, the browser alarm fires against the local clock
+		expires: Math.round((entry.at - GameTime.Offset) * 1000),
+		repeat: -1,
+		persistent: true,
+		tag: isAll ? MapAlerts.GetAllTag() : '',
+		category: ActiveMap,
+		vibrate: false,
+		actions: null
+	}),
+
+
+	/**
+	 * Tag of the "everything ready" alert of the active map, it tells that alert from the ones set for a fixed time
+	 *
+	 * @returns {string}
+	 */
+	GetAllTag: () => `${ActiveMap}_all`,
+
+
+	/**
+	 * Sends a request to the alerts API of the extension
+	 *
+	 * @param {string} action create, setData or delete
+	 * @param {Object} payload Further fields of the request (id, data)
+	 * @returns {Promise<any>}
+	 */
+	Send: (action, payload) => MainParser.sendExtMessage({ type: 'alerts', playerId: ExtPlayerID, action, ...payload }),
+
+
+	/**
+	 * Notes the time this list gave an alert
+	 *
+	 * @param {number} id Alert id
+	 * @param {number} expires Time of the alert in ms
+	 * @returns {void}
+	 */
+	Remember: (id, expires) => {
+		if (!Number.isInteger(id)) return;
+
+		MapAlerts.Known[id] = expires;
+		localStorage.setItem('MapAlertsKnown', JSON.stringify(MapAlerts.Known));
+	},
+
+
+	/**
+	 * Markup for a box: the list of the active map, filled again with every update
+	 *
+	 * @returns {string}
+	 */
+	Box: () => {
+		HTML.AddCssFile('alerts');
+		MapAlerts.Refresh();
+
+		return `<div class="map-alerts">${MapAlerts.Html}</div>`;
+	},
+
+
+	/**
+	 * Requests an update once the current batch of game responses is processed
+	 *
+	 * @returns {void}
+	 */
+	Refresh: () => {
+		clearTimeout(MapAlerts.RefreshTimer);
+		MapAlerts.RefreshTimer = setTimeout(MapAlerts.Update, 100);
+	},
+
+
+	/**
+	 * Matches the entries of the active map with the stored alerts, keeps an alert
+	 * on the end of its entry and fills the list into all boxes showing it
+	 *
+	 * @returns {Promise<void>}
+	 */
+	Update: async () => {
+		clearTimeout(MapAlerts.TickTimer);
+		const stored = MapAlerts.GetEntries().length > 0 ? await Alerts.getAll().catch(() => null) : [];
+
+		// without an answer from the background the shown state stays until the next round
+		if (Array.isArray(stored)) {
+			const entries = MapAlerts.Entries = MapAlerts.GetEntries(),
+				slack = MapAlerts.Slack,
+				mine = stored
+					.filter(alert => alert.data.category === ActiveMap && alert.data.expires > Date.now())
+					.map(alert => ({ ...alert, at: alert.data.expires / 1000 + GameTime.Offset }));
+
+			const allTag = MapAlerts.GetAllTag(),
+				last = entries[entries.length - 1];
+
+			for (const entry of entries) {
+				// the "everything ready" alert belongs to the last entry wherever that has moved, the others to the entry of their time
+				entry.alerts = mine.filter(alert => alert.data.tag === allTag ? entry === last : alert.at >= entry.from - slack && alert.at <= entry.at + slack);
+
+				// productions started or cancelled later moved the end of the entry: its alert follows
+				if (entry.alerts.length > 0 && !entry.alerts.some(alert => Math.abs(alert.at - entry.at) <= slack)) {
+					const alert = entry.alerts[0],
+						data = MapAlerts.GetData(entry, alert.data.tag === allTag);
+
+					// the background needs a moment to store the new time, it is asked only once
+					if (MapAlerts.Known[alert.id] !== data.expires) {
+						MapAlerts.Remember(alert.id, data.expires);
+						MapAlerts.Send('setData', { id: alert.id, data });
+					}
+				}
+			}
+
+			// the production or construction of an alert is gone (cancelled, building removed): it would fire for nothing.
+			// Only alerts still at the time this list gave them are removed, never one the player moved by hand;
+			// entries leave the list a minute before their time, alerts that close stay untouched as well
+			const matched = new Set(entries.flatMap(entry => entry.alerts.map(alert => alert.id)));
+
+			for (const alert of mine) {
+				if (!matched.has(alert.id) && MapAlerts.Known[alert.id] === alert.data.expires && alert.at - GameTime.get() > 120) {
+					MapAlerts.Send('delete', { id: alert.id });
+				}
+			}
+
+			// forget alerts that have fired or were deleted
+			const ids = new Set(stored.map(alert => String(alert.id)));
+
+			if (Object.keys(MapAlerts.Known).some(id => !ids.has(id))) {
+				MapAlerts.Known = Object.fromEntries(Object.entries(MapAlerts.Known).filter(([id]) => ids.has(id)));
+				localStorage.setItem('MapAlertsKnown', JSON.stringify(MapAlerts.Known));
+			}
+
+			MapAlerts.Html = MapAlerts.Render();
+		}
+
+		const boxes = $('.map-alerts').html(MapAlerts.Html);
+
+		// entries run out and alerts fire without any game response
+		clearTimeout(MapAlerts.TickTimer);
+		if (boxes.length > 0 && MapAlerts.Entries.length > 0) {
+			MapAlerts.TickTimer = setTimeout(MapAlerts.Update, 30000);
+		}
+	},
+
+
+	/**
+	 * Markup of the list: "everything ready" first, the earlier times below
+	 *
+	 * @returns {string}
+	 */
+	Render: () => {
+		const entries = MapAlerts.Entries,
+			rows = entries.map((entry, i) => {
+				const isLast = i === entries.length - 1,
+					isSet = entry.alerts.length > 0;
+
+				return `<tr${isLast ? ' class="all-ready"' : ''}>
+					<td>${moment.unix(entry.at).calendar()}</td>
+					<td>${isLast ? i18n('Boxes.Alerts.Map.AllReady') : MapAlerts.GetTexts(entry).join(', ')}</td>
+					<td class="text-right"><button class="btn btn-slim bell${isSet ? ' active' : ''}" onclick="MapAlerts.Toggle(${i})" title="${HTML.i18nTooltip(i18n(isSet ? 'Boxes.GuildFights.DeleteAlert' : 'Boxes.GuildFights.SetAlert'))}"></button></td>
+				</tr>`;
+			});
+
+		if (rows.length === 0) return '';
+		rows.unshift(rows.pop());
+
+		return `<table class="foe-table">
+			<thead><tr><th colspan="3">${i18n('Boxes.Alerts.Title')}: ${MapAlerts.GetTitle()}</th></tr></thead>
+			<tbody>${rows.join('')}</tbody>
+		</table>`;
+	},
+
+
+	/**
+	 * Bell of an entry: deletes its alert or creates one for its time
+	 *
+	 * @param {number} index Position in MapAlerts.Entries
+	 * @returns {Promise<void>}
+	 */
+	Toggle: async (index) => {
+		const entry = MapAlerts.Entries[index];
+		if (!entry || MapAlerts.Busy) return;
+		MapAlerts.Busy = true;
+
+		try {
+			if (entry.alerts.length > 0) {
+				await Promise.all(entry.alerts.map(alert => MapAlerts.Send('delete', { id: alert.id })));
+			}
+			else {
+				const data = MapAlerts.GetData(entry, index === MapAlerts.Entries.length - 1);
+
+				MapAlerts.Remember(await MapAlerts.Send('create', { data }), data.expires);
+			}
+		}
+		finally {
+			MapAlerts.Busy = false;
+			Alerts.refresh();
+		}
+	}
+};
+
+// productions on the settlement and QI map, MainParser only follows those of the main city
+FoEproxy.addHandler('CityProductionService', (data) => {
+	const buildings = MapAlerts.Maps[ActiveMap]?.();
+	if (!buildings) return;
+
+	for (const entity of data.responseData?.updatedEntities || []) {
+		if (buildings[entity.id]) buildings[entity.id] = entity;
+	}
+	MapAlerts.Refresh();
+});
+
+// map loaded, buildings placed, finished or removed
+FoEproxy.addHandler('CityMapService', () => {
+	MapAlerts.Refresh();
+});
+
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
+	MapAlerts.Refresh();
 });
 
 

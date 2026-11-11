@@ -111,6 +111,13 @@ let _menu = {
 		_menu.OverflowCheck(_menu.selectedMenu, true);
 	},
 
+
+	/**
+	 * Switches back from the fallback box menu to the selected menu once the window is large enough
+	 *
+	 * @param {string} [selMenu] menu that is currently shown
+	 * @param {boolean} [flag] true when called right after building a menu (no switch then)
+	 */
 	OverflowCheck: (selMenu='Box', flag) => {
 		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {
 			$('#menu_box').remove();
@@ -118,6 +125,22 @@ let _menu = {
 			_menu.CallSelectedMenu(MainParser.SelectedMenu);
 		}
 	},
+
+
+	/**
+	 * Applies the "MenuLength" setting to the menu bar that is currently shown, the box menu has no length
+	 */
+	ApplyMenuLength: () => {
+		if (!$('#foe-helper-hud').length) return;
+
+		if (_menu.selectedMenu === 'RightBar') {
+			_menu_right.SetMenuHeight(true);
+		}
+		else if (_menu.selectedMenu === 'BottomBar') {
+			_menu_bottom.SetMenuWidth(true);
+		}
+	},
+
 
 	/**
 	 * Hides a button. The HUD slider must already be filled for this.
@@ -805,6 +828,12 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
+
+	/**
+	 * Guild Battlegrounds box, the counter shows the time until the next focus target unlocks
+	 *
+	 * @returns {jQuery} Menu button
+	 */
 	gildFight_Btn: () => {
 		let btn = _menu.MakeButton('gildFight',true);
 
@@ -814,7 +843,8 @@ let _menu = {
 			}
 		});
 
-		return btn.append(btn_sp);
+		return btn.append(btn_sp, $('<span id="gildFight-count" class="hud-counter" style="display:none"></span>'))
+			.ready(Guild_fights.UpdateMenuCounter);
 	},
 
 	investment_Btn: () => {

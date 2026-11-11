@@ -54,6 +54,9 @@ let BuildingMarker = {
 	/** @type {boolean} True once the capture failed permanently (e.g. no V8) */
 	_unsupported: false,
 
+	/** @type {boolean} The marker reads the game engine through V8 call sites, Firefox has none: modules offer it only where this is true */
+	supported: !navigator.userAgent.includes('Firefox'),
+
 	/** @type {object[]} Active markers ({entityId}|{x, y}, each with its arrow element) */
 	_markers: [],
 

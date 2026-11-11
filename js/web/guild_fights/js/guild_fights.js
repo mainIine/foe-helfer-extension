@@ -20,6 +20,9 @@ FoEproxy.addMetaHandler('guild_battleground_maps', (xhr, postData) => {
 FoEproxy.addMetaHandler('battleground_colour', (xhr, postData) => {
 	Guild_fights.Colors = JSON.parse(xhr.responseText);
 	Guild_fights.PrepareColors();
+
+	// the focus panel may have been built before the guild colours arrived
+	Guild_fights.UpdateFocusPanel();
 });
 
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) => {
@@ -42,6 +45,8 @@ FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data =>
 	if (d.signal) {
 		own.signals.push({ provinceId: d.provinceId || 0, signal: d.signal });
 	}
+
+	Guild_fights.UpdateFocus();
 
 	if ($('#LiveGildFighting').length > 0) {
 		Guild_fights.BuildFightContent();
@@ -113,6 +118,10 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 	Guild_fights.MapData = data.responseData;
 
+	// the signals come with the map data; a focus panel the player closed returns with every visit
+	Guild_fights.FocusPanelDismissed = false;
+	Guild_fights.UpdateFocus();
+
 	$('#gildFight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();
 
@@ -146,6 +155,7 @@ FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
 		Guild_fights.AutoOpenedOnMap = false;
 		Guild_fights.AutoOpenPending = false;
 		clearTimeout(Guild_fights.AutoOpenTimeout);
+		Guild_fights.UpdateFocusPanel();
 	}
 });
 
@@ -243,6 +253,20 @@ let Guild_fights = {
 	DiscordAutoDone: {},
 	// fallback sweeper that removes expired sector rows (#discord: "Old GBG sectors still displayed")
 	PruneInterval: null,
+	// running row countdowns of the current list, stopped on every rebuild and when the box closes
+	CounterIntervals: [],
+	// focus panel: compact list of the next focus targets, only shown on the battlegrounds map
+	showFocusPanel: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showFocusPanel ?? 1,
+	focusPanelCount: JSON.parse(localStorage.getItem("LiveFightSettings"))?.focusPanelCount ?? 5,
+	// closed by the player, it stays away until the map is entered again
+	FocusPanelDismissed: false,
+	// rows and status cells of the focus panel as rendered last, only changes touch the DOM
+	FocusPanelRows: '',
+	FocusPanelStatus: {},
+	// the one countdown ticker of the focus panel, runs only while a countdown is due
+	FocusTicker: null,
+	// wake-up of UpdateFocus for the next minute change on the menu button
+	FocusTimer: null,
 	discordCache: null,
 	webRequestProfile: JSON.parse(localStorage.getItem("LiveFightSettings"))?.webRequestProfile || "",
 
@@ -303,6 +327,9 @@ let Guild_fights = {
 				if (!data['responseData']?.[0]) return
 				if (!Guild_fights.MapData) return;
 
+				let ownerTouched = false,
+					focusTouched = false;
+
 				// getProvinces updates arrive as an array of full province snapshots
 				for (let provinceData of data.responseData) {
 					if (!provinceData || provinceData['__class__'] !== 'GuildBattlegroundProvince') continue;
@@ -332,6 +359,9 @@ let Guild_fights = {
 						Guild_fights.StoreProvinceBuildings(Pid, null);
 					}
 
+					ownerTouched = ownerTouched || ownerChanged;
+					focusTouched = focusTouched || Guild_fights.GetProvinceSignal(Pid)?.signal === 'focus';
+
 					// Update Tables
 					if ($('#LiveGildFighting').length > 0) {
 						if (ownerChanged) {
@@ -348,6 +378,14 @@ let Guild_fights = {
 					if($('#ProvinceMap').length > 0) {
 						ProvinceMap.RefreshSector(provinceData);
 					}
+				}
+
+				// a new owner moves targets and unlock times, a fight on a focus target only its progress
+				if (ownerTouched) {
+					Guild_fights.UpdateFocus();
+				}
+				else if (focusTouched) {
+					Guild_fights.UpdateFocusPanel();
 				}
 
 				Guild_fights.TryAutoOpen();
@@ -737,7 +775,7 @@ let Guild_fights = {
 	 * @returns {string} Button markup
 	 */
 	GetMarkerButton: (provId) => {
-		if (!Guild_fights.showMarkerButton || typeof BuildingMarker === 'undefined') {
+		if (!Guild_fights.showMarkerButton || typeof BuildingMarker === 'undefined' || !BuildingMarker.supported) {
 			return '';
 		}
 
@@ -789,6 +827,257 @@ let Guild_fights = {
 
 
 	/**
+	 * Seconds until a sector unlocks, with the same 2 s lead as the countdowns of the list
+	 *
+	 * @param {Object} province Province of the battleground map data
+	 * @returns {number} Zero or less for an open sector
+	 */
+	GetUnlockIn: (province) => (province.lockedUntil || 0) - 2 - GameTime.get(),
+
+
+	/**
+	 * Focus targets of the own guild: sectors carrying its "focus" signal that
+	 * it does not own, open ones first, then by unlock time
+	 *
+	 * @returns {Object[]} Provinces of the battleground map data
+	 */
+	GetFocusTargets: () => {
+		const data = Guild_fights.MapData,
+			own = data?.battlegroundParticipants?.find(p => p.clan.id === ExtGuildID);
+
+		return (own?.signals || [])
+			.filter(s => s.signal === 'focus')
+			.map(s => data.map.provinces[s.provinceId || 0])
+			.filter(p => p && p.ownerId !== own.participantId)
+			.sort((a, b) => Math.max(Guild_fights.GetUnlockIn(a), 0) - Math.max(Guild_fights.GetUnlockIn(b), 0));
+	},
+
+
+	/**
+	 * Seconds until the next locked focus target unlocks
+	 *
+	 * @returns {?number} undefined when no focus target is locked
+	 */
+	GetNextFocusUnlock: () => Guild_fights.GetFocusTargets().map(Guild_fights.GetUnlockIn).find(seconds => seconds > 0),
+
+
+	/**
+	 * Shows the time until the next focus target unlocks on the menu button (H:mm),
+	 * in the warning colour during the last three minutes; hidden without a locked target
+	 */
+	UpdateMenuCounter: () => {
+		const seconds = Guild_fights.GetNextFocusUnlock(),
+			$counter = $('#gildFight-count');
+
+		if (seconds === undefined) {
+			$counter.hide();
+			return;
+		}
+
+		// the pill shape of this counter ships with the module
+		HTML.AddCssFile('guild_fights');
+		// the counter only knows minutes, "0:00" in the last one would look like an open sector
+		$counter.text(seconds < 60 ? '<1' : moment.utc(seconds * 1000).format('H:mm')).toggleClass('soon', seconds < 180).show();
+	},
+
+
+	/**
+	 * Brings the menu countdown and the focus panel in line with the map data. Called on
+	 * every change of signals, sector owners and settings; while a focus target is locked
+	 * it wakes itself up whenever the minute shown on the menu button changes
+	 */
+	UpdateFocus: () => {
+		clearTimeout(Guild_fights.FocusTimer);
+
+		Guild_fights.UpdateMenuCounter();
+		Guild_fights.UpdateFocusPanel();
+
+		const seconds = Guild_fights.GetNextFocusUnlock();
+
+		if (seconds !== undefined) {
+			Guild_fights.FocusTimer = setTimeout(Guild_fights.UpdateFocus, (seconds % 60 + 1) * 1000);
+		}
+	},
+
+
+	/**
+	 * Markup of a focus target for the focus panel: the row itself and, apart from
+	 * it, the fast changing status (unlock time, countdown or conquest progress)
+	 *
+	 * @param {Object} province Province of the battleground map data
+	 * @returns {{id: number, unlockIn: number, markup: string, status: string}}
+	 */
+	GetFocusRow: (province) => {
+		const id = province.id || 0,
+			unlockIn = Guild_fights.GetUnlockIn(province),
+			owner = Guild_fights.MapData.battlegroundParticipants.find(p => p.participantId === province.ownerId),
+			canMark = typeof BuildingMarker !== 'undefined' && BuildingMarker.supported,
+			hasAlert = Guild_fights.Alerts.some(a => a.provId === id),
+			classes = [
+				unlockIn <= 0 ? 'open' : (unlockIn < 180 ? 'soon' : ''),
+				canMark ? 'game-cursor' : '',
+				canMark && BuildingMarker.isProvinceMarked(id) ? 'marked' : '',
+			].join(' '),
+			// the tooltip renders its attribute as HTML, so the guild name is escaped for both steps
+			tooltip = HTML.escapeHtml(`${province.name}<br>${i18n('Boxes.GuildFights.Owner')}: ${HTML.escapeHtml(owner?.clan.name || i18n('Boxes.GuildFights.NoOwner'))}${canMark ? `<br><em>${i18n('Boxes.GuildFights.MarkOnMap')}</em>` : ''}`);
+
+		/**
+		 * Colour square of a guild, the same one the list rows carry
+		 *
+		 * @param {number} [participantId]
+		 * @returns {string}
+		 */
+		const colorDot = (participantId) => `<span class="province-color" style="background-color:${Guild_fights.SortedColors?.find(c => c.id === participantId)?.main || '#555'}"></span>`;
+
+		let status;
+
+		if (unlockIn > 1800) {
+			const showServerTime = JSON.parse(localStorage.getItem('LiveFightSettings'))?.showServerTime;
+
+			status = `<small>${i18n('Boxes.GuildFights.Time')}</small> ${moment.unix(province.lockedUntil - 2).add(showServerTime ? -60 * (Guild_fights.serverOffset ?? 0) : 0, 'seconds').format('HH:mm:ss')}`;
+		}
+		else if (unlockIn > 0) {
+			status = `<small>${i18n('Boxes.GuildFights.Count')}</small> <b>${moment.utc(unlockIn * 1000).format('mm:ss')}</b>`;
+		}
+		else {
+			// own guild first, then the strongest competitor; the server leaves out zero values
+			const own = Guild_fights.MapData.currentParticipantId,
+				progress = province.conquestProgress || [],
+				rival = progress.filter(p => p.participantId !== own).sort((a, b) => (b.progress || 0) - (a.progress || 0))[0];
+
+			status = `${colorDot(own)} ${progress.find(p => p.participantId === own)?.progress || 0}`
+				+ (rival ? ` ${colorDot(rival.participantId)} ${rival.progress || 0}` : '')
+				+ (progress.length > 0 ? ` <small>/ ${progress[0].maxProgress}</small>` : '');
+		}
+
+		return {
+			id,
+			unlockIn,
+			status,
+			markup: `<tr class="${classes}" data-id="${id}">
+				<td class="prov-name" data-original-title="${tooltip}">
+					${colorDot(province.ownerId)}
+					<span class="battletype ${province.isAttackBattleType ? 'BTattack' : 'BTdefence'}"></span>
+					<b>${province.title}</b>
+				</td>
+				${Guild_fights.GetAttritionCell(province)}
+				<td class="text-right focus-status" id="focus-status-${id}"></td>
+				<td class="text-right">${hasAlert || unlockIn > Guild_fights.alertLeadTime ? Guild_fights.GetAlertButton(id) : ''}</td>
+			</tr>`,
+		};
+	},
+
+
+	/**
+	 * Creates the focus panel as a small box: movable with remembered position,
+	 * minimizable and removed by the box mechanism when the battlegrounds map is left
+	 */
+	BuildFocusPanel: () => {
+		HTML.Box({
+			id: 'GildFocusTargets',
+			title: i18n('Boxes.GuildFights.FocusPanelTitle'),
+			onlyTitle: true,
+			auto_close: true,
+			dragdrop: true,
+			minimize: true,
+			active_maps: 'gg',
+		});
+		HTML.AddCssFile('guild_fights');
+
+		const $panel = $('#GildFocusTargets');
+
+		// first start: upper centre of the screen instead of the middle of the map
+		if (localStorage.getItem('GildFocusTargetsCords') === null) {
+			$panel.css({ '--x': '-115px', '--y': '-38vh' });
+		}
+
+		$('#GildFocusTargetsBody').html('<table class="foe-table"><tbody></tbody></table>');
+		Guild_fights.FocusPanelRows = '';
+
+		$panel.on('click', '.setalertbutton', function (e) {
+			e.stopPropagation();
+			Guild_fights.SetAlert($(this).data('id'));
+		}).on('click', '.deletealertbutton', function (e) {
+			e.stopPropagation();
+			Guild_fights.DeleteAlert($(this).data('id'));
+		}).on('click', 'tr.game-cursor', function () {
+			BuildingMarker.toggleProvince($(this).data('id'));
+		}).on('remove', () => {
+			// closed by the player while on the map: no return before the next visit
+			Guild_fights.FocusPanelDismissed = ActiveMap === 'gg';
+			Guild_fights.StopFocusPanel();
+		});
+
+		// the rows show which sectors carry an arrow on the map
+		$(window).off('foe-helper#building-marker-changed.gbgfocus').on('foe-helper#building-marker-changed.gbgfocus', Guild_fights.UpdateFocusPanel);
+	},
+
+
+	/**
+	 * Stops what belongs to a shown focus panel: the countdown ticker and the
+	 * listener for marker changes
+	 */
+	StopFocusPanel: () => {
+		clearInterval(Guild_fights.FocusTicker);
+		Guild_fights.FocusTicker = null;
+		$(window).off('foe-helper#building-marker-changed.gbgfocus');
+	},
+
+
+	/**
+	 * Builds, updates or removes the focus panel, the compact list of the next focus
+	 * targets on the battlegrounds map. Rows are replaced only when they change, the
+	 * status cells get written in place. One ticker serves all countdowns and runs
+	 * only while one of them is due
+	 */
+	UpdateFocusPanel: () => {
+		const shown = ActiveMap === 'gg' && Guild_fights.showFocusPanel === 1 && !Guild_fights.FocusPanelDismissed,
+			rows = shown ? Guild_fights.GetFocusTargets().slice(0, Guild_fights.focusPanelCount).map(Guild_fights.GetFocusRow) : [];
+
+		if (rows.length === 0) {
+			// taking it away here is no closing by the player
+			$('#GildFocusTargets').off('remove').remove();
+			Guild_fights.StopFocusPanel();
+			return;
+		}
+
+		if ($('#GildFocusTargets').length === 0) {
+			Guild_fights.BuildFocusPanel();
+		}
+
+		const markup = rows.map(row => row.markup).join('');
+
+		if (markup !== Guild_fights.FocusPanelRows) {
+			const $list = $('#GildFocusTargetsBody tbody');
+
+			$list.find('[data-original-title]').tooltip('hide');
+			$list.html(markup).find('[data-original-title]').tooltip({ container: 'body' });
+			Guild_fights.FocusPanelRows = markup;
+			Guild_fights.FocusPanelStatus = {};
+		}
+
+		for (const { id, status } of rows) {
+			if (Guild_fights.FocusPanelStatus[id] === status) continue;
+
+			$(`#focus-status-${id}`).html(status);
+			Guild_fights.FocusPanelStatus[id] = status;
+		}
+
+		// countdowns run during the last 30 minutes; UpdateFocus looks in once a minute,
+		// so the ticker starts a minute early and is there when the first one begins
+		const ticking = rows.some(row => row.unlockIn > 0 && row.unlockIn <= 1860);
+
+		if (ticking && Guild_fights.FocusTicker === null) {
+			Guild_fights.FocusTicker = setInterval(Guild_fights.UpdateFocusPanel, 1000);
+		}
+		else if (!ticking && Guild_fights.FocusTicker !== null) {
+			clearInterval(Guild_fights.FocusTicker);
+			Guild_fights.FocusTicker = null;
+		}
+	},
+
+
+	/**
 	 * Returns the victory points cell including the boosted value when a VP boost is active
 	 *
 	 * @param province
@@ -829,6 +1118,8 @@ let Guild_fights = {
 			let connections = ProvinceMap.ProvinceData()?.find(e => e.id === Pid)?.connections || [];
 			connections.forEach(link => Guild_fights.UpdateProvinceCells(link));
 		}
+
+		Guild_fights.UpdateFocusPanel();
 	},
 
 
@@ -1034,6 +1325,8 @@ let Guild_fights = {
 
 	/**
 	 * Creates the box with the data
+	 *
+	 * @param {boolean} [reload] Keep an open box and only rebuild its content
 	 */
 	ShowGuildBox: (reload) => {
 		if ($('#LiveGildFighting').length === 0) {
@@ -1052,12 +1345,13 @@ let Guild_fights = {
 			// add css to the dom
 			HTML.AddCssFile('guild_fights');
 
-			// scheduled automatic Discord sends belong to the open window
+			// scheduled automatic Discord sends and the row countdowns belong to the open window
 			$('#LiveGildFighting').on('remove', function () {
 				for (let timerId of Guild_fights.DiscordAutoTimers) {
 					clearTimeout(timerId);
 				}
 				Guild_fights.DiscordAutoTimers = [];
+				Guild_fights.ClearCounters();
 			});
 		}
 		else if (!reload) {
@@ -1576,6 +1870,9 @@ let Guild_fights = {
 		Guild_fights.Tabs = [];
 		Guild_fights.TabsContent = [];
 
+		// the tabs start a fresh countdown per row, the ones of the replaced rows would pile up
+		Guild_fights.ClearCounters();
+
 		Guild_fights.SetTabs('gbgnextup');
 		Guild_fights.SetTabs('gbgprogress');
 		Guild_fights.SetTabs('gbgowned');
@@ -1640,6 +1937,9 @@ let Guild_fights = {
 		else if ($('.gbgowned.active').length > 0) activeTab = 3;
 		else if ($('.gbgranking.active').length > 0) activeTab = 4;
 
+		// the rows picked for copy/Discord stay selected across the rebuild
+		const selectedRows = $('.timer.highlight-row').map((i, row) => row.id).get();
+
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
 			$('.gbg-tabs').tabslet({ active: activeTab });
 
@@ -1667,8 +1967,7 @@ let Guild_fights = {
 				});
 			});
 			$('#nextup').on('click', 'tr', function () {
-				$(this).toggleClass('highlight-row');
-				Guild_fights.ToggleCopyButton();
+				Guild_fights.ToggleRowSelection($(this));
 			});
 			// outline the hovered sector on the province map
 			$('#nextup, #gbgowned').on('mouseenter', 'tr[data-id]', function () {
@@ -1677,6 +1976,16 @@ let Guild_fights = {
 				ProvinceMap.UnhighlightSector();
 			});
 			$('[data-original-title]').tooltip({container: 'body'});
+
+			selectedRows.forEach(rowId => $(`#${rowId}`).addClass('highlight-row'));
+
+			// the copy buttons follow the restored selection, the map its markers on the new rows
+			if (selectedRows.length > 0) {
+				Guild_fights.ToggleCopyButton();
+			}
+			else {
+				ProvinceMap.SyncList();
+			}
 		});
 
 		Guild_fights.ScheduleDiscordAutoSend();
@@ -1947,6 +2256,7 @@ let Guild_fights = {
 						Guild_fights.UpdateCounter(countDownDate, intervalID, prov[x].id);
 					}, 1000);
 
+				Guild_fights.CounterIntervals.push(intervalID);
 
 				// look for connecting province timers
 				let connectionSecured = false;
@@ -2063,6 +2373,8 @@ let Guild_fights = {
 					Guild_fights.UpdateCounter(countDownDate, intervalID, province.id);
 				}, 1000);
 
+			Guild_fights.CounterIntervals.push(intervalID);
+
 			let slotWarning = Guild_fights.GetSlotWarningClass(province);
 
 			content.push(`<tr id="time-${province.id}" class="time ${slotWarning}" data-tab="gbgowned" data-id=${province.id} data-locked-until=${province.lockedUntil}>
@@ -2152,10 +2464,25 @@ let Guild_fights = {
 
 
 	/**
+	 * Toggles the copy/Discord selection of a sector row, shared by the row
+	 * click and the click on a sector of the province map
+	 *
+	 * @param {jQuery} $row Row of the upcoming tab
+	 */
+	ToggleRowSelection: ($row) => {
+		$row.toggleClass('highlight-row');
+		Guild_fights.ToggleCopyButton();
+	},
+
+
+	/**
 	 * Toggles the copy and discord buttons depending on the visible tab
-	 * and the current row selection
+	 * and the current row selection. Every selection change ends up here,
+	 * so the province map gets synced along
 	 */
 	ToggleCopyButton: () => {
+		ProvinceMap.SyncList();
+
 		$('.dcbutton').hide();
 		$('.copybutton').show();
 
@@ -2352,6 +2679,15 @@ let Guild_fights = {
 				hideAfter: 2500,
 			});
 		}
+	},
+
+
+	/**
+	 * Stops the countdowns of all sector rows
+	 */
+	ClearCounters: () => {
+		Guild_fights.CounterIntervals.forEach(intervalID => clearInterval(intervalID));
+		Guild_fights.CounterIntervals = [];
 	},
 
 
@@ -2645,6 +2981,7 @@ let Guild_fights = {
 
 				Guild_fights.ScheduleAlertTimers();
 				Guild_fights.AutoSetAlerts();
+				Guild_fights.UpdateFocusPanel();
 				resolve();
 			});
 		});
@@ -2676,7 +3013,8 @@ let Guild_fights = {
 	 * Creates a browser alert that fires the configured lead time before the
 	 * given sector unlocks
 	 *
-	 * @param id Province id
+	 * @param {number} id Province id
+	 * @param {boolean} [silent] Skip the confirmation toast
 	 */
 	SetAlert: (id, silent = false) => {
 		let prov = Guild_fights.MapData['map']['provinces'].find(e => e.id === id);
@@ -2706,6 +3044,7 @@ let Guild_fights = {
 			Guild_fights.ScheduleAlertTimers();
 			$(`#alert-${id}`).html(Guild_fights.GetAlertButton(id));
 			$('.tooltip').remove();
+			Guild_fights.UpdateFocusPanel();
 			if (silent) return;
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.GuildFights.SaveMessage.Title'),
@@ -2720,7 +3059,7 @@ let Guild_fights = {
 	/**
 	 * Deletes the alert of the given province and refreshes its alert button
 	 *
-	 * @param provId
+	 * @param {number} provId Province id
 	 */
 	DeleteAlert: (provId) => {
 		let prov = Guild_fights.MapData['map']['provinces'].find(e => e.id === provId);
@@ -2742,6 +3081,7 @@ let Guild_fights = {
 				hideAfter: 5000
 			});
 			$(`#alert-${provId}`).html(Guild_fights.GetAlertButton(provId));
+			Guild_fights.UpdateFocusPanel();
 		});
 	},
 
@@ -2779,6 +3119,8 @@ let Guild_fights = {
 		let discordAutoMaxAttrition = LiveFightSettings?.discordAutoMaxAttrition ?? 100;
 		let webRequestProfile = LiveFightSettings?.webRequestProfile ?? '';
 		let autoOpen = LiveFightSettings?.autoOpen ?? 1;
+		let showFocusPanel = LiveFightSettings?.showFocusPanel ?? 1;
+		let focusPanelCount = LiveFightSettings?.focusPanelCount ?? 5;
 
 		// the settings outgrew a single list, so they are grouped into tabs
 		c.push(`<div class="tabs gbg-settings-tabs">`);
@@ -2798,6 +3140,8 @@ let Guild_fights = {
 		c.push(`<p><label for="showattritioncolumn"><input id="showattritioncolumn" name="showattritioncolumn" value="0" type="checkbox" ${(showAttritionColumn === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAttritionColumn')}</label></p>`);
 		c.push(`<p><label for="showfocustarget"><input id="showfocustarget" name="showfocustarget" value="0" type="checkbox" ${(showFocusTarget === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusTarget')}</label></p>`);
 		c.push(`<p><label for="showmarkerbutton"><input id="showmarkerbutton" name="showmarkerbutton" value="0" type="checkbox" ${(showMarkerButton === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowMarkerButton')}</label></p>`);
+		c.push(`<hr><p><label for="showfocuspanel"><input id="showfocuspanel" name="showfocuspanel" value="0" type="checkbox" ${(showFocusPanel === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusPanel')}</label></p>`);
+		c.push(`<p><label for="focuspanelcount" class="copy-setting">${i18n('Boxes.GuildFights.FocusPanelCount')} <input id="focuspanelcount" name="focuspanelcount" value="${focusPanelCount}" type="number" min="1" max="8" step="1" size="3"/></label></p>`);
 		c.push(`</div>`);
 
 		c.push(`<div id="gbgsettings-copy" class="hidden-tab">`);
@@ -2971,6 +3315,12 @@ let Guild_fights = {
 		value.alertLeadTime = Math.min(Math.max(alertLeadTime, 5), 3600);
 		value.autoAlert = $("#autoAlert").is(':checked') ? 1 : 0;
 
+		// number of focus targets in the focus panel, clamped to the input range
+		let focusPanelCount = parseInt($("#focuspanelcount").val());
+		if (isNaN(focusPanelCount)) focusPanelCount = 5;
+		value.focusPanelCount = Math.min(Math.max(focusPanelCount, 1), 8);
+		value.showFocusPanel = $("#showfocuspanel").is(':checked') ? 1 : 0;
+
 		Guild_fights.showGuildColumn = value.showGuildColumn;
 		Guild_fights.showAdjacentSectors = value.showAdjacentSectors;
 		Guild_fights.showOwnSectors = value.showOwnSectors;
@@ -2988,6 +3338,10 @@ let Guild_fights = {
 		Guild_fights.webRequestProfile = value.webRequestProfile;
 		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.autoAlert = value.autoAlert;
+		Guild_fights.showFocusPanel = value.showFocusPanel;
+		Guild_fights.focusPanelCount = value.focusPanelCount;
+		// saving brings a focus panel back that the player closed
+		Guild_fights.FocusPanelDismissed = false;
 		// an empty field or the detected value means "detect automatically"
 		const manualOffset = parseInt($('#serverOffset').val());
 		Guild_fights.serverOffsetManual = Number.isNaN(manualOffset) || manualOffset === Guild_fights.serverOffsetAuto ? null : manualOffset;
@@ -3000,6 +3354,7 @@ let Guild_fights = {
 		}
 
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
+		Guild_fights.UpdateFocus();
 
 		$(`#LiveGildFightingSettingsBox`).fadeToggle('fast', function () {
 			$.when($(`#LiveGildFightingSettingsBox`).remove()).then(

@@ -121,6 +121,8 @@ Object.assign(Productions, {
 	 *                 derived from city buildings and associated productions, boosts, or other attributes.
 	 */
 	buildTableByType(type) {
+		if (Productions.SourceBoosts[type]) return Productions.buildBoostTable(type)
+
 		let table = [],
 			tableGr = [],
 			tableSum=[],
@@ -348,16 +350,10 @@ Object.assign(Productions, {
 				if (!type.includes('att') && !type.includes('def') && type !== 'items') {
 					table.push('<th colspan="3" class="textright">')
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
+					table.push(Productions.boostButton(type))
 					if (type === 'strategy_points') {
-						table.push(' <button class="typeBoost btn btn-slim"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.forge_points_production+'%</a></button>')
 						Profile.fpProduction = typeSum;
 						Profile.update();
-					}
-					else if (type === 'money') {
-						table.push(' <button class="typeBoost btn btn-slim"><a href="#coin_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.coin_production+'%</a></button>')
-					}
-					else if (type === 'supplies') {
-						table.push(' <button class="typeBoost btn btn-slim"><a href="#supply_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.supply_production+'%</a></button>')
 					}
 					if (type === 'units') {
 						Profile.units = typeSum;
@@ -565,7 +561,7 @@ Object.assign(Productions, {
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="5"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
-		table.push(`<th colspan=${eras.length+1} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))} 	<button class="typeBoost btn btn-slim"><a href="#special_goods" class="game-cursor">★</a></button> </th>`)
+		table.push(`<th colspan=${eras.length+1} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))} 	<button class="typeBoost btn btn-slim"><a href="#special_goods" class="game-cursor">★</a></button>${Productions.boostButton(type)} </th>`)
 		table.push('</tr>')
 
 		table.push('<tr class="sorter-header exportheader">')
@@ -739,7 +735,7 @@ Object.assign(Productions, {
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="'+(6+eras.length)+'"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">')
-		table.push(`<span style="float:right;">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))}</span></th>`)
+		table.push(`<span style="float:right;">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b, 0))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b, 0))}${Productions.boostButton(type)}</span></th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header exportheader">')
 		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
@@ -789,6 +785,175 @@ Object.assign(Productions, {
 		table.push( rowB.join('') )
 		table.push('</tbody>')
 		table.push('</table>')
+
+		return table.join('')
+	},
+
+
+	/**
+	 * Builds the button that opens the boost view of a production type, labelled with the active boost.
+	 *
+	 * @param {string} type - The production type, e.g. 'goods'.
+	 * @returns {string} HTML of the button, empty for types without a boost view.
+	 */
+	boostButton: (type) => {
+		const boost = Productions.BoostViews[type]
+
+		return (boost ? ` <button class="typeBoost btn btn-slim"><a href="#${boost}" class="game-cursor">${i18n('General.Boost')}: ${Boosts.Sums[boost]}%</a></button>` : '')
+	},
+
+
+	/**
+	 * Returns the translated name of a boost origin; unknown origins keep their identifier.
+	 *
+	 * @param {string} origin - The origin of a boost entry, e.g. 'inventory_item'.
+	 * @returns {string}
+	 */
+	getBoostOriginName: (origin) => {
+		const key = Productions.BoostOrigins[origin] || 'Boxes.Productions.BoostSource.' + origin,
+			name = i18n(key)
+
+		return (name === key ? origin : name)
+	},
+
+
+	/**
+	 * Builds the view of a boost type listed by source. It shows the active boost entries of the
+	 * boosts module, the ones Boosts.Sums is calculated from: merged per building, entries without
+	 * a building of the city (activated items, allies, ...) under the name of their origin.
+	 *
+	 * @param {string} type - The boost type, e.g. 'goods_production'.
+	 * @returns {string} HTML of the single and the grouped table.
+	 */
+	buildBoostTable: (type) => {
+		const sources = {},
+			groups = {},
+			chainStarts = {},
+			table = [],
+			listType = 'prodlist' + type,
+			groupType = 'prodgroup' + type
+
+		// chain links count for their start building, like in the other tabs
+		for (const building of Productions.BuildingsAll) {
+			if (building.chainBuilding?.type !== 'start') continue
+			CityBuildings.hasLinks(building).forEach(link => chainStarts[link.id] = building)
+		}
+
+		for (const [index, entry] of (Boosts.ListByType[type] || []).entries()) {
+			if (!entry.value) continue
+
+			const building = chainStarts[entry.entityId] || Productions.CombinedCityMapData[entry.entityId],
+				source = sources[building?.id || 'origin' + index] ??= {
+					building: building,
+					// a building the overview does not list still has a name in the game data
+					name: building?.name || MainParser.CityEntities[MainParser.CityMapData[entry.entityId]?.cityentity_id]?.name || Productions.getBoostOriginName(entry.origin || 'other'),
+					era: (building ? Technologies.Eras[building.eraName] : 0),
+					ally: !!Allies.buildingList?.[building?.id],
+					value: 0,
+					multiplier: 0
+				}
+
+			source[entry.isMultiplier ? 'multiplier' : 'value'] += entry.value
+		}
+
+		/**
+		 * Formats a boost, multiplier boosts ("multiplies your total by X%") are marked with a ×.
+		 *
+		 * @param {number} value - The additive boost in percent.
+		 * @param {number} multiplier - The multiplier boost in percent.
+		 * @returns {string}
+		 */
+		const percent = (value, multiplier) => (multiplier ? (value ? value + '% ' : '') + '×' + multiplier + '%' : value + '%')
+
+		/**
+		 * Builds the name cell of a source: buildings with tooltip, great building icon and ally marker.
+		 *
+		 * @param {Object} source - The source or group of sources.
+		 * @returns {string} HTML of the cell.
+		 */
+		const nameCell = ({ building, name, ally }) => {
+			if (!building) return `<td data-text="${helper.str.cleanup(name)}">${name}</td>`
+
+			return `<td data-text="${helper.str.cleanup(name)}" class="fh-tooltip${ally ? ' ally' : ''}" data-callback_tt="Tooltips.buildingTT" data-meta_id="${building.entityId}" data-era="${building.eraName === 'AllAge' ? '' : building.eraName}" ${Allies.tooltip(building.id)}>`
+				+ (building.type === 'greatbuilding' ? `<img class="gb-icon" alt="" src="${srcLinks.get('/shared/gui/constructionmenu/icon_greatbuilding.png', true)}"> ` : '')
+				+ `${name}</td>`
+		}
+
+		// multiplier boosts count with the percent they add on top of the additive boosts
+		const list = Object.values(sources)
+		list.forEach(source => source.share = source.value + (Boosts.Additive[type] || 0) * source.multiplier / 100)
+		list.sort((a, b) => b.share - a.share)
+
+		const head = `${i18n('General.Boost')}: <span class="btn-group boost-views">`
+			+ Object.entries(Productions.SourceBoosts).map(([boost, key]) => `<button class="typeBoost btn btn-slim${boost === type ? ' btn-active' : ''}"><a href="#${boost}" class="game-cursor">${i18n(key)}</a></button>`).join('')
+			+ `</span> ${i18n('Boxes.Productions.Total')}<strong>${Boosts.Sums[type]}%</strong>`
+
+		// single view
+		table.push(`<table id="${type}-list" class="foe-table sortable-table TSinactive ${type}-list active">`)
+		table.push('<thead class="sticky">')
+		table.push(`<tr><th colspan="2"><span class="btn change-view game-cursor" data-type="${type}">${i18n('Boxes.Productions.ModeGroups')}</span> <input type="text" placeholder="${i18n('Boxes.Productions.FilterTable')}" class="filterCurrentList"></th><th colspan="3" class="textright">${head}</th></tr>`)
+		table.push('<tr class="sorter-header">')
+		table.push(`<th class="no-sort" data-type="${listType}"> </th>`)
+		table.push(`<th data-type="${listType}">${i18n('Boxes.BlueGalaxy.Building')}</th>`)
+		table.push(`<th data-type="${listType}" class="is-number descending text-center">${i18n('General.Boost')}</th>`)
+		table.push(`<th data-type="${listType}" class="is-number">${i18n('Boxes.Productions.Headings.era')}</th>`)
+		table.push(`<th data-type="${listType}" class="no-sort"> </th>`)
+		table.push('</tr>')
+		table.push('</thead>')
+		table.push(`<tbody class="${listType}">`)
+
+		for (const source of list) {
+			const building = source.building,
+				group = groups[[source.name, source.era, source.value, source.multiplier].join('|')] ??= { ...source, amount: 0 }
+
+			group.amount++
+			// the group carries the ally marker as soon as one of its buildings has an ally
+			group.ally ||= source.ally
+
+			table.push('<tr>')
+			table.push('<td>' + [building?.setBuilding, building?.chainBuilding].filter(Boolean).map(x => `<img src="${srcLinks.get('/shared/icons/' + x.name + '.png', true)}" class="chain-set-ico">`).join('') + '</td>')
+			table.push(nameCell(source))
+			table.push(`<td data-number="${source.share}" class="text-center">${percent(source.value, source.multiplier)}</td>`)
+			table.push(`<td data-number="${source.era}">${i18n('Eras.' + source.era + '.short')}</td>`)
+			table.push('<td class="text-right">' + (building ? `<span class="show-entity" data-id="${building.id}"><img class="game-cursor" alt="" src="${extUrl}css/images/hud/open-eye.png"></span>` : '') + '</td>')
+			table.push('</tr>')
+		}
+
+		table.push('</tbody>')
+		table.push('</table>')
+
+		// grouped view: same source, era and boost
+		table.push(`<table class="foe-table sortable-table TSinactive ${type}-group">`)
+		table.push('<thead class="sticky">')
+		table.push(`<tr><th colspan="2"><span class="btn change-view game-cursor" data-type="${type}">${i18n('Boxes.Productions.ModeSingle')}</span></th><th colspan="4" class="textright">${head}</th></tr>`)
+		table.push('<tr class="sorter-header">')
+		table.push(`<th data-type="${groupType}" class="is-number">${i18n('Boxes.Productions.Headings.number')}</th>`)
+		table.push(`<th data-type="${groupType}">${i18n('Boxes.BlueGalaxy.Building')}</th>`)
+		table.push(`<th data-type="${groupType}" class="is-number text-center">${i18n('General.Boost')}</th>`)
+		table.push(`<th data-type="${groupType}" class="is-number descending text-center">${i18n('Boxes.Productions.GoodEraTotal')}</th>`)
+		table.push(`<th data-type="${groupType}" class="is-number">${i18n('Boxes.Productions.Headings.era')}</th>`)
+		table.push(`<th data-type="${groupType}" class="is-number">${i18n('Boxes.Productions.Headings.size')}</th>`)
+		table.push('</tr>')
+		table.push('</thead>')
+		table.push(`<tbody class="${groupType}">`)
+
+		for (const group of Object.values(groups).sort((a, b) => b.share * b.amount - a.share * a.amount)) {
+			const size = group.building?.size
+
+			table.push('<tr>')
+			table.push(`<td data-number="${group.amount}">${group.amount}x </td>`)
+			table.push(nameCell(group))
+			table.push(`<td data-number="${group.share}" class="text-center">${percent(group.value, group.multiplier)}</td>`)
+			table.push(`<td data-number="${group.share * group.amount}" class="text-center">${percent(group.value * group.amount, group.multiplier * group.amount)}</td>`)
+			table.push(`<td data-number="${group.era}">${i18n('Eras.' + group.era + '.short')}</td>`)
+			table.push(size ? `<td data-number="${size.length * size.width}">${size.length}x${size.width}</td>` : '<td data-number="0">-</td>')
+			table.push('</tr>')
+		}
+
+		table.push('</tbody>')
+		table.push('</table>')
+
+		if (list.length === 0) table.push(`<div class="empty-list">${i18n('Boxes.Productions.EmptyList')}</div>`)
 
 		return table.join('')
 	},
