@@ -12,6 +12,7 @@
 	"kits",
 	"inventory",
 	"ascended",
+	"eventcockpit",
 	"checklist",
 	"citysearch",
 	"allies",
@@ -38,7 +39,10 @@
 	},
 	"stats",
 	"bonus-service",
-	"technologies",
+	{
+		"name": "technologies",
+		"parts": ["forecast"]
+	},
 	{
 		"name": "negotiation",
 		"parts": ["solver"]
@@ -98,5 +102,6 @@
 	"reconstruction",
 	"boosts",
 	"shopAssist",
-	"cablocker"
+	"cablocker",
+	"yearreview"
 ]

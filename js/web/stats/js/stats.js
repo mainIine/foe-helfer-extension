@@ -143,6 +143,7 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postDa
 
 	await Stats.saveSnapshots('statsTreasurePlayerD', 'statsTreasurePlayerH', { resources: r.resources });
 	StockAlarm.checkResources();
+	await Stats.savePlayerDay();
 });
 
 FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', async (data, postData) => {
@@ -152,6 +153,23 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', async (data, post
 
 	await Stats.saveSnapshots('statsTreasurePlayerD', 'statsTreasurePlayerH', { resources: r });
 	StockAlarm.checkResources();
+	await Stats.savePlayerDay();
+});
+
+// Own achievement progress for the daily player record
+FoEproxy.addHandler('AchievementsService', 'getOverview', async (data, postData) => {
+	const achievements = {};
+	for (const group of data.responseData?.achievementGroups || []) {
+		for (const achievement of group.achievements || []) {
+			achievements[group.id + '#' + achievement.id] = [achievement.currentLevel?.level || 0, achievement.currentLevel?.progress || 0];
+		}
+	}
+	await Stats.savePlayerDay({ achievements });
+});
+
+// Own FP contributions to great buildings (only answered when the contribution was accepted)
+FoEproxy.addHandler('GreatBuildingsService', 'contributeForgePoints', async (data, postData) => {
+	await Stats.logContribution(postData?.[0]?.requestData, data.responseData);
 });
 
 // Clan Treasure log
@@ -314,6 +332,75 @@ let Stats = {
 
 		await IndexDB.db[dailyTable].put({ date: moment().startOf('day').toDate(), ...payload });
 		await IndexDB.db[hourlyTable].put({ date: moment().startOf('hour').toDate(), ...payload });
+	},
+
+
+	/**
+	 * Updates today's record of the own player (era, guild, score, won battles,
+	 * great building levels and, when given, achievement progress). Values that
+	 * are unknown right now keep what the record already holds.
+	 *
+	 * @param {Object} [extra] additional fields, e.g. { achievements }
+	 * @returns {Promise<void>}
+	 */
+	savePlayerDay: async (extra = {}) => {
+		if (!ExtPlayerID || !CurrentEra) return;
+		await IndexDB.getDB();
+
+		const date = moment().startOf('day').toDate(),
+			self = PlayerDict[ExtPlayerID] || {},
+			gbs = {};
+
+		for (const entity of Object.values(MainParser.CityMapData || {})) {
+			if (entity.type === 'greatbuilding') gbs[entity.cityentity_id] = entity.level || 0;
+		}
+
+		const record = Object.assign(await IndexDB.db.statsPlayerD.get(date) || {}, {
+			date,
+			era: CurrentEra,
+			guildId: ExtGuildID,
+		}, extra);
+
+		// the city map may not be loaded yet right after the start
+		if (Object.keys(gbs).length) record.gbs = gbs;
+		if (self.ClanName !== undefined) record.guildName = self.ClanName;
+		if (self.Score !== undefined) record.score = self.Score;
+		if (self.WonBattles !== undefined) record.wonBattles = self.WonBattles;
+
+		await IndexDB.db.statsPlayerD.put(record);
+	},
+
+
+	/**
+	 * Stores an accepted own FP contribution to a great building.
+	 *
+	 * @param {Array} request request data of contributeForgePoints: [entityId, ownerId, current level, fp, usePremium]
+	 * @param {Object[]} rankings ranking rows returned for the contribution
+	 * @returns {Promise<void>}
+	 */
+	logContribution: async (request, rankings) => {
+		const [entityId, ownerId, level, fp] = request || [];
+		if (!entityId || !ownerId || !(fp > 0)) return;
+		await IndexDB.getDB();
+
+		const rows = Array.isArray(rankings) ? rankings : [],
+			own = rows.find(row => row?.player?.player_id === ExtPlayerID),
+			owner = rows.find(row => row?.player?.player_id === ownerId),
+			opened = MainParser.CurrentGB?.Entity,
+			cityEntityId = (opened?.id === entityId && opened?.player_id === ownerId ? opened.cityentity_id : null)
+				|| (ownerId === ExtPlayerID ? MainParser.CityMapData?.[entityId]?.cityentity_id : null);
+
+		await IndexDB.db.gbContributions.add({
+			date: new Date(),
+			ownerId,
+			ownerName: owner?.player?.name || PlayerDict[ownerId]?.PlayerName,
+			entityId,
+			cityEntityId: cityEntityId || undefined,
+			level: level || 0,
+			fp,
+			total: own?.forge_points,
+			rank: own?.rank,
+		});
 	},
 
 

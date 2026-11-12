@@ -1,5 +1,23 @@
 [
 	{
+		"id": "2026-11-year-review",
+		"version": "4.9.0.0",
+		"date": "2026-11-12",
+		"link": {
+			"de": "https://docs.foe-helper.com/de/module/year-review/",
+			"en": "https://docs.foe-helper.com/en/module/year-review/"
+		}
+	},
+	{
+		"id": "2026-11-event-cockpit",
+		"version": "4.9.0.0",
+		"date": "2026-11-12",
+		"link": {
+			"de": "https://docs.foe-helper.com/de/module/event-cockpit/",
+			"en": "https://docs.foe-helper.com/en/module/event-cockpit/"
+		}
+	},
+	{
 		"id": "2026-11-city-builder",
 		"version": "4.8.9.0",
 		"date": "2026-11-09",

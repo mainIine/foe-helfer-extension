@@ -64,6 +64,30 @@
 *   resources: Object,
 *   clandId: number
 * }
+* Structure of "statsPlayerD", one record per day with the latest known values of the own player
+* {
+*   date: Date,
+*   era: string,
+*   guildId: number,
+*   guildName?: string,
+*   score?: number,
+*   wonBattles?: number,
+*   gbs?: Object, // key - city entity id of the great building, value - level
+*   achievements?: Object, // key - "group#achievement", value - [level, progress]
+* }
+* Structure of "gbContributions", every own FP contribution to a great building
+* {
+*   id: number,
+*   date: Date,
+*   ownerId: number,
+*   ownerName?: string,
+*   entityId: number, // map entity id
+*   cityEntityId?: string,
+*   level: number, // current level of the great building, the FP go into the next one
+*   fp: number, // FP of this contribution
+*   total?: number, // own FP in this level after the contribution
+*   rank?: number, // own rank after the contribution
+* }
 */
 
 let IndexDB = {
@@ -149,6 +173,10 @@ let IndexDB = {
         });
         db.version(3).stores({
             buildingMeta: 'id, hash, json',
+        });
+        db.version(4).stores({
+            statsPlayerD: 'date',
+            gbContributions: '++id, date, ownerId',
         });
     },
 
@@ -358,8 +386,9 @@ let IndexDB = {
     * @returns {Promise<void>}
     */
     GarbageCollector: async () => {
-        // Expiry time for db with 1 record per day
-        const daylyExpiryTime = moment().subtract(1, 'years').toDate();
+        // Daily records are kept back to the start of the previous calendar year,
+        // so a whole year can still be evaluated in January of the next one
+        const dailyExpiryTime = moment().subtract(1, 'years').startOf('year').toDate();
 
         // Expiry time for db with 1 record per hour
         const hourlyExpiryTime = moment().subtract(8, 'days').toDate();
@@ -372,8 +401,8 @@ let IndexDB = {
         await IndexDB.db.players.clear();
         await IndexDB.db.greatbuildings.clear();
 
-        for (const table of ['statsRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD']) {
-            await IndexDB.db[table].where('date').below(daylyExpiryTime).delete();
+        for (const table of ['statsRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD', 'statsPlayerD', 'gbContributions']) {
+            await IndexDB.db[table].where('date').below(dailyExpiryTime).delete();
         }
 
         for (const table of ['statsUnitsH', 'statsTreasurePlayerH', 'statsTreasureClanH']) {

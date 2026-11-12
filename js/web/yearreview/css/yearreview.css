@@ -1,0 +1,66 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#yearReview {
+	top: 8%;
+	left: 32%;
+	width: 460px;
+	height: 640px;
+	min-width: 340px;
+}
+
+#yearReviewBody {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden auto;
+}
+
+#yearReview .yr-controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 8px;
+}
+
+#yearReview .yr-controls label {
+	flex: 1 1 auto;
+	white-space: nowrap;
+}
+
+#yearReview .yr-card {
+	padding: 8px;
+}
+
+#yearReview .yr-card canvas {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: 6px;
+	box-shadow: 0 2px 6px var(--black-65);
+}
+
+#yearReview .yr-note,
+#yearReview .yr-empty {
+	padding: 4px 10px 10px;
+	font-size: 85%;
+	line-height: 1.4;
+	opacity: 0.8;
+}
+
+#yearReview .yr-empty {
+	padding-top: 16px;
+	font-size: 100%;
+	text-align: center;
+}
