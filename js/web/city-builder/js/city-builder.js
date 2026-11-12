@@ -46,6 +46,8 @@ let CityBuilder = {
     Reserve: '',
     ReserveOn: false,
     Optimize: false,
+    /** @type {boolean} whether the options of the building optimization are unfolded */
+    OptionsOpen: false,
     /** @type {{removed: Object[], added: Object[], gain: number}|null} swap plan of the building optimization */
     Planned: null,
     /** @type {number|null} timestamp of the plan loaded from the storage */
@@ -61,6 +63,7 @@ let CityBuilder = {
         if ($('#CityBuilderBox').length > 0) {
             HTML.CloseOpenBox('CityBuilderBox');
             if ($('#CityBuilderUnplacedBox').length > 0) HTML.CloseOpenBox('CityBuilderUnplacedBox');
+            if ($('#CityBuilderKeepBox').length > 0) HTML.CloseOpenBox('CityBuilderKeepBox');
             CityBuilder.stopWorker();
             return;
         }
@@ -623,6 +626,7 @@ let CityBuilder = {
         h.push(`<label class="control-toggle" title="${i18n('Boxes.CityBuilder.ReserveHint')}"><input type="checkbox" class="reserve-toggle"${CityBuilder.ReserveOn ? ' checked' : ''} />${i18n('Boxes.CityBuilder.Reserve')}</label>`);
         h.push(`<input type="text" class="reserve-input" size="3" placeholder="5x5" value="${CityBuilder.Reserve}"${CityBuilder.ReserveOn ? '' : ' disabled'} />`);
         h.push(`<label class="control-toggle" title="${i18n('Boxes.CityBuilder.OptimizeHint')}"><input type="checkbox" class="optimize-toggle"${CityBuilder.Optimize ? ' checked' : ''} />${i18n('Boxes.CityBuilder.Optimize')}</label>`);
+        h.push(`<button class="btn optimize-options-btn${CityBuilder.OptionsOpen ? ' open' : ''}" title="${i18n('Boxes.CityBuilder.OptimizeOptions')}">&#9881;</button>`);
         h.push(`<button class="btn recalc-btn">${i18n('Boxes.CityBuilder.Recalculate')}</button>`);
         h.push(`<button class="btn save-btn" title="${i18n('Boxes.CityBuilder.SavePlanHint')}">${i18n('Boxes.CityBuilder.SavePlan')}</button>`);
         h.push(`<button class="btn image-btn" title="${i18n('Boxes.CityBuilder.ExportImageHint')}">${i18n('Boxes.CityBuilder.ExportImage')}</button>`);
@@ -632,6 +636,8 @@ let CityBuilder = {
             h.push(`<span class="delete-plan" title="${i18n('Boxes.CityBuilder.DeletePlan')}">&times;</span></span>`);
         }
         h.push(`</div>`);
+
+        h.push(CityBuilder.optimizeOptionsHtml());
 
         h.push(`</div>`);
 
@@ -718,6 +724,18 @@ let CityBuilder = {
                 localStorage.setItem('CityBuilderOptimize', this.checked ? '1' : '0');
             });
 
+            $('.optimize-options-btn').on('click', function() {
+                CityBuilder.OptionsOpen = !CityBuilder.OptionsOpen;
+                $(this).toggleClass('open', CityBuilder.OptionsOpen);
+                $('#CityBuilderBoxBody .optimize-options').toggleClass('closed', !CityBuilder.OptionsOpen);
+            });
+
+            $('.optimize-options [data-option]').on('change', function() {
+                CityBuilder.Optimizer.setOption(this.dataset.option, this.type === 'checkbox' ? this.checked : this.value);
+            });
+
+            $('.keep-list-btn').on('click', () => CityBuilder.showKeepList());
+
             $('.recalc-btn').on('click', () => CityBuilder.Recalculate());
             $('.save-btn').on('click', () => CityBuilder.savePlan());
             $('.image-btn').on('click', () => CityBuilder.exportImage());
@@ -734,6 +752,97 @@ let CityBuilder = {
             });
 
             CityBuilder.showUnplaced();
+        });
+    },
+
+
+    /**
+     * Builds the options of the building optimization: what stays in the city
+     * and what may be taken from the inventory. Every control carries its
+     * option name in data-option and is stored on change.
+     *
+     * @returns {string} HTML of the options panel.
+     */
+    optimizeOptionsHtml: () => {
+        const options = CityBuilder.Optimizer.options();
+        const text = (key) => i18n('Boxes.CityBuilder.Option' + key);
+        const toggle = (option, key) => `<label class="control-toggle" title="${text(key + 'Hint')}"><input type="checkbox" data-option="${option}"${options[option] ? ' checked' : ''} />${text(key)}</label>`;
+        const modes = CityBuilder.Optimizer.LimitedModes
+            .map(mode => `<option value="${mode}"${options.limited === mode ? ' selected' : ''}>${text('Limited_' + mode)}</option>`);
+
+        return `<div class="optimize-options${CityBuilder.OptionsOpen ? '' : ' closed'}">`
+            + `<div class="options-group"><b>${text('Keep')}</b>`
+            + toggle('allies', 'Allies') + toggle('fiveMinutes', 'FiveMinutes') + toggle('happiness', 'Happiness') + toggle('population', 'Population')
+            + `<label class="control-toggle" title="${text('LimitedHint')}">${text('Limited')}<select data-option="limited">${modes.join('')}</select></label>`
+            + `<button class="btn keep-list-btn" title="${text('KeepListHint')}">${text('KeepList')} (<span class="keep-count">${options.keep.length}</span>)</button>`
+            + `</div>`
+            + `<div class="options-group"><b>${text('Use')}</b>`
+            + toggle('useNeo', 'UseNeo') + toggle('useAscended', 'UseAscended') + toggle('useKits', 'UseKits')
+            + `<span class="options-note">${text('Note')}</span>`
+            + `</div>`
+            + `</div>`;
+    },
+
+
+    /**
+     * Opens the form for picking the buildings that always stay: one row per
+     * building type of the city with a tick, weakest first, and a search
+     * field. Ticks are stored right away as the option "keep"; picked types
+     * that do not stand in this city stay stored untouched.
+     */
+    showKeepList: () => {
+        if ($('#CityBuilderKeepBox').length > 0) {
+            HTML.CloseOpenBox('CityBuilderKeepBox');
+            return;
+        }
+
+        HTML.Box({
+            id: 'CityBuilderKeepBox',
+            title: i18n('Boxes.CityBuilder.KeepTitle'),
+            auto_close: true,
+            dragdrop: true,
+            minimize: true,
+            resize: true
+        });
+
+        const O = CityBuilder.Optimizer;
+        const list = O.keepList();
+        const shown = new Set(list.map(g => g.entityId));
+
+        let h = [];
+        h.push(`<div class="keep-hint">${i18n('Boxes.CityBuilder.KeepHint')}</div>`);
+        h.push(`<input type="text" class="keep-search" placeholder="${i18n('Boxes.CityBuilder.KeepSearch')}" />`);
+        h.push('<table class="foe-table keep-table"><thead><tr>');
+        h.push(`<th></th><th>${i18n('Boxes.CityBuilder.KeepBuilding')}</th><th class="text-right">${i18n('Boxes.CityBuilder.KeepSize')}</th><th class="text-right">${i18n('Boxes.CityBuilder.RatingGain')}</th>`);
+        h.push('</tr></thead><tbody>');
+        for (const g of list) {
+            h.push(`<tr${g.kept ? ' class="kept"' : ''}>`);
+            h.push(`<td><input type="checkbox" data-entity="${g.entityId}"${g.kept ? ' checked' : ''} /></td>`);
+            h.push(`<td class="fh-tooltip" data-callback_tt="Tooltips.buildingTT" data-meta_id="${g.entityId}">${g.count > 1 ? g.count + '&times; ' : ''}${g.name}</td>`);
+            h.push(`<td class="text-right">${g.h}x${g.w}</td>`);
+            h.push(`<td class="text-right">${g.score}</td>`);
+            h.push('</tr>');
+        }
+        h.push('</tbody></table>');
+
+        const body = $('#CityBuilderKeepBoxBody');
+        body.html(h.join(''));
+
+        // a click anywhere in the row ticks the building
+        body.find('tbody tr').on('click', function(e) {
+            const tick = $(this).find('input')[0];
+            if (e.target !== tick) tick.checked = !tick.checked;
+            $(this).toggleClass('kept', tick.checked);
+
+            const picked = body.find('tbody input:checked').map((i, el) => el.dataset.entity).get();
+            const keep = O.options().keep.filter(id => !shown.has(id)).concat(picked);
+            O.setOption('keep', keep);
+            $('.optimize-options .keep-count').text(keep.length);
+        });
+
+        body.find('.keep-search').on('input', function() {
+            const query = this.value.trim().toLowerCase();
+            body.find('tbody tr').each((i, row) => $(row).toggle(row.cells[1].textContent.toLowerCase().includes(query)));
         });
     },
 

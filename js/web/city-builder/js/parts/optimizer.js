@@ -17,11 +17,16 @@
  * rated with the user's efficiency settings (Productions.Rating), and lets the
  * layout worker fill the space over several rounds.
  *
- * Rules: great buildings, the town hall, era buildings and buildings with an
- * ally stay. Limited buildings count with the value they decay into, unless a
- * fresh copy waits in the inventory to renew them. The number of buildings with
- * 5 minute productions never drops, happiness stays at least at today's ratio
- * and some free population is kept.
+ * Fixed rules: great buildings, the town hall and era buildings stay.
+ *
+ * Rules the player switches in the City Builder (Optimizer.Defaults, stored by
+ * setOption): buildings with an ally stay; limited buildings count with the
+ * value they decay into unless a fresh copy waits in the inventory to renew
+ * them, count with today's value or stay altogether; the number of buildings
+ * with 5 minute productions never drops; happiness stays at least at today's
+ * ratio; some free population is kept; building types picked by hand stay.
+ * Further options decide what may be taken from the inventory: Quantum
+ * Incursion (Neo) buildings, limited (ascended) buildings and selection kits.
  */
 CityBuilder.Optimizer = {
 
@@ -39,6 +44,67 @@ CityBuilder.Optimizer = {
 
     /** @type {number} free tiles the rounds aim for (single tiles at roads are unavoidable) */
     TargetFree: 35,
+
+    /** @type {string} localStorage key of the options */
+    StorageKey: 'CityBuilderOptimizeOptions',
+
+    /**
+     * Options of the optimization with their defaults.
+     *
+     * @type {{allies: boolean, fiveMinutes: boolean, happiness: boolean, population: boolean,
+     * limited: string, keep: string[], useNeo: boolean, useAscended: boolean, useKits: boolean}}
+     */
+    Defaults: {
+        allies: true,
+        fiveMinutes: true,
+        happiness: true,
+        population: true,
+        limited: 'decay',
+        keep: [],
+        useNeo: true,
+        useAscended: false,
+        useKits: true
+    },
+
+    /** @type {string[]} how limited buildings of the city are treated: rated with the value they decay into, rated with today's value, always kept */
+    LimitedModes: ['decay', 'current', 'keep'],
+
+
+    /**
+     * Reads the stored options; missing or invalid entries fall back to the defaults.
+     *
+     * @returns {Object} Options, shaped like Defaults.
+     */
+    options: () => {
+        const O = CityBuilder.Optimizer;
+        let stored = null;
+        try {
+            stored = JSON.parse(localStorage.getItem(O.StorageKey) || 'null');
+        } catch (e) {
+            stored = null;
+        }
+
+        const options = Object.assign({}, O.Defaults);
+        for (const [key, fallback] of Object.entries(O.Defaults)) {
+            const value = stored?.[key];
+            if (key === 'keep') options.keep = Array.isArray(value) ? value.filter(id => typeof id === 'string') : [];
+            else if (key === 'limited' ? O.LimitedModes.includes(value) : typeof value === typeof fallback) options[key] = value;
+        }
+        return options;
+    },
+
+
+    /**
+     * Stores one option; it applies with the next calculation.
+     *
+     * @param {string} key - Option name from Defaults.
+     * @param {boolean|string|string[]} value - New value.
+     */
+    setOption: (key, value) => {
+        const O = CityBuilder.Optimizer;
+        if (!(key in O.Defaults)) return;
+        localStorage.setItem(O.StorageKey, JSON.stringify(Object.assign(O.options(), { [key]: value })));
+    },
 
 
     /**
@@ -90,21 +156,66 @@ CityBuilder.Optimizer = {
 
 
     /**
+     * Whether the rules allow swapping a city building at all: special
+     * buildings except great buildings, the town hall and hubs.
+     *
+     * @param {Object} building - Building from CityBuildings.
+     * @returns {boolean} True for swappable buildings.
+     */
+    swappable: (building) => !!building.isSpecial
+        && !['greatbuilding', 'main_building'].includes(building.type) && !building.type.includes('hub'),
+
+
+    /**
+     * Freshly rated buildings of the live city, streets left out.
+     *
+     * @returns {Object[]} Buildings from CityBuildings.
+     */
+    cityBuildings: () => {
+        Productions.Rating.load();
+        Productions.CalcRatingBody();
+        return Productions.BuildingsAll.filter(b => b && !b.isInInventory && b.id < 2000000000 && b.type !== 'street');
+    },
+
+
+    /**
+     * Swappable buildings of the city grouped by type, for picking the ones
+     * that always stay. Weakest first, those would leave first.
+     *
+     * @returns {{entityId: string, name: string, count: number, w: number, h: number, score: number, kept: boolean}[]} Building types.
+     */
+    keepList: () => {
+        const O = CityBuilder.Optimizer;
+        const kept = new Set(O.options().keep);
+        const groups = new Map();
+
+        for (const b of O.cityBuildings()) {
+            if (!O.swappable(b)) continue;
+            if (!groups.has(b.entityId)) {
+                const p = O.placement(b.entityId);
+                groups.set(b.entityId, { entityId: b.entityId, name: b.name, count: 0, w: p.w, h: p.h, score: O.score(b), kept: kept.has(b.entityId) });
+            }
+            groups.get(b.entityId).count++;
+        }
+        return [...groups.values()].sort((a, b) => a.score - b.score || a.name.localeCompare(b.name));
+    },
+
+
+    /**
      * Collects the city candidates, the inventory pool and the constraints.
      * Uses the efficiency rating of the productions module, so the user's
      * rating settings decide what counts as weak or strong.
      *
+     * @param {Object} [options] - Options, shaped like Defaults; the stored ones by default.
      * @returns {Object} Planning context.
      */
-    prepare: () => {
+    prepare: (options = CityBuilder.Optimizer.options()) => {
         const O = CityBuilder.Optimizer;
         const CE = MainParser.CityEntities;
 
-        Productions.Rating.load();
-        Productions.CalcRatingBody();
-
+        const cityBuildings = O.cityBuildings();
         const stock = Object.assign({}, Kits.InventoryStock || {});
-        const cityBuildings = Productions.BuildingsAll.filter(b => b && !b.isInInventory && b.id < 2000000000 && b.type !== 'street');
+        const kept = new Set(options.keep);
 
         // happiness and population of the live city
         let happiness = 0, popPlus = 0, popFree = 0;
@@ -118,21 +229,24 @@ CityBuilder.Optimizer = {
         let fiveMinutesKept = 0;
         for (const b of cityBuildings) {
             if (CityBuilder.Excluded.has(b.id)) continue;
-            const fixed = !b.isSpecial
-                || ['greatbuilding', 'main_building'].includes(b.type) || b.type.includes('hub')
-                || Allies.buildingList?.[b.id];
-            const five = O.hasFiveMinutes(b.entityId);
+            const limited = CE[b.entityId]?.components?.AllAge?.limited;
+            const fixed = !O.swappable(b) || kept.has(b.entityId)
+                || (options.allies && Allies.buildingList?.[b.id])
+                || (options.limited === 'keep' && limited);
+            const five = options.fiveMinutes && O.hasFiveMinutes(b.entityId);
             if (fixed) {
                 if (five) fiveMinutesKept++;
                 continue;
             }
 
             // limited buildings count with what they decay into, unless the
-            // inventory holds a fresh copy to renew them
+            // inventory holds a fresh copy to renew them; where the pool may hand
+            // out limited buildings, that copy is set aside for the renewal
             let score = O.score(b);
-            const limit = CE[b.entityId]?.components?.AllAge?.limited?.config;
-            if (limit?.targetCityEntityId && CE[limit.targetCityEntityId] && !(stock[b.entityId] > 0)) {
-                score = O.score(CityBuildings.createBuilding(CE[limit.targetCityEntityId], CurrentEra));
+            const target = options.limited === 'decay' && limited?.config?.targetCityEntityId;
+            if (target && CE[target]) {
+                if (!(stock[b.entityId] > 0)) score = O.score(CityBuildings.createBuilding(CE[target], CurrentEra));
+                else if (options.useAscended) stock[b.entityId]--;
             }
 
             const p = O.placement(b.entityId);
@@ -144,8 +258,9 @@ CityBuilder.Optimizer = {
         }
 
         return {
+            options: options,
             candidates: candidates,
-            pool: O.pool(stock),
+            pool: O.pool(stock, options),
             happiness: happiness,
             popPlus: popPlus,
             popFree: popFree,
@@ -159,30 +274,36 @@ CityBuilder.Optimizer = {
      * Buildings that can be placed from the inventory, with honest counts:
      * the stock is handed out building by building, best rated first, so a
      * selection kit offering several buildings is only counted once.
-     * Limited buildings and upgrades of buildings standing in the city are left out.
+     * Upgrades of buildings standing in the city are left out, the options
+     * decide about limited buildings, Quantum Incursion buildings and
+     * everything that needs a selection kit.
      *
      * @param {Object} stock - Flat inventory stock (consumed while counting).
+     * @param {Object} options - Options, shaped like Defaults.
      * @returns {Object[]} One entry per buildable copy, best rated first.
      */
-    pool: (stock) => {
+    pool: (stock, options) => {
         const O = CityBuilder.Optimizer;
         const CE = MainParser.CityEntities;
         const rated = new Map(Productions.BuildingsAll.filter(b => b?.isInInventory).map(b => [b.entityId, b]));
-        const options = [];
+        const buildable = [];
 
         for (const [entityId, data] of Object.entries(Productions.InventoryBuildings || {})) {
             const b = rated.get(entityId);
             const meta = CE[entityId];
             if (!b || !meta || !b.isSpecial || b.type === 'greatbuilding') continue;
-            if (meta.components?.AllAge?.limited) continue;
+            if (meta.components?.AllAge?.limited && !options.useAscended) continue;
+            if (entityId.includes('_GR') && !options.useNeo) continue;
             const score = O.score(b);
             if (score <= 0) continue;
-            options.push({ entityId: entityId, building: b, score: score, chains: (data.chains || []).filter(c => !c.chain.some(el => el.from === 'city')) });
+            const chains = (data.chains || []).filter(c => !c.chain.some(el => el.from === 'city'
+                || (!options.useKits && (el.from === 'selectionKit' || el.type === 'selectionKit'))));
+            buildable.push({ entityId: entityId, building: b, score: score, chains: chains });
         }
-        options.sort((a, b) => b.score - a.score);
+        buildable.sort((a, b) => b.score - a.score);
 
         const pool = [];
-        for (const opt of options) {
+        for (const opt of buildable) {
             const p = O.placement(opt.entityId);
             for (const c of opt.chains) {
                 // build as many copies as this chain's ingredients allow
@@ -192,7 +313,7 @@ CityBuilder.Optimizer = {
                         entityId: opt.entityId, name: opt.building.name, score: opt.score,
                         w: p.w, h: p.h, street: p.street, area: O.area(p.w, p.h, p.street),
                         happiness: opt.building.happiness || 0, population: opt.building.population || 0,
-                        five: O.hasFiveMinutes(opt.entityId)
+                        five: options.fiveMinutes && O.hasFiveMinutes(opt.entityId)
                     });
                 }
             }
@@ -215,8 +336,9 @@ CityBuilder.Optimizer = {
         const removed = [], added = [];
         let hap = ctx.happiness, popPlus = ctx.popPlus, popFree = ctx.popFree;
         let freed = extraArea, used = 0;
-        const popFloor = Math.max(0, ctx.popPlus * 0.05);
-        const ratioFloor = ctx.ratio;
+        // without the population option the plan may use up the free population, but never more
+        const popFloor = ctx.options.population ? Math.max(0, ctx.popPlus * 0.05) : 0;
+        const ratioFloor = ctx.options.happiness ? ctx.ratio : -Infinity;
 
         const take = (n) => { added.push(n); used += n.area; hap += n.happiness; popFree += n.population; if (n.population > 0) popPlus += n.population; };
         const drop = (r) => { removed.push(r); freed += r.area; hap -= r.happiness; popFree -= r.population; if (r.population > 0) popPlus -= r.population; };

@@ -1,5 +1,18 @@
 ## Extension Changelog
 
+##### 4.9.0.0
+**Update**
+
+- Neu: Event-Cockpit – das laufende Event auf einen Blick: Restzeit, Event-Währungen, Fortschritt zum nächsten Preis, tägliche Aufgaben mit Countdown, die aktuellen Event-Quests samt Meilensteinen der Questreihe und deine Liga. Beim Glücksrad rechnet es aus, wie viele Hauptpreis-Punkte dein Bestand bringt und was der nächste Preis mindestens kostet. Der Menü-Button zeigt, wie viel abholbereit ist
+- Neu: Jahresrückblick – dein Forge-of-Empires-Jahr als Bild zum Speichern oder Kopieren: gespielte Tage, FP aus Belohnungen, LG-Einzahlungen, Gildengefechte, Expedition, Quanten-Invasion, eingesammelte Belohnungen und wer dich am häufigsten motiviert hat. Alles stammt aus dem, was der Helfer in deinem Browser mitgeschrieben hat, Namen lassen sich ausblenden
+- Forschungskosten: Neue Prognose – zeigt je Ressource dein tägliches Einkommen und wie viele Tage du noch brauchst, oben steht, wann du alles für das gewählte Zeitalter beisammen hast und was am längsten dauert. Das Einkommen ist die Produktion deiner Gebäude oder, falls höher, der gemessene Zuwachs deines Bestands; per Klick legst du einen eigenen Tageswert fest
+- Statistiken: Tageswerte bleiben jetzt bis zum Beginn des Vorjahres erhalten, so lässt sich ein ganzes Kalenderjahr auch im Januar noch auswerten
+- Statistiken: Der Helfer merkt sich zusätzlich deine LG-Einzahlungen sowie täglich Punkte, gewonnene Kämpfe, LG-Stufen und Erfolge – nur lokal in deinem Browser, als Grundlage für kommende Auswertungen
+- City Builder: Die Gebäude-Optimierung lässt sich jetzt einstellen (Zahnrad neben „Gebäude optimieren“) – du legst fest, was erhalten bleibt (Gebäude mit Verbündeten, 5-Minuten-Produktionen, Zufriedenheit, freie Bevölkerung, erhabene Gebäude und einzelne, von Hand ausgewählte Gebäude) und was aus dem Inventar eingeplant werden darf (Neo-Gebäude, erhabene Gebäude, Auswahl-Kits). Ohne Änderung bleibt alles wie bisher
+- Gildengefechte: Der Countdown zum nächsten Fokus-Ziel am Menü-Button zählt jetzt sekundengenau, in den letzten fünf Minuten gelb und in der letzten Minute rot
+
+---
+
 ##### 4.8.10.0
 **Update**
 

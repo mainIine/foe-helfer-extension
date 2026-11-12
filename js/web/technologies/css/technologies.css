@@ -14,7 +14,7 @@
 #technologies {
 	top: 30%;
 	right: 15%;
-	width: 450px;
+	width: 560px;
 	height: 500px;
 }
 
@@ -155,4 +155,32 @@
 	width: auto;
 	display: block;
 	margin: 0 auto;
+}
+
+#technologies #technologiesBody .technologies-forecast {
+	padding: 6px 8px;
+	margin-bottom: 3px;
+	background: rgba(0, 0, 0, 0.25);
+	border-left: 3px solid var(--sunflower);
+	line-height: 1.4;
+}
+
+#technologies #technologiesBody .technologies-forecast strong,
+#technologies #technologiesBody td.forecast-bottleneck {
+	color: var(--sunflower);
+	font-weight: 700;
+}
+
+#technologies #technologiesBody td.forecast-income:hover {
+	text-decoration: underline dotted;
+}
+
+#technologies #technologiesBody td.forecast-manual::before {
+	content: '✎ ';
+	color: var(--sunflower);
+}
+
+#technologies #technologiesBody td.forecast-income input {
+	width: 70px;
+	text-align: right;
 }

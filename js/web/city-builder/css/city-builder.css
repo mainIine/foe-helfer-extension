@@ -84,6 +84,46 @@
 .optimized-city-controls .reserve-input:disabled {
 	opacity: 0.5;
 }
+.optimized-city-controls .optimize-options-btn {
+	padding: 0 6px;
+	line-height: 1.4;
+}
+.optimized-city-controls .optimize-options-btn.open {
+	color: var(--sunflower);
+}
+.optimized-city-controls .optimize-options {
+	display: flex;
+	align-self: stretch;
+	justify-content: flex-end;
+	gap: 20px;
+	padding-top: 4px;
+	border-top: 1px solid var(--black-65);
+	text-align: left;
+}
+.optimized-city-controls .optimize-options.closed {
+	display: none;
+}
+.optimized-city-controls .options-group {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+.optimized-city-controls .options-group .control-toggle {
+	margin-left: 0;
+}
+.optimized-city-controls .options-group select {
+	margin-left: 4px;
+}
+.optimized-city-controls .keep-list-btn {
+	align-self: flex-start;
+	white-space: nowrap;
+}
+.optimized-city-controls .options-note {
+	max-width: 190px;
+	margin-top: 4px;
+	opacity: 0.7;
+	font-size: 0.9em;
+}
 .optimized-city-controls .recalc-btn {
 	margin-left: 8px;
 	white-space: nowrap;
@@ -183,6 +223,38 @@ body.foe-helper-popup #CityBuilderBox .window-body {
 /* origin 0 0 keeps the centering math in CityBuilder.fitPopout() simple */
 body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
 	transform-origin: 0 0;
+}
+/* form for picking the buildings the optimizer always keeps */
+#CityBuilderKeepBox {
+	width: 380px;
+	height: 60vh;
+	display: flex;
+	flex-direction: column;
+}
+#CityBuilderKeepBox .window-body {
+	height: auto;
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-y: auto;
+}
+#CityBuilderKeepBox .keep-hint {
+	padding: 6px 8px;
+	font-style: italic;
+}
+#CityBuilderKeepBox .keep-search {
+	display: block;
+	width: calc(100% - 16px);
+	margin: 0 8px 6px;
+}
+#CityBuilderKeepBox .keep-table td,
+#CityBuilderKeepBox .keep-table th {
+	padding: 3px 8px;
+}
+#CityBuilderKeepBox .keep-table tbody tr {
+	cursor: pointer;
+}
+#CityBuilderKeepBox .keep-table tr.kept td {
+	color: var(--sunflower);
 }
 /* box listing the buildings the optimizer could not fit into the layout */
 #CityBuilderUnplacedBox {

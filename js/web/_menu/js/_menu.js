@@ -30,6 +30,8 @@ let _menu = {
 
 	Items: [
 		//'calculator',
+		'yearReview',
+		'eventCockpit',
 		'citySearch',
 		'checklist',
 		'gbBonuses',
@@ -369,6 +371,8 @@ let _menu = {
 		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
 		{ id: 'inventory', title: i18n('Menu.Inventory.Title'), description: i18n('Menu.Inventory.Desc') },
 		{ id: 'ascended', title: i18n('Menu.Ascended.Title'), description: i18n('Menu.Ascended.Desc') },
+		{ id: 'eventCockpit', title: i18n('Menu.EventCockpit.Title'), description: i18n('Menu.EventCockpit.Desc') },
+		{ id: 'yearReview', title: i18n('Menu.YearReview.Title'), description: i18n('Menu.YearReview.Desc') },
 		{ id: 'checklist', title: i18n('Menu.Checklist.Title'), description: i18n('Menu.Checklist.Desc') },
 		{ id: 'citySearch', title: i18n('Menu.CitySearch.Title'), description: i18n('Menu.CitySearch.Desc') },
 		{ id: 'gbBonuses', title: i18n('Menu.GBBonuses.Title'), description: i18n('Menu.GBBonuses.Desc') },
@@ -711,6 +715,33 @@ let _menu = {
 
 		return btn.append(btn_sp, $('<span id="ascended-expired-count" class="hud-counter" style="display:none">0</span>'))
 			.ready(Ascended.UpdateMenuCounter);
+	},
+
+	/**
+	 * Year in review: the figures of a calendar year as a picture
+	 */
+	yearReview_Btn: () => {
+		let btn = _menu.MakeButton('yearReview');
+
+		let btn_sp = $('<span />').on('click', function () {
+			YearReview.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	/**
+	 * Event cockpit: the running seasonal event at a glance
+	 */
+	eventCockpit_Btn: () => {
+		let btn = _menu.MakeButton('eventCockpit');
+
+		let btn_sp = $('<span />').on('click', function () {
+			EventCockpit.init();
+		});
+
+		return btn.append(btn_sp, $('<span id="eventCockpit-count" class="hud-counter" style="display:none">0</span>'))
+			.ready(EventCockpit.UpdateMenuCounter);
 	},
 
 	inventory_Btn: () => {

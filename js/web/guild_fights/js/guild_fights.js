@@ -265,8 +265,10 @@ let Guild_fights = {
 	FocusPanelStatus: {},
 	// the one countdown ticker of the focus panel, runs only while a countdown is due
 	FocusTicker: null,
-	// wake-up of UpdateFocus for the next minute change on the menu button
+	// wake-up of UpdateFocus for the next full minute of the nearest focus target
 	FocusTimer: null,
+	// second ticker of the countdown on the menu button, runs only while a focus target is locked
+	MenuTicker: null,
 	discordCache: null,
 	webRequestProfile: JSON.parse(localStorage.getItem("LiveFightSettings"))?.webRequestProfile || "",
 
@@ -862,29 +864,51 @@ let Guild_fights = {
 
 
 	/**
-	 * Shows the time until the next focus target unlocks on the menu button (H:mm),
-	 * in the warning colour during the last three minutes; hidden without a locked target
+	 * Countdown text of the menu button: "H:mm:ss" from one hour on, "m:ss" below
+	 * and plain seconds ("42s") during the last minute
+	 *
+	 * @param {number} seconds Remaining time, greater than zero
+	 * @returns {string}
+	 */
+	FormatMenuCounter: (seconds) => {
+		if (seconds < 60) return `${seconds}s`;
+
+		return moment.utc(seconds * 1000).format(seconds < 3600 ? 'm:ss' : 'H:mm:ss');
+	},
+
+
+	/**
+	 * Shows the time until the next focus target unlocks on the menu button, to the
+	 * second: yellow during the last five minutes, in the warning colour during the
+	 * last one; hidden without a locked target. Ticks on its own while there is
+	 * something to count down
 	 */
 	UpdateMenuCounter: () => {
 		const seconds = Guild_fights.GetNextFocusUnlock(),
 			$counter = $('#gildFight-count');
 
-		if (seconds === undefined) {
+		if (seconds === undefined || $counter.length === 0) {
 			$counter.hide();
+			clearInterval(Guild_fights.MenuTicker);
+			Guild_fights.MenuTicker = null;
 			return;
 		}
 
 		// the pill shape of this counter ships with the module
 		HTML.AddCssFile('guild_fights');
-		// the counter only knows minutes, "0:00" in the last one would look like an open sector
-		$counter.text(seconds < 60 ? '<1' : moment.utc(seconds * 1000).format('H:mm')).toggleClass('soon', seconds < 180).show();
+		$counter.text(Guild_fights.FormatMenuCounter(seconds))
+			.toggleClass('near', seconds >= 60 && seconds < 300)
+			.toggleClass('soon', seconds < 60)
+			.show();
+
+		Guild_fights.MenuTicker ??= setInterval(Guild_fights.UpdateMenuCounter, 1000);
 	},
 
 
 	/**
 	 * Brings the menu countdown and the focus panel in line with the map data. Called on
 	 * every change of signals, sector owners and settings; while a focus target is locked
-	 * it wakes itself up whenever the minute shown on the menu button changes
+	 * it wakes itself up once a minute, so the panel starts its countdowns in time
 	 */
 	UpdateFocus: () => {
 		clearTimeout(Guild_fights.FocusTimer);

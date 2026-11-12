@@ -396,6 +396,30 @@ let Technologies = {
                 Technologies.CalcBody();
             });
 
+            $technologiesBox.on('click', '.showforecast', function () {
+                Technologies.Forecast.Enabled = $(this).prop('checked');
+
+                localStorage.setItem('TechnologiesShowForecast', Technologies.Forecast.Enabled);
+
+                Technologies.CalcBody();
+            });
+
+            // forecast: a click on a daily value turns it into an input for an own value
+            $technologiesBox.on('click', '.forecast-income', function () {
+                let $cell = $(this),
+                    id = $cell.data('resource');
+                if ($cell.find('input').length !== 0) return;
+
+                $cell.html('<input type="number" min="0" step="any" value="' + (Technologies.Forecast.Overrides[id] ?? '') + '">');
+                $cell.find('input').trigger('focus').on('blur keydown', function (e) {
+                    if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== 'Escape') return;
+
+                    // Escape leaves the value as it was; the cell is rebuilt either way
+                    if (e.key !== 'Escape') Technologies.Forecast.SetOverride(id, this.value);
+                    if ($.contains(document, this)) Technologies.CalcBody();
+                });
+            });
+
             // grouped mode: own sort handling, era blocks stay intact and are sorted internally
             $technologiesBox.on('click', '.technologies-grouped .sorter-header th', function () {
                 let column = $(this).index();
@@ -450,6 +474,7 @@ let Technologies = {
         Technologies.IgnorePrevEra = localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false'
         Technologies.IgnoreCurrentEraOptional = localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false'
         Technologies.GroupByEra = localStorage.getItem('TechnologiesGroupByEra') === 'true'
+        Technologies.Forecast.Init();
 
         Technologies.CalcBody();
     },
@@ -567,99 +592,94 @@ let Technologies = {
 
 
     /**
-     * Calculates and renders the body content for the technologies module.
-     * This includes processing researched and in-progress technologies,
-     * calculating required resources for unlocking further technologies,
-     * and dynamically generating HTML content to display relevant data.
+     * Open research demand up to an era, by resource id. Honours the two ignore
+     * options: technologies of earlier eras and optional technologies (dead
+     * ends) of the current and later eras.
      *
-     * The function performs the following steps:
-     * 1. Flattens the research tree (GetTechList, decision point branches included)
-     *    and marks researched / partially researched technologies (MarkResearchState).
-     * 2. Computes the total resources required to unlock remaining technologies (GetTechDemand),
-     *    taking into account the user-defined filters such as ignoring previous or optional technologies.
-     * 3. Assembles a list of resources and their statuses (required, in stock, missing).
-     * 4. Generates HTML content, including era navigation, settings, and a table displaying resource requirements.
-     *
-     * Data sources:
-     * - `Technologies.AllTechnologies`: Array of all available technologies with their details.
-     * - `Technologies.UnlockedTechnologies`: Research progress (unlocked nodes, in-progress technologies, chosen branches).
-     * - `Technologies.Eras`: Mapping of era names to era IDs.
-     * - `GoodsList`: Array of all possible resources for the technologies.
-     * - `ResourceStock`: Object containing current user stock of resources.
-     * - `StrategyPoints.AvailableFP`: Number of available strategy points.
-     * - `GoodsData`: Object containing metadata for each resource (ID and name).
-     *
-     * Rendering:
-     * - Builds and populates the `#technologiesBody` DOM element with dynamically
-     *   generated HTML content, including tables, buttons, and options.
-     *
-     * Filters applied:
-     * - Technologies from previous eras are ignored if `Technologies.IgnorePrevEra` is true.
-     * - Optional technologies from the current or future eras are ignored if
-     *   `Technologies.IgnoreCurrentEraOptional` is true.
+     * @param {number} SelEraID - Era the demand is calculated up to.
+     * @param {boolean} [IgnorePrevEra] - Leave out open technologies of earlier eras.
+     * @param {boolean} [IgnoreOptional] - Leave out optional technologies from the current era on.
+     * @returns {{required: Object<string,number>, cumulative: Object<string,number>, relevant: Object<string,boolean>, techCount: number, lowerEraID: number}}
+     *     required: demand of the selected era only; cumulative: demand of the range lowerEraID..SelEraID;
+     *     relevant: every resource of that range, even when nothing is open; techCount: open technologies of the selected era
      */
-    CalcBody: ()=> {
-        let h = [],
-            TechList = Technologies.GetTechList();
+    GetDemand: (SelEraID, IgnorePrevEra = Technologies.IgnorePrevEra, IgnoreOptional = Technologies.IgnoreCurrentEraOptional) => {
+        const TechList = Technologies.GetTechList(),
+            Result = {
+                required: {},
+                cumulative: {},
+                relevant: {},
+                techCount: 0,
+                // lower bound of the cumulative range: the lower of current and selected era
+                // (the current era when browsing ahead), or the very first era
+                lowerEraID: IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1,
+            };
 
         Technologies.MarkResearchState(TechList);
 
-        // Güter zählen
-        let RequiredResources = {},            // Bedarf NUR des gewählten Zeitalters
-            CumulativeResources = {},          // Bedarf kumulativ: aktuelles ZA bis gewähltes ZA
-            RelevantResources = { strategy_points: true, money: true, supplies: true },
-            TechCount = 0;
-
-        let SelEraID = Technologies.SelectedEraID;
-        // Lower bound of the cumulative range: the lower of current and selected era
-        // (i.e. the current era when browsing ahead). With "ignore previous eras"
-        // unchecked, open researches of earlier eras are included as well.
-        let CumLowerEraID = Technologies.IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1;
-
-        for (let Tech of TechList) {
+        for (const Tech of TechList) {
             if (Tech['isTeaser']) continue;
 
-            let EraID = Technologies.Eras[Tech['era']];
+            const EraID = Technologies.Eras[Tech['era']],
+                IsSelected = (EraID === SelEraID),
+                IsOpen = !Tech['isResearched'];
 
-            // Aktuelles/zukünftiges ZA und optionale Technologie ausblenden
-            if (EraID >= CurrentEraID && Technologies.IsOptionalTech(Tech) && Technologies.IgnoreCurrentEraOptional) {
-                continue;
+            if (EraID >= CurrentEraID && IgnoreOptional && Technologies.IsOptionalTech(Tech)) continue;
+            if (EraID < Result.lowerEraID || EraID > SelEraID) continue;
+
+            for (const [id, amount] of Object.entries(Technologies.GetTechDemand(Tech))) {
+                // the resources of the selected era are always listed, others only while they are needed
+                if (IsOpen || IsSelected) Result.relevant[id] = true;
+                if (IsOpen) Result.cumulative[id] = (Result.cumulative[id] || 0) + amount;
+                if (IsOpen && IsSelected) Result.required[id] = (Result.required[id] || 0) + amount;
             }
 
-            // Außerhalb des kumulativen Bereichs irrelevant
-            if (EraID < CumLowerEraID || EraID > SelEraID) {
-                continue;
-            }
-
-            let Demand = Technologies.GetTechDemand(Tech);
-
-            // Kumulativ: gesamter Bereich [CumLowerEraID .. SelEraID]
-            if (!Tech['isResearched']) {
-                for (let ResourceName in Demand) {
-                    CumulativeResources[ResourceName] = (CumulativeResources[ResourceName] || 0) + Demand[ResourceName];
-
-                    // also list goods that are only needed in eras in between
-                    RelevantResources[ResourceName] = true;
-                }
-            }
-
-            // Pro gewähltem Zeitalter: nur Technologien genau dieses Zeitalters
-            if (EraID === SelEraID) {
-                // Alle vorkommenden Güter merken, damit sie immer gelistet werden
-                for (let ResourceName in Demand) {
-                    RelevantResources[ResourceName] = true;
-                }
-
-                // Nur noch nicht erforschte Technologien tragen zum Bedarf bei
-                if (!Tech['isResearched']) {
-                    for (let ResourceName in Demand) {
-                        RequiredResources[ResourceName] = (RequiredResources[ResourceName] || 0) + Demand[ResourceName];
-                    }
-
-                    TechCount++;
-                }
-            }
+            if (IsOpen && IsSelected) Result.techCount++;
         }
+
+        return Result;
+    },
+
+
+    /**
+     * Stock of a resource as the research counts it: forge points include the
+     * packages of the inventory.
+     *
+     * @param {string} id - Resource id.
+     * @returns {number}
+     */
+    GetStock: (id) => (id === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[id]) || 0,
+
+
+    /**
+     * Renders the box: era navigation, options, the research forecast and the
+     * table of all resources the open technologies up to the selected era need
+     * (required, cumulative, in stock, missing and, with the forecast, the daily
+     * income and the days until the missing amount is covered).
+     */
+    CalcBody: ()=> {
+        let h = [];
+
+        const SelEraID = Technologies.SelectedEraID,
+            Demand = Technologies.GetDemand(SelEraID),
+            RequiredResources = Demand.required,
+            CumulativeResources = Demand.cumulative,
+            RelevantResources = Object.assign({ strategy_points: true, money: true, supplies: true }, Demand.relevant),
+            TechCount = Demand.techCount,
+            CumLowerEraID = Demand.lowerEraID,
+            // the cumulative column only differs from "required" when the range spans more than the selected era
+            ShowCumulative = CumLowerEraID < SelEraID,
+            ShowForecast = Technologies.Forecast.Enabled;
+
+        // what is missing counts against the full cumulative demand, not just the selected era (#3544)
+        const Missing = {};
+        for (const id in RelevantResources) {
+            if (GoodsData[id] === undefined) continue;
+            Missing[id] = (ShowCumulative ? CumulativeResources[id] : RequiredResources[id]) || 0;
+            Missing[id] -= Technologies.GetStock(id);
+        }
+
+        const Forecast = (ShowForecast ? Technologies.Forecast.Calc(Missing) : null);
 
         let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, 1),
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.getMaxEra());
@@ -674,21 +694,20 @@ let Technologies = {
             h.push('<input id="IgnorePrevEra" class="ignoreprevera game-cursor" ' + (Technologies.IgnorePrevEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnorePrevEra') + '<br>');
             h.push('<input id="IgnoreCurrentEraOptional" class="ignorecurrenteraoptional game-cursor" ' + (Technologies.IgnoreCurrentEraOptional ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnoreCurrentEraOptional') + '<br>');
             h.push('<input id="GroupByEra" class="groupbyera game-cursor" ' + (Technologies.GroupByEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.GroupByEra') + '<br>');
+            h.push('<input id="ShowForecast" class="showforecast game-cursor" ' + (ShowForecast ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.ShowForecast') + '<br>');
         	h.push('</div>');
         h.push('</div>');
 
-        // Hinweis, wenn im sichtbaren ZA-Bereich nichts mehr benötigt wird
+        // nothing left to research in the selected era
         if (TechCount === 0) {
             h.push('<div class="technologies-hint">' + i18n('Boxes.Technologies.NoTechs') + '</div>');
         }
 
+        if (Forecast) h.push(Technologies.Forecast.Summary(Forecast, SelEraID));
+
         // grouped mode uses its own sort handling (era blocks are sorted internally),
         // so the global tableSorter must not be attached to the table
         h.push('<table class="foe-table exportable ' + (Technologies.GroupByEra ? 'technologies-grouped' : 'sortable-table') + '">');
-
-        // Only show the cumulative column when the cumulative range spans more than
-        // the selected era (otherwise it would be identical to the "Required" column).
-        let ShowCumulative = CumLowerEraID < SelEraID;
 
         // sort indicator of the grouped mode
         let SortClass = (column) => (Technologies.GroupByEra && Technologies.SortColumn === column ? (Technologies.SortDirection === 1 ? ' ascending' : ' descending') : '');
@@ -701,16 +720,18 @@ let Technologies = {
             (ShowCumulative ? '<th class="is-number' + SortClass(3) + '" data-type="technologiesTBody" data-export="cumulative">' + i18n('Boxes.Technologies.DescCumulative') + '</th>' : '') +
             '<th class="is-number' + SortClass(ShowCumulative ? 4 : 3) + '" data-type="technologiesTBody" data-export="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
             '<th class="is-number text-right' + SortClass(ShowCumulative ? 5 : 4) + '" data-type="technologiesTBody" data-export="remaining">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
+            (ShowForecast ? '<th class="is-number text-right' + SortClass(ShowCumulative ? 6 : 5) + '" data-type="technologiesTBody" data-export="perday" title="' + HTML.i18nTooltip(i18n('Boxes.Technologies.DescPerDayTT')) + '">' + i18n('Boxes.Technologies.DescPerDay') + '</th>' +
+                '<th class="is-number text-right' + SortClass(ShowCumulative ? 7 : 6) + '" data-type="technologiesTBody" data-export="days" title="' + HTML.i18nTooltip(i18n('Boxes.Technologies.DescDaysTT')) + '">' + i18n('Boxes.Technologies.DescDays') + '</th>' : '') +
             '</tr>' +
             '</thead>');
 
         h.push('<tbody class="technologiesTBody">');
 
-        // Tabelleninhalt – immer alle relevanten Ressourcen ausgeben
+        // table body: every relevant resource is listed
         {
-            // Welche Güter kann der Spieler selbst herstellen?
+            // goods the player can produce
             let ProducibleGoods = Technologies.GetProducibleGoods();
-            // Welche Güter werden gerade aktiv produziert?
+            // goods that are being produced right now
             let ActiveProductionGoods = Technologies.GetActiveProductionGoods();
 
             // special era resources grouped by era, taken from the game's resource definitions
@@ -761,15 +782,12 @@ let Technologies = {
                 if (RelevantResources[ResourceName]) {
                     let Required = RequiredResources[ResourceName] || 0;
                     let Cumulative = CumulativeResources[ResourceName] || 0;
-                    let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
-                    if (Stock === undefined) Stock = 0;
-                    // "Still missing" is calculated against the full cumulative demand,
-                    // not just the selected era (#3544)
-                    let Diff = Stock - (ShowCumulative ? Cumulative : Required);
+                    let Stock = Technologies.GetStock(ResourceName);
+                    let Diff = -Missing[ResourceName];
 
-                    // Fertige Ressourcen (weder im gewählten ZA noch kumulativ benötigt) werden abgedimmt
+                    // resources nothing is needed of any more (selected era and cumulative) are dimmed
                     let IsDone = Required <= 0 && (!ShowCumulative || Cumulative <= 0);
-                    // FP, Münzen und Vorräte werden nicht gehighlightet
+                    // forge points, coins and supplies are never highlighted
                     let IsProducible = (ResourceName !== 'strategy_points' && ResourceName !== 'money' && ResourceName !== 'supplies') && ProducibleGoods.has(ResourceName);
                     let IsActive = IsProducible && ActiveProductionGoods.has(ResourceName);
                     let NameClass = IsProducible ? (IsActive ? 'producible-good actively-produced' : 'producible-good') : '';
@@ -784,19 +802,27 @@ let Technologies = {
                     }
                     r.push('<td data-number="' + Stock + '">' + HTML.Format(Stock) + '</td>');
                     r.push('<td data-number="' + Diff + '" class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
+
+                    let Income = Forecast?.rows[ResourceName]?.income,
+                        Days = Forecast?.rows[ResourceName]?.days || 0;
+                    if (Forecast) {
+                        r.push('<td class="forecast-income text-right game-cursor' + (Income.manual !== null ? ' forecast-manual' : '') + '" data-resource="' + ResourceName + '" data-number="' + Income.used + '" title="' + Technologies.Forecast.IncomeTooltip(ResourceName, Income) + '">' + Technologies.Forecast.Num(Income.used) + '</td>');
+                        r.push('<td data-number="' + (Days === Infinity ? Number.MAX_SAFE_INTEGER : Days) + '" class="text-right' + (Days === Infinity ? ' text-danger' : (ResourceName === Forecast.bottleneck ? ' forecast-bottleneck' : '')) + '">' + (Days === Infinity ? '∞' : HTML.Format(Days)) + '</td>');
+                    }
                     r.push('</tr>');
 
                     // column values for the grouped mode sort, aligned with the column indexes
                     let SortValues = [null, GoodsData[ResourceName]['name'], Required];
                     if (ShowCumulative) SortValues.push(Cumulative);
                     SortValues.push(Stock, Diff);
+                    if (Forecast) SortValues.push(Income.used, Days);
 
                     Rows.push({ era: OutputList[i]['era'], html: r.join(''), values: SortValues });
                 }
             }
 
             if (Technologies.GroupByEra) {
-                let ColumnCount = (ShowCumulative ? 6 : 5);
+                let ColumnCount = (ShowCumulative ? 6 : 5) + (Forecast ? 2 : 0);
 
                 // sort each era block internally, the block order itself stays era by era
                 if (Technologies.SortColumn !== null) {
@@ -863,34 +889,11 @@ let Technologies = {
             return neededGoods;
         }
 
-        // Same ignore flags as the Technologies view (real booleans)
-        let IgnorePrevEra = localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false';
-        let IgnoreCurrentEraOptional = localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false';
-        let SelEraID = Technologies.SelectedEraID || CurrentEraID;
-
-        let TechList = Technologies.GetTechList();
-        Technologies.MarkResearchState(TechList);
-
-        // Same "still missing" logic as CalcBody: when the cumulative range
-        // [CumLowerEraID .. SelEraID] spans more than the selected era, compare
-        // against the cumulative demand; otherwise against the selected era only.
-        let CumLowerEraID = IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1,
-            ShowCumulative = CumLowerEraID < SelEraID,
-            Demand = {};
-
-        for (let Tech of TechList) {
-            if (Tech['isTeaser'] || Tech['isResearched']) continue;
-
-            let EraID = Technologies.Eras[Tech['era']];
-
-            if (EraID >= CurrentEraID && Technologies.IsOptionalTech(Tech) && IgnoreCurrentEraOptional) continue;
-            if (ShowCumulative ? (EraID < CumLowerEraID || EraID > SelEraID) : EraID !== SelEraID) continue;
-
-            let TechDemand = Technologies.GetTechDemand(Tech);
-            for (let ResourceName in TechDemand) {
-                Demand[ResourceName] = (Demand[ResourceName] || 0) + TechDemand[ResourceName];
-            }
-        }
+        // same ignore flags as the Technologies view; when the cumulative range spans
+        // more than the selected era, the stock is compared against the cumulative demand
+        let SelEraID = Technologies.SelectedEraID || CurrentEraID,
+            Ranges = Technologies.GetDemand(SelEraID, localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false', localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false'),
+            Demand = (Ranges.lowerEraID < SelEraID ? Ranges.cumulative : Ranges.required);
 
         for (let ResourceName in Demand) {
             if (ResourceName === 'strategy_points' || ResourceName === 'money' || ResourceName === 'supplies') continue;

@@ -1,0 +1,212 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#eventCockpit {
+	top: 12%;
+	left: 30%;
+	width: 520px;
+	height: 560px;
+	min-width: 380px;
+}
+
+#eventCockpitBody {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden auto;
+}
+
+#eventCockpit .ec-empty,
+#eventCockpit .ec-foot,
+#eventCockpit .ec-note {
+	margin: 0;
+	padding: 4px 8px;
+	color: var(--dark-beige);
+}
+
+#eventCockpit .ec-empty {
+	padding: 20px 8px;
+	text-align: center;
+}
+
+#eventCockpit .ec-foot {
+	margin-top: auto;
+	border-top: 1px solid var(--border-table-bottom);
+	font-size: 85%;
+}
+
+/* Head: event name and remaining time */
+#eventCockpit .ec-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 2px 10px;
+	padding: 6px 8px;
+	background-color: var(--table-bg-darker);
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#eventCockpit .ec-name {
+	color: var(--sunflower);
+	font-size: 125%;
+	font-weight: bold;
+}
+
+#eventCockpit .ec-countdown {
+	color: var(--white);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Currencies */
+#eventCockpit .ec-resources {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 6px;
+	padding: 6px 8px;
+}
+
+#eventCockpit .ec-resource {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px 2px 4px;
+	border: 1px solid var(--border-table-bottom);
+	border-radius: 12px;
+	background-color: var(--black-30);
+}
+
+#eventCockpit .ec-resource.main {
+	border-color: var(--sunflower);
+}
+
+#eventCockpit .ec-resource.main b {
+	color: var(--sunflower);
+}
+
+#eventCockpit .ec-nowrap {
+	white-space: nowrap;
+}
+
+#eventCockpit .ec-resource img,
+#eventCockpit .ec-note img,
+#eventCockpit .ec-table img {
+	width: 20px;
+	height: 20px;
+	object-fit: contain;
+	vertical-align: middle;
+}
+
+/* Sections */
+#eventCockpit .ec-sections h3 {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	margin: 6px 0 0;
+	padding: 3px 8px;
+	border-top: 1px solid var(--border-table-bottom);
+	background-color: var(--table-bg-darker);
+	color: var(--beige);
+	font-size: 100%;
+}
+
+#eventCockpit .ec-sub {
+	margin-left: auto;
+	color: var(--dark-beige);
+	font-weight: normal;
+}
+
+#eventCockpit .ec-ready {
+	margin-left: 6px;
+	padding: 0 6px;
+	border-radius: 8px;
+	background-color: var(--table-bt-success);
+	color: var(--white);
+	font-size: 85%;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+#eventCockpit .ec-table {
+	width: 100%;
+}
+
+#eventCockpit .ec-table td,
+#eventCockpit .ec-table th {
+	padding: 3px 8px;
+	text-align: left;
+	vertical-align: middle;
+}
+
+#eventCockpit .ec-table .text-right {
+	text-align: right;
+	white-space: nowrap;
+}
+
+#eventCockpit .ec-table tr.locked td {
+	opacity: 0.55;
+}
+
+#eventCockpit .ec-table tr.ready td {
+	background-color: var(--table-bg-success);
+}
+
+#eventCockpit .ec-table tr.done td {
+	color: var(--success);
+}
+
+#eventCockpit .ec-table .met {
+	color: var(--success);
+}
+
+#eventCockpit .ec-table em {
+	color: var(--dark-beige);
+}
+
+#eventCockpit .ec-stakes .best {
+	color: var(--success);
+	font-weight: bold;
+}
+
+/* Progress bar */
+#eventCockpit .ec-bar {
+	position: relative;
+	display: block;
+	min-width: 110px;
+	height: 16px;
+	border: 1px solid var(--border-dark);
+	border-radius: 3px;
+	background-color: var(--black-50);
+	overflow: hidden;
+}
+
+#eventCockpit .ec-bar span {
+	position: absolute;
+	inset: 0 auto 0 0;
+	background-color: var(--text-medium2);
+}
+
+#eventCockpit .ec-bar.full span {
+	background-color: var(--table-bt-success);
+}
+
+#eventCockpit .ec-bar b {
+	position: relative;
+	display: block;
+	color: var(--white);
+	font-size: 85%;
+	font-weight: normal;
+	line-height: 16px;
+	text-align: center;
+	font-variant-numeric: tabular-nums;
+}

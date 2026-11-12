@@ -900,6 +900,16 @@ p {
 	background-size: 65%;
 }
 
+[id$=yearReview-Btn] span {
+	background-image: url('../../js/web/yearreview/images/yearreview.svg');
+	background-size: 70%;
+}
+
+[id$=eventCockpit-Btn] span {
+	background-image: url('../../js/web/eventcockpit/images/eventcockpit.svg');
+	background-size: 70%;
+}
+
 [id$=ascended-Btn] span {
 	background-image: url('../../js/web/ascended/images/ascended.png');
 	background-size: 65%;
