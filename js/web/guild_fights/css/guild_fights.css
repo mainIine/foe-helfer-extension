@@ -645,16 +645,27 @@
 	background-color: var(--table-bg-bright);
 }
 
-/* menu button: time until the next focus target unlocks, wider than the round counters */
+/* menu button: countdown to the next focus target, a small pill instead of the round counters */
 .hud-btn #gildFight-count {
 	width: auto;
 	height: auto;
-	padding: 0 3px;
-	border-radius: 7px;
-	line-height: 14px;
-	font-size: 0.7rem;
+	padding: 0 2px;
+	border-radius: 6px;
+	line-height: 12px;
+	font-size: 0.65rem;
+	font-weight: normal;
+	/* digits of equal width, the pill does not twitch while it counts */
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
 }
 
+/* last five minutes */
+.hud-btn #gildFight-count.near {
+	background-color: var(--sunflower);
+	color: var(--text-darkest);
+}
+
+/* last minute */
 .hud-btn #gildFight-count.soon {
 	background-color: var(--red);
 	box-shadow: 0 0 1px 1px var(--danger-red);
