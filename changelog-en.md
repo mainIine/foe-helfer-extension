@@ -3,14 +3,14 @@
 ##### 4.9.0.0
 **Update**
 
-- New: Event Cockpit – the running event at a glance: remaining time, event currencies, progress towards the next prize, daily tasks with countdown, the current event quests including the milestones of the questline and your league. For the wheel it works out how many grand prize points your stock is good for and what the next prize costs at least. The menu button shows how much is ready to collect
-- New: Year in review – your Forge of Empires year as a picture to save or copy: days played, FP from rewards, GB contributions, Guild Battlegrounds, Expedition, Quantum Incursion, collected rewards and who motivated you most. Everything comes from what the helper recorded in your browser, names can be hidden
-- New: Army suggestion in the battle window – the line-ups with the best estimated win rate against the army ahead, plus your real record. The box remembers what has beaten an army and suggests it first next time; heroes only come up where they clearly help. Can be turned off right in the box
-- Research costs: new forecast – shows your daily income and the days still needed per resource, and on top when you will have everything for the selected era and what takes longest. The income is the production of your buildings or, if higher, the measured growth of your stock; a click lets you set your own daily value
-- Statistics: daily values are now kept back to the start of the previous year, so a whole calendar year can still be evaluated in January
-- Statistics: the helper additionally remembers your GB contributions and, once a day, your points, won battles, GB levels and achievements – only locally in your browser, as a basis for upcoming evaluations
-- City Builder: the building optimization is now configurable (gear button next to “Optimize buildings”) – you decide what is kept (buildings with allies, 5 minute productions, happiness, free population, ascended buildings and single buildings picked by hand) and what may be planned in from the inventory (Neo buildings, ascended buildings, selection kits). Without a change everything stays as before
-- Guild Battlegrounds: the countdown to the next focus target on the menu button now counts by the second, yellow during the last five minutes and red in the last minute
+- New: Event Cockpit – the running event at a glance: remaining time, currencies, next prize, daily tasks, quests and league
+- New: Year in review – your FoE year as a picture to share, with 12 designs and 22 colors
+- New: Army suggestion in the battle window – the line-ups with the best win rate against the army ahead, plus your real record
+- Research costs: forecast of the days still needed per resource
+- Statistics: daily values are kept back to the start of the previous year
+- Statistics: the helper also remembers GB contributions, points, battles, GB levels and achievements (locally only)
+- City Builder: the building optimization is configurable (gear next to “Optimize buildings”)
+- Guild Battlegrounds: the countdown to the next focus target counts by the second and can be turned off
 
 ---
 

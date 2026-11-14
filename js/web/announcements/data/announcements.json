@@ -1,5 +1,14 @@
 [
 	{
+		"id": "2026-11-army-suggestion",
+		"version": "4.9.0.0",
+		"date": "2026-11-14",
+		"link": {
+			"de": "https://docs.foe-helper.com/de/module/battle-assist/",
+			"en": "https://docs.foe-helper.com/en/module/battle-assist/"
+		}
+	},
+	{
 		"id": "2026-11-year-review",
 		"version": "4.9.0.0",
 		"date": "2026-11-12",
