@@ -52,7 +52,10 @@
 	"announcements",
 	"investment",
 	"strategy-points",
-	"battle-assist",
+	{
+		"name": "battle-assist",
+		"parts": ["lineup"]
+	},
 	{
 		"name": "citymap",
 		"parts": ["city-buildings"]
