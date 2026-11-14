@@ -258,6 +258,8 @@ let Guild_fights = {
 	// focus panel: compact list of the next focus targets, only shown on the battlegrounds map
 	showFocusPanel: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showFocusPanel ?? 1,
 	focusPanelCount: JSON.parse(localStorage.getItem("LiveFightSettings"))?.focusPanelCount ?? 5,
+	// countdown to the next focus target on the menu button
+	showFocusCountdown: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showFocusCountdown ?? 1,
 	// closed by the player, it stays away until the map is entered again
 	FocusPanelDismissed: false,
 	// rows and status cells of the focus panel as rendered last, only changes touch the DOM
@@ -880,11 +882,11 @@ let Guild_fights = {
 	/**
 	 * Shows the time until the next focus target unlocks on the menu button, to the
 	 * second: yellow during the last five minutes, in the warning colour during the
-	 * last one; hidden without a locked target. Ticks on its own while there is
-	 * something to count down
+	 * last one; hidden without a locked target and when switched off in the settings.
+	 * Ticks on its own while there is something to count down
 	 */
 	UpdateMenuCounter: () => {
-		const seconds = Guild_fights.GetNextFocusUnlock(),
+		const seconds = Guild_fights.showFocusCountdown === 1 ? Guild_fights.GetNextFocusUnlock() : undefined,
 			$counter = $('#gildFight-count');
 
 		if (seconds === undefined || $counter.length === 0) {
@@ -908,7 +910,8 @@ let Guild_fights = {
 	/**
 	 * Brings the menu countdown and the focus panel in line with the map data. Called on
 	 * every change of signals, sector owners and settings; while a focus target is locked
-	 * it wakes itself up once a minute, so the panel starts its countdowns in time
+	 * it wakes itself up once a minute, so the panel starts its countdowns in time. With
+	 * both switched off there is nothing to wake up for
 	 */
 	UpdateFocus: () => {
 		clearTimeout(Guild_fights.FocusTimer);
@@ -916,7 +919,7 @@ let Guild_fights = {
 		Guild_fights.UpdateMenuCounter();
 		Guild_fights.UpdateFocusPanel();
 
-		const seconds = Guild_fights.GetNextFocusUnlock();
+		const seconds = Guild_fights.showFocusPanel === 1 || Guild_fights.showFocusCountdown === 1 ? Guild_fights.GetNextFocusUnlock() : undefined;
 
 		if (seconds !== undefined) {
 			Guild_fights.FocusTimer = setTimeout(Guild_fights.UpdateFocus, (seconds % 60 + 1) * 1000);
@@ -3145,6 +3148,7 @@ let Guild_fights = {
 		let autoOpen = LiveFightSettings?.autoOpen ?? 1;
 		let showFocusPanel = LiveFightSettings?.showFocusPanel ?? 1;
 		let focusPanelCount = LiveFightSettings?.focusPanelCount ?? 5;
+		let showFocusCountdown = LiveFightSettings?.showFocusCountdown ?? 1;
 
 		// the settings outgrew a single list, so they are grouped into tabs
 		c.push(`<div class="tabs gbg-settings-tabs">`);
@@ -3166,6 +3170,7 @@ let Guild_fights = {
 		c.push(`<p><label for="showmarkerbutton"><input id="showmarkerbutton" name="showmarkerbutton" value="0" type="checkbox" ${(showMarkerButton === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowMarkerButton')}</label></p>`);
 		c.push(`<hr><p><label for="showfocuspanel"><input id="showfocuspanel" name="showfocuspanel" value="0" type="checkbox" ${(showFocusPanel === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusPanel')}</label></p>`);
 		c.push(`<p><label for="focuspanelcount" class="copy-setting">${i18n('Boxes.GuildFights.FocusPanelCount')} <input id="focuspanelcount" name="focuspanelcount" value="${focusPanelCount}" type="number" min="1" max="8" step="1" size="3"/></label></p>`);
+		c.push(`<p><label for="showfocuscountdown"><input id="showfocuscountdown" name="showfocuscountdown" value="0" type="checkbox" ${(showFocusCountdown === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusCountdown')}</label></p>`);
 		c.push(`</div>`);
 
 		c.push(`<div id="gbgsettings-copy" class="hidden-tab">`);
@@ -3344,6 +3349,7 @@ let Guild_fights = {
 		if (isNaN(focusPanelCount)) focusPanelCount = 5;
 		value.focusPanelCount = Math.min(Math.max(focusPanelCount, 1), 8);
 		value.showFocusPanel = $("#showfocuspanel").is(':checked') ? 1 : 0;
+		value.showFocusCountdown = $("#showfocuscountdown").is(':checked') ? 1 : 0;
 
 		Guild_fights.showGuildColumn = value.showGuildColumn;
 		Guild_fights.showAdjacentSectors = value.showAdjacentSectors;
@@ -3364,6 +3370,7 @@ let Guild_fights = {
 		Guild_fights.autoAlert = value.autoAlert;
 		Guild_fights.showFocusPanel = value.showFocusPanel;
 		Guild_fights.focusPanelCount = value.focusPanelCount;
+		Guild_fights.showFocusCountdown = value.showFocusCountdown;
 		// saving brings a focus panel back that the player closed
 		Guild_fights.FocusPanelDismissed = false;
 		// an empty field or the detected value means "detect automatically"
