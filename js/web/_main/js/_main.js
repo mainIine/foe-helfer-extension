@@ -1001,6 +1001,19 @@ GetFights = () =>{
 		FoEproxy.triggerFoeHelperHandler('QuestsUpdated');
 	});
 
+	// progress that does not come with a request (e.g. motivating other players) is pushed via websocket;
+	// such a push may hold only some quests, so they replace their old versions instead of the whole list
+	FoEproxy.addWsHandler('QuestService', 'getUpdates', data => {
+		const quests = data?.responseData;
+		if (!Array.isArray(quests) || !MainParser.Quests) return;
+
+		const byId = new Map(MainParser.Quests.map(quest => [quest.id, quest]));
+		quests.forEach(quest => byId.set(quest.id, quest));
+		MainParser.Quests = [...byId.values()];
+
+		FoEproxy.triggerFoeHelperHandler('QuestsUpdated');
+	});
+
 	// Update unlocked features
 	FoEproxy.addHandler('UnlockableFeatureService', 'getUnlockedFeatures', (data, postData) => {
 		MainParser.UnlockedFeatures = data.responseData.map(function(obj) { return obj.feature; });

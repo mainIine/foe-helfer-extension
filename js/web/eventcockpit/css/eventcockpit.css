@@ -210,3 +210,53 @@
 	text-align: center;
 	font-variant-numeric: tabular-nums;
 }
+
+/* Event quests: progress per task and suggestions */
+#eventCockpit .ec-cond {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 2px;
+}
+
+#eventCockpit .ec-cond > span:first-child {
+	flex: 1;
+}
+
+#eventCockpit .ec-cond .ec-bar {
+	flex: 0 0 130px;
+}
+
+#eventCockpit .ec-cond.skipped {
+	opacity: 0.5;
+}
+
+#eventCockpit .ec-or {
+	color: var(--dark-beige);
+	font-size: 85%;
+	font-style: italic;
+}
+
+#eventCockpit .ec-tip {
+	margin: 2px 0 4px;
+	padding: 3px 6px;
+	border-left: 3px solid var(--sunflower);
+	background-color: var(--black-30);
+	font-size: 85%;
+	line-height: 1.35;
+}
+
+#eventCockpit .ec-locate,
+#eventCockpit .ec-link {
+	color: var(--sunflower);
+	cursor: pointer;
+}
+
+#eventCockpit .ec-locate {
+	font-weight: bold;
+}
+
+#eventCockpit .ec-locate:hover,
+#eventCockpit .ec-link:hover {
+	text-decoration: underline;
+}
