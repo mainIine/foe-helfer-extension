@@ -559,7 +559,7 @@
     "Boxes.EventCockpit.DurationDays": "__d__ j __h__ h",
     "Boxes.EventCockpit.DurationHours": "__h__ h __m__ min",
     "Boxes.EventCockpit.DurationMinutes": "__m__:__s__ min",
-    "Boxes.EventCockpit.EndsIn": "se termine le __time__ (__date__)",
+    "Boxes.EventCockpit.EndsIn": "se termine dans __time__ (__date__)",
     "Boxes.EventCockpit.EventName": "Événement __name__",
     "Boxes.EventCockpit.League": "Ligue",
     "Boxes.EventCockpit.LeaguePoints": "__points__ points",
