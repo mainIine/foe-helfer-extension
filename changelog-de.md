@@ -1,6 +1,13 @@
 ## Extension Changelog
 
-##### 4.9.0.1
+##### 4.9.1.0
+**Update**
+
+- City Builder: Neue Option „Nur anpassen“ – die Stadt bleibt, wie sie steht; nur neue Gebäude werden eingeplant und dafür so wenige wie möglich umgesetzt
+- City Builder: Deutlich weniger Lücken, die freie Fläche bleibt als ein Block übrig; Straßengebäude stehen zusammen statt einzeln zwischen straßenlosen
+- City Builder: „Gebäude optimieren“ füllt übrige Lücken mit den bestbewerteten passenden Gebäuden aus dem Inventar (abschaltbar über das Zahnrad)
+- City Builder: Die Berechnung probiert in derselben Zeit mehr Varianten durch
+
 **Bugfixes**
 
 - Armee-Übersicht: Die Einheiten-Icons werden wieder angezeigt

@@ -1,6 +1,13 @@
 ## Extension Changelog
 
-##### 4.9.0.1
+##### 4.9.1.0
+**Update**
+
+- City Builder: New option "Adjust only" – the city stays as it stands; only new buildings are planned in, moving as few buildings as possible
+- City Builder: Far fewer gaps, the free space is left as one block; street buildings stand together instead of alone among roadless ones
+- City Builder: "Optimize buildings" fills leftover gaps with the best rated buildings from the inventory that fit (can be switched off via the gear)
+- City Builder: The calculation tries more variants in the same time
+
 **Bugfixes**
 
 - Military units overview: the unit icons are shown again
