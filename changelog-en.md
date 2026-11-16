@@ -12,6 +12,10 @@
 - City Builder: the building optimization is configurable (gear next to “Optimize buildings”)
 - Guild Battlegrounds: the countdown to the next focus target counts by the second and can be turned off
 
+**Bugfixes**
+
+- Menu bar: while sorting, the bar only scrolls once the icon has stayed over the arrow for a full second
+
 ---
 
 ##### 4.8.10.0

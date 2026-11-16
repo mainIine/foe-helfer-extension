@@ -12,6 +12,10 @@
 - City Builder: Die Gebäude-Optimierung lässt sich einstellen (Zahnrad neben „Gebäude optimieren“)
 - Gildengefechte: Der Countdown zum nächsten Fokus-Ziel zählt sekundengenau und lässt sich abschalten
 
+**Bugfixes**
+
+- Menüleiste: Beim Sortieren blättert die Leiste erst, wenn das Symbol eine volle Sekunde über dem Pfeil bleibt
+
 ---
 
 ##### 4.8.10.0

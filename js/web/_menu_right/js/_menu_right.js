@@ -13,6 +13,8 @@
 
 let _menu_right = {
 
+	SortScrollTimer: null,
+
 	/**
 	 *
 	 */
@@ -153,6 +155,26 @@ let _menu_right = {
 			$('[data-btn="' + id + '"]').hide();
 		});
 
+		// While dragging a menu item, hovering an active arrow for one second scrolls the bar
+		$('#foe-helper-hud')
+			.off('.menuSortScroll')
+			.on('mouseenter.menuSortScroll', '.hud-btn-up-active, .hud-btn-down-active', function () {
+				if (!$('#foe-helper-hud').hasClass('is--sorting')) return;
+
+				let $btn = $(this);
+
+				clearTimeout(_menu_right.SortScrollTimer);
+				_menu_right.SortScrollTimer = setTimeout(() => {
+					if (!$('#foe-helper-hud').hasClass('is--sorting')) return;
+
+					if ($btn.hasClass('hud-btn-up-active')) _menu_right.ClickButtonUp();
+					else if ($btn.hasClass('hud-btn-down-active')) _menu_right.ClickButtonDown();
+				}, 1000);
+			})
+			.on('mouseleave.menuSortScroll', '.hud-btn-up, .hud-btn-down', function () {
+				clearTimeout(_menu_right.SortScrollTimer);
+			});
+
 		// Sortierfunktion der Menü-items
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
@@ -161,35 +183,9 @@ let _menu_right = {
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
-			sort: function () {
-
-				$('.is--sorting .hud-btn-up-active').mouseenter(function (e) {
-					$('.hud-btn-up-active').stop().addClass('hasFocus');
-
-					setTimeout(() => {
-						if ($('.is--sorting .hud-btn-up-active').hasClass('hasFocus')) {
-							_menu_right.ClickButtonUp();
-						}
-					}, 1000);
-
-				}).mouseleave(function () {
-					$('.is--sorting .hud-btn-up-active').removeClass('hasFocus');
-				});
-
-				$('.is--sorting .hud-btn-down-active').mouseenter(function (e) {
-					$('.is--sorting .hud-btn-down-active').stop().addClass('hasFocus');
-
-					setTimeout(() => {
-						if ($('.is--sorting .hud-btn-down-active').hasClass('hasFocus')) {
-							_menu_right.ClickButtonDown();
-						}
-					}, 1000);
-
-				}).mouseleave(function () {
-					$('.is--sorting .hud-btn-down-active').removeClass('hasFocus');
-				});
-			},
 			stop: function () {
+				clearTimeout(_menu_right.SortScrollTimer);
+
 				_menu.Items = [];
 
 				$('.hud-btn').each(function () {
