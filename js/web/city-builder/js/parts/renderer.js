@@ -28,6 +28,9 @@ CityBuilder.Renderer = {
      */
     Highlight: null,
 
+    /** @type {Object[]|null} planned spots lit up by a magnifier of the side box */
+    Find: null,
+
     /**
      * Fixed skew part of the on-screen CSS transform, without the uniform
      * zoom factor: skewX(-63.5deg) skewY(14deg) scale(1, 0.25). Labels are
@@ -438,9 +441,17 @@ CityBuilder.Renderer.Layers = [
         }
     },
     {
-        // hover / remove highlight requested by the interaction part
+        // hover / remove highlight requested by the interaction part, above
+        // the spots a magnifier of the side box looks for
         name: 'highlight',
         draw: (v) => {
+            for (const b of CityBuilder.Renderer.Find || []) {
+                v.ctx.fillStyle = 'rgba(255, 181, 57, 0.55)';
+                v.ctx.strokeStyle = '#ffb539';
+                v.ctx.lineWidth = 3;
+                v.ctx.fillRect(b.x * v.scale, b.y * v.scale, b.width * v.scale, b.height * v.scale);
+                v.ctx.strokeRect(b.x * v.scale + 1.5, b.y * v.scale + 1.5, b.width * v.scale - 3, b.height * v.scale - 3);
+            }
             const h = CityBuilder.Renderer.Highlight;
             if (!h || !h.building) return;
             const b = h.building;

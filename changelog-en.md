@@ -7,6 +7,8 @@
 - City Builder: Far fewer gaps, the free space is left as one block; street buildings stand together instead of alone among roadless ones
 - City Builder: "Optimize buildings" fills leftover gaps with the best rated buildings from the inventory that fit (can be switched off via the gear)
 - City Builder: The calculation tries more variants in the same time
+- City Builder: The build progress hatching can be hidden, the city planner closes when the City Builder opens
+- City Builder: The lists of the side box can be collapsed, a magnifier shows the building in the city or its planned spot
 
 **Bugfixes**
 

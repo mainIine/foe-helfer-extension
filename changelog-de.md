@@ -7,6 +7,8 @@
 - City Builder: Deutlich weniger Lücken, die freie Fläche bleibt als ein Block übrig; Straßengebäude stehen zusammen statt einzeln zwischen straßenlosen
 - City Builder: „Gebäude optimieren“ füllt übrige Lücken mit den bestbewerteten passenden Gebäuden aus dem Inventar (abschaltbar über das Zahnrad)
 - City Builder: Die Berechnung probiert in derselben Zeit mehr Varianten durch
+- City Builder: Die Schraffur für den Baufortschritt lässt sich ausblenden, der Stadtplaner schließt sich beim Öffnen
+- City Builder: Die Listen der Seitenbox lassen sich einklappen, eine Lupe zeigt das Gebäude in der Stadt oder seinen geplanten Platz
 
 **Bugfixes**
 
