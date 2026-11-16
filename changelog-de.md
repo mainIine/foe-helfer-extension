@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.9.0.1
+**Bugfixes**
+
+- Armee-Übersicht: Die Einheiten-Icons werden wieder angezeigt
+
+---
+
 ##### 4.9.0.0
 **Update**
 

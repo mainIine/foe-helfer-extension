@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.9.0.1
+**Bugfixes**
+
+- Military units overview: the unit icons are shown again
+
+---
+
 ##### 4.9.0.0
 **Update**
 
