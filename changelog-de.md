@@ -3,41 +3,46 @@
 ##### 4.9.0.0
 **Update**
 
-- Neu: Event-Cockpit – das laufende Event auf einen Blick: Restzeit, Event-Währungen, Fortschritt zum nächsten Preis, tägliche Aufgaben mit Countdown, die aktuellen Event-Quests samt Meilensteinen der Questreihe und deine Liga. Beim Glücksrad rechnet es aus, wie viele Hauptpreis-Punkte dein Bestand bringt und was der nächste Preis mindestens kostet. Der Menü-Button zeigt, wie viel abholbereit ist
-- Neu: Jahresrückblick – dein Forge-of-Empires-Jahr als Bild zum Speichern oder Kopieren: gespielte Tage, FP aus Belohnungen, LG-Einzahlungen, Gildengefechte, Expedition, Quanten-Invasion, eingesammelte Belohnungen und wer dich am häufigsten motiviert hat. Alles stammt aus dem, was der Helfer in deinem Browser mitgeschrieben hat, Namen lassen sich ausblenden
-- Forschungskosten: Neue Prognose – zeigt je Ressource dein tägliches Einkommen und wie viele Tage du noch brauchst, oben steht, wann du alles für das gewählte Zeitalter beisammen hast und was am längsten dauert. Das Einkommen ist die Produktion deiner Gebäude oder, falls höher, der gemessene Zuwachs deines Bestands; per Klick legst du einen eigenen Tageswert fest
-- Statistiken: Tageswerte bleiben jetzt bis zum Beginn des Vorjahres erhalten, so lässt sich ein ganzes Kalenderjahr auch im Januar noch auswerten
-- Statistiken: Der Helfer merkt sich zusätzlich deine LG-Einzahlungen sowie täglich Punkte, gewonnene Kämpfe, LG-Stufen und Erfolge – nur lokal in deinem Browser, als Grundlage für kommende Auswertungen
-- City Builder: Die Gebäude-Optimierung lässt sich jetzt einstellen (Zahnrad neben „Gebäude optimieren“) – du legst fest, was erhalten bleibt (Gebäude mit Verbündeten, 5-Minuten-Produktionen, Zufriedenheit, freie Bevölkerung, erhabene Gebäude und einzelne, von Hand ausgewählte Gebäude) und was aus dem Inventar eingeplant werden darf (Neo-Gebäude, erhabene Gebäude, Auswahl-Kits). Ohne Änderung bleibt alles wie bisher
-- Gildengefechte: Der Countdown zum nächsten Fokus-Ziel am Menü-Button zählt jetzt sekundengenau, in den letzten fünf Minuten gelb und in der letzten Minute rot
+- Neu: Event-Cockpit – das laufende Event auf einen Blick: Restzeit, Währungen, nächster Preis, Tagesaufgaben, Quests und Liga
+- Neu: Jahresrückblick – dein FoE-Jahr als Bild zum Teilen, mit 12 Designs und 22 Farben
+- Neu: Armee-Vorschlag im Kampffenster – die Aufstellungen mit der besten Siegrate gegen die anstehende Armee, dazu deine echte Bilanz
+- Forschungskosten: Prognose, wie viele Tage du je Ressource noch brauchst
+- Statistiken: Tageswerte bleiben bis zum Beginn des Vorjahres erhalten
+- Statistiken: Der Helfer merkt sich zusätzlich LG-Einzahlungen, Punkte, Kämpfe, LG-Stufen und Erfolge (nur lokal)
+- City Builder: Die Gebäude-Optimierung lässt sich einstellen (Zahnrad neben „Gebäude optimieren“)
+- Gildengefechte: Der Countdown zum nächsten Fokus-Ziel zählt sekundengenau und lässt sich abschalten
+
+**Bugfixes**
+
+- Menüleiste: Beim Sortieren blättert die Leiste erst, wenn das Symbol eine volle Sekunde über dem Pfeil bleibt
 
 ---
 
 ##### 4.8.10.0
 **Update**
 
-- Gildengefechte: Die Karte ist jetzt mit der Liste verbunden – Sektor überfahren markiert die passende Zeile und zeigt einen Tooltip mit Besitzer, Öffnungszeit und Zermürbung, ein Klick wählt den Sektor zum Kopieren/für Discord aus, und bei gesperrten Sektoren siehst du, welche Nachbarn früher öffnen
-- Gildengefechte: Die zum Kopieren ausgewählten Sektoren bleiben ausgewählt, wenn sich die Liste aktualisiert
-- Kulturelle Siedlungen & Quanten-Invasion: Mit einem Klick auf die Glocke erinnert dich der Helfer, sobald Produktionen abholbereit sind, ein Bau fertig ist oder einfach alles fertig ist – zu finden in der Siedlungs-Box, der QI-Übersicht und der Alarm-Box
-- Produktionsübersicht: Bei Gütern, Spezialgütern und Gildengütern zeigt ein Klick auf „Boost“ jetzt, welche Gebäude und anderen Quellen den Produktionsbonus liefern – mit Gesamtwert, Einzel- und Gruppenansicht
-- Produktionsübersicht: Eine geöffnete Boost-Ansicht bleibt offen, wenn du ein Gebäude abholst
-- Powerleveln: Die Tabelle zeigt jetzt je Level die Freischaltkosten (Blaupausen-Sets, Güter, Münzen, Vorräte, Medaillen) und darüber die Summe für den gewählten Bereich im Vergleich zu deinem Bestand – was fehlt, ist rot markiert
-- Gildengefechte: Die nächsten Fokus-Ziele deiner Gilde stehen jetzt in einer kleinen, frei verschiebbaren Übersicht direkt auf der Gefechtskarte – mit Countdown, Eroberungsfortschritt und Alarm-Knopf. Der Menü-Button zeigt zusätzlich die Zeit bis zum nächsten Ziel
-- Stadtübersicht: Neue Effizienz-Heatmap – färbt alle bewerteten Gebäude nach ihrer Bewertung pro Feld oder pro Gebäude ein, von Rot (schwach) über Gelb bis Grün (stark), mit Legende, Stadtschnitt und der Fläche, die unterdurchschnittliche Gebäude belegen
-- Nachrichten-Checkliste: Der neue Button „Meine letzte Nachricht“ listet die Plätze auf, die du in einem Thread mit deiner letzten Nachricht genommen hast – zum Abhaken beim Einzahlen. Auf Wunsch (Einstellungen der Box) erscheint die Liste automatisch, sobald du deine Nachricht abschickst
-- Gildenmitglieder-Übersicht: Die Spalten für GEX und GG zeigen jetzt das Ergebnis der letzten beendeten Runde, neu dazu kommt eine QI-Spalte – mit Rang und Details im Tooltip, Rundendatum in der Spaltenüberschrift und im Export; die Inaktivitäts-Markierung berücksichtigt nun auch die QI
+- Gildengefechte: Karte und Sektorliste sind verbunden, mit Tooltip und Auswahl per Klick
+- Gildengefechte: Zum Kopieren ausgewählte Sektoren bleiben nach dem Aktualisieren ausgewählt
+- Gildengefechte: Die nächsten Fokus-Ziele als verschiebbare Übersicht auf der Karte, mit Countdown am Menü-Button
+- Kulturelle Siedlungen & Quanten-Invasion: Glocke für Alarme, wenn Produktionen oder Bauten fertig sind
+- Produktionsübersicht: „Boost“ zeigt bei Gütern, welche Quellen den Produktionsbonus liefern
+- Produktionsübersicht: Die Boost-Ansicht bleibt beim Abholen offen
+- Powerleveln: Freischaltkosten je Level, Summe im Vergleich zu deinem Bestand
+- Stadtübersicht: Neue Effizienz-Heatmap von Rot (schwach) bis Grün (stark)
+- Nachrichten-Checkliste: Neuer Button „Meine letzte Nachricht“ mit deinen genommenen Plätzen
+- Gildenmitglieder-Übersicht: GEX und GG zeigen die letzte beendete Runde, neu ist eine QI-Spalte
 
 **Bugfixes**
 
-- Einstellungen: Die Menü-Länge wirkt sofort, ohne das Spiel neu zu laden
-- Gildengefechte: Die Countdowns der Sektorliste laufen nicht mehr mehrfach im Hintergrund weiter – die Box bleibt auch nach langer Zeit auf der Karte flüssig
+- Einstellungen: Die Menü-Länge wirkt sofort
+- Gildengefechte: Die Sektorliste bleibt auch nach langer Zeit flüssig
 - QI-Übersicht: Die eigene Zeile ist wieder hervorgehoben
-- Gildenmitglieder-Übersicht: Ein Klick auf die Spalte Aktivität sortiert jetzt nach der Aktivität
-- Gildenmitglieder-Übersicht: In den Mitglieder-Details heißt die Spalte der Gilden-Expedition jetzt richtig „Begegnungen“
-- Beschränkte Gebäude: Wird ein Gebäude erneut aufgewertet, bekommt es wieder einen Ablauf-Alarm; abgelaufene Gebäude, die noch in der Stadt stehen, werden beim Spielstart wieder gemeldet
-- Powerleveln: Die Kopfzeile passt wieder zu den Spalten, wenn der Level-Bereich zwischen Kupfer- und Gold-Stufen wechselt
-- Produktionsübersicht: Die Boost-Buttons funktionieren auch in Ansichten, die erst beim Öffnen aufgebaut werden
-- Fenster des Helfers reagieren auch nach vielen geöffneten Boxen zügig auf Klicks
+- Gildenmitglieder-Übersicht: Die Spalte Aktivität sortiert richtig
+- Gildenmitglieder-Übersicht: Die GEX-Spalte in den Details heißt richtig „Begegnungen“
+- Beschränkte Gebäude: Ablauf-Alarme kommen wieder zuverlässig
+- Powerleveln: Die Kopfzeile passt wieder zu den Spalten
+- Produktionsübersicht: Die Boost-Buttons funktionieren in allen Ansichten
+- Helfer-Fenster reagieren auch nach vielen geöffneten Boxen zügig
 
 ---
 

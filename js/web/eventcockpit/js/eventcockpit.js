@@ -117,6 +117,11 @@ let EventCockpit = {
 			resize: true,
 		});
 
+		// the body is refilled on every refresh, so its buttons are handled by the body itself
+		$('#eventCockpitBody')
+			.on('click', '#ec-tips-export', EventCockpit.Tips.Copy)
+			.on('click', '.ec-locate', (event) => EventCockpit.Tips.Locate(event.currentTarget.dataset.id.split(',').map(Number)));
+
 		EventCockpit.Render();
 
 		clearInterval(EventCockpit.Ticker);
@@ -682,7 +687,10 @@ let EventCockpit = {
 
 
 	/**
-	 * Section with the event quests: solved quests, upcoming milestones and the open quests.
+	 * Section with the event quests: solved quests, upcoming milestones and the
+	 * open quests with the progress of every task. A met task is marked, the
+	 * other tasks of a solved "or" group are dimmed and an open task gets a
+	 * suggestion where the helper knows one.
 	 *
 	 * @param {{id: string}} event running event
 	 * @returns {string} HTML
@@ -691,6 +699,9 @@ let EventCockpit = {
 		const quests = EventCockpit.GetQuests(event.id);
 		if (quests.milestones.length === 0 && quests.open.length === 0) return '';
 
+		// quests that arrived before the collector was loaded
+		if (!EventCockpit.Tips.Last) EventCockpit.Tips.Observe(MainParser.Quests);
+
 		const milestones = quests.milestones.map(milestone => `<tr>
 				<td>${EventCockpit.Bar(quests.solved, milestone.at)}</td>
 				<td>${HTML.escapeHtml(milestone.reward)}</td>
@@ -698,26 +709,32 @@ let EventCockpit = {
 
 		const open = quests.open.map(quest => {
 			const conditions = quest.successConditions || [],
-				groups = (quest.successConditionGroups?.length ? quest.successConditionGroups : [{ conditionIds: conditions.map(c => c.id) }]);
+				isMet = (c) => c.maxProgress > 0 && (c.currentProgress || 0) >= c.maxProgress,
+				groups = (quest.successConditionGroups?.length ? quest.successConditionGroups : [{ conditionIds: conditions.map(c => c.id) }])
+					.map(group => ({ either: group.type === 'or', list: group.conditionIds.map(id => conditions.find(c => c.id === id)).filter(Boolean) }))
+					.filter(group => group.list.length > 0);
 
-			const lines = groups.map(group => group.conditionIds
-				.map(id => conditions.find(c => c.id === id))
-				.filter(Boolean)
-				.map(c => {
-					const current = c.currentProgress || 0;
-					return `<span class="${current >= c.maxProgress ? 'met' : ''}">${HTML.escapeHtml(c.description || '')} (${EventCockpit.Num(current)}/${EventCockpit.Num(c.maxProgress)})</span>`;
-				})
-				.join(` <em>${i18n('Boxes.EventCockpit.Or')}</em> `)
-			).filter(Boolean).join('<br>');
+			// one task of an "or" group is enough, the others then need no attention
+			const lines = groups.map(group => {
+				const solved = group.either && group.list.some(isMet);
 
-			return `<tr>
-					<td><b>${HTML.escapeHtml(quest.title || '')}</b><br>${lines}</td>
+				return group.list.map(c => {
+					const met = isMet(c);
+					return `<div class="ec-cond${met ? ' met' : solved ? ' skipped' : ''}">
+							<span>${HTML.escapeHtml(c.description || '')}</span>${EventCockpit.Bar(c.currentProgress || 0, c.maxProgress)}
+						</div>${met || solved ? '' : EventCockpit.Tips.Render(c)}`;
+				}).join(group.either ? `<div class="ec-or">${i18n('Boxes.EventCockpit.Or')}</div>` : '');
+			}).join('');
+
+			return `<tr${quest.state === 'collectReward' ? ' class="ready"' : ''}>
+					<td><b>${HTML.escapeHtml(quest.title || '')}</b>${quest.state === 'collectReward' ? `<span class="ec-ready">${i18n('Boxes.EventCockpit.TaskReady')}</span>` : ''}${lines}</td>
 					<td>${HTML.escapeHtml(EventCockpit.RewardNames(quest))}</td>
 				</tr>`;
 		}).join('');
 
 		return `<h3>${i18n('Boxes.EventCockpit.Quests')}<span class="ec-sub">${HTML.i18nReplacer(i18n('Boxes.EventCockpit.QuestsSolved'), { count: quests.solved })}</span></h3>
-			<table class="foe-table ec-table">${open}${milestones ? `<tr><th colspan="2">${i18n('Boxes.EventCockpit.Milestones')}</th></tr>${milestones}` : ''}</table>`;
+			<table class="foe-table ec-table ec-quests">${open}${milestones ? `<tr><th colspan="2">${i18n('Boxes.EventCockpit.Milestones')}</th></tr>${milestones}` : ''}</table>
+			<p class="ec-note"><span class="ec-link" id="ec-tips-export" title="${HTML.i18nTooltip(i18n('Boxes.EventCockpit.Tip.ExportDesc'))}">${HTML.i18nReplacer(i18n('Boxes.EventCockpit.Tip.Export'), { count: EventCockpit.Num(EventCockpit.Tips.Count()) })}</span></p>`;
 	},
 
 

@@ -12,7 +12,10 @@
 	"kits",
 	"inventory",
 	"ascended",
-	"eventcockpit",
+	{
+		"name": "eventcockpit",
+		"parts": ["questtips"]
+	},
 	"checklist",
 	"citysearch",
 	"allies",
@@ -52,7 +55,10 @@
 	"announcements",
 	"investment",
 	"strategy-points",
-	"battle-assist",
+	{
+		"name": "battle-assist",
+		"parts": ["lineup"]
+	},
 	{
 		"name": "citymap",
 		"parts": ["city-buildings"]

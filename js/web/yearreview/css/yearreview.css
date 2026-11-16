@@ -39,6 +39,34 @@
 	white-space: nowrap;
 }
 
+#yearReview .yr-controls .yr-design {
+	flex: 0 0 auto;
+}
+
+#yearReview .yr-swatches {
+	display: flex;
+	flex: 1 1 100%;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+
+#yearReview .yr-swatch {
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border: 2px solid var(--black-65);
+	border-radius: 50%;
+}
+
+#yearReview .yr-swatch:hover,
+#yearReview .yr-swatch.active {
+	border-color: var(--sunflower);
+}
+
+#yearReview .yr-swatch.active {
+	box-shadow: 0 0 0 1px var(--sunflower);
+}
+
 #yearReview .yr-card {
 	padding: 8px;
 }

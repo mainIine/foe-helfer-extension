@@ -197,3 +197,82 @@
 #battleAssistAAConfigBody [data-id^="defense%"] {
     background: var(--table-bg-info);
 }
+
+#battleAssistLineup {
+    width: 360px;
+}
+#battleAssistLineupBody {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+#battleAssistLineupBody .lineupEnemy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+}
+#battleAssistLineupBody .lineupBoost {
+    margin-left: auto;
+    white-space: nowrap;
+}
+#battleAssistLineupBody .lineupArmy {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    vertical-align: middle;
+}
+#battleAssistLineupBody .lineupUnit {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+}
+#battleAssistLineupBody .lineupUnit img {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+}
+#battleAssistLineupBody .lineupUnit b {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0 3px;
+    line-height: 13px;
+    font-size: 11px;
+    color: #fff;
+    background: rgba(0, 0, 0, .7);
+    border-radius: 3px 0 3px 0;
+}
+#battleAssistLineupBody td {
+    text-align: center;
+    vertical-align: middle;
+}
+#battleAssistLineupBody td:first-child {
+    text-align: left;
+}
+#battleAssistLineupBody td em {
+    margin-left: 6px;
+    font-size: 85%;
+    opacity: .8;
+}
+#battleAssistLineupBody tr.lineupCurrent td {
+    background-color: var(--table-bg-bright);
+}
+#battleAssistLineupBody tr.lineupBest td:first-child {
+    box-shadow: inset 3px 0 0 var(--success);
+}
+#battleAssistLineupBody td em.lineupRemembered {
+    color: var(--success);
+    opacity: 1;
+}
+#battleAssistLineupBody .lineupRate {
+    font-weight: bold;
+}
+#battleAssistLineupBody .lineupRate.good { color: var(--success); }
+#battleAssistLineupBody .lineupRate.medium { color: var(--sunflower); }
+#battleAssistLineupBody .lineupRate.bad { color: var(--danger-red); }
+#battleAssistLineupBody .lineupNote {
+    padding: 5px;
+    font-size: 85%;
+    opacity: .85;
+}
