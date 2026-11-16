@@ -8,7 +8,7 @@
 - City Builder: "Optimize buildings" fills leftover gaps with the best rated buildings from the inventory that fit (can be switched off via the gear)
 - City Builder: The calculation tries more variants in the same time
 - City Builder: The build progress hatching can be hidden, the city planner closes when the City Builder opens
-- City Builder: The lists of the side box can be collapsed, a magnifier shows the building in the city or its planned spot
+- City Builder: The lists of the side box can be collapsed, a magnifier shows buildings standing in the city
 
 **Bugfixes**
 
