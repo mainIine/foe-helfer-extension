@@ -34,6 +34,23 @@
 	color: var(--sunflower);
 }
 
+/* [?] next to a setting title, same look as the docs button of the boxes */
+#SettingsBoxBody h2 .setting-docs {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	margin-left: 8px;
+	vertical-align: middle;
+	border-radius: 2px;
+	background-image: url('../../../../css/images/hud/box-sprite.png'), var(--window-head-btn-bg);
+	background-position: -28px -1px, 0 0;
+	box-shadow: var(--window-head-btn-shadow);
+}
+
+#SettingsBoxBody h2 .setting-docs:hover {
+	filter: brightness(1.2);
+}
+
 #SettingsBoxBody .item-row .desc {
 	margin: 10px 0 20px;
 }
