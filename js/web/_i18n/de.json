@@ -286,7 +286,6 @@
     "Boxes.CityBuilder.Unplaced": "Nicht platzierte Gebäude",
     "Boxes.CityBuilder.UnplacedHint": "Für diese Gebäude wurde kein Platz gefunden:",
     "Boxes.CityBuilder.FindInCity": "In der Stadt markieren – noch einmal klicken zum Ausblenden",
-    "Boxes.CityBuilder.FindOnPlan": "Geplanten Platz auf der Karte markieren – noch einmal klicken zum Ausblenden",
     "Boxes.CityBuilder.ShowNames": "Namen",
     "Boxes.CityBuilder.ShowTooltips": "Tooltips",
     "Boxes.CityBuilder.ShowTooltipsHint": "Gebäude-Tooltips beim Überfahren der Karte anzeigen",
