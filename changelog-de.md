@@ -13,6 +13,7 @@
 **Bugfixes**
 
 - Armee-Übersicht: Die Einheiten-Icons werden wieder angezeigt
+- LG Rechner: Bei fremden LG gilt derselbe Prozentsatz wie im Kostenrechner, er bleibt beim Wechsel zwischen geteilter und gemeinsamer Ansicht erhalten
 
 ---
 

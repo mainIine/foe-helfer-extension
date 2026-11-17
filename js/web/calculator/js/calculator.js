@@ -98,13 +98,30 @@ let Calculator = {
 	 * level-ups have their own rate. The first key is the one a changed rate
 	 * is saved to.
 	 *
+	 * @param {boolean} [Gold] Gold tier rate, default: the tier of the shown level-up
 	 * @returns {string[]} Key names
 	 */
-	ForderBonusKeys: () => {
-		const Conversation = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? '_' + MainParser.OpenConversation : ''),
-			Tier = (MainParser.IsGoldTier(Calculator.CurrentTier()) ? 'Gold' : '');
+	ForderBonusKeys: (Gold = MainParser.IsGoldTier(Calculator.CurrentTier())) => {
+		const PerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false'),
+			Conversation = (PerConversation && MainParser.OpenConversation ? '_' + MainParser.OpenConversation : ''),
+			Tier = (Gold ? 'Gold' : '');
 
 		return [...new Set(['CalculatorForderBonus' + Tier + Conversation, 'CalculatorForderBonus' + Tier])];
+	},
+
+
+	/**
+	 * Saved friendly invest rate of a tier (per conversation before the global
+	 * one). The own part calculator uses it for foreign GBs, so both views
+	 * share the rate.
+	 *
+	 * @param {boolean} Gold Gold tier rate
+	 * @returns {?number} The rate in percent, null if none has been saved yet
+	 */
+	SavedForderBonus: (Gold) => {
+		const Key = Calculator.ForderBonusKeys(Gold).find(Key => localStorage.getItem(Key) !== null);
+
+		return (Key ? parseFloat(localStorage.getItem(Key)) : null);
 	},
 
 
@@ -176,17 +193,13 @@ let Calculator = {
 
 		// toggle percentages
 		$box.on('click', '.btn-toggle-arc', function () {
-			Calculator.ForderBonus = parseFloat($(this).data('value'));
-			$('#costFactor').val(Calculator.ForderBonus);
-			localStorage.setItem(Calculator.ForderBonusKeys()[0], Calculator.ForderBonus);
-			Calculator.Show();
+			$('#costFactor').val(parseFloat($(this).data('value')));
+			Calculator.SetForderBonus(parseFloat($(this).data('value')));
 		});
 
 		// the arc bonus value has been changed
 		$box.on('blur', '#costFactor', function () {
-			Calculator.ForderBonus = parseFloat($('#costFactor').val());
-			localStorage.setItem(Calculator.ForderBonusKeys()[0], Calculator.ForderBonus);
-			Calculator.Show();
+			Calculator.SetForderBonus(parseFloat($('#costFactor').val()));
 		});
 
 		if (WithCopyHandler) {
@@ -205,6 +218,26 @@ let Calculator = {
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);
 			});
+		}
+	},
+
+
+	/**
+	 * Saves a new friendly invest rate and re-renders the calculator. In split
+	 * view the own part box shares the rate while it shows a foreign GB, so it
+	 * is re-rendered as well (which re-renders the calculator, too).
+	 *
+	 * @param {number} Rate - Rate in percent
+	 */
+	SetForderBonus: (Rate) => {
+		Calculator.ForderBonus = Rate;
+		localStorage.setItem(Calculator.ForderBonusKeys()[0], Rate);
+
+		if (Calculator.IsSplitView() && Parts.ArcPercentsForeign && $('#OwnPartBox').length > 0) {
+			Parts.CalcBody(Parts.Level);
+		}
+		else {
+			Calculator.Show();
 		}
 	},
 
@@ -264,10 +297,10 @@ let Calculator = {
 	ShowBody: () => {
 		// saved rate of the conversation or the global one, for the tier of the shown level-up
 		const RateIsGold = MainParser.IsGoldTier(Calculator.CurrentTier()),
-			StorageKey = Calculator.ForderBonusKeys().find(Key => localStorage.getItem(Key) !== null);
+			SavedRate = Calculator.SavedForderBonus(RateIsGold);
 
-		if (StorageKey) {
-			Calculator.ForderBonus = parseFloat(localStorage.getItem(StorageKey));
+		if (SavedRate !== null) {
+			Calculator.ForderBonus = SavedRate;
 		}
 		// nothing saved: gold tier level-ups start with the own gold contribution boost ...
 		else if (RateIsGold) {
