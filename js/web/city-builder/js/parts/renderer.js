@@ -115,17 +115,12 @@ CityBuilder.Renderer = {
     buildView: (canvas) => {
         let areas = [];
         try {
-            if (typeof CityMap !== 'undefined') {
-                if (typeof ActiveMap !== 'undefined' && ActiveMap === 'era_outpost') areas = CityMap.EraOutpost.areas;
-                else if (typeof ActiveMap !== 'undefined' && ActiveMap === 'guild_raids') areas = CityMap.QI.areas;
-                else if (typeof ActiveMap !== 'undefined' && ActiveMap === 'cultural_outpost') areas = CityMap.CulturalOutpost.areas;
-                else areas = CityMap.Main.unlockedAreas;
-            }
+            areas = CityBuilder.liveAreas();
         } catch (err) {
             console.error('CityBuilder: Error accessing CityMap', err);
         }
         // the game omits zero values: areas on the map edge come without x or y
-        areas = Object.values(areas || {}).map(area => ({
+        areas = areas.map(area => ({
             x: parseInt(area.x || 0),
             y: parseInt(area.y || 0),
             width: parseInt(area.width || 16),

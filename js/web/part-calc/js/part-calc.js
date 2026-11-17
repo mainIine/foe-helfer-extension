@@ -144,6 +144,8 @@ let Parts = {
 	PlaceCount: 5, // reward places of the shown level-up (the prestige rework grants up to 7)
 	ArcPercents: [90, 90, 90, 90, 90],
 	ArcPercentsGold: null, // tier ArcPercents belongs to: true = gold, false = copper/classic, null = not loaded yet
+	ArcPercentsForeign: false, // ArcPercents belong to a foreign GB and follow the cost calculator's rate
+	ArcPercentsForeignRate: null, // saved cost calculator rate the foreign ArcPercents were loaded from
 	Exts: [0, 0, 0, 0, 0],
 
 	//Settings Copybox
@@ -257,7 +259,7 @@ let Parts = {
 				});
 
 				Parts.ArcPercents = ArcPercents;
-				localStorage.setItem(Parts.ArcPercentsKey(), JSON.stringify(ArcPercents));
+				Parts.SaveArcPercents();
 
 				Parts.CalcBody(Parts.Level);
 			});
@@ -281,7 +283,7 @@ let Parts = {
 					$('.arc-percent-input').eq(i).val(ArkBonus);
 				}
 
-				localStorage.setItem(Parts.ArcPercentsKey(), JSON.stringify(Parts.ArcPercents));
+				Parts.SaveArcPercents();
 
 				Parts.CalcBody(Parts.Level);
 			});
@@ -613,10 +615,14 @@ let Parts = {
 			}
 		}
 
-		// arc percents of the tier of the shown level-up, gold tier level-ups have their own
-		const IsGold = Parts.IsGoldLevel();
-		Parts.ArcPercents = Parts.GetArcPercents(IsGold);
+		// arc percents of the tier of the shown level-up, gold tier level-ups have their own;
+		// foreign GBs use the rate of the cost calculator
+		const IsGold = Parts.IsGoldLevel(),
+			IsForeign = (PlayerID !== ExtPlayerID);
+		Parts.ArcPercents = Parts.GetArcPercents(IsGold, IsForeign);
 		Parts.ArcPercentsGold = IsGold;
+		Parts.ArcPercentsForeign = IsForeign;
+		Parts.ArcPercentsForeignRate = (IsForeign ? Calculator.SavedForderBonus(IsGold) : null);
 
 		// reward places of this level-up: one per ranking row with a reward, at least the classic five;
 		// the per place settings follow the count (saved values of older versions only cover five)
@@ -1212,18 +1218,46 @@ let Parts = {
 
 	/**
 	 * Arc percents per place of a tier: the ones in use when the shown level-up
-	 * belongs to it, otherwise the saved ones. Without saved values gold tier
-	 * level-ups start with the own gold contribution boost, copper ones with 90%.
+	 * belongs to it, otherwise the saved ones. Foreign GBs share the friendly
+	 * invest rate of the cost calculator, so switching between split and
+	 * combined view keeps it. Without saved values gold tier level-ups start
+	 * with the own gold contribution boost, copper ones with 90%.
 	 *
 	 * @param {boolean} Gold Gold tier
+	 * @param {boolean} [Foreign=false] Foreign GB
 	 * @returns {number[]}
 	 */
-	GetArcPercents: (Gold) => {
-		if (Gold === Parts.ArcPercentsGold) return Parts.ArcPercents;
+	GetArcPercents: (Gold, Foreign = false) => {
+		const Rate = (Foreign ? Calculator.SavedForderBonus(Gold) : null);
 
-		const Saved = localStorage.getItem(Parts.ArcPercentsKey(Gold));
+		// keep the values in use (they may differ per place) while tier, owner and shared rate stay the same
+		if (Gold === Parts.ArcPercentsGold && Foreign === Parts.ArcPercentsForeign && Rate === Parts.ArcPercentsForeignRate) return Parts.ArcPercents;
+
+		if (Rate !== null) return Array(5).fill(Rate);
+
+		const Saved = (Foreign ? null : localStorage.getItem(Parts.ArcPercentsKey(Gold)));
 
 		return (Saved !== null ? JSON.parse(Saved) : Array(5).fill(Gold ? MainParser.ArkBonusGold : 90));
+	},
+
+
+	/**
+	 * Saves the arc percents in use. Own GBs keep them per place and tier; on
+	 * foreign GBs a rate equal for all places becomes the cost calculator's
+	 * rate, differing values per place are only kept for the shown GB.
+	 */
+	SaveArcPercents: () => {
+		if (!Parts.ArcPercentsForeign) {
+			localStorage.setItem(Parts.ArcPercentsKey(), JSON.stringify(Parts.ArcPercents));
+			return;
+		}
+
+		const Rate = Parts.ArcPercents[0];
+
+		if (Parts.ArcPercents.some(Value => Value !== Rate)) return;
+
+		localStorage.setItem(Calculator.ForderBonusKeys(Parts.ArcPercentsGold)[0], Rate);
+		Parts.ArcPercentsForeignRate = Rate;
 	},
 
 

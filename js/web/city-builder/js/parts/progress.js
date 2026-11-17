@@ -173,7 +173,7 @@ CityBuilder.Progress = {
 
 // below the names, so labels stay readable on top of the hatching
 CityBuilder.Renderer.registerLayer('progress', (v) => {
-    if (!CityBuilder.Data?.length || (typeof ActiveMap !== 'undefined' && ActiveMap !== 'main')) return;
+    if (!CityBuilder.ShowProgress || !CityBuilder.Data?.length || (typeof ActiveMap !== 'undefined' && ActiveMap !== 'main')) return;
 
     const P = CityBuilder.Progress;
     const { done, near, wrong } = P.compare();

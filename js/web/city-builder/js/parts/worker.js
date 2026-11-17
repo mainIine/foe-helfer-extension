@@ -27,6 +27,13 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 this.seed = opts.seed || 0;
                 // vertical bands = the same band layout on a transposed map
                 this.transposed = this.strategy === 'bands-vertical';
+                // keep mode: the city stays as it stands, only new buildings get a spot
+                this.keep = this.strategy === 'keep';
+                this.keepRoads = opts.roads || [];
+                // spot -> kind of the building standing there (keep mode)
+                this.homes = new Map();
+                // search time for closing the ranks of the street buildings
+                this.closeMs = 80;
                 this.grid = new Map();
                 this.buildings = [];
                 this.placedBuildings = [];
@@ -52,7 +59,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     let ax = area.x || 0;
                     let ay = area.y || 0;
                     let aw = area.width || 4;
-                    let al = area.length || 4;
+                    let al = area.length || area.height || 4;
                     if (this.transposed) { [ax, ay] = [ay, ax]; [aw, al] = [al, aw]; }
 
                     this.mapBounds.minX = Math.min(this.mapBounds.minX, ax);
@@ -67,9 +74,20 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     }
                 });
 
+                // integer twin of the string keyed grid for the hot loops: one
+                // cell of border all around, so neighbours need no bounds checks
+                this.gridW = this.mapBounds.maxX - this.mapBounds.minX + 2;
+                this.gridH = this.mapBounds.maxY - this.mapBounds.minY + 2;
+                this.cellKeys = [];
+                this.cellIds = [];
+                this.cellIdOf = new Map();
                 for (let x = this.mapBounds.minX; x < this.mapBounds.maxX; x++) {
                     for (let y = this.mapBounds.minY; y < this.mapBounds.maxY; y++) {
-                        this.grid.set(x + ',' + y, validTiles.has(x + ',' + y) ? 0 : -1);
+                        const key = x + ',' + y;
+                        this.grid.set(key, validTiles.has(key) ? 0 : -1);
+                        this.cellKeys.push(key);
+                        this.cellIds.push(this.cellId(x, y));
+                        this.cellIdOf.set(key, this.cellId(x, y));
                     }
                 }
 
@@ -107,7 +125,11 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 const byChain = new Map();
                 const rest = [];
                 for (const b of this.buildings) {
-                    if (b.chain_id && b.chain_pos >= 0) {
+                    if (b.chain_id && b.chain_pos >= 0 && this.keep && b.standing) {
+                        // an assembled chain of the live city stays as it is
+                        b.pinned = true;
+                        rest.push(b);
+                    } else if (b.chain_id && b.chain_pos >= 0) {
                         if (!byChain.has(b.chain_id)) byChain.set(b.chain_id, []);
                         byChain.get(b.chain_id).push(b);
                     } else {
@@ -301,12 +323,16 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 return b;
             }
 
-            // connect every placed street building that has no road yet with the
-            // shortest possible stub - one touching tile is enough
-            connectPlacedBuildings() {
+            /**
+             * Connects every placed street building that has no road yet with
+             * the shortest possible stub - one touching tile is enough.
+             *
+             * @param {function(Object): boolean} [wanted] - Limits the stubs to these buildings.
+             */
+            connectPlacedBuildings(wanted) {
                 const unconn = (b) => {
                     const r = this.connRect(b);
-                    return b.street_level > 0 && !this.isConnectedToRoad(r.x, r.y, r.width, r.height);
+                    return b.street_level > 0 && (!wanted || wanted(b)) && !this.isConnectedToRoad(r.x, r.y, r.width, r.height);
                 };
                 let todo = this.placedBuildings.filter(unconn);
 
@@ -656,6 +682,31 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     return true;
                 }
                 return false;
+            }
+
+            /**
+             * Index of a tile in the integer snapshots.
+             *
+             * @param {number} x - Tile x.
+             * @param {number} y - Tile y.
+             * @returns {number} Cell index.
+             */
+            cellId(x, y) {
+                return (y - this.mapBounds.minY + 1) * this.gridW + (x - this.mapBounds.minX + 1);
+            }
+
+            /**
+             * Copies the grid into a typed array (-1 outside, 0 free, 1 building,
+             * 2 road, 9 town hall). Flood fills and scans on it run many times
+             * faster than on the string keyed map.
+             *
+             * @returns {Int8Array} Cell values, indexed by cellId().
+             */
+            snapshot() {
+                const cells = new Int8Array(this.gridW * this.gridH).fill(-1);
+                const keys = this.cellKeys, ids = this.cellIds;
+                for (let i = 0; i < keys.length; i++) cells[ids[i]] = this.grid.get(keys[i]);
+                return cells;
             }
 
             canPlace(x, y, w, h) {
@@ -1074,7 +1125,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
             // unplaced list instead
             dropUnconnected() {
                 for (const b of [...this.placedBuildings]) {
-                    if (b.type === 'main_building' || !(b.street_level > 0)) continue;
+                    if (b.type === 'main_building' || b.pinned || b.loose || !(b.street_level > 0)) continue;
                     const r = this.connRect(b);
                     if (this.isConnectedToRoad(r.x, r.y, r.width, r.height)) continue;
                     this.removePlaced(b);
@@ -1086,7 +1137,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 const linked = this.linkedTwoLaneTiles();
                 let dropped = false;
                 for (const b of [...this.placedBuildings]) {
-                    if ((b.street_level || 0) < 2) continue;
+                    if ((b.street_level || 0) < 2 || b.pinned || b.loose) continue;
                     if (this.touchesTwoLane(this.connRect(b), linked)) continue;
                     this.removePlaced(b);
                     dropped = true;
@@ -1266,246 +1317,102 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                 return depth;
             }
 
-            countAdjacentRoadTiles(b) {
-                let count = 0;
-                for (let i = b.x; i < b.x + b.width; i++) {
-                    if (this.roadTiles.has(i + ',' + (b.y - 1))) count++;
-                    if (this.roadTiles.has(i + ',' + (b.y + b.height))) count++;
-                }
-                for (let j = b.y; j < b.y + b.height; j++) {
-                    if (this.roadTiles.has((b.x - 1) + ',' + j)) count++;
-                    if (this.roadTiles.has((b.x + b.width) + ',' + j)) count++;
-                }
-                return count;
-            }
-
+            /**
+             * Removes every road tile nobody needs. A tile may go when all
+             * remaining tiles still reach the town hall through roads (adjacency
+             * to the town hall is the anchor - that keeps networks of several
+             * town-hall-anchored components prunable) and no adjacent building
+             * loses its last road tile. Unlike pure dead-end peeling this also
+             * removes parallel double roads, which are connected at both ends
+             * and would survive forever otherwise.
+             */
             pruneRoadsSmart() {
+                const W = this.gridW;
+                const cells = this.snapshot();
+
                 // the town hall counts too: its last road tile must survive -
                 // chain composites only guard the road at their head member
                 const streetBuildings = this.placedBuildings.filter(b => b.street_level > 0).map(b => this.connRect(b));
+                const perimeter = (b) => {
+                    const per = [];
+                    for (let i = b.x; i < b.x + b.width; i++) per.push(this.cellId(i, b.y - 1), this.cellId(i, b.y + b.height));
+                    for (let j = b.y; j < b.y + b.height; j++) per.push(this.cellId(b.x - 1, j), this.cellId(b.x + b.width, j));
+                    return per;
+                };
 
-                const buildingsTouching = (rx, ry) => streetBuildings.filter(b =>
-                    ((ry === b.y - 1 || ry === b.y + b.height) && rx >= b.x && rx < b.x + b.width) ||
-                    ((rx === b.x - 1 || rx === b.x + b.width) && ry >= b.y && ry < b.y + b.height)
-                );
+                // buildings per bordering tile and road tiles per building
+                const touching = new Map();
+                const adjacent = new Int32Array(streetBuildings.length);
+                streetBuildings.forEach((b, bi) => {
+                    for (const id of perimeter(b)) {
+                        if (!touching.has(id)) touching.set(id, []);
+                        touching.get(id).push(bi);
+                        if (cells[id] === 2) adjacent[bi]++;
+                    }
+                });
 
-                // a road tile may go when every remaining tile still reaches the
-                // town hall through roads (adjacency to the town hall is the
-                // anchor - that keeps networks of several town-hall-anchored
-                // components prunable) and no adjacent building loses its last
-                // road tile - unlike pure dead-end peeling this also removes
-                // parallel double roads, which are connected at both ends and
-                // would survive forever otherwise
                 const th = this.townHallPos
                     ? { x: this.townHallPos[0], y: this.townHallPos[1], width: this.townHall.width, height: this.townHall.height }
                     : null;
-                const stillConnected = (skipKey) => {
-                    const seeds = [];
+                const anchors = th ? perimeter(th) : [];
+                const isAnchor = new Set(anchors);
+
+                let roadCount = this.roadTiles.size;
+                const seen = new Int32Array(cells.length);
+                const stack = new Int32Array(cells.length);
+                let stamp = 0;
+                const stillConnected = (skip) => {
+                    stamp++;
+                    seen[skip] = stamp;
+                    let top = 0, count = 0;
+                    const visit = (id) => {
+                        if (cells[id] === 2 && seen[id] !== stamp) { seen[id] = stamp; stack[top++] = id; count++; }
+                    };
                     if (th) {
-                        for (let i = th.x; i < th.x + th.width; i++) {
-                            for (const k of [i + ',' + (th.y - 1), i + ',' + (th.y + th.height)]) {
-                                if (k !== skipKey && this.roadTiles.has(k)) seeds.push(k);
-                            }
-                        }
-                        for (let j = th.y; j < th.y + th.height; j++) {
-                            for (const k of [(th.x - 1) + ',' + j, (th.x + th.width) + ',' + j]) {
-                                if (k !== skipKey && this.roadTiles.has(k)) seeds.push(k);
-                            }
-                        }
+                        for (const id of anchors) visit(id);
                     } else {
-                        for (const key of this.roadTiles) { if (key !== skipKey) { seeds.push(key); break; } }
-                    }
-                    if (!seeds.length) return this.roadTiles.size <= 1;
-                    const seen = new Set([skipKey, ...seeds]);
-                    const stack = [...seeds];
-                    let count = seeds.length;
-                    while (stack.length) {
-                        const k = stack.pop();
-                        const parts = k.split(',');
-                        const kx = +parts[0], ky = +parts[1];
-                        for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
-                            if (this.roadTiles.has(nk) && !seen.has(nk)) {
-                                seen.add(nk);
-                                count++;
-                                stack.push(nk);
-                            }
+                        for (const key of this.roadTiles) {
+                            if (this.cellIdOf.get(key) !== skip) { visit(this.cellIdOf.get(key)); break; }
                         }
                     }
-                    return count === this.roadTiles.size - 1;
+                    if (!count) return roadCount <= 1;
+                    while (top) {
+                        const id = stack[--top];
+                        visit(id - 1);
+                        visit(id + 1);
+                        visit(id - W);
+                        visit(id + W);
+                    }
+                    return count === roadCount - 1;
                 };
 
                 let changed = true;
                 while (changed) {
                     changed = false;
                     for (const key of [...this.roadTiles]) {
-                        const [rx, ry] = key.split(',').map(Number);
-
                         // two-lane tiles are deliberate 2x2 blocks - never prune them
                         if ((this.roadLevel.get(key) || 1) >= 2) continue;
 
                         // One connection tile per building is enough - keep this tile
                         // if some adjacent building would lose its last road tile
-                        if (buildingsTouching(rx, ry).some(b => this.countAdjacentRoadTiles(b) <= 1)) continue;
+                        const id = this.cellIdOf.get(key);
+                        const users = touching.get(id);
+                        if (users && users.some(bi => adjacent[bi] <= 1)) continue;
 
-                        let neighbors = 0;
-                        if (this.grid.get((rx-1) + ',' + ry) === 2) neighbors++;
-                        if (this.grid.get((rx+1) + ',' + ry) === 2) neighbors++;
-                        if (this.grid.get(rx + ',' + (ry-1)) === 2) neighbors++;
-                        if (this.grid.get(rx + ',' + (ry+1)) === 2) neighbors++;
+                        const neighbors = (cells[id - 1] === 2) + (cells[id + 1] === 2) + (cells[id - W] === 2) + (cells[id + W] === 2);
 
                         // endpoints can never split the tile graph - but a tile
                         // on the town hall perimeter can be the anchor of its
                         // whole branch, so it always takes the reachability check
-                        const anchorTile = th
-                            && (((ry === th.y - 1 || ry === th.y + th.height) && rx >= th.x && rx < th.x + th.width)
-                                || ((rx === th.x - 1 || rx === th.x + th.width) && ry >= th.y && ry < th.y + th.height));
-                        if ((neighbors > 1 || anchorTile) && !stillConnected(key)) continue;
+                        if ((neighbors > 1 || isAnchor.has(id)) && !stillConnected(id)) continue;
 
                         this.grid.set(key, 0);
                         this.roadTiles.delete(key);
                         this.roadLevel.delete(key);
+                        cells[id] = 0;
+                        roadCount--;
+                        if (users) for (const bi of users) adjacent[bi]--;
                         changed = true;
-                    }
-                }
-            }
-
-            /**
-             * Roadless buildings: plug the dead pockets between the buildings
-             * first, then pack the rest row by row from the top-left, tight
-             * against the built-up city - and never cut the big free area in
-             * two, it stays in one piece for expansion. Height-major order
-             * builds rows of uniform height, so the rows stack flush instead
-             * of leaving stripes of free tiles between jagged edges
-             *
-             * @param {Object[]} decos - Roadless buildings to place.
-             * @param {number[][]} allCoords - All map coordinates, row by row.
-             */
-            packRoadlessRows(decos, allCoords) {
-                decos.sort((a, b) => b.height - a.height || (b.width * b.height) - (a.width * a.height));
-                for (const b of decos) {
-                    // fresh free regions (roads count as walls here)
-                    const regionOf = new Map();
-                    const regionSizes = [];
-                    for (const [key, val] of this.grid) {
-                        if (val !== 0 || regionOf.has(key)) continue;
-                        const id = regionSizes.length;
-                        let size = 0;
-                        const stack = [key];
-                        regionOf.set(key, id);
-                        while (stack.length) {
-                            const k = stack.pop();
-                            size++;
-                            const parts = k.split(',');
-                            const kx = +parts[0], ky = +parts[1];
-                            for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
-                                if (this.grid.get(nk) === 0 && !regionOf.has(nk)) {
-                                    regionOf.set(nk, id);
-                                    stack.push(nk);
-                                }
-                            }
-                        }
-                        regionSizes.push(size);
-                    }
-                    let largestId = -1;
-                    regionSizes.forEach((s, i) => { if (largestId === -1 || s > regionSizes[largestId]) largestId = i; });
-
-                    // free tiles of the largest region that a footprint would cut
-                    // off from its biggest remaining part - 0 means the region
-                    // just shrinks compactly. Every separated part borders the
-                    // footprint, so seeding the BFS around it finds them all
-                    const sealedAfter = (x, y, w, h) => {
-                        const inFoot = (px, py) => px >= x && px < x + w && py >= y && py < y + h;
-                        const target = regionSizes[largestId] - w * h;
-                        if (target <= 0) return 0;
-                        const seeds = [];
-                        for (let i = x - 1; i <= x + w; i++) {
-                            for (const j of [y - 1, y + h]) {
-                                if (regionOf.get(i + ',' + j) === largestId) seeds.push(i + ',' + j);
-                            }
-                        }
-                        for (let j = y; j < y + h; j++) {
-                            for (const i of [x - 1, x + w]) {
-                                if (regionOf.get(i + ',' + j) === largestId) seeds.push(i + ',' + j);
-                            }
-                        }
-                        const seen = new Set();
-                        let largest = 0;
-                        for (const seed of seeds) {
-                            if (seen.has(seed)) continue;
-                            let size = 0;
-                            const stack = [seed];
-                            seen.add(seed);
-                            while (stack.length) {
-                                const k = stack.pop();
-                                size++;
-                                const parts = k.split(',');
-                                const kx = +parts[0], ky = +parts[1];
-                                for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
-                                    if (seen.has(nk) || regionOf.get(nk) !== largestId) continue;
-                                    const p2 = nk.split(',');
-                                    if (inFoot(+p2[0], +p2[1])) continue;
-                                    seen.add(nk);
-                                    stack.push(nk);
-                                }
-                            }
-                            if (size > largest) largest = size;
-                        }
-                        return target - largest;
-                    };
-
-                    let done = false;
-                    // 1) dead pockets between the buildings - smallest pockets
-                    // first, so the speckles get erased completely before a
-                    // decoration bites into a bigger pocket
-                    const pocketOrder = [];
-                    for (const [cx, cy] of allCoords) {
-                        const rid = regionOf.get(cx + ',' + cy);
-                        if (rid === undefined || rid === largestId) continue;
-                        pocketOrder.push([regionSizes[rid], cx, cy]);
-                    }
-                    pocketOrder.sort((p, q) => p[0] - q[0]);
-                    for (const pc of pocketOrder) {
-                        const cx = pc[1], cy = pc[2];
-                        if (this.grid.get(cx + ',' + cy) !== 0) continue;
-                        if (!this.canPlace(cx, cy, b.width, b.height)) continue;
-                        this.placeEntity(b, cx, cy, 1);
-                        done = true;
-                        break;
-                    }
-                    // 2) pack against the built-up city, row by row from the
-                    // top-left: the roadless buildings form one solid block right
-                    // behind the street buildings, so the spare space collects as
-                    // a single area at the far end of the map. A spot that
-                    // strands no free tile wins instantly; otherwise the spot
-                    // stranding the fewest wins - a small sealed notch beats the
-                    // stripes of free tiles a strict rejection would leave
-                    if (!done) {
-                        let best = null;
-                        let candidates = 0;
-                        for (const [cx, cy] of allCoords) {
-                            const key = cx + ',' + cy;
-                            if (this.grid.get(key) !== 0 || regionOf.get(key) !== largestId) continue;
-                            if (!this.canPlace(cx, cy, b.width, b.height)) continue;
-                            const sealed = sealedAfter(cx, cy, b.width, b.height);
-                            if (sealed <= 0) { best = [0, cx, cy]; break; }
-                            if (!best || sealed < best[0]) best = [sealed, cx, cy];
-                            if (++candidates >= 40) break;
-                        }
-                        if (best) {
-                            this.placeEntity(b, best[1], best[2], 1);
-                            done = true;
-                        }
-                    }
-                    // 3) fallback: anywhere it fits, splitting allowed as the
-                    // last resort
-                    if (!done) {
-                        for (const [cx, cy] of allCoords) {
-                            if (this.grid.get(cx + ',' + cy) !== 0) continue;
-                            if (this.canPlace(cx, cy, b.width, b.height)) {
-                                this.placeEntity(b, cx, cy, 1);
-                                break;
-                            }
-                        }
                     }
                 }
             }
@@ -1518,14 +1425,13 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
              * tile instead of the tile per building plugs the holes with the
              * shapes that fit them, so the spare space collects at the end of
              * the walk as one block. Buildings that found no anchor fall back
-             * to the first spot they fit.
+             * to the first spot they fit. The gap closing of improve() takes
+             * the result from there.
              *
              * @param {Object[]} decos - Roadless buildings to place.
              * @param {number[][]} allCoords - All map coordinates, row by row.
-             * @param {boolean} byRatio - Rate the contact relative to the perimeter
-             * instead of absolute, which prefers small exact fits over big buildings.
              */
-            packRoadlessTouching(decos, allCoords, byRatio) {
+            packRoadlessTouching(decos, allCoords) {
                 // identical footprints are interchangeable here, group them
                 const groups = new Map();
                 for (const b of decos) {
@@ -1572,9 +1478,7 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                         const b = list[0];
                         if (!this.canPlace(cx, cy, b.width, b.height)) continue;
                         const touch = contact(cx, cy, b.width, b.height);
-                        let value = byRatio
-                            ? touch / (2 * (b.width + b.height)) + b.width * b.height * 0.0001
-                            : touch + b.width * b.height * 0.01;
+                        let value = touch + b.width * b.height * 0.01;
                         // lookahead: a sliver right of or below the footprint that
                         // no remaining building fits into is lost for good
                         const right = freeRun(cx + b.width, cy, 1, 0);
@@ -1634,53 +1538,526 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
             }
 
             /**
-             * Slides every roadless building up and left until it rests against
-             * the city - this closes the thin seams of free tiles the placement
-             * order leaves between the rows, so the roadless mass stands as one
-             * solid block.
+             * Type and footprint of a building - copies of the same building
+             * are interchangeable, so a spot counts as unchanged when a copy of
+             * the building that stood there stands there again.
+             *
+             * @param {Object} b - Building.
+             * @returns {string} Key of the building kind.
              */
-            compactRoadless() {
-                const fitsAt = (b, nx, ny) => {
-                    for (let i = nx; i < nx + b.width; i++) {
-                        for (let j = ny; j < ny + b.height; j++) {
-                            const v = this.grid.get(i + ',' + j);
-                            if (v === 0) continue;
-                            if (v === 1 && i >= b.x && i < b.x + b.width && j >= b.y && j < b.y + b.height) continue;
-                            return false;
+            homeKey(b) {
+                return (b.chainMembers ? b.id : (b.asset_id || b.name)) + '|' + b.width + 'x' + b.height;
+            }
+
+            /**
+             * Closes the gaps of a finished layout with a large neighbourhood
+             * search: again and again the buildings around a gap (plus a few
+             * at the edge of the big free block) are taken off the map and put
+             * back tile by tile, each free tile getting the waiting building
+             * that touches the most there. A step is kept when the layout got
+             * no worse - fewer unplaced tiles first, then fewer moved
+             * buildings (keepHome), then fewer free tiles outside the largest
+             * free rectangle, then a shorter outline of the free space, then
+             * fewer edges where street buildings meet roadless ones - so the
+             * street buildings stay together instead of ending up as islands
+             * among the roadless buildings.
+             *
+             * Roads stay as they are: street buildings only move to spots at a
+             * road, the town hall only where it still holds the whole road
+             * network together; two-lane buildings and great buildings that
+             * stand are not touched. Buildings still waiting for a spot are
+             * placed by pushing aside what stands in their way, the pushed
+             * ones are placed anew.
+             *
+             * @param {number} budgetMs - Search time.
+             * @param {boolean} [keepHome] - Buildings on their original spots only
+             * leave them to make room for a waiting building.
+             * @param {boolean} [streetsOnly] - Roadless buildings without a spot
+             * keep waiting: the street buildings close ranks on their own first.
+             * @returns {number} Steps taken.
+             */
+            improve(budgetMs, keepHome, streetsOnly) {
+                const started = performance.now();
+                const W = this.gridW, H = this.gridH;
+                const cells = this.snapshot();
+                this.improveRuns = (this.improveRuns || 0) + 1;
+                const rng = this.makeRng((this.seed || 0) * 7919 + this.improveRuns * 104729);
+                const pick = (list) => list[(rng() * list.length) | 0];
+
+                const scan = [];
+                for (let id = 0; id < cells.length; id++) if (cells[id] !== -1) scan.push(id);
+
+                // two-lane tiles with an unbroken two-lane path to the town hall
+                const twoLane = new Uint8Array(cells.length);
+                for (const key of this.linkedTwoLaneTiles()) twoLane[this.cellIdOf.get(key)] = 1;
+
+                // placed buildings first, then the ones still waiting for a spot
+                const placedIds = new Set(this.placedBuildings.map(b => b.id));
+                const items = this.placedBuildings.concat([this.townHall, ...this.buildings]
+                    .filter(b => !placedIds.has(b.id) && !(streetsOnly && !(b.street_level > 0))));
+                const codes = new Map();
+                const info = items.map(b => {
+                    const head = this.connRect(b);
+                    const key = this.homeKey(b);
+                    if (!codes.has(key)) codes.set(key, codes.size + 1);
+                    const street = b.street_level || 0;
+                    const townHall = b.type === 'main_building';
+                    return {
+                        loose: !!b.loose,
+                        w: b.width, h: b.height, hw: head.width, hh: head.height, street: street, code: codes.get(key), townHall: townHall,
+                        // may be taken off the map again once it stands
+                        movable: townHall ? !keepHome : b.type !== 'greatbuilding' && street < 2 && !b.pinned,
+                        kind: b.width + 'x' + b.height + '/' + head.width + 'x' + head.height + '/' + street + (keepHome ? '/' + key : '')
+                    };
+                });
+                const hall = items.findIndex(b => b.type === 'main_building');
+                const pos = new Int32Array(items.length).fill(-1);
+                const owner = new Int32Array(cells.length).fill(-1);
+                // kind of the building that stood on a spot (keepHome)
+                const home = new Int32Array(cells.length);
+
+                // 1 = roadless building, 2 = building at a street, 0 = anything else
+                const sort = new Int8Array(cells.length);
+                const paint = (id, t, val, who) => {
+                    const mark = who < 0 ? 0 : t.street > 0 ? 2 : 1;
+                    for (let j = 0; j < t.h; j++) {
+                        for (let i = 0; i < t.w; i++) {
+                            cells[id + j * W + i] = val;
+                            owner[id + j * W + i] = who;
+                            sort[id + j * W + i] = mark;
                         }
+                    }
+                };
+                const put = (i, id) => { paint(id, info[i], 1, i); pos[i] = id; };
+                const lift = (i) => { paint(pos[i], info[i], 0, -1); pos[i] = -1; };
+
+                this.placedBuildings.forEach((b, i) => {
+                    const id = this.cellId(b.x, b.y);
+                    pos[i] = id;
+                    for (let j = 0; j < b.height; j++) {
+                        for (let k = 0; k < b.width; k++) {
+                            owner[id + j * W + k] = i;
+                            sort[id + j * W + k] = info[i].street > 0 ? 2 : 1;
+                        }
+                    }
+                });
+                if (keepHome && this.homes) {
+                    for (const [key, kind] of this.homes) home[this.cellIdOf.get(key)] = codes.get(kind) || -1;
+                }
+                const atHome = (i) => keepHome && home[pos[i]] === info[i].code;
+
+                const fits = (id, w, h) => {
+                    for (let j = 0; j < h; j++) {
+                        for (let i = 0; i < w; i++) if (cells[id + j * W + i] !== 0) return false;
                     }
                     return true;
                 };
-                const applyMove = (b, nx, ny, val) => {
-                    for (let i = b.x; i < b.x + b.width; i++) {
-                        for (let j = b.y; j < b.y + b.height; j++) this.grid.set(i + ',' + j, 0);
-                    }
-                    for (let i = nx; i < nx + b.width; i++) {
-                        for (let j = ny; j < ny + b.height; j++) this.grid.set(i + ',' + j, val);
-                    }
-                    b.x = nx;
-                    b.y = ny;
-                };
-                // pure top-left gravity, processed in top-left order so a
-                // whole row cascades within one pass; a temporary gap behind
-                // a sliding building is closed by the neighbours that follow.
-                // If a slide seals a pocket for good, the wasted metric makes
-                // that variant lose the selection - no veto needed here
-                let movedAny = true, cGuard = 0;
-                while (movedAny && cGuard++ < 15) {
-                    movedAny = false;
-                    const order = this.placedBuildings
-                        .filter(b => b.street_level === 0 && b.type !== 'main_building')
-                        .sort((p, q) => (p.x + p.y) - (q.x + q.y) || p.y - q.y);
-                    for (const b of order) {
-                        for (const [dx, dy] of [[0, -1], [-1, 0]]) {
-                            while (fitsAt(b, b.x + dx, b.y + dy)) {
-                                applyMove(b, b.x + dx, b.y + dy, 1);
-                                movedAny = true;
+                // the town hall anchors the roads: every connected piece of the
+                // road network and every two-lane stretch in use must border
+                // it on a new spot as well
+                const label = (member) => {
+                    const of = new Int32Array(cells.length);
+                    let count = 0;
+                    for (const start of scan) {
+                        if (!member(start) || of[start]) continue;
+                        count++;
+                        const todo = [start];
+                        of[start] = count;
+                        while (todo.length) {
+                            const id = todo.pop();
+                            for (const nb of [id - 1, id + 1, id - W, id + W]) {
+                                if (member(nb) && !of[nb]) { of[nb] = count; todo.push(nb); }
                             }
                         }
                     }
+                    return { of: of, count: count };
+                };
+                const pieces = label((c) => cells[c] === 2);
+                const lanes = label((c) => twoLane[c] === 1);
+                const anchored = (t, id) => {
+                    const seenPieces = new Set(), seenLanes = new Set();
+                    const visit = (c) => {
+                        if (pieces.of[c]) seenPieces.add(pieces.of[c]);
+                        if (lanes.of[c]) seenLanes.add(lanes.of[c]);
+                    };
+                    for (let i = 0; i < t.w; i++) { visit(id - W + i); visit(id + t.h * W + i); }
+                    for (let j = 0; j < t.h; j++) { visit(id + j * W - 1); visit(id + j * W + t.w); }
+                    return seenPieces.size === pieces.count && seenLanes.size === lanes.count;
+                };
+
+                // street contact of the head rectangle with its top-left on a tile
+                const linked = (t, id) => {
+                    if (t.townHall) return anchored(t, id);
+                    if (!t.street) return true;
+                    const road = t.street >= 2 ? (c) => twoLane[c] === 1 : (c) => cells[c] === 2;
+                    for (let i = 0; i < t.hw; i++) if (road(id - W + i) || road(id + t.hh * W + i)) return true;
+                    for (let j = 0; j < t.hh; j++) if (road(id + j * W - 1) || road(id + j * W + t.hw)) return true;
+                    return false;
+                };
+                // bordering tiles that are not free: buildings, roads, the map edge
+                const touch = (id, w, h) => {
+                    let n = 0;
+                    for (let i = 0; i < w; i++) n += (cells[id - W + i] !== 0) + (cells[id + h * W + i] !== 0);
+                    for (let j = 0; j < h; j++) n += (cells[id + j * W - 1] !== 0) + (cells[id + j * W + w] !== 0);
+                    return n;
+                };
+                const freeRun = (id, step) => {
+                    let n = 0;
+                    while (n < 8 && cells[id + n * step] === 0) n++;
+                    return n;
+                };
+
+                // rating of the layout, smaller is better, compared entry by
+                // entry; rect is the largest free rectangle [left, top, right, bottom]
+                const heights = new Int32Array(W);
+                const stack = new Int32Array(W + 1);
+                const measure = () => {
+                    let free = 0, outline = 0, largest = 0, mixed = 0;
+                    const rect = [0, 0, -1, -1];
+                    heights.fill(0);
+                    for (let row = 1; row < H - 1; row++) {
+                        for (let col = 1; col < W - 1; col++) {
+                            const id = row * W + col;
+                            if (cells[id] !== 0) {
+                                heights[col] = 0;
+                                // edges where a street building meets a roadless one
+                                const mark = sort[id];
+                                if (mark) mixed += (sort[id + 1] === 3 - mark) + (sort[id + W] === 3 - mark);
+                                continue;
+                            }
+                            heights[col]++;
+                            free++;
+                            outline += (cells[id - 1] !== 0) + (cells[id + 1] !== 0) + (cells[id - W] !== 0) + (cells[id + W] !== 0);
+                        }
+                        // largest rectangle in the histogram, monotonic stack
+                        let top = 0;
+                        for (let col = 1; col < W; col++) {
+                            const h = heights[col];
+                            while (top && heights[stack[top - 1]] >= h) {
+                                const th = heights[stack[--top]];
+                                const left = top ? stack[top - 1] + 1 : 1;
+                                if (th * (col - left) > largest) {
+                                    largest = th * (col - left);
+                                    rect[0] = left; rect[1] = row - th + 1; rect[2] = col - 1; rect[3] = row;
+                                }
+                            }
+                            stack[top++] = col;
+                        }
+                    }
+                    // a loose building without its street counts half as much as
+                    // one without a spot - so it is never given up for nothing
+                    let unplaced = 0, kept = 0;
+                    for (let i = 0; i < pos.length; i++) {
+                        const t = info[i];
+                        if (pos[i] < 0) unplaced += t.w * t.h * 2;
+                        else if (t.loose && !linked(t, pos[i])) unplaced += t.w * t.h;
+                        else if (atHome(i)) kept++;
+                    }
+                    return { rate: [unplaced, keepHome ? -kept : 0, free - largest, outline, mixed], rect: rect };
+                };
+                const worse = (a, b) => {
+                    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i];
+                    return false;
+                };
+
+                let cur = measure();
+                const inMain = (id) => {
+                    const col = id % W, row = (id / W) | 0;
+                    return col >= cur.rect[0] && col <= cur.rect[2] && row >= cur.rect[1] && row <= cur.rect[3];
+                };
+
+                // buildings taken off the map in this step with their old tile, and
+                // everything that waits for a spot
+                const saved = [];
+                const pool = [];
+                const ruin = (i) => {
+                    // a building set anew earlier in this step keeps its first tile for the rollback
+                    if (!pool.includes(i)) {
+                        if (saved.length >= 120) return;
+                        saved.push(i, pos[i]);
+                        pool.push(i);
+                    }
+                    lift(i);
+                };
+                const ruinWindow = (col, row, rw, rh) => {
+                    for (let r = Math.max(1, row - rh); r <= Math.min(H - 2, row + rh); r++) {
+                        for (let c = Math.max(1, col - rw); c <= Math.min(W - 2, col + rw); c++) {
+                            const o = owner[r * W + c];
+                            if (o >= 0 && info[o].movable && !atHome(o)) ruin(o);
+                        }
+                    }
+                };
+
+                // steps from a tile to the big free block
+                const far = (id) => {
+                    const r = cur.rect, col = id % W, row = (id / W) | 0;
+                    return (col < r[0] ? r[0] - col : col > r[2] ? col - r[2] : 0) + (row < r[1] ? r[1] - row : row > r[3] ? row - r[3] : 0);
+                };
+
+                // every free tile gets the waiting building that touches the
+                // most there - the tiles farthest from the big free block first,
+                // so whatever stays free ends up next to that block instead of
+                // somewhere in between. The tile is a corner of the footprint
+                const recreate = (noise) => {
+                    const kinds = new Map();
+                    let left = 0, minW = Infinity, minH = Infinity;
+                    for (const i of pool) {
+                        if (pos[i] >= 0) continue;
+                        const t = info[i];
+                        if (!kinds.has(t.kind)) kinds.set(t.kind, []);
+                        kinds.get(t.kind).push(i);
+                        minW = Math.min(minW, t.w);
+                        minH = Math.min(minH, t.h);
+                        left++;
+                    }
+                    if (!left) return;
+                    const lists = [...kinds.values()];
+                    const order = [];
+                    for (const id of scan) if (cells[id] === 0) order.push([far(id), id]);
+                    order.sort((p, q) => q[0] - p[0] || p[1] - q[1]);
+
+                    for (const entry of order) {
+                        if (!left) break;
+                        const id = entry[1];
+                        if (cells[id] !== 0) continue;
+                        let best = null, bestAt = -1, bestVal = -Infinity;
+                        for (const list of lists) {
+                            if (!list.length) continue;
+                            const t = info[list[list.length - 1]];
+                            for (let corner = 0; corner < 4; corner++) {
+                                const at = id - (corner & 1 ? t.w - 1 : 0) - (corner & 2 ? (t.h - 1) * W : 0);
+                                if ((corner & 1 && t.w === 1) || (corner & 2 && t.h === 1)) continue;
+                                if (!fits(at, t.w, t.h) || !linked(t, at)) continue;
+                                let val = touch(at, t.w, t.h) / (2 * (t.w + t.h)) + t.w * t.h * 0.0005 + rng() * noise;
+                                // back on a spot of its own kind beats everything
+                                if (keepHome && home[at] === t.code) val += 10;
+                                // a sliver beside the footprint that no waiting
+                                // building fits into stays a gap
+                                const right = freeRun(at + t.w, 1), below = freeRun(at + t.h * W, W);
+                                if (right > 0 && right < minW) val -= 0.3;
+                                if (below > 0 && below < minH) val -= 0.3;
+                                if (val > bestVal) { bestVal = val; best = list; bestAt = at; }
+                            }
+                        }
+                        if (best) {
+                            put(best.pop(), bestAt);
+                            left--;
+                        }
+                    }
+                };
+
+                // a small window around a gap, solved by trying every way its
+                // buildings fit: the buildings lying completely inside are taken
+                // out and set anew tile by tile, the same number of tiles stays
+                // free - the arrangement that leaves them closest to the big
+                // free block wins. That walks a gap out of the middle where the
+                // greedy refill finds no way. Without a solution within the
+                // node limit the buildings stay in the pool for the refill
+                const exact = (col, row, rw, rh) => {
+                    const c0 = Math.max(1, col - rw), c1 = Math.min(W - 2, col + rw);
+                    const r0 = Math.max(1, row - rh), r1 = Math.min(H - 2, row + rh);
+                    const pieces = [];
+                    for (let r = r0; r <= r1; r++) {
+                        for (let c = c0; c <= c1; c++) {
+                            const o = owner[r * W + c];
+                            if (o < 0 || !info[o].movable || atHome(o) || pieces.includes(o)) continue;
+                            const pc = pos[o] % W, pr = (pos[o] / W) | 0;
+                            if (pc >= c0 && pr >= r0 && pc + info[o].w - 1 <= c1 && pr + info[o].h - 1 <= r1) pieces.push(o);
+                        }
+                    }
+                    if (pieces.length < 2 || pieces.length > 14) return;
+                    // random order, so every try walks the tree differently
+                    for (let i = pieces.length - 1; i > 0; i--) {
+                        const j = (rng() * (i + 1)) | 0;
+                        const t = pieces[i]; pieces[i] = pieces[j]; pieces[j] = t;
+                    }
+                    for (const o of pieces) ruin(o);
+
+                    const open = [];
+                    let spare = 0;
+                    for (let r = r0; r <= r1; r++) {
+                        for (let c = c0; c <= c1; c++) if (cells[r * W + c] === 0) { open.push(r * W + c); spare++; }
+                    }
+                    for (const o of pieces) spare -= info[o].w * info[o].h;
+
+                    const used = new Uint8Array(pieces.length);
+                    const plan = [];
+                    let best = null, bestCost = Infinity, nodes = 0;
+                    const solve = (k, holes, cost, placed) => {
+                        if (nodes++ > 4000 || cost >= bestCost) return;
+                        while (k < open.length && cells[open[k]] !== 0) k++;
+                        if (k === open.length) {
+                            if (placed === pieces.length) { bestCost = cost; best = plan.slice(); }
+                            return;
+                        }
+                        const id = open[k];
+                        const tried = [];
+                        for (let p = 0; p < pieces.length; p++) {
+                            const t = info[pieces[p]];
+                            if (used[p] || tried.includes(t.kind)) continue;
+                            tried.push(t.kind);
+                            if (id % W + t.w - 1 > c1 || ((id / W) | 0) + t.h - 1 > r1 || !fits(id, t.w, t.h) || !linked(t, id)) continue;
+                            used[p] = 1;
+                            put(pieces[p], id);
+                            plan.push(pieces[p], id);
+                            solve(k + 1, holes, cost, placed + 1);
+                            plan.length -= 2;
+                            lift(pieces[p]);
+                            used[p] = 0;
+                        }
+                        if (holes < spare) {
+                            // 3 = left free on purpose in this try
+                            cells[id] = 3;
+                            solve(k + 1, holes + 1, cost + far(id), placed);
+                            cells[id] = 0;
+                        }
+                    };
+                    solve(0, 0, 0, 0);
+                    if (best) for (let k = 0; k < best.length; k += 2) put(best[k], best[k + 1]);
+                };
+
+                // a building gets its spot by force: the spot costing the least
+                // standing buildings is cleared, the pushed ones wait in the pool
+                const seenOwner = new Int32Array(items.length);
+                let stamp = 0;
+                const eject = (n) => {
+                    const t = info[n];
+                    if (pos[n] >= 0) {
+                        // a new try for a building that stands: the ones it once
+                        // pushed aside may return to their spots
+                        const col = pos[n] % W, row = (pos[n] / W) | 0;
+                        ruin(n);
+                        ruinWindow(col + (t.w >> 1), row + (t.h >> 1), (t.w >> 1) + 1, (t.h >> 1) + 1);
+                    }
+                    // footprints the pushed buildings could move to right away
+                    const frees = [];
+                    for (const id of scan) if (cells[id] === 0) frees.push(id);
+                    const roomFor = new Map();
+                    const hasRoom = (o) => {
+                        const k = info[o].kind;
+                        if (!roomFor.has(k)) roomFor.set(k, frees.some(id => fits(id, info[o].w, info[o].h) && linked(info[o], id)));
+                        return roomFor.get(k);
+                    };
+                    // cheapest spot per set of pushed buildings: every building
+                    // leaving its spot weighs heavily, one that finds no room
+                    // elsewhere even more
+                    const spots = new Map();
+                    for (const id of scan) {
+                        stamp++;
+                        let cost = 0, sign = 0, ok = true;
+                        for (let j = 0; j < t.h && ok; j++) {
+                            for (let i = 0; i < t.w; i++) {
+                                const c = id + j * W + i;
+                                if (cells[c] === 0) continue;
+                                const o = owner[c];
+                                if (cells[c] !== 1 || o < 0 || !info[o].movable) { ok = false; break; }
+                                if (seenOwner[o] === stamp) continue;
+                                seenOwner[o] = stamp;
+                                sign += (o + 1) * 7919;
+                                cost += info[o].w * info[o].h + (atHome(o) ? 1000 : 0) + (hasRoom(o) ? 0 : 3000);
+                            }
+                        }
+                        if (!ok || !linked(t, id)) continue;
+                        if (!spots.has(sign) || cost < spots.get(sign)[0]) spots.set(sign, [cost, id]);
+                    }
+                    // one of the best few, the cheaper the likelier
+                    const ranked = [...spots.values()].sort((p, q) => p[0] - q[0]).slice(0, 8);
+                    const bestId = ranked.length ? ranked[(rng() * rng() * ranked.length) | 0][1] : -1;
+                    if (bestId < 0) return;
+                    for (let j = 0; j < t.h; j++) {
+                        for (let i = 0; i < t.w; i++) {
+                            const o = owner[bestId + j * W + i];
+                            if (o >= 0) ruin(o);
+                        }
+                    }
+                    if (!fits(bestId, t.w, t.h)) return;
+                    put(n, bestId);
+                    if (!pool.includes(n)) pool.push(n);
+                };
+
+                let steps = 0, lastGain = 0;
+                while (performance.now() - started < budgetMs) {
+                    const waiting = [], agents = [], gaps = [];
+                    for (let i = 0; i < pos.length; i++) {
+                        if (pos[i] < 0) waiting.push(i);
+                        else if (keepHome && info[i].movable && !atHome(i)) agents.push(i);
+                    }
+                    for (const id of scan) if (cells[id] === 0 && !inMain(id)) gaps.push(id);
+                    // nothing left to gain, or nothing that may move
+                    if (keepHome ? !waiting.length && !agents.length : !waiting.length && !gaps.length) break;
+                    if (steps - lastGain > 6000) break;
+                    steps++;
+
+                    saved.length = 0;
+                    pool.length = 0;
+                    const dice = rng();
+                    if (waiting.length && dice < 0.5) {
+                        eject(pick(waiting));
+                    } else if (agents.length && dice < 0.75) {
+                        eject(pick(agents));
+                    } else {
+                        const focus = gaps.length ? pick(gaps) : pick(scan);
+                        const fc = focus % W, fr = (focus / W) | 0;
+                        if (gaps.length && cur.rect[2] >= cur.rect[0] && rng() < 0.15) {
+                            // everything between the gap and the big free block:
+                            // a gap deep inside only closes when the whole
+                            // stretch in between moves up
+                            const tc = Math.min(Math.max(fc, cur.rect[0]), cur.rect[2]);
+                            const tr = Math.min(Math.max(fr, cur.rect[1]), cur.rect[3]);
+                            const pad = (rng() * 3) | 0;
+                            ruinWindow((fc + tc) >> 1, (fr + tr) >> 1, ((Math.abs(fc - tc) + 1) >> 1) + pad, ((Math.abs(fr - tr) + 1) >> 1) + pad);
+                        } else if (gaps.length && rng() < 0.35) {
+                            exact(fc, fr, 2 + ((rng() * 4) | 0), 2 + ((rng() * 4) | 0));
+                        } else {
+                            ruinWindow(fc, fr, 1 + ((rng() * 4) | 0), 1 + ((rng() * 4) | 0));
+                        }
+                        // material from the edge of the big free block
+                        if (cur.rect[2] >= cur.rect[0] && rng() < 0.7) {
+                            const col = cur.rect[0] - 1 + ((rng() * (cur.rect[2] - cur.rect[0] + 3)) | 0);
+                            const row = cur.rect[1] - 1 + ((rng() * (cur.rect[3] - cur.rect[1] + 3)) | 0);
+                            const side = (rng() * 4) | 0;
+                            ruinWindow(side === 0 ? cur.rect[0] - 1 : side === 1 ? cur.rect[2] + 1 : col,
+                                side === 2 ? cur.rect[1] - 1 : side === 3 ? cur.rect[3] + 1 : row,
+                                (rng() * 3) | 0, (rng() * 3) | 0);
+                        }
+                    }
+                    for (const i of waiting) if (!pool.includes(i)) pool.push(i);
+                    if (!pool.length) continue;
+
+                    recreate(rng() < 0.3 ? 0 : rng() * 0.3);
+
+                    // a city without its town hall is none, whatever fits instead
+                    const next = measure();
+                    if (pos[hall] < 0 || worse(next.rate, cur.rate)) {
+                        for (const i of pool) if (pos[i] >= 0) lift(i);
+                        for (let k = 0; k < saved.length; k += 2) put(saved[k], saved[k + 1]);
+                    } else {
+                        if (worse(cur.rate, next.rate)) lastGain = steps;
+                        cur = next;
+                    }
                 }
+
+                // back into the building list and the grid
+                const minX = this.mapBounds.minX, minY = this.mapBounds.minY;
+                const placed = [];
+                items.forEach((b, i) => {
+                    if (pos[i] < 0) return;
+                    const x = pos[i] % W - 1 + minX, y = ((pos[i] / W) | 0) - 1 + minY;
+                    if (info[i].townHall) {
+                        this.townHallPos = [x, y];
+                        paint(pos[i], info[i], 9, i);
+                    }
+                    if (i < this.placedBuildings.length) {
+                        b.x = x;
+                        b.y = y;
+                        placed.push(b);
+                    } else {
+                        placed.push({ ...b, x: x, y: y });
+                    }
+                });
+                this.placedBuildings = placed;
+                for (let k = 0; k < this.cellKeys.length; k++) this.grid.set(this.cellKeys[k], cells[this.cellIds[k]]);
+                return steps;
             }
 
             generateExportData() {
@@ -2194,75 +2571,140 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
 
                 this.pruneRoadsSmart();
 
-                // free-space fragmentation of the pure building layout, measured
-                // before the decorations plug the holes: every free tile outside
-                // the largest connected free region is a scattered speckle the
-                // final layout should not have
-                let fragmentTiles = 0;
-                {
-                    let totalFree = 0, largestFree = 0;
-                    const seen = new Set();
-                    for (const [key, val] of this.grid) {
-                        if (val !== 0) continue;
-                        totalFree++;
-                        if (seen.has(key)) continue;
-                        let size = 0;
-                        const stack = [key];
-                        seen.add(key);
-                        while (stack.length) {
-                            const k = stack.pop();
-                            size++;
-                            const parts = k.split(',');
-                            const kx = +parts[0], ky = +parts[1];
-                            for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
-                                if (this.grid.get(nk) === 0 && !seen.has(nk)) { seen.add(nk); stack.push(nk); }
-                            }
-                        }
-                        if (size > largestFree) largestFree = size;
+                // the street buildings close ranks before anything else moves in:
+                // a street building standing alone far out keeps a whole road
+                // alive and ends up as an island among the roadless buildings.
+                // Roads that became useless go before the space is filled
+                this.improve(this.closeMs, false, true);
+                this.pruneRoadsSmart();
+
+                // roadless buildings fill what the street layout left over
+                this.packRoadlessTouching(decos, allCoords);
+
+                return this.result();
+            }
+
+            /**
+             * Keep mode: the city stays as it stands. Roads and buildings go
+             * onto the map where they are in the live city, only buildings
+             * without a spot (new ones from the inventory, the free area) are
+             * placed - into free space where possible, otherwise by moving as
+             * few standing buildings as possible.
+             *
+             * @param {number} budgetMs - Search time.
+             * @returns {Object} Worker result of this variant.
+             */
+            runKeep(budgetMs) {
+                if (!this.townHall) return { error: "Rathaus nicht gefunden" };
+
+                for (const r of this.keepRoads) {
+                    const level = (r.width || 1) >= 2 ? 2 : 1;
+                    for (let i = r.x; i < r.x + (r.width || 1); i++) {
+                        for (let j = r.y; j < r.y + (r.height || 1); j++) this.placeRoadTile(i, j, level);
                     }
-                    fragmentTiles = totalFree - largestFree;
+                }
+                // a building whose spot is taken or off the map is placed anew
+                for (const b of [this.townHall, ...this.buildings]) {
+                    if (!b.standing || !this.canPlace(b.x, b.y, b.width, b.height)) continue;
+                    const isTownHall = b.type === 'main_building';
+                    if (isTownHall) this.townHallPos = [b.x, b.y];
+                    this.placeEntity(b, b.x, b.y, isTownHall ? 9 : 1);
+                }
+                if (!this.townHallPos) return { error: "Rathaus konnte nicht platziert werden" };
+
+                // a building standing without its street (dropped somewhere for
+                // now) is loose: moving it to a road costs nothing, its spot is
+                // no home
+                const twoLane = this.linkedTwoLaneTiles();
+                for (const b of this.placedBuildings) {
+                    const r = this.connRect(b);
+                    const street = b.street_level || 0;
+                    b.loose = !b.pinned && b.type !== 'main_building' && street > 0
+                        && (street >= 2 ? !this.touchesTwoLane(r, twoLane) : !this.isConnectedToRoad(r.x, r.y, r.width, r.height));
+                    if (!b.loose) this.homes.set(b.x + ',' + b.y, this.homeKey(b));
                 }
 
-                // Roadless buildings: two packers compete on the same street
-                // layout - the row packer of the original design and the
-                // tile-by-tile touching-perimeter packer - and the one leaving
-                // fewer roadless buildings unplaced and less scattered free
-                // space wins. Both end with the top-left compaction
-                const baseGrid = new Map(this.grid);
-                const baseCount = this.placedBuildings.length;
-                let bestPack = null;
-                for (const packer of ['rows', 'touch', 'touch-ratio']) {
-                    this.grid = new Map(baseGrid);
-                    this.placedBuildings = this.placedBuildings.slice(0, baseCount);
-                    if (packer === 'rows') this.packRoadlessRows(decos, allCoords);
-                    else this.packRoadlessTouching(decos, allCoords, packer === 'touch-ratio');
-                    this.compactRoadless();
-                    const packed = {
-                        packer: packer,
-                        grid: this.grid,
-                        placed: this.placedBuildings.slice(baseCount),
-                        missing: decos.length - (this.placedBuildings.length - baseCount),
-                        wasted: this.freeSpaceWaste()
-                    };
-                    if (!bestPack || packed.missing < bestPack.missing
-                        || (packed.missing === bestPack.missing && packed.wasted < bestPack.wasted)) bestPack = packed;
+                this.improve(budgetMs, true);
+
+                // no spot at a road even by moving others: the free spot closest
+                // to the roads, then new pieces of road for everything still
+                // without one - what stays cut off leaves the plan again, only
+                // loose buildings remain where they stand
+                const placedIds = new Set(this.placedBuildings.map(b => b.id));
+                for (const b of this.buildings) if (!placedIds.has(b.id)) this.placeNearRoad(b);
+                this.connectPlacedBuildings(b => !b.pinned && (b.street_level || 0) < 2);
+                this.connectTwoLane();
+                for (const b of this.completeTwoLaneBlocks()) if (!b.loose) this.removePlaced(b);
+                this.dropUnconnected();
+                this.dropTwoLaneUnserved();
+
+                // roads nobody needs anymore turn into free space
+                this.pruneRoadsSmart();
+
+                return this.result();
+            }
+
+            /**
+             * Places a building on the free spot with the shortest way to the
+             * road network across free tiles; without such a spot it stays
+             * unplaced.
+             *
+             * @param {Object} b - Building to place.
+             */
+            placeNearRoad(b) {
+                const W = this.gridW;
+                const cells = this.snapshot();
+                // steps from every free tile to the nearest road
+                const dist = new Int32Array(cells.length).fill(-1);
+                const queue = [];
+                for (const key of this.roadTiles) {
+                    dist[this.cellIdOf.get(key)] = 0;
+                    queue.push(this.cellIdOf.get(key));
                 }
-                this.grid = bestPack.grid;
-                this.placedBuildings = this.placedBuildings.slice(0, baseCount).concat(bestPack.placed);
+                for (let head = 0; head < queue.length; head++) {
+                    const id = queue[head];
+                    for (const nb of [id - 1, id + 1, id - W, id + W]) {
+                        if (cells[nb] === 0 && dist[nb] < 0) { dist[nb] = dist[id] + 1; queue.push(nb); }
+                    }
+                }
 
-                // usable spare space: compact corner layouts win the selection
-                const wastedFree = bestPack.wasted;
+                const head = this.connRect(b);
+                let best = -1, bestDist = Infinity;
+                for (let k = 0; k < this.cellIds.length; k++) {
+                    const id = this.cellIds[k];
+                    let fits = true;
+                    for (let j = 0; j < b.height && fits; j++) {
+                        for (let i = 0; i < b.width; i++) if (cells[id + j * W + i] !== 0) { fits = false; break; }
+                    }
+                    if (!fits) continue;
+                    let near = Infinity;
+                    const visit = (c) => { if (dist[c] >= 0 && dist[c] < near) near = dist[c]; };
+                    for (let i = 0; i < head.width; i++) { visit(id - W + i); visit(id + head.height * W + i); }
+                    for (let j = 0; j < head.height; j++) { visit(id + j * W - 1); visit(id + j * W + head.width); }
+                    if (near < bestDist) { bestDist = near; best = k; }
+                }
+                if (best < 0) return;
+                const parts = this.cellKeys[best].split(',');
+                this.placeEntity(b, +parts[0], +parts[1], 1);
+            }
 
+            /**
+             * Key figures and export of the layout as it stands.
+             *
+             * @returns {Object} Worker result of this variant.
+             */
+            result() {
                 // built building area minus road area: the winning strategy places
                 // as much as possible while spending the fewest road tiles; a placed
-                // building that never got a road counts like a missing one
+                // building that never got a road counts like a missing one - the
+                // untouched chains of the keep mode connect through their head
                 let builtTiles = 0;
                 let unconnected = 0;
                 const l2linked = this.linkedTwoLaneTiles();
                 for (const b of this.placedBuildings) {
                     const r = this.connRect(b);
-                    const bad = (b.street_level > 0 && !this.isConnectedToRoad(r.x, r.y, r.width, r.height))
-                        || ((b.street_level || 0) >= 2 && !this.touchesTwoLane(r, l2linked));
+                    const bad = !b.pinned && ((b.street_level > 0 && !this.isConnectedToRoad(r.x, r.y, r.width, r.height))
+                        || ((b.street_level || 0) >= 2 && !this.touchesTwoLane(r, l2linked)));
                     if (bad) {
                         unconnected++;
                         continue;
@@ -2291,56 +2733,86 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     }
                 }
 
-                return {
-                    success: true,
-                    layout: this.generateExportData(),
-                    unplaced: unplaced,
-                    stats: {
-                        strategy: this.strategy,
-                        sortMode: this.sortMode,
-                        packer: bestPack.packer,
-                        seed: this.seed,
-                        score: builtTiles - this.roadTiles.size,
-                        fragments: fragmentTiles,
-                        wasted: wastedFree,
-                        roads: this.roadTiles.size,
-                        l2: [...this.roadTiles].filter(k => (this.roadLevel.get(k) || 1) >= 2).length,
-                        buildings: this.placedBuildings.length,
-                        missing: this.buildings.length - this.placedBuildings.length + 1,
-                        unconnected: unconnected
+                // street buildings surrounded mostly by roadless ones look lost
+                // and usually hang on a road of their own
+                const roadless = new Set();
+                for (const b of this.placedBuildings) {
+                    if ((b.street_level || 0) > 0 || b.type === 'main_building') continue;
+                    for (let i = b.x; i < b.x + b.width; i++) {
+                        for (let j = b.y; j < b.y + b.height; j++) roadless.add(i + ',' + j);
                     }
+                }
+                let islands = 0;
+                for (const b of this.placedBuildings) {
+                    if (!(b.street_level > 0) || b.type === 'main_building' || b.type === 'greatbuilding') continue;
+                    let touching = 0;
+                    for (let i = b.x; i < b.x + b.width; i++) touching += roadless.has(i + ',' + (b.y - 1)) + roadless.has(i + ',' + (b.y + b.height));
+                    for (let j = b.y; j < b.y + b.height; j++) touching += roadless.has((b.x - 1) + ',' + j) + roadless.has((b.x + b.width) + ',' + j);
+                    if (touching >= b.width + b.height) islands++;
+                }
+
+                const stats = {
+                    strategy: this.strategy,
+                    sortMode: this.sortMode,
+                    seed: this.seed,
+                    score: builtTiles - this.roadTiles.size,
+                    // usable spare space: free tiles outside the largest free rectangle
+                    wasted: this.freeSpaceWaste(),
+                    islands: islands,
+                    roads: this.roadTiles.size,
+                    l2: [...this.roadTiles].filter(k => (this.roadLevel.get(k) || 1) >= 2).length,
+                    buildings: this.placedBuildings.length,
+                    missing: this.buildings.length - this.placedBuildings.length + 1,
+                    unconnected: unconnected
                 };
+                // keep mode: standing buildings that do not stand on a spot of their kind anymore
+                if (this.keep) {
+                    stats.moved = this.homes.size
+                        - this.placedBuildings.filter(b => this.homes.get(b.x + ',' + b.y) === this.homeKey(b)).length;
+                }
+
+                return { success: true, layout: this.generateExportData(), unplaced: unplaced, stats: stats };
+            }
+
+            /**
+             * Polishes the finished layout: gap closing, then the roads that
+             * became useless are removed and the freed tiles closed as well.
+             *
+             * @param {number} budgetMs - Search time.
+             * @returns {Object} Worker result of this variant.
+             */
+            polish(budgetMs) {
+                const started = performance.now();
+                this.improve(budgetMs * 0.8);
+                const roads = this.roadTiles.size;
+                this.pruneRoadsSmart();
+                if (this.roadTiles.size < roads) this.improve(Math.max(0, budgetMs - (performance.now() - started)));
+                return this.result();
             }
         }
 
         self.onmessage = function(e) {
             try {
-                // time-boxed search: deterministic base variants first, then randomized
-                // restarts with jittered build orders - the best score wins
-                // callers may grant more search time than the interactive default
+                // time-boxed search, callers may grant more than the interactive default
                 const budgetMs = e.data.budgetMs || 10000;
-                const maxRuns = 1000;
                 const started = performance.now();
-                const strategies = ['bands', 'bands-vertical', 'organic'];
-                const sortModes = ['height', 'area', 'width'];
-
-                const baseVariants = [];
-                for (const strategy of strategies) {
-                    for (const sortMode of sortModes) baseVariants.push({ strategy: strategy, sortMode: sortMode, seed: 0 });
-                }
+                const elapsed = () => performance.now() - started;
+                // progress ping for the loading bar: the time budget is the
+                // limiting factor, so the percentage follows the clock
+                const ping = () => self.postMessage({ progress: Math.min(99, Math.round(elapsed() * 100 / budgetMs)) });
 
                 // lexicographic ranking: complete layouts first, then the
-                // fewest two-lane tiles (two-lane roads exist purely as a
-                // requirement, every spare piece wastes the space that was
-                // won), then the least disorder: free tiles outside the
-                // largest empty rectangle (wasted) plus speckle pockets
-                // the decorations had to plug (fragments) - then best
-                // score, then fewest roads
+                // fewest moved buildings (keep mode), then the largest free
+                // rectangle - with every building placed, each road tile and
+                // each free tile outside that rectangle is lost for it - with
+                // a surcharge per street building standing as an island among
+                // roadless ones, then the fewest two-lane tiles, then the
+                // fewest roads
                 const rank = (r) => [
                     r.stats.missing + r.stats.unconnected,
+                    r.stats.moved || 0,
+                    r.stats.roads + r.stats.wasted + (r.stats.strategy === 'keep' ? 0 : 3 * r.stats.islands),
                     r.stats.l2,
-                    r.stats.wasted + r.stats.fragments,
-                    -r.stats.score,
                     r.stats.roads
                 ];
                 const cmpRank = (a, b) => {
@@ -2349,82 +2821,111 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                     }
                     return 0;
                 };
+                // near-identical layouts (seeded restarts of the same strategy
+                // usually converge) collapse via their stats fingerprint; the
+                // strategy is part of the key, so equal numbers from different
+                // strategies - visually different cities - both survive
+                const fingerprint = (s) => [s.strategy, s.missing, s.unconnected, s.moved, s.l2, s.wasted, s.islands, s.score, s.roads, s.buildings].join('|');
 
-                // bounded top list: the best runs are kept as selectable
-                // variants, not only the single winner - different strategies
-                // trade road savings against compactness and the user picks
-                const top = [];
-                const topLimit = 18;
-
-                // best run per strategy, tracked separately: the global top
-                // list may be dominated by one strategy, but every strategy
-                // must stay selectable with its own best layout
-                const bestByStrategy = {};
-
-                let round = 0;
                 const tried = [];
-
-                while (tried.length < maxRuns) {
-                    let variant;
-                    if (baseVariants.length) {
-                        variant = baseVariants.shift();
-                    } else {
-                        variant = {
-                            strategy: strategies[round % strategies.length],
-                            sortMode: sortModes[((round / strategies.length) | 0) % sortModes.length],
-                            seed: 1 + round
-                        };
-                        round++;
-                    }
-
-                    const optimizer = new CityOptimizerBrowser(e.data.mapData, e.data.buildingsData, variant);
-                    const result = optimizer.run();
+                const log = (variant, result) => {
                     if (result && result.success) {
-                        tried.push({ strategy: variant.strategy, sortMode: variant.sortMode, seed: variant.seed, score: result.stats.score, fragments: result.stats.fragments, wasted: result.stats.wasted, roads: result.stats.roads, l2: result.stats.l2, missing: result.stats.missing, unconnected: result.stats.unconnected });
-
-                        const rv = rank(result);
-                        if (top.length < topLimit || cmpRank(rv, top[top.length - 1].rankVec) < 0) {
-                            let at = 0;
-                            while (at < top.length && cmpRank(top[at].rankVec, rv) <= 0) at++;
-                            top.splice(at, 0, { result: result, rankVec: rv });
-                            if (top.length > topLimit) top.pop();
-                        }
-
-                        const curBest = bestByStrategy[variant.strategy];
-                        if (!curBest || cmpRank(rv, curBest.rankVec) < 0) {
-                            bestByStrategy[variant.strategy] = { result: result, rankVec: rv };
-                        }
+                        const s = result.stats;
+                        tried.push({ strategy: variant.strategy, sortMode: variant.sortMode, seed: variant.seed, score: s.score, wasted: s.wasted, roads: s.roads, l2: s.l2, missing: s.missing, unconnected: s.unconnected });
                     } else {
                         tried.push({ strategy: variant.strategy, sortMode: variant.sortMode, seed: variant.seed, error: (result && result.error) || 'failed' });
                     }
+                };
 
-                    // progress ping for the loading bar: the time budget is the
-                    // limiting factor, so the percentage follows the clock
-                    if (tried.length % 5 === 0) {
-                        const pct = Math.min(99, Math.round((performance.now() - started) * 100 / budgetMs));
-                        self.postMessage({ progress: pct });
+                let picked = [];
+
+                if (e.data.keep) {
+                    // keep mode: the standing city with a few differently seeded searches
+                    const restarts = 3;
+                    const seen = {};
+                    for (let seed = 1; seed <= restarts; seed++) {
+                        const variant = { strategy: 'keep', sortMode: 'height', seed: seed, roads: e.data.roads };
+                        const optimizer = new CityOptimizerBrowser(e.data.mapData, e.data.buildingsData, variant);
+                        const result = optimizer.runKeep(Math.max(200, (budgetMs - elapsed()) / (restarts - seed + 1)));
+                        log(variant, result);
+                        ping();
+                        if (!result || !result.success || seen[fingerprint(result.stats)]) continue;
+                        seen[fingerprint(result.stats)] = true;
+                        picked.push({ result: result, rankVec: rank(result) });
+                    }
+                } else {
+                    // deterministic base variants first, then randomized restarts
+                    // with jittered build orders
+                    const maxRuns = 1000;
+                    const strategies = ['bands', 'bands-vertical', 'organic'];
+                    const sortModes = ['height', 'area', 'width'];
+
+                    const baseVariants = [];
+                    for (const strategy of strategies) {
+                        for (const sortMode of sortModes) baseVariants.push({ strategy: strategy, sortMode: sortMode, seed: 0 });
                     }
 
-                    if (performance.now() - started > budgetMs && !baseVariants.length) break;
-                }
+                    // the first part of the time tries street layouts, each with
+                    // a short gap closing - how well a layout closes only shows
+                    // afterwards; the rest of the time goes into the best ones
+                    const exploreMs = budgetMs * 0.6;
+                    const quickMs = 120;
 
-                if (top.length) {
-                    // near-identical layouts (seeded restarts of the same strategy
-                    // usually converge) collapse via their stats fingerprint; the
-                    // strategy is part of the key, so equal numbers from different
-                    // strategies - visually different cities - both survive
+                    // bounded top list: the best runs are kept as selectable
+                    // variants, not only the single winner - different strategies
+                    // trade road savings against compactness and the user picks
+                    const top = [];
+                    const topLimit = 18;
+
+                    // best run per strategy, tracked separately: the global top
+                    // list may be dominated by one strategy, but every strategy
+                    // must stay selectable with its own best layout
+                    const bestByStrategy = {};
+
+                    let round = 0;
+                    while (tried.length < maxRuns) {
+                        let variant;
+                        if (baseVariants.length) {
+                            variant = baseVariants.shift();
+                        } else {
+                            variant = {
+                                strategy: strategies[round % strategies.length],
+                                sortMode: sortModes[((round / strategies.length) | 0) % sortModes.length],
+                                seed: 1 + round
+                            };
+                            round++;
+                        }
+
+                        const optimizer = new CityOptimizerBrowser(e.data.mapData, e.data.buildingsData, variant);
+                        let result = optimizer.run();
+                        if (result && result.success) result = optimizer.polish(quickMs);
+                        log(variant, result);
+                        if (result && result.success) {
+                            const entry = { optimizer: optimizer, result: result, rankVec: rank(result) };
+                            if (top.length < topLimit || cmpRank(entry.rankVec, top[top.length - 1].rankVec) < 0) {
+                                let at = 0;
+                                while (at < top.length && cmpRank(top[at].rankVec, entry.rankVec) <= 0) at++;
+                                top.splice(at, 0, entry);
+                                if (top.length > topLimit) top.pop();
+                            }
+
+                            const curBest = bestByStrategy[variant.strategy];
+                            if (!curBest || cmpRank(entry.rankVec, curBest.rankVec) < 0) bestByStrategy[variant.strategy] = entry;
+                        }
+
+                        if (tried.length % 5 === 0) ping();
+                        if (elapsed() > exploreMs && !baseVariants.length) break;
+                    }
+
+                    // diversity guarantee first, then fill with the globally
+                    // best distinct layouts up to the picker limit
                     const seen = {};
-                    const picked = [];
                     const push = (entry) => {
-                        const s = entry.result.stats;
-                        const key = [s.strategy, s.missing, s.unconnected, s.l2, s.wasted, s.fragments, s.score, s.roads, s.buildings].join('|');
+                        const key = fingerprint(entry.result.stats);
                         if (seen[key]) return;
                         seen[key] = true;
                         picked.push(entry);
                     };
-
-                    // diversity guarantee first, then fill with the globally
-                    // best distinct layouts up to the picker limit
                     for (const strategy of strategies) {
                         if (bestByStrategy[strategy]) push(bestByStrategy[strategy]);
                     }
@@ -2432,6 +2933,32 @@ CityBuilder.WorkerCode = `class CityOptimizerBrowser {
                         if (picked.length >= 9) break;
                         push(entry);
                     }
+
+                    // gap closing in turns, so every finalist gets the same
+                    // share and the loading bar keeps moving: the best layout
+                    // of every strategy and the best of the rest
+                    const finalists = picked.slice().sort((a, b) => cmpRank(a.rankVec, b.rankVec)).slice(0, 4);
+                    for (const entry of picked.slice(0, strategies.length)) {
+                        if (!finalists.includes(entry)) finalists.push(entry);
+                    }
+                    // a finalist that gained nothing three turns in a row is done
+                    let active = finalists;
+                    while (active.length && elapsed() < budgetMs) {
+                        for (const entry of active) {
+                            const left = budgetMs - elapsed();
+                            if (left <= 0) break;
+                            const result = entry.optimizer.polish(Math.min(300, left));
+                            const rankVec = rank(result);
+                            entry.stale = cmpRank(rankVec, entry.rankVec) < 0 ? 0 : (entry.stale || 0) + 1;
+                            entry.result = result;
+                            entry.rankVec = rankVec;
+                            ping();
+                        }
+                        active = active.filter(entry => (entry.stale || 0) < 3);
+                    }
+                }
+
+                if (picked.length) {
                     picked.sort((a, b) => cmpRank(a.rankVec, b.rankVec));
 
                     const variants = picked.map(entry => ({ layout: entry.result.layout, unplaced: entry.result.unplaced, stats: entry.result.stats }));

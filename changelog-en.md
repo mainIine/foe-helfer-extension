@@ -1,5 +1,24 @@
 ## Extension Changelog
 
+##### 4.9.1.0
+**Update**
+
+- City Builder: New option "Adjust only" – the city stays as it stands; only new buildings are planned in, moving as few buildings as possible
+- City Builder: Far fewer gaps, the free space is left as one block; street buildings stand together instead of alone among roadless ones
+- City Builder: "Optimize buildings" fills leftover gaps with the best rated buildings from the inventory that fit (can be switched off via the gear)
+- City Builder: The calculation tries more variants in the same time
+- City Builder: The build progress hatching can be hidden, the city planner closes when the City Builder opens
+- City Builder: The lists of the side box can be collapsed, a magnifier shows buildings standing in the city
+- Menu: new icons for Event Cockpit, Year in review, Web Requests and Building Search
+
+**Bugfixes**
+
+- City Builder: optimization and image export use the area of the current map in settlements, colonies and the Quantum Incursion
+- Military units overview: the unit icons are shown again
+- GB Calculator: foreign GBs use the same percentage as the GB Cost Calculator, it stays when switching between split and combined view
+
+---
+
 ##### 4.9.0.0
 **Update**
 

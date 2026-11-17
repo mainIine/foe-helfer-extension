@@ -53,6 +53,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 let Unit = {
 
 	CoordsRaw: [],
+	CoordsLoading: null,
 
 	Types: null,
 	Attack : null,
@@ -105,13 +106,33 @@ let Unit = {
 	},
 
 
-	PrepareCoords: ()=> {
-		if( $('#unit-css-block').length > 0){
+	/**
+	 * Builds the CSS for the unit icon sprite once; loads the sprite sheet
+	 * definition from the game CDN, as the game client no longer requests it
+	 *
+	 * @returns {Promise<void>}
+	 */
+	PrepareCoords: async () => {
+		if ($('#unit-css-block').length > 0) {
 			return;
 		}
 
-		if(Object.keys(Unit.CoordsRaw).length === 0){
-			return;
+		if (Object.keys(Unit.CoordsRaw).length === 0) {
+			Unit.CoordsLoading ??= fetch(srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.json', true))
+				.then(response => response.json())
+				.catch(err => {
+					console.error('Unit: failed to load the unit icon sprite sheet', err);
+					return null;
+				});
+
+			const data = await Unit.CoordsLoading;
+			Unit.CoordsLoading = null;
+
+			if (!data?.frames || $('#unit-css-block').length > 0) {
+				return;
+			}
+
+			Unit.CoordsRaw = data;
 		}
 
 		let s = [],

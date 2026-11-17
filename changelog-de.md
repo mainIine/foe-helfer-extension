@@ -1,5 +1,24 @@
 ## Extension Changelog
 
+##### 4.9.1.0
+**Update**
+
+- City Builder: Neue Option „Nur anpassen“ – die Stadt bleibt, wie sie steht; nur neue Gebäude werden eingeplant und dafür so wenige wie möglich umgesetzt
+- City Builder: Deutlich weniger Lücken, die freie Fläche bleibt als ein Block übrig; Straßengebäude stehen zusammen statt einzeln zwischen straßenlosen
+- City Builder: „Gebäude optimieren“ füllt übrige Lücken mit den bestbewerteten passenden Gebäuden aus dem Inventar (abschaltbar über das Zahnrad)
+- City Builder: Die Berechnung probiert in derselben Zeit mehr Varianten durch
+- City Builder: Die Schraffur für den Baufortschritt lässt sich ausblenden, der Stadtplaner schließt sich beim Öffnen
+- City Builder: Die Listen der Seitenbox lassen sich einklappen, eine Lupe zeigt Gebäude, die in der Stadt stehen
+- Menü: Neue Symbole für Event-Cockpit, Jahresrückblick, Web Requests und Gebäudesuche
+
+**Bugfixes**
+
+- City Builder: Optimierung und Bildexport nutzen in Siedlung, Kolonie und Quanten-Invasion die Fläche der jeweiligen Karte
+- Armee-Übersicht: Die Einheiten-Icons werden wieder angezeigt
+- LG Rechner: Bei fremden LG gilt derselbe Prozentsatz wie im Kostenrechner, er bleibt beim Wechsel zwischen geteilter und gemeinsamer Ansicht erhalten
+
+---
+
 ##### 4.9.0.0
 **Update**
 

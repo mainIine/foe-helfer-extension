@@ -265,7 +265,7 @@ a[target="_blank"] svg {
 }
 
 .btn.webrequest {
-    background-image: url('../../js/web/webrequest/images/webrequest.svg'), var(--btn-bg);
+    background-image: url('../../js/web/webrequest/images/webrequest.png'), var(--btn-bg);
     background-size: 75%, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
@@ -274,7 +274,7 @@ a[target="_blank"] svg {
 }
 
 .btn.webrequest:hover, .btn.webrequest:active {
-    background-image: url('../../js/web/webrequest/images/webrequest.svg'), var(--btn-bg-active);
+    background-image: url('../../js/web/webrequest/images/webrequest.png'), var(--btn-bg-active);
     background-size: 75%, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
@@ -896,18 +896,16 @@ p {
 }
 
 [id$=webRequest-Btn] span {
-	background-image: url('../../js/web/webrequest/images/webrequest.svg');
-	background-size: 65%;
+	background-image: url('../../js/web/webrequest/images/webrequest.png');
+	background-size: 80%;
 }
 
 [id$=yearReview-Btn] span {
-	background-image: url('../../js/web/yearreview/images/yearreview.svg');
-	background-size: 70%;
+	background-image: url('../../js/web/yearreview/images/yearreview.png');
 }
 
 [id$=eventCockpit-Btn] span {
-	background-image: url('../../js/web/eventcockpit/images/eventcockpit.svg');
-	background-size: 70%;
+	background-image: url('../../js/web/eventcockpit/images/eventcockpit.png');
 }
 
 [id$=ascended-Btn] span {
@@ -921,8 +919,7 @@ p {
 }
 
 [id$=citySearch-Btn] span {
-	background-image: url('../../js/web/citysearch/images/citysearch.png');
-	background-size: auto 60%;
+	background-image: url('../../js/web/citysearch/images/citysearch-menu.png');
 }
 
 /* red counter: expired limited buildings in the city */

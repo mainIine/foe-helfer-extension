@@ -26,7 +26,8 @@
  * with 5 minute productions never drops; happiness stays at least at today's
  * ratio; some free population is kept; building types picked by hand stay.
  * Further options decide what may be taken from the inventory: Quantum
- * Incursion (Neo) buildings, limited (ascended) buildings and selection kits.
+ * Incursion (Neo) buildings, limited (ascended) buildings and selection kits,
+ * and whether the gaps of the finished layout are plugged with small buildings.
  */
 CityBuilder.Optimizer = {
 
@@ -38,6 +39,9 @@ CityBuilder.Optimizer = {
 
     /** @type {number} search time per round in ms */
     RoundBudget: 12000,
+
+    /** @type {number} search time per round in ms when the city stays as it stands */
+    KeepBudget: 5000,
 
     /** @type {Object[]} key figures of every round of the last run */
     Log: [],
@@ -52,7 +56,7 @@ CityBuilder.Optimizer = {
      * Options of the optimization with their defaults.
      *
      * @type {{allies: boolean, fiveMinutes: boolean, happiness: boolean, population: boolean,
-     * limited: string, keep: string[], useNeo: boolean, useAscended: boolean, useKits: boolean}}
+     * limited: string, keep: string[], useNeo: boolean, useAscended: boolean, useKits: boolean, fill: boolean}}
      */
     Defaults: {
         allies: true,
@@ -63,7 +67,8 @@ CityBuilder.Optimizer = {
         keep: [],
         useNeo: true,
         useAscended: false,
-        useKits: true
+        useKits: true,
+        fill: true
     },
 
     /** @type {string[]} how limited buildings of the city are treated: rated with the value they decay into, rated with today's value, always kept */
@@ -383,7 +388,7 @@ CityBuilder.Optimizer = {
      */
     freeTiles: (layout) => {
         const tiles = new Set();
-        for (const a of Object.values(CityMap.Main.unlockedAreas)) {
+        for (const a of CityBuilder.liveAreas()) {
             for (let x = a.x || 0; x < (a.x || 0) + a.width; x++) {
                 for (let y = a.y || 0; y < (a.y || 0) + a.length; y++) tiles.add(x + ',' + y);
             }
@@ -398,9 +403,108 @@ CityBuilder.Optimizer = {
 
 
     /**
+     * Plugs the gaps a finished layout left over with the best rated buildings
+     * still in the pool: best rating first, each on the free spot where it
+     * touches the most. Street buildings only go next to a road, buildings
+     * that need a two-lane street are left out. Happiness and population keep
+     * the limits of the swap plan. The new buildings are added to the layout.
+     *
+     * @param {Object} ctx - Context from prepare().
+     * @param {{removed: Object[], added: Object[], gain: number}} plan - Swap plan of the layout.
+     * @param {Object[]} layout - Worker layout, gets the gap fillers appended.
+     * @returns {{removed: Object[], added: Object[], gain: number}} Plan including the gap fillers.
+     */
+    fillGaps: (ctx, plan, layout) => {
+        const free = new Set(), roads = new Set();
+        for (const a of CityBuilder.liveAreas()) {
+            for (let x = a.x || 0; x < (a.x || 0) + a.width; x++) {
+                for (let y = a.y || 0; y < (a.y || 0) + a.length; y++) free.add(x + ',' + y);
+            }
+        }
+        for (const b of layout) {
+            for (let x = b.x; x < b.x + b.width; x++) {
+                for (let y = b.y; y < b.y + b.height; y++) {
+                    free.delete(x + ',' + y);
+                    if (b.type === 'street') roads.add(x + ',' + y);
+                }
+            }
+        }
+
+        // happiness and population after the swap plan
+        let hap = ctx.happiness, popPlus = ctx.popPlus, popFree = ctx.popFree;
+        const count = (b, sign) => {
+            hap += sign * b.happiness;
+            popFree += sign * b.population;
+            if (b.population > 0) popPlus += sign * b.population;
+        };
+        plan.removed.forEach(r => count(r, -1));
+        plan.added.forEach(n => count(n, 1));
+        const popFloor = ctx.options.population ? Math.max(0, ctx.popPlus * 0.05) : 0;
+        const ratioFloor = ctx.options.happiness ? ctx.ratio : -Infinity;
+
+        // tiles around a footprint: [touching tiles that are not free, tiles at a road]
+        const border = (x, y, w, h) => {
+            let touch = 0, road = 0;
+            const visit = (key) => {
+                if (!free.has(key)) touch++;
+                if (roads.has(key)) road++;
+            };
+            for (let i = x; i < x + w; i++) { visit(i + ',' + (y - 1)); visit(i + ',' + (y + h)); }
+            for (let j = y; j < y + h; j++) { visit((x - 1) + ',' + j); visit((x + w) + ',' + j); }
+            return [touch, road];
+        };
+
+        const taken = new Set(plan.added);
+        const added = [];
+        // the free space only shrinks: a footprint that found no spot never finds one later
+        const hopeless = new Set();
+        for (const n of ctx.pool) {
+            if (!free.size) break;
+            const kind = n.w + 'x' + n.h + '/' + n.street;
+            if (taken.has(n) || n.street >= 2 || n.w * n.h > free.size || hopeless.has(kind)) continue;
+            if (popFree + n.population < popFloor) continue;
+            const nextPopPlus = popPlus + Math.max(n.population, 0);
+            if (nextPopPlus > 0 && (hap + n.happiness) / nextPopPlus < ratioFloor) continue;
+
+            let spot = null, spotTouch = -1;
+            for (const key of free) {
+                const [x, y] = key.split(',').map(Number);
+                let fits = true;
+                for (let i = x; i < x + n.w && fits; i++) {
+                    for (let j = y; j < y + n.h; j++) if (!free.has(i + ',' + j)) { fits = false; break; }
+                }
+                if (!fits) continue;
+                const [touch, road] = border(x, y, n.w, n.h);
+                if ((n.street && !road) || touch <= spotTouch) continue;
+                spot = [x, y];
+                spotTouch = touch;
+            }
+            if (!spot) {
+                hopeless.add(kind);
+                continue;
+            }
+
+            for (let i = spot[0]; i < spot[0] + n.w; i++) {
+                for (let j = spot[1]; j < spot[1] + n.h; j++) free.delete(i + ',' + j);
+            }
+            layout.push({
+                id: 'plan_' + (plan.added.length + added.length), asset_id: n.entityId, name: '★ ' + n.name, type: 'generic_building',
+                x: spot[0], y: spot[1], width: n.w, height: n.h, street_level: n.street, chain_id: null, chain_pos: -1
+            });
+            added.push(n);
+            count(n, 1);
+        }
+
+        const value = added.reduce((sum, n) => sum + n.score * n.area, 0);
+        return { removed: plan.removed, added: plan.added.concat(added), gain: plan.gain + Math.round(value / 100) };
+    },
+
+
+    /**
      * Runs the optimization: plan, lay out, measure the leftover space and
      * adjust the amount of new buildings until the city is filled. The best
-     * complete round wins.
+     * complete round wins; the gaps every one of its layout variants left
+     * over are plugged with small buildings afterwards (variant.planned).
      *
      * @param {Object[]} baseInput - Worker input of the current city (incl. a free space entry).
      * @returns {Promise<Object|null|undefined>} {result, plan} of the best round, null without a
@@ -426,7 +530,8 @@ CityBuilder.Optimizer = {
             }));
 
             $('#CityBuilderBoxBody .loading-title').text(i18n('Boxes.CityBuilder.OptimizeRound').replace('__round__', round + 1).replace('__rounds__', O.Rounds));
-            const result = await CityBuilder.runWorker(input, O.RoundBudget, (pct) => {
+            const budget = localStorage.getItem('CityBuilderKeepLayout') === '1' ? O.KeepBudget : O.RoundBudget;
+            const result = await CityBuilder.runWorker(input, budget, (pct) => {
                 const total = Math.round((round * 100 + pct) / O.Rounds);
                 $('#CityBuilderBoxBody .calc-progress').text(total + '%');
                 $('#CityBuilderBoxBody .loading-bar-fill').css('width', total + '%');
@@ -458,6 +563,12 @@ CityBuilder.Optimizer = {
                 extra = overflows !== null ? Math.floor((fits + overflows) / 2) : extra + Math.max(4, Math.floor((free - O.TargetFree) * 0.8));
             }
             if (fits !== null && overflows !== null && overflows - fits < 4) break;
+        }
+
+        // every variant leaves different gaps, so each gets its own plan
+        if (best) {
+            for (const v of best.result.variants) v.planned = ctx.options.fill ? O.fillGaps(ctx, best.plan, v.layout) : Object.assign({}, best.plan);
+            best.plan = best.result.variants[0].planned;
         }
         return best;
     }

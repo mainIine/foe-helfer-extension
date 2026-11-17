@@ -272,9 +272,62 @@ body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
 	min-height: 0;
 	overflow-y: auto;
 }
-#CityBuilderUnplacedBox .unplaced-hint {
-	padding: 6px 8px;
-	font-style: italic;
+#CityBuilderUnplacedBox .unplaced-section + .unplaced-section {
+	margin-top: 4px;
+}
+#CityBuilderUnplacedBox .unplaced-section-head {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 8px;
+	cursor: pointer;
+	font-weight: bold;
+	background-color: var(--black-65);
+	border-top: 1px solid var(--sunflower);
+	user-select: none;
+}
+#CityBuilderUnplacedBox .unplaced-section-head:hover {
+	background-color: var(--black-75, rgba(0, 0, 0, 0.75));
+}
+#CityBuilderUnplacedBox .unplaced-section-head .chevron {
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 6px solid var(--sunflower);
+	transition: transform 0.15s;
+	flex: none;
+}
+#CityBuilderUnplacedBox .unplaced-section.closed .chevron {
+	transform: rotate(-90deg);
+}
+#CityBuilderUnplacedBox .unplaced-section-head .section-title {
+	flex: 1 1 auto;
+}
+#CityBuilderUnplacedBox .unplaced-section-head .section-count {
+	min-width: 20px;
+	padding: 0 6px;
+	border-radius: 9px;
+	text-align: center;
+	font-size: 11px;
+	line-height: 18px;
+	color: #000;
+	background-color: var(--sunflower);
+}
+#CityBuilderUnplacedBox .unplaced-section.closed .unplaced-section-body {
+	display: none;
+}
+#CityBuilderUnplacedBox .find-building {
+	display: inline-flex;
+	vertical-align: middle;
+	margin-left: 6px;
+	cursor: pointer;
+	opacity: 0.6;
+}
+#CityBuilderUnplacedBox .find-building:hover,
+#CityBuilderUnplacedBox .find-building.active {
+	opacity: 1;
+	color: var(--sunflower);
 }
 #CityBuilderUnplacedBox .unplaced-table td {
 	padding: 3px 8px;
