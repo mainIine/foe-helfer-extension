@@ -13,6 +13,7 @@
 **Bugfixes**
 
 - Military units overview: the unit icons are shown again
+- GB Calculator: foreign GBs use the same percentage as the GB Cost Calculator, it stays when switching between split and combined view
 
 ---
 
