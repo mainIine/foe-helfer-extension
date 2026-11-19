@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.9.1.1
+**Update**
+
+- GB Calculator: on other players' GBs the table shows the piggy bank column with the extra FP from your contribution boost, as in the GB Cost Calc (same setting "Show contribution boost column"); your own GBs stay without it
+
+---
+
 ##### 4.9.1.0
 **Update**
 

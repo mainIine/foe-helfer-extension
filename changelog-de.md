@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.9.1.1
+**Update**
+
+- LG Rechner: Bei LGs anderer Spieler zeigt die Tabelle die Sparschwein-Spalte mit den zusätzlichen FP durch deinen Mäzen-Bonus, wie im Kostenrechner (dieselbe Einstellung „Mäzen-Bonus-Spalte anzeigen“); eigene LGs bleiben ohne sie
+
+---
+
 ##### 4.9.1.0
 **Update**
 
