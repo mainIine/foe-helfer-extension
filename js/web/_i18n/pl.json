@@ -1560,6 +1560,7 @@
     "Boxes.ProductionsRating.PresetSave": "Zapisz",
     "Boxes.ProductionsRating.PresetSaveAs": "Zapisz jako",
     "Boxes.ProductionsRating.ProdPerTile": "Oczekiwana dzienna produkcja na kratkę",
+    "Boxes.ProductionsRating.ReplacementNone": "Nie znaleziono żadnych budynków o gorszej ocenie w twoim mieście",
     "Boxes.ProductionsRating.Replacements": "Propozycje zmiany",
     "Boxes.ProductionsRating.ReplacementsExplanation": "Wyświetla ikonę na budynkach w inwentarzu, która po najechaniu kursorem podpowiada, które budynki w mieście o gorszej ocenie mogłyby zwolnić miejsce na nowy budynek",
     "Boxes.ProductionsRating.Reset": "Przywróć ustawienia domyślne",
