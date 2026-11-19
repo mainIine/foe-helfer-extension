@@ -158,7 +158,7 @@
     "Boxes.BattleAssistLineup.RememberedTitle": "Has beaten this army before – the best real result among your line-ups",
     "Boxes.BattleAssistLineup.CurrentIncomplete": "Your attacking army is not complete – with 8 units its win rate is shown as well.",
     "Boxes.BattleAssistLineup.ToggleTitle": "Switching it off is saved at once and closes the box. The army suggestion can be switched on again in the settings under \"Pop Ups\".",
-    "Boxes.BattleAssistLineup.Note": "The win rate is an estimate from a simplified battle without a map. Losses = units lost on average. On top is what has beaten this army before; what loses against it moves down. Heroes only show up where they clearly help.",
+    "Boxes.BattleAssistLineup.Note": "The win rate is an estimate from a simplified battle without a map. Losses = units lost on average in a won battle. On top is what has beaten this army before; what loses against it moves down. Heroes only show up where they clearly help.",
     "Boxes.BattleAssistLineup.NoData.notypes": "Unit data has not been loaded yet.",
     "Boxes.BattleAssistLineup.NoData.unknown": "Unknown enemy unit – no suggestion possible",
     "Boxes.BattleAssistLineup.NoData.noenemy": "The preview lists no opponents.",

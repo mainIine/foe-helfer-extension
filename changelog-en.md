@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.9.1.1
+**Bugfixes**
+
+- Army suggestion: line-ups with rogues are rated more realistically – next to slow units, rogues take the first hits
+- Army suggestion: "Losses" shows the units lost in a won battle, lost battles no longer count as eight losses
+- Army suggestion: the [?] in the box opens the guide
+
+---
+
 ##### 4.9.1.0
 **Update**
 

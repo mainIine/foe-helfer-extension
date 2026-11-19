@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.9.1.1
+**Bugfixes**
+
+- Armee-Vorschlag: Aufstellungen mit Agenten werden realistischer bewertet – neben langsamen Einheiten fangen Agenten die ersten Treffer ab
+- Armee-Vorschlag: „Verluste“ zeigt die verlorenen Einheiten bei einem Sieg, verlorene Kämpfe zählen nicht mehr als acht Verluste
+- Armee-Vorschlag: Das [?] im Fenster führt zur Anleitung
+
+---
+
 ##### 4.9.1.0
 **Update**
 

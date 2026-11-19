@@ -47,11 +47,15 @@
  *     per round; a unit with blast never retaliated
  *   - retaliation needs reach: a longer-ranged attacker is safe
  *   - turn order is the type's initiative, both sides interleaved
- *   - the enemy does NOT go for rogues - but it reaches the real units
- *     first and finishes what is hurt. Line-ups of 5-7 rogues lost half of
- *     their two-wave battles at high attrition: the one or two real units
- *     came out of wave 1 dead or nearly so, and without them every rogue
- *     dies on its first hit in wave 2 (ROGUE_DRAW, FOCUS)
+ *   - who stands in front draws the hits: a unit that has moved up is hit
+ *     before one still at the start line. Fast units with a short range fly
+ *     ahead and take the first volley while the rogues (initiative 1) have
+ *     not moved yet; slow units with a long range stay level with the rogues,
+ *     which then share the hits. Line-ups of one or two fast units and 6-7
+ *     rogues lost half of their two-wave battles: the real units came out of
+ *     wave 1 dead or nearly so, and without them every rogue dies on its
+ *     first hit in wave 2. Three heavy units and five rogues won theirs
+ *     (EXPOSE, ROGUE_DRAW, FOCUS)
  *   - a rogue hit while it still has its morale armor keeps its disguise
  *   - in round 1 many units cannot attack yet: artillery always can, a fast
  *     unit that moves first in less than half of the cases
@@ -63,8 +67,12 @@
  *   - a stealthed unit can only be attacked from the neighbouring field, or
  *     by blast / power shot (not seen in the recordings yet)
  *   - frenzy reaches a neighbour of the target now and then (FRENZY_SPLASH)
- *   - how hard the enemy focuses: ROGUE_DRAW and FOCUS are fitted to two
- *     recordings; rogue-heavy line-ups in two-wave battles are still
+ *   - how far a unit stands in front: no positions, only a depth that grows
+ *     by the unit's movement with every turn, up to where its range reaches
+ *     (FIELD, hexes from the type's range and movement points)
+ *   - how hard the enemy focuses: EXPOSE, ROGUE_DRAW and FOCUS are fitted to
+ *     three recordings of one era and checked against two battles of another;
+ *     one or two fast units with 6-7 rogues in two-wave battles are still
  *     forecast too well
  *
  * Real results beat the estimate: the box remembers per enemy army (unit
@@ -114,14 +122,29 @@ let LineupAdvisor = (function () {
 	/** share of MIRV shots that hit a second extra target */
 	const MIRV_SECOND = 0.3;
 	/**
-	 * How likely a random attack lands on an untouched rogue, relative to a
-	 * real unit, by round: rogues (range 1, slow) trail behind at first and
-	 * are in everybody's reach later. Artillery reaches them from the start.
+	 * How much more a random attack is drawn to an untouched rogue than to a
+	 * real unit standing level with it. Artillery reaches everybody from the
+	 * start and shows no such pull.
 	 */
-	const ROGUE_DRAW = [0.3, 0.8, 1.7, 3];
+	const ROGUE_DRAW = 5;
+	/**
+	 * Share of the draw that is left per hex a unit stands behind the foremost
+	 * one of its army: a rogue that has not moved yet is ten hexes behind a
+	 * fast unit that flew ahead (0.03), but level with a heavy one that has
+	 * not had its turn either.
+	 */
+	const EXPOSE = 0.7;
 	/** how much more a random attack is drawn to a unit per lost hitpoint/10:
 	 *  the enemy finishes what is hurt instead of spreading its hits */
-	const FOCUS = 10;
+	const FOCUS = 3;
+	/** hexes between the two start lines */
+	const FIELD = 14;
+	/** movement points one hex costs on open ground */
+	const HEX_COST = 2;
+	/** eras whose longest range would not fit the field count ranges and
+	 *  movement in smaller steps: one hex is LARGE_SCALE of them */
+	const MAX_HEX_RANGE = 16;
+	const LARGE_SCALE = 1.5;
 	/** a remembered line-up is out against an army once it lost this many of
 	 *  its last ARMY_WINDOW fights against it — old wins do not shield it */
 	const ARMY_LOSSES = 2;
@@ -185,9 +208,12 @@ let LineupAdvisor = (function () {
 	 * @param {number} attackPct
 	 * @param {number} defensePct
 	 * @param {number} [critPct] the side's critical hit chance, in percent
+	 * @param {number} [scale] distance scale of the battle (advisor._scale)
 	 * @returns {object}
 	 */
-	function makeProfile(type, abilities, attackPct, defensePct, critPct) {
+	function makeProfile(type, abilities, attackPct, defensePct, critPct, scale) {
+		const hexRange = Math.max(1, Math.ceil((type.range || 1) / (scale || 1)));
+		const hexMove = Math.floor((type.movementPoints || 0) / (HEX_COST * (scale || 1)));
 		const ab = {};
 		const list = Array.isArray(abilities) && abilities.length ? abilities : type.configAbilities || [];
 		for (const a of list) if (a && a.type) ab[a.type] = a;
@@ -206,6 +232,9 @@ let LineupAdvisor = (function () {
 			name: type.name || type.unitTypeId,
 			cls,
 			range: type.range || 1,
+			// hexes it moves up per turn, and how far up at most: where its range reaches
+			advance: hexMove,
+			front: Math.max(0, FIELD - hexRange),
 			initiative: type.initiative || 0,
 			attack: (type.baseDamage || 0) * (1 + attackPct / 100),
 			defense: (type.baseArmor || 0) * (1 + defensePct / 100),
@@ -309,13 +338,11 @@ let LineupAdvisor = (function () {
 	function simulate(ownProfiles, waves, rng, table) {
 		const own = ownProfiles.map(p => ({
 			p, base: p, hp: FULL_HITPOINTS, side: 1, fresh: p.rogue,
-			armor: 0, cool: 0, lastRet: 0, hidden: false, tie: 0,
+			armor: 0, cool: 0, lastRet: 0, hidden: false, tie: 0, depth: 0,
 		}));
 
 		/** live units of one side */
 		const alive = list => list.filter(u => u.hp > 0);
-		/** the round being played — the target choice depends on it */
-		let turn = 1;
 
 		/**
 		 * Takes a hit from `from`; a fresh rogue turns into a comrade instead.
@@ -364,13 +391,16 @@ let LineupAdvisor = (function () {
 			if (rng() < RANDOM_TARGET) {
 				const open = foes.filter(f => f.hp > 0 && reach(u, f));
 				if (!open.length) return null;
-				// not an even pick: untouched rogues trail behind in the first
-				// rounds, and a hurt unit draws the next hit
+				let front = 0;
+				for (const f of open) if (f.depth > front) front = f.depth;
+				// not an even pick: who stands in front is hit first, an
+				// untouched rogue and a hurt unit draw the next hit
 				let total = 0;
 				const weights = open.map(f => {
-					const weight = f.fresh
-						? (u.p.artillery ? 1 : ROGUE_DRAW[Math.min(turn, ROGUE_DRAW.length) - 1])
+					let weight = f.fresh
+						? (u.p.artillery ? 1 : ROGUE_DRAW)
 						: 1 + FOCUS * (FULL_HITPOINTS - f.hp) / FULL_HITPOINTS;
+					if (!u.p.artillery) weight *= Math.pow(EXPOSE, front - f.depth);
 					total += weight;
 					return weight;
 				});
@@ -410,11 +440,11 @@ let LineupAdvisor = (function () {
 		for (let w = 0; w < waves.length; w++) {
 			const foes = waves[w].map(e => ({
 				p: e.p, base: e.p, hp: e.hp, side: 2, fresh: e.p.rogue,
-				armor: 0, cool: 0, lastRet: 0, hidden: false, tie: 0,
+				armor: 0, cool: 0, lastRet: 0, hidden: false, tie: 0, depth: 0,
 			}));
 
-			// a new wave is a new battle: abilities are fresh, a rogue that got
-			// away in disguise is a rogue again
+			// a new wave is a new battle: everybody is back at the start line,
+			// abilities are fresh, a rogue that got away in disguise is a rogue again
 			for (const u of own) {
 				if (u.hp <= 0) continue;
 				if (u.base.rogue) {
@@ -423,6 +453,7 @@ let LineupAdvisor = (function () {
 				}
 				u.cool = 0;
 				u.lastRet = 0;
+				u.depth = 0;
 			}
 			for (const team of [own, foes]) {
 				let morale = 0;
@@ -432,7 +463,6 @@ let LineupAdvisor = (function () {
 
 			let decided = false;
 			for (let round = 1; round <= MAX_ROUNDS && !decided; round++) {
-				turn = round;
 				const order = alive(own).concat(alive(foes));
 				for (const u of order) {
 					u.tie = rng();
@@ -442,6 +472,8 @@ let LineupAdvisor = (function () {
 
 				for (const u of order) {
 					if (u.hp <= 0) continue;
+					// its turn: it moves up, as far as its range asks for
+					u.depth = Math.min(u.depth + u.p.advance, u.p.front);
 					if (u.cool > 0) {
 						u.cool--;
 						continue;
@@ -645,9 +677,10 @@ let LineupAdvisor = (function () {
 		 * The previewed waves as simulation input.
 		 * @param {object[]} waves entries with units[] (getArmyPreview, GE armyWaves)
 		 * @param {Map<string, object>} types
+		 * @param {number} scale distance scale of the battle
 		 * @returns {{waves: ?Array, unknown: string[], attackPct: number, defensePct: number}}
 		 */
-		_enemy(waves, types) {
+		_enemy(waves, types, scale) {
 			const out = [];
 			const unknown = [];
 			const cache = new Map();
@@ -670,7 +703,7 @@ let LineupAdvisor = (function () {
 						+ (unit.abilities || []).map(a => a && a.type).join('+');
 					let p = cache.get(key);
 					if (!p) {
-						p = makeProfile(type, unit.abilities, atk, def);
+						p = makeProfile(type, unit.abilities, atk, def, 0, scale);
 						cache.set(key, p);
 					}
 					const hp = typeof unit.currentHitpoints === 'number' ? unit.currentHitpoints : FULL_HITPOINTS;
@@ -749,7 +782,9 @@ let LineupAdvisor = (function () {
 		 * @returns {{ranked: object[], best: ?object, attackPct: number,
 		 *   defensePct: number, reason: ?string, detail: string}}
 		 *   ranked with the suggestion first, then by forecast; entries
-		 *   {unitTypeIds, key, win, dead, hpLeft, value, cost, real}. best is
+		 *   {unitTypeIds, key, win, dead, deadWon, hpLeft, value, cost, real} —
+		 *   dead counts a lost fight as all eight units, deadWon is the mean
+		 *   of the won fights (null without a win). best is
 		 *   the suggestion:
 		 *
 		 *     1. what beat this army before with the best real score — unless
@@ -869,6 +904,30 @@ let LineupAdvisor = (function () {
 		},
 
 		/**
+		 * The distance scale of the battle: the eras of the units decide in
+		 * which steps ranges and movement are counted.
+		 * @param {object} input like choose()
+		 * @param {Map<string, object>} types
+		 * @returns {number} 1, or LARGE_SCALE when the longest range of these
+		 *     eras would not fit the field
+		 */
+		_scale(input, types) {
+			const eras = new Set(input.eras || []);
+			const add = id => {
+				const type = types.get(id);
+				if (type && id !== ROGUE) eras.add(type.minEra);
+			};
+			for (const wave of input.waves || []) for (const unit of (wave && wave.units) || []) if (unit) add(unit.unitTypeId);
+			for (const entry of (input.armyInfo && input.armyInfo.units) || []) if (entry && entry.is_attacking) add(entry.unitTypeId);
+			let longest = 0;
+			for (const type of types.values()) {
+				if (eras.has(type.minEra) && type.movementPoints && type.range > longest) longest = type.range;
+			}
+			return longest > MAX_HEX_RANGE ? LARGE_SCALE : 1;
+		},
+
+
+		/**
 		 * Enemy, own boosts and the dice — shared by choose() and rate().
 		 * @param {object} input
 		 * @returns {{reason: ?string, detail: string, types: Map, enemy: object, play: function}}
@@ -878,7 +937,8 @@ let LineupAdvisor = (function () {
 			if (!types) return { reason: 'notypes', detail: '' };
 
 			profileSeq = 0; // profile numbers key the damage table of this call only
-			const enemy = advisor._enemy(input.waves, types);
+			const scale = advisor._scale(input, types);
+			const enemy = advisor._enemy(input.waves, types, scale);
 			if (!enemy.waves) return { reason: 'unknown', detail: enemy.unknown.join(', ') };
 			if (!enemy.waves.length) return { reason: 'noenemy', detail: '' };
 
@@ -889,7 +949,7 @@ let LineupAdvisor = (function () {
 				let p = profiles.get(id);
 				if (!p) {
 					const b = boostsOf(id);
-					p = makeProfile(types.get(id), null, b.attack, b.defense, critPct);
+					p = makeProfile(types.get(id), null, b.attack, b.defense, critPct, scale);
 					profiles.set(id, p);
 				}
 				return p;
@@ -900,11 +960,15 @@ let LineupAdvisor = (function () {
 				const own = ids.map(profileOf);
 				let won = 0;
 				let dead = 0;
+				let deadWon = 0;
 				let hpLeft = 0;
 				for (let i = 0; i < runs; i++) {
 					// the same dice for every candidate: differences are the line-up's
 					const result = simulate(own, enemy.waves, mulberry32(20261114 + i * 7919), table);
-					if (result.won) won++;
+					if (result.won) {
+						won++;
+						deadWon += result.dead;
+					}
 					dead += result.dead;
 					hpLeft += result.hpLeft;
 				}
@@ -912,7 +976,10 @@ let LineupAdvisor = (function () {
 					unitTypeIds: ids,
 					key: keyOf(ids),
 					win: won / runs,
+					// a lost fight counts as all eight units — for the ranking only
 					dead: dead / runs,
+					// what the box shows: units lost in the fights that were won
+					deadWon: won ? deadWon / won : null,
 					hpLeft: hpLeft / runs,
 					// champions are few and heal slowly: they cost some value
 					cost: SPARE_COST * ids.filter(id => SPARED.test(id)).length,
@@ -1172,7 +1239,7 @@ let BattleLineup = {
 			h.push(`<tr class="${[isCurrent ? 'lineupCurrent' : '', isBest ? 'lineupBest' : ''].join(' ').trim()}">`
 				+ `<td>${BattleLineup.army(entry.unitTypeIds)}${marks.join('')}</td>`
 				+ `<td class="lineupRate ${rate}">${pct(entry.win)}</td>`
-				+ `<td>${num(Math.round(entry.dead * 10) / 10)}</td>`
+				+ `<td>${entry.deadWon === null ? '–' : num(Math.round(entry.deadWon * 10) / 10)}</td>`
 				+ `<td>${real ? real.wins + ' : ' + real.losses : '–'}</td></tr>`);
 		}
 		h.push('</table>');
