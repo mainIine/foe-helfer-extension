@@ -164,7 +164,7 @@
     "Boxes.BattleAssistLineup.RememberedTitle": "Hat diese Armee schon geschlagen – unter deinen Aufstellungen mit dem besten echten Ergebnis",
     "Boxes.BattleAssistLineup.CurrentIncomplete": "Deine Angriffsarmee ist nicht vollständig – mit 8 Einheiten erscheint auch ihre Siegrate.",
     "Boxes.BattleAssistLineup.ToggleTitle": "Ausschalten wird sofort gespeichert und schließt die Box. Wieder einschalten lässt sich der Armee-Vorschlag in den Einstellungen unter „Pop-Ups“.",
-    "Boxes.BattleAssistLineup.Note": "Die Siegrate ist eine Schätzung aus einem vereinfachten Kampf ohne Karte. Verluste = im Schnitt verlorene Einheiten. Oben steht, was diese Armee schon geschlagen hat; was gegen sie verliert, rutscht nach unten. Helden kommen nur vor, wenn sie spürbar helfen.",
+    "Boxes.BattleAssistLineup.Note": "Die Siegrate ist eine Schätzung aus einem vereinfachten Kampf ohne Karte. Verluste = im Schnitt verlorene Einheiten bei einem Sieg. Oben steht, was diese Armee schon geschlagen hat; was gegen sie verliert, rutscht nach unten. Helden kommen nur vor, wenn sie spürbar helfen.",
     "Boxes.BattleAssistLineup.NoData.notypes": "Einheiten-Daten sind noch nicht geladen.",
     "Boxes.BattleAssistLineup.NoData.unknown": "Unbekannte Gegner-Einheit – kein Vorschlag möglich",
     "Boxes.BattleAssistLineup.NoData.noenemy": "Die Vorschau nennt keine Gegner.",

@@ -5,6 +5,12 @@
 
 - GB Calculator: on other players' GBs the table shows the piggy bank column with the extra FP from your contribution boost, as in the GB Cost Calc (same setting "Show contribution boost column"); your own GBs stay without it
 
+**Bugfixes**
+
+- Army suggestion: line-ups with rogues are rated more realistically – next to slow units, rogues take the first hits
+- Army suggestion: "Losses" shows the units lost in a won battle, lost battles no longer count as eight losses
+- Army suggestion: the [?] in the box opens the guide
+
 ---
 
 ##### 4.9.1.0

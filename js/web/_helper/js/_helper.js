@@ -194,8 +194,8 @@ let HTML = {
 		'CalculatorBox': 'module/gb-cost-calculator',
 		'Castle': 'module/castle',
 		'CityBuilderBox': 'module/city-map',
-		'CityBuilderUnplacedBox': 'module/city-map',
 		'CityBuilderKeepBox': 'module/city-map',
+		'CityBuilderUnplacedBox': 'module/city-map',
 		'CityMapSubmit': 'module/city-map',
 		'CloseBox': 'module/close-all',
 		'DBExport': 'module/import-export',
@@ -239,6 +239,7 @@ let HTML = {
 		'battleAssistAAConfig': 'module/battle-assist',
 		'battleAssistAddAdvice': 'module/battle-assist',
 		'battleAssistArmyAdvice': 'module/battle-assist',
+		'battleAssistLineup': 'module/army-suggestion',
 		'battleAssistNextEraDialog': 'module/battle-assist',
 		'battleAssistRogueDialog': 'module/battle-assist',
 		'betterMusicDialog': 'module/music',
@@ -249,7 +250,6 @@ let HTML = {
 		'citysearch': 'module/city-search',
 		'doubleFPprevention': 'module/double-fp-prevention',
 		'eventCockpit': 'module/event-cockpit',
-		'yearReview': 'module/year-review',
 		'eventchests': 'module/event-chests',
 		'eventpresents': 'module/event-chests',
 		'findGBDialog': 'module/find-gb',
@@ -276,6 +276,7 @@ let HTML = {
 		'stats': 'module/statistics',
 		'technologies': 'module/technologies',
 		'treasury': 'module/treasury',
+		'yearReview': 'module/year-review',
 		// docs-pages:end
 	},
 

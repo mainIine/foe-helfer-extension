@@ -5,6 +5,12 @@
 
 - LG Rechner: Bei LGs anderer Spieler zeigt die Tabelle die Sparschwein-Spalte mit den zusätzlichen FP durch deinen Mäzen-Bonus, wie im Kostenrechner (dieselbe Einstellung „Mäzen-Bonus-Spalte anzeigen“); eigene LGs bleiben ohne sie
 
+**Bugfixes**
+
+- Armee-Vorschlag: Aufstellungen mit Agenten werden realistischer bewertet – neben langsamen Einheiten fangen Agenten die ersten Treffer ab
+- Armee-Vorschlag: „Verluste“ zeigt die verlorenen Einheiten bei einem Sieg, verlorene Kämpfe zählen nicht mehr als acht Verluste
+- Armee-Vorschlag: Das [?] im Fenster führt zur Anleitung
+
 ---
 
 ##### 4.9.1.0
