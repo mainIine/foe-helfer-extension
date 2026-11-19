@@ -1,6 +1,10 @@
 ## Extension Changelog
 
 ##### 4.9.1.1
+**Update**
+
+- LG Rechner: Bei LGs anderer Spieler zeigt die Tabelle die Sparschwein-Spalte mit den zusätzlichen FP durch deinen Mäzen-Bonus, wie im Kostenrechner (dieselbe Einstellung „Mäzen-Bonus-Spalte anzeigen“); eigene LGs bleiben ohne sie
+
 **Bugfixes**
 
 - Armee-Vorschlag: Aufstellungen mit Agenten werden realistischer bewertet – neben langsamen Einheiten fangen Agenten die ersten Treffer ab
