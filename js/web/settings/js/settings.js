@@ -144,6 +144,17 @@ let Settings = {
 				cd.html(i18n(`Settings.${d['name']}.Desc`));
 				ct.text(i18n(`Settings.${d['name']}.Title`));
 
+				// [?] next to the title: docs page of the setting ("docs" in config.json)
+				if (d['docs']) {
+					ct.append(
+						$('<a />').addClass('setting-docs').attr({
+							href: HTML.DocsUrl(d['docs']),
+							target: '_blank',
+							rel: 'noopener',
+						})
+					);
+				}
+
 				childLis.push(`<li><a href="#subtab-${i}-${cnt}" title="${i18n('Settings.Entry.' + d['name'])}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
 
 				let h = c.append(cr.append(ct, cd, cs));
