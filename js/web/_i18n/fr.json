@@ -166,7 +166,7 @@
     "Boxes.BattleAssistLineup.NoData.nostock": "Nous n'avons plus en stock d'exemplaires en bon état datant de votre époque.",
     "Boxes.BattleAssistLineup.NoData.notypes": "Les données relatives aux unités n'ont pas encore été chargées.",
     "Boxes.BattleAssistLineup.NoData.unknown": "Unité ennemie inconnue – aucune suggestion possible",
-    "Boxes.BattleAssistLineup.Note": "Le taux de victoire est une estimation issue d'un combat simplifié sans carte. Les pertes correspondent au nombre moyen d'unités perdues. En haut de la liste figurent les forces qui ont déjà vaincu cette armée ; celles qui s'y sont inclinées descendent dans le classement. Les héros n'apparaissent que lorsqu'ils apportent une aide manifeste.",
+    "Boxes.BattleAssistLineup.Note": "Le taux de victoire est une estimation issue d'un combat simplifié sans carte. Les pertes correspondent au nombre moyen d'unités perdues dans un combat gagné. En haut de la liste figurent les forces qui ont déjà vaincu cette armée ; celles qui s'y sont inclinées descendent dans le classement. Les héros n'apparaissent que lorsqu'ils apportent une aide manifeste.",
     "Boxes.BattleAssistLineup.Record": "Enregistrement",
     "Boxes.BattleAssistLineup.RecordTitle": "Vos véritables combats avec cette composition contre cette armée (victoires : défaites)",
     "Boxes.BattleAssistLineup.Remembered": "éprouvé",
