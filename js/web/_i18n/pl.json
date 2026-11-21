@@ -2135,7 +2135,7 @@
     "Menu.Unit.Warning": "Wyłączone: Najpierw otwórz okno zarządzania armią (U)!",
     "Menu.WebRequest.Desc": "Wyślij dane gry na własny serwer za pomocą metod GET/POST",
     "Menu.WebRequest.Title": "Żądania internetowe",
-    "Menu.YearReview.Desc": "Twój rok w Forge of Empires w formie obrazka do udostępnienia: liczba dni gry, punkty PR, Pola Chwały, Wyprawy, Najazdy Kwantowe i nie tylko – na podstawie lokalnych statystyk helpera.",
+    "Menu.YearReview.Desc": "Twój rok w Forge of Empires w formie obrazka do udostępnienia: Liczba dni gry, PR, Pola Chwały, Wyprawy, Najazdy Kwantowe i nie tylko.",
     "Menu.YearReview.Title": "Podsumowanie roku",
     "Menu.findGB.Desc": "tworzy listę wszystkich pasujących PA, które spotkasz w listach PA innych graczy lub rankingu",
     "Menu.fpCollector.Desc": "Pokazuje wszystkie PR, które otrzymałeś każdą metodą, uporządkowane według dni.",
