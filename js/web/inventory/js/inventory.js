@@ -51,9 +51,19 @@
  * @property {string} search searchable text: the name, for selection kits
  *                           extended by the names of the contained items
  * @property {string} icon icon url
+ * @property {InventoryOverviewSize[]} sizes footprints of the building, for selection kits of every contained building
+ * @property {?InventoryOverviewSize} size the one footprint of the item, null for kits with several sizes and non-buildings
  * @property {number} [value] value of the selected property (only while a property filter is active)
  * @property {number} [added] sort key (ms) of the last stock increase, 0 = unknown (only while sorting by additions)
  * @property {?string} [addedLabel] the game's own date label from the ingame inventory log, null = use the tracked time
+ */
+
+/**
+ * @typedef InventoryOverviewSize
+ * @property {string} label "<length>x<width>" as the game shows it
+ * @property {number} length
+ * @property {number} width
+ * @property {number} area
  */
 
 /**
@@ -70,6 +80,12 @@ let InventoryOverview = {
 
 	/** @type {string} selected item category ('building', 'fragment', 'kit', 'other'), '' = all */
 	KindFilter: '',
+
+	/** @type {string} selected building size ("<length>x<width>"), '' = all sizes */
+	SizeFilter: '',
+
+	/** @type {string} sizes the size dropdown was last built from, avoids rebuilding it on every render */
+	sizeOptionsKey: '',
 
 	/** @type {boolean} true = descending sort order */
 	SortDescending: true,
@@ -148,6 +164,15 @@ let InventoryOverview = {
 					InventoryOverview.RenderList();
 				}),
 				$('<select />').attr({
+					id: 'inventoryOverviewSize',
+					class: 'game-cursor',
+					'data-original-title': i18n('Boxes.Inventory.SizeFilterHint'),
+					'data-toggle': 'tooltip'
+				}).on('change', () => {
+					InventoryOverview.SizeFilter = String($('#inventoryOverviewSize').val());
+					InventoryOverview.RenderList();
+				}),
+				$('<select />').attr({
 					id: 'inventoryOverviewProperty',
 					class: 'game-cursor',
 					'data-original-title': i18n('Boxes.Inventory.PropertyFilterHint'),
@@ -182,6 +207,7 @@ let InventoryOverview = {
 			$('#inventoryOverviewProperty').val('');
 		}
 		$('#inventoryOverviewSort').text(InventoryOverview.SortDescending ? '▼' : '▲');
+		InventoryOverview.sizeOptionsKey = '';
 
 		$('#inventoryOverview [data-toggle="tooltip"]').tooltip({
 			html: true,
@@ -300,7 +326,8 @@ let InventoryOverview = {
 
 		const options = [
 			$('<option />').attr('value', '').text(i18n('Boxes.Inventory.AllItems')),
-			$('<option />').attr('value', '@added').text(i18n('Boxes.Inventory.SortAdded'))
+			$('<option />').attr('value', '@added').text(i18n('Boxes.Inventory.SortAdded')),
+			$('<option />').attr('value', '@size').text(i18n('Boxes.Inventory.SortSize'))
 		];
 		let currentGroup = null;
 
@@ -357,6 +384,9 @@ let InventoryOverview = {
 
 			const isSelectionKit = (MainParser.SelectionKits?.[targetId] !== undefined);
 			const name = entry.name || targetId;
+			const sizes = (isBuilding
+				? [InventoryOverview.BuildingSize(targetId)].filter(Boolean)
+				: (isSelectionKit ? InventoryOverview.KitSizes(targetId) : []));
 
 			// selection kits are searchable by their contents, so looking for a
 			// specific building also surfaces the kits it can be taken from
@@ -376,11 +406,87 @@ let InventoryOverview = {
 				kitId: (MainParser.BuildingUpgrades?.[targetId] !== undefined ? targetId : null),
 				selectionKitId: (isSelectionKit ? targetId : null),
 				search: search,
-				icon: InventoryOverview.ItemIcon(entry, isBuilding, targetId)
+				icon: InventoryOverview.ItemIcon(entry, isBuilding, targetId),
+				sizes: sizes,
+				size: (sizes.length === 1 ? sizes[0] : null)
 			});
 		}
 
 		return items;
+	},
+
+
+	/**
+	 * Footprint of a building entity in the orientation the game places it
+	 * (legacy and generic entity format)
+	 * @param {string} entityId
+	 * @returns {?InventoryOverviewSize} null when the entity or its size is unknown
+	 */
+	BuildingSize: (entityId) => {
+		const meta = MainParser.CityEntities[entityId],
+			length = meta?.length || meta?.components?.AllAge?.placement?.size?.y,
+			width = meta?.width || meta?.components?.AllAge?.placement?.size?.x;
+
+		if (!length || !width) return null;
+
+		return { label: length + 'x' + width, length, width, area: length * width };
+	},
+
+
+	/**
+	 * Distinct footprints of the buildings a selection kit offers
+	 * @param {string} kitId
+	 * @returns {InventoryOverviewSize[]}
+	 */
+	KitSizes: (kitId) => {
+		const sizes = new Map();
+
+		for (const entityId of InventoryOverview.KitContents(kitId).buildings) {
+			const size = InventoryOverview.BuildingSize(entityId);
+			if (size) sizes.set(size.label, size);
+		}
+
+		return [...sizes.values()];
+	},
+
+
+	/**
+	 * Compares two footprints: smaller area first, then the shorter length
+	 * @param {InventoryOverviewSize} a
+	 * @param {InventoryOverviewSize} b
+	 * @returns {number}
+	 */
+	CompareSizes: (a, b) => (a.area - b.area) || (a.length - b.length),
+
+
+	/**
+	 * Fills the size dropdown with every footprint found in the inventory
+	 * (buildings, fragments and the contents of selection kits). Rebuilt only
+	 * when the set of sizes changes; a selected size that is gone is reset
+	 * @param {InventoryOverviewItem[]} items all inventory items, before any filter
+	 */
+	UpdateSizeOptions: (items) => {
+		const sizes = new Map();
+		for (const item of items) {
+			item.sizes.forEach(size => sizes.set(size.label, size));
+		}
+
+		const sorted = [...sizes.values()].sort(InventoryOverview.CompareSizes),
+			key = sorted.map(size => size.label).join('|');
+
+		if (!sizes.has(InventoryOverview.SizeFilter)) {
+			InventoryOverview.SizeFilter = '';
+		}
+
+		if (key !== InventoryOverview.sizeOptionsKey) {
+			InventoryOverview.sizeOptionsKey = key;
+			$('#inventoryOverviewSize').empty().append(
+				$('<option />').attr('value', '').text(i18n('Boxes.Inventory.AllSizes')),
+				sorted.map(size => $('<option />').attr('value', size.label).text(size.label))
+			);
+		}
+
+		$('#inventoryOverviewSize').val(InventoryOverview.SizeFilter);
 	},
 
 
@@ -499,8 +605,21 @@ let InventoryOverview = {
 		}
 
 		const type = InventoryOverview.FilterType;
-		const isProperty = (type !== '' && type !== '@added');
+		const isProperty = (type !== '' && !type.startsWith('@'));
+		const isSize = (type === '@size');
 		let items = InventoryOverview.CollectItems();
+
+		InventoryOverview.UpdateSizeOptions(items);
+
+		// size filter: buildings and fragments of exactly this footprint, selection kits offering one
+		if (InventoryOverview.SizeFilter !== '') {
+			items = items.filter(item => item.sizes.some(size => size.label === InventoryOverview.SizeFilter));
+		}
+
+		// size sort: only items with one definite footprint
+		if (isSize) {
+			items = items.filter(item => item.size !== null);
+		}
 
 		// category filter (buildings / fragments / kits / other)
 		if (InventoryOverview.KindFilter !== '') {
@@ -560,6 +679,10 @@ let InventoryOverview = {
 		items.sort((a, b) => {
 			if (type === '@added' && a.added !== b.added) return (a.added - b.added) * direction;
 			if (isProperty && a.value !== b.value) return (a.value - b.value) * direction;
+			if (isSize) {
+				const bySize = InventoryOverview.CompareSizes(a.size, b.size);
+				if (bySize !== 0) return bySize * direction;
+			}
 			return a.name.localeCompare(b.name) * (type !== '' ? 1 : direction);
 		});
 
@@ -621,7 +744,9 @@ let InventoryOverview = {
 		}
 
 		let value = '';
-		if (type === '@added') {
+		if (type === '@size') {
+			// the footprint badge carries the sort value
+		} else if (type === '@added') {
 			const label = item.addedLabel || (item.added > 0 ? moment(item.added).fromNow() : '');
 			value = (label !== ''
 				? `<strong class="prop-value added-time">${label}</strong>`
@@ -634,8 +759,11 @@ let InventoryOverview = {
 			? ''
 			: `<strong class="in-stock" data-original-title="${i18n('Boxes.Kits.InStock')}">${item.inStock}</strong>`);
 
+		const size = (item.size !== null ? `<span class="item-size">${item.size.label}</span>` : '');
+
 		return `<div${tooltip}>
 					<div class="image"><img loading="lazy" src="${item.icon}" alt="${safeName}" /></div>
+					${size}
 					${stock}
 					<span class="item-name">${item.name}</span>
 					${fragments}
@@ -703,10 +831,11 @@ let InventoryOverview = {
 		if (!kit) return null;
 
 		const type = InventoryOverview.FilterType;
-		const isProperty = (type !== '' && type !== '@added');
+		const isProperty = (type !== '' && !type.startsWith('@'));
 		const contents = InventoryOverview.KitContents(kitId);
 
 		let buildings = contents.buildings.map(entityId => ({
+			entityId,
 			meta: MainParser.CityEntities[entityId],
 			value: (isProperty ? InventoryOverview.PropertyValue(entityId, type) : 0)
 		}));
@@ -720,7 +849,8 @@ let InventoryOverview = {
 		const rows = buildings.map(b => {
 			const img = srcLinks.get('/city/buildings/' + b.meta.asset_id.replace(/^(\D_)(.*?)/, '$1SS_$2') + '.png', true);
 			const value = (isProperty && b.value !== 0 ? `<span class="kit-value">${HTML.Format(Math.round(b.value * 100) / 100)}</span>` : '');
-			return `<div class="kit-row"><img src="${img}" alt=""><span>${b.meta.name}</span>${value}</div>`;
+			const size = InventoryOverview.BuildingSize(b.entityId);
+			return `<div class="kit-row"><img src="${img}" alt=""><span>${b.meta.name}</span>${size ? `<small class="kit-size">${size.label}</small>` : ''}${value}</div>`;
 		}).join('');
 
 		// remaining options without an own entity (upgrade kits, nested kits)

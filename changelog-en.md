@@ -4,6 +4,7 @@
 **Update**
 
 - GB Calculator: on other players' GBs the table shows the piggy bank column with the extra FP from your contribution boost, as in the GB Cost Calc (same setting "Show contribution boost column"); your own GBs stay without it
+- Inventory Overview: buildings and fragments show their size; new sort "Size" and a size filter that also finds selection kits containing a building of that size – handy to plug a gap
 
 **Bugfixes**
 

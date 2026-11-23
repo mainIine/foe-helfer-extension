@@ -258,3 +258,20 @@
 	font-size: 85%;
 	opacity: 0.8;
 }
+
+/* Footprint badge of buildings and fragments */
+#inventoryOverview .item-size {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	padding: 0 4px;
+	border-radius: 6px;
+	background-color: var(--text-darker);
+	color: var(--beige);
+	font-size: 85%;
+	line-height: 16px;
+}
+
+#TooltipContainer .inventoryKitTT .kit-row .kit-size {
+	opacity: 0.8;
+}
