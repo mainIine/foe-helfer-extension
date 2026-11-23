@@ -1,5 +1,13 @@
 ## Extension Changelog
 
+##### 4.9.2.1
+**Bugfixes**
+
+- Power leveling: opens much faster, the game barely stutters meanwhile
+- Boxes with large tables are built faster
+
+---
+
 ##### 4.9.2.0
 **Update**
 

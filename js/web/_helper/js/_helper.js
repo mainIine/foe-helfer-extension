@@ -800,6 +800,27 @@ let HTML = {
 	},
 
 
+	/** @type {Map<string, Intl.NumberFormat>} Number formatters per locale and options (see GetNumberFormat) */
+	NumberFormats: new Map(),
+
+
+	/**
+	 * Returns a cached number formatter. Creating one per number (as toLocaleString
+	 * does) costs several microseconds, which adds up in large tables.
+	 *
+	 * @param {string} locale Locale of the formatter
+	 * @param {Intl.NumberFormatOptions} [options] Formatter options
+	 * @returns {Intl.NumberFormat}
+	 */
+	GetNumberFormat: (locale, options) => {
+		const key = locale + JSON.stringify(options || {});
+
+		if (!HTML.NumberFormats.has(key)) HTML.NumberFormats.set(key, new Intl.NumberFormat(locale, options));
+
+		return HTML.NumberFormats.get(key);
+	},
+
+
 	/**
 	 * Formats a number localized, returns "-" for 0
 	 *
@@ -813,7 +834,7 @@ let HTML = {
 
 		if (typeof number !== 'number' && isNaN(Number(number))) return '' + number;
 
-		return Number(number).toLocaleString(i18n('Local'));
+		return HTML.GetNumberFormat(i18n('Local')).format(Number(number));
 	},
 
 
@@ -830,10 +851,7 @@ let HTML = {
 			return '-';
 		}
 
-		return Intl.NumberFormat(i18n(language), {
-			notation: 'compact',
-			maximumFractionDigits: 1
-		}).format(Number(number));
+		return HTML.GetNumberFormat(i18n(language), { notation: 'compact', maximumFractionDigits: 1 }).format(Number(number));
 	},
 
 

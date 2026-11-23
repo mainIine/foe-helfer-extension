@@ -387,7 +387,9 @@
 	margin: 0 2px;
 }
 
+/* fixed size: the table is not laid out again when the icons have loaded */
 #PowerLevelingBox .unlock-cost img, #PowerLevelingBox .unlock-sum th img {
+	width: 18px;
 	height: 18px;
 	vertical-align: text-bottom;
 	margin-left: 1px;

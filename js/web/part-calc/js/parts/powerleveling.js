@@ -78,6 +78,8 @@ Object.assign(Parts, {
 	 */
 	BuildBoxPowerLeveling: async (event) => {
 		if ($('#PowerLevelingBox').length === 0) {
+			HTML.AddCssFile('part-calc');
+
 			HTML.Box({
 				'id': 'PowerLevelingBox',
 				'title': i18n('Boxes.PowerLeveling.Title'),
@@ -136,11 +138,12 @@ Object.assign(Parts, {
 
 			// Event on the "Copy values" button in each row
 			box.on('click', '.button-powerlevel-copy', function () {
-				let gb_level = parseInt($(this).parent().find(".hidden-text").html());
+				const Level = parseInt($(this).parent().find('.hidden-text').html()),
+					{ Places, EigenNettos } = Parts.PowerLevelingData,
+					PlaceCount = Places[Level].length;
 
-				let PlaceCount = Parts.PowerLevelingData.Places[gb_level].length;
-				let CopyParts = Parts.GetCopyStringEx(Places=Array(PlaceCount).fill(true), Maezens=Parts.PowerLevelingData.Places[gb_level], Level=gb_level, OwnPart=Parts.PowerLevelingData.EigenNettos[gb_level], PlaceAll=true, PlaceAuto=false, PlaceAutoUnsafe=false, DangerPlaces=Array(PlaceCount).fill(0), LeveltLG=Array(PlaceCount).fill(false));
-				helper.str.copyToClipboardLegacy(CopyParts);
+				// all places, no auto mode, no danger or levelled places
+				helper.str.copyToClipboardLegacy(Parts.GetCopyStringEx(Array(PlaceCount).fill(true), Places[Level], Level, EigenNettos[Level], true, false, false, Array(PlaceCount).fill(0), Array(PlaceCount).fill(false)));
 			});
 
 			// unlock cost column and summary on/off
