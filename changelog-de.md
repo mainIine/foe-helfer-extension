@@ -1,18 +1,18 @@
 ## Extension Changelog
 
-##### 4.9.1.1
+##### 4.9.2.0
 **Update**
 
-- LG Rechner: Bei LGs anderer Spieler zeigt die Tabelle die Sparschwein-Spalte mit den zusätzlichen FP durch deinen Mäzen-Bonus, wie im Kostenrechner (dieselbe Einstellung „Mäzen-Bonus-Spalte anzeigen“); eigene LGs bleiben ohne sie
-- Inventar-Übersicht: Gebäude und Fragmente zeigen ihre Größe; neue Sortierung „Größe“ und ein Größenfilter, der auch Auswahl-Kits mit einem Gebäude dieser Größe findet – praktisch, um eine Lücke zu füllen
+- LG Rechner: Sparschwein-Spalte mit deinem Mäzen-Bonus bei fremden LGs, wie im Kostenrechner
+- Inventar-Übersicht: Größe an jedem Gebäude, Sortierung und Filter nach Größe
 
 **Bugfixes**
 
-- Armee-Vorschlag: Aufstellungen mit Agenten werden realistischer bewertet – neben langsamen Einheiten fangen Agenten die ersten Treffer ab
-- Armee-Vorschlag: „Verluste“ zeigt die verlorenen Einheiten bei einem Sieg, verlorene Kämpfe zählen nicht mehr als acht Verluste
-- Armee-Vorschlag: Das [?] im Fenster führt zur Anleitung
-- Fenster: Ein auf einem größeren Bildschirm vergrößertes Fenster ragt auf einem kleineren nicht mehr über den Rand und lässt sich wieder verkleinern
-- Gildenmitglieder-Übersicht: Die LGs jeder besuchten Stadt werden gezählt, ein dem Helfer unbekanntes Gebäude lässt nicht mehr die ganze Stadt wegfallen; „Mitglieder ohne“ nennt nur besuchte Mitglieder, die übrigen stehen unter „Noch nicht besuchte Städte“, dazu die Zahl der besuchten Städte
+- Armee-Vorschlag: Aufstellungen mit Agenten werden realistischer bewertet
+- Armee-Vorschlag: „Verluste“ zählt nur die Verluste gewonnener Kämpfe
+- Armee-Vorschlag: Das [?] führt zur Anleitung
+- Fenster: ragen auf kleineren Bildschirmen nicht mehr über den Rand
+- Gildenmitglieder-Übersicht: LGs aller besuchten Mitglieder werden gezählt, nicht besuchte stehen extra
 
 ---
 

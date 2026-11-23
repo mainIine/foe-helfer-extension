@@ -1,18 +1,18 @@
 ## Extension Changelog
 
-##### 4.9.1.1
+##### 4.9.2.0
 **Update**
 
-- GB Calculator: on other players' GBs the table shows the piggy bank column with the extra FP from your contribution boost, as in the GB Cost Calc (same setting "Show contribution boost column"); your own GBs stay without it
-- Inventory Overview: buildings and fragments show their size; new sort "Size" and a size filter that also finds selection kits containing a building of that size – handy to plug a gap
+- GB Calculator: piggy bank column with your contribution boost on other players' GBs, like in the GB Cost Calc
+- Inventory Overview: size on every building, sort and filter by size
 
 **Bugfixes**
 
-- Army suggestion: line-ups with rogues are rated more realistically – next to slow units, rogues take the first hits
-- Army suggestion: "Losses" shows the units lost in a won battle, lost battles no longer count as eight losses
-- Army suggestion: the [?] in the box opens the guide
-- Boxes: a box resized on a larger screen no longer sticks out beyond a smaller screen and can be resized again
-- Guild member overview: great buildings of every visited city are counted, a building unknown to the helper no longer drops the whole city; "Members without" only lists visited members, the others appear as "Cities not visited yet" together with the number of visited cities
+- Army suggestion: line-ups with rogues are rated more realistically
+- Army suggestion: "Losses" only counts units lost in won battles
+- Army suggestion: the [?] opens the guide
+- Boxes: no longer stick out beyond a smaller screen
+- Guild member overview: great buildings of all visited members are counted, unvisited members are listed separately
 
 ---
 
