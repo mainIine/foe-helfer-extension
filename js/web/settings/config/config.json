@@ -200,7 +200,6 @@
 		"name": "ShowBuildingsExpired",
 		"status": true,
 		"group": "Extension",
-		"button": "MainParser.Inactives.showSettings()",
 		"sort": 9
 	},
 	{

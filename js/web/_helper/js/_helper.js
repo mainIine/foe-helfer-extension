@@ -259,7 +259,6 @@ let HTML = {
 		'greatbuildings': 'module/gb-investments',
 		'idleGameDialog': 'module/idle-game',
 		'idleGameStrategyDialog': 'module/idle-game',
-		'inactivesSettingsBox': 'module/alerts',
 		'inventoryOverview': 'module/inventory',
 		'kits': 'module/kits',
 		'mapScoutingTimesDialog': 'module/scouting',

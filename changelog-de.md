@@ -5,6 +5,7 @@
 
 - LG Rechner: Sparschwein-Spalte mit deinem Mäzen-Bonus bei fremden LGs, wie im Kostenrechner
 - Inventar-Übersicht: Größe an jedem Gebäude, Sortierung und Filter nach Größe
+- Erhabene Gebäude: Eine Glocke je Gebäude schaltet seine Ablauf-Alarme stumm, ersetzt die Liste in den Einstellungen
 
 **Bugfixes**
 

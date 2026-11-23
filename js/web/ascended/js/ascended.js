@@ -39,6 +39,8 @@
  * @property {boolean} expired true when the building already decayed
  * @property {number} remaining remaining seconds until the decay (0 when expired)
  * @property {number} duration full limited runtime in seconds
+ * @property {string} targetId city entity id of the building it decays into, also
+ *                           the key of muted expiry alerts ({@link MainParser.Inactives})
  * @property {string} targetName name of the building it decays into
  * @property {?string} kitId upgrade kit id that restores the limited state
  * @property {?string} kitName display name of the kit
@@ -51,9 +53,9 @@
 /**
  * Overview of all time limited ("ascended") buildings in the city: countdown with
  * progress bar until each building loses its state, the full runtime, the kits
- * available to restore it and a marker button to find the building on the map.
- * Uses the same detection as the desktop notification for expired limited
- * buildings in {@link MainParser.Inactives}.
+ * available to restore it, a bell to mute its expiry alerts and a marker button
+ * to find the building on the map. Uses the same detection as the desktop
+ * notification for expired limited buildings in {@link MainParser.Inactives}.
  * @namespace
  */
 let Ascended = {
@@ -163,6 +165,10 @@ let Ascended = {
 				if (ids.length > 0 && !await BuildingMarker.show(ids)) {
 					Productions.ShowOnMap(ids);
 				}
+			}).on('click', '.alert-bell:not(.disabled)', (e) => {
+				// mutes or unmutes every instance of the building type
+				MainParser.Inactives.toggleMute(e.currentTarget.dataset.target_id);
+				Ascended.RenderList();
 			}).on('scroll', (e) => {
 				// fade the sticky table header once the list is scrolled
 				e.currentTarget.classList.toggle('scrolled', e.currentTarget.scrollTop > 0);
@@ -424,6 +430,23 @@ let Ascended = {
 
 
 	/**
+	 * Bell of a row: switches the expiry alerts of the building type on or off,
+	 * greyed out while the alerts are switched off in the settings
+	 * @param {string} targetId city entity id of the decayed version
+	 * @param {boolean} alertsOn setting "ShowBuildingsExpired"
+	 * @returns {string} html, empty when the decayed version is unknown
+	 */
+	AlertBell: (targetId, alertsOn) => {
+		if (!targetId) return '';
+
+		const muted = MainParser.Inactives.isMuted(targetId),
+			title = !alertsOn ? 'Boxes.Ascended.AlertsDisabled' : (muted ? 'Boxes.Ascended.AlertOff' : 'Boxes.Ascended.AlertOn');
+
+		return `<span class="alert-bell game-cursor${muted ? ' muted' : ''}${alertsOn ? '' : ' disabled'}" data-target_id="${targetId}" title="${i18n(title)}"></span>`;
+	},
+
+
+	/**
 	 * Renders the building table and the counter in the bottombar.
 	 */
 	RenderList: () => {
@@ -438,7 +461,10 @@ let Ascended = {
 		table.push(`<th class="text-center">${i18n('Boxes.Ascended.ColDuration')}</th>`);
 		table.push(`<th>${i18n('Boxes.Ascended.ColRemaining')}</th>`);
 		table.push('<th></th>');
+		table.push('<th></th>');
 		table.push('</tr></thead><tbody>');
+
+		const alertsOn = Settings.GetSetting('ShowBuildingsExpired');
 
 		for (const row of rows) {
 			const percent = (!row.expired && row.remaining !== null && row.duration > 0)
@@ -469,6 +495,7 @@ let Ascended = {
 			table.push(`<span class="time ${barClass}">${remainingText}</span>`);
 			table.push(`<span class="ascended-bar"><span class="${barClass}" style="width:${percent}%"></span></span>`);
 			table.push('</td>');
+			table.push(`<td class="text-center">${Ascended.AlertBell(row.targetId, alertsOn)}</td>`);
 			table.push(`<td class="text-right"><span class="show-entity game-cursor" data-meta_id="${row.metaId}" title="${i18n('Boxes.Ascended.ShowOnMap')}"><img class="game-cursor" src="${extUrl}css/images/hud/open-eye.png" alt=""></span></td>`);
 			table.push('</tr>');
 		}

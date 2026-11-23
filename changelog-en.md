@@ -5,6 +5,7 @@
 
 - GB Calculator: piggy bank column with your contribution boost on other players' GBs, like in the GB Cost Calc
 - Inventory Overview: size on every building, sort and filter by size
+- Ascended Buildings: a bell per building mutes its expiry alerts, replaces the list in the settings
 
 **Bugfixes**
 

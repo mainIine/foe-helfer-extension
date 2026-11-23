@@ -229,3 +229,30 @@
 #TooltipContainer .ascendedCompareTT .compare-side.is-ascended h2 > span:first-child {
 	color: var(--sunflower);
 }
+
+/* Bell: expiry alert of the building type on / muted */
+#ascended .alert-bell::after {
+	content: '🔔';
+}
+
+#ascended .alert-bell.muted::after {
+	content: '🔕';
+}
+
+#ascended .alert-bell {
+	opacity: 0.85;
+}
+
+#ascended .alert-bell.muted {
+	opacity: 0.55;
+}
+
+#ascended .alert-bell:not(.disabled):hover {
+	opacity: 1;
+	text-shadow: 0 0 3px var(--sunflower);
+}
+
+#ascended .alert-bell.disabled {
+	opacity: 0.25;
+	cursor: default;
+}
