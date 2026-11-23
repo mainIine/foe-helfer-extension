@@ -2578,138 +2578,169 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Expiry alerts of time limited buildings: an instant notification listing the
+	 * buildings that already decayed and one scheduled alert per running building
+	 * for the moment it decays. Building types are muted with the bell in the
+	 * "Ascended buildings" box, keyed by the entity id of the decayed version.
+	 * @namespace
+	 */
 	Inactives: {
-		list:[],
-		ignore: JSON.parse(localStorage.getItem("LimitedBuildingsIgnoreList")||'[]'),
+		/** @type {string[]} entity ids of decayed building versions whose alerts are muted */
+		ignore: JSON.parse(localStorage.getItem('LimitedBuildingsIgnoreList') || '[]'),
 
+
+		/**
+		 * Notifies about decayed buildings and schedules the alerts of the running
+		 * ones. Called once the city map arrived
+		 */
 		check: () => {
-			//get list of buildings for which an alert is already set
-			let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'{}')
-			//get list of expired limited buildings in city; a re-ascended building keeps a stale
-			//decayedFromCityEntityId, so skip buildings whose current version is itself time limited
-			let list = Object.values(MainParser.CityMapData).filter(value => !!value.decayedFromCityEntityId
-				&& !MainParser.CityEntities[value.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime).map(value => value.id);
-			//remove buildings that were already tracked and that should have just triggered an alert
-			for (let i = list.length-1;i>=0;i--) {
-				if (LB[list[i]] || MainParser.Inactives.ignore.includes(MainParser.CityMapData[list[i]].cityentity_id)) {
-					list.splice(i,1)
-				}
-			}
-			MainParser.Inactives.list = [...new Set(list.map(x=>MainParser.CityMapData[x].cityentity_id))];
+			// buildings with an alert already set, value = local time of the alert in ms
+			const LB = JSON.parse(localStorage.getItem('LimitedBuildingsAlertSet') || '{}');
 
-			//remove tracked buildings if time ran out, the stored value is the local time of their alert in ms
-			for (let x in LB) {
-				if (LB[x] && LB[x] < Date.now()) delete LB[x];
-			}
-			localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
-			if(!Settings.GetSetting('ShowBuildingsExpired')){
-				return;
-			}
-			//create instant alert for currently expired buildings
-			if (list.length > 0) {
-					const data = {
-					title: i18n("InactiveBuildingsAlert.title"),
-					body: list.map(x=>MainParser.CityEntities[MainParser.CityMapData[x].cityentity_id].name).join("\n"),
-					expires: moment().add(1,"seconds").valueOf(),
-					repeat: -1,
-					persistent: true,
-					tag: '',
-					category: 'event',
-					vibrate: false,
-					actions: [{title:"OK"}]
-				};
+			// expired limited buildings in the city; a re-ascended building keeps a stale
+			// decayedFromCityEntityId, so skip buildings whose current version is itself time limited.
+			// Buildings whose alert just triggered and muted buildings are left out
+			const expired = Object.values(MainParser.CityMapData).filter(building => !!building.decayedFromCityEntityId
+				&& !MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime
+				&& !LB[building.id]
+				&& !MainParser.Inactives.isMuted(building.cityentity_id));
 
-				MainParser.sendExtMessage({
-					type: 'alerts',
-					playerId: ExtPlayerID,
-					action: 'create',
-					data: data,
-				})
+			// forget tracked buildings once their alert time has passed
+			for (const id in LB) {
+				if (LB[id] && LB[id] < Date.now()) delete LB[id];
 			}
-			let buildings = Object.values(MainParser.CityMapData)
-			for (let building of buildings) {
-				// set alerts for limited buildings that will run out in the future and that have no alert yet
+			localStorage.setItem('LimitedBuildingsAlertSet', JSON.stringify(LB));
+
+			if (!Settings.GetSetting('ShowBuildingsExpired')) return;
+
+			// instant alert for the currently expired buildings
+			if (expired.length > 0) {
+				MainParser.Inactives.createAlert(expired.map(building => MainParser.CityEntities[building.cityentity_id].name).join('\n'), moment().add(1, 'seconds').valueOf());
+			}
+
+			MainParser.Inactives.scheduleAlerts();
+		},
+
+
+		/**
+		 * Creates an expiry alert
+		 *
+		 * @param {string} body building name(s), one per line
+		 * @param {number} expires local time of the alert in ms
+		 * @returns {Promise<number>} id of the created alert
+		 */
+		createAlert: (body, expires) => MainParser.sendExtMessage({
+			type: 'alerts',
+			playerId: ExtPlayerID,
+			action: 'create',
+			data: {
+				title: i18n('InactiveBuildingsAlert.title'),
+				body: body,
+				expires: expires,
+				repeat: -1,
+				persistent: true,
+				tag: '',
+				category: 'event',
+				vibrate: false,
+				actions: [{ title: 'OK' }]
+			},
+		}),
+
+
+		/**
+		 * Schedules an alert for the decay of every running limited building that
+		 * has none yet and is not muted
+		 */
+		scheduleAlerts: () => {
+			const LB = JSON.parse(localStorage.getItem('LimitedBuildingsAlertSet') || '{}');
+
+			for (const building of Object.values(MainParser.CityMapData)) {
 				const limitedConfig = MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config;
-				if (!LB[building.id] && limitedConfig?.expireTime) {
-					// the game delivers the decay timestamp directly (state.decaysAt);
-					// constructionFinishedAt is only a fallback as it is often missing
-					const expireAt = building.state?.decaysAt
-						|| (building.state?.constructionFinishedAt ? building.state.constructionFinishedAt + limitedConfig.expireTime : null);
-					if (!expireAt) continue;
-					const data = {
-						title: i18n("InactiveBuildingsAlert.title"),
-						body: MainParser.CityEntities[limitedConfig.targetCityEntityId].name,
-						expires: (expireAt - GameTime.Offset)*1000,
-						repeat: -1,
-						persistent: true,
-						tag: '',
-						category: 'event',
-						vibrate: false,
-						actions: [{title:"OK"}]
-					};
+				if (LB[building.id] || !limitedConfig?.expireTime || MainParser.Inactives.isMuted(limitedConfig.targetCityEntityId)) continue;
 
-					MainParser.sendExtMessage({
-						type: 'alerts',
-						playerId: ExtPlayerID,
-						action: 'create',
-						data: data,
-					}).then((aId) => {
-						LB[building.id]=(expireAt - GameTime.Offset)*1000;
-						localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
-					})
+				// the game delivers the decay timestamp directly (state.decaysAt);
+				// constructionFinishedAt is only a fallback as it is often missing
+				const expireAt = building.state?.decaysAt
+					|| (building.state?.constructionFinishedAt ? building.state.constructionFinishedAt + limitedConfig.expireTime : null);
+				if (!expireAt) continue;
+
+				const expires = (expireAt - GameTime.Offset) * 1000;
+
+				MainParser.Inactives.createAlert(MainParser.CityEntities[limitedConfig.targetCityEntityId].name, expires).then(() => {
+					LB[building.id] = expires;
+					localStorage.setItem('LimitedBuildingsAlertSet', JSON.stringify(LB));
+				});
+			}
+		},
+
+
+		/**
+		 * Whether the expiry alerts of a building type are muted
+		 *
+		 * @param {string} decayedId entity id of the decayed version
+		 * @returns {boolean}
+		 */
+		isMuted: (decayedId) => MainParser.Inactives.ignore.includes(decayedId),
+
+
+		/**
+		 * Mutes or unmutes the expiry alerts of a building type. Muting deletes the
+		 * alerts already scheduled for it, unmuting schedules them again
+		 *
+		 * @param {string} decayedId entity id of the decayed version
+		 * @returns {boolean} true when the building type is muted now
+		 */
+		toggleMute: (decayedId) => {
+			const ignore = MainParser.Inactives.ignore,
+				index = ignore.indexOf(decayedId),
+				muted = index < 0;
+
+			if (muted) {
+				ignore.push(decayedId);
+			}
+			else {
+				ignore.splice(index, 1);
+			}
+			localStorage.setItem('LimitedBuildingsIgnoreList', JSON.stringify(ignore));
+
+			if (muted) {
+				MainParser.Inactives.deleteAlerts(decayedId);
+			}
+			else if (Settings.GetSetting('ShowBuildingsExpired')) {
+				MainParser.Inactives.scheduleAlerts();
+			}
+
+			return muted;
+		},
+
+
+		/**
+		 * Deletes the pending expiry alerts of a building type and forgets its
+		 * tracked instances, so unmuting schedules them anew. Alerts are found by
+		 * title and building name, which also covers alerts created before muting existed
+		 *
+		 * @param {string} decayedId entity id of the decayed version
+		 * @returns {Promise<void>}
+		 */
+		deleteAlerts: async (decayedId) => {
+			const LB = JSON.parse(localStorage.getItem('LimitedBuildingsAlertSet') || '{}'),
+				name = MainParser.CityEntities[decayedId]?.name;
+
+			for (const building of Object.values(MainParser.CityMapData)) {
+				if (MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.targetCityEntityId === decayedId) {
+					delete LB[building.id];
 				}
 			}
-		},
+			localStorage.setItem('LimitedBuildingsAlertSet', JSON.stringify(LB));
 
-		showSettings: ()=> {
+			const alerts = await MainParser.sendExtMessage({ type: 'alerts', playerId: ExtPlayerID, action: 'getAll' }) || [];
 
-			if ($('#inactivesSettingsBox').length === 0) {
-				HTML.Box({
-					id: 'inactivesSettingsBox',
-					title: i18n('Boxes.InactivesSettings.Title'),
-					auto_close: true,
-					dragdrop: true,
-					minimize: true,
-					resize: true,
-				});
+			for (const alert of alerts) {
+				if (alert.triggered || alert.data?.title !== i18n('InactiveBuildingsAlert.title') || alert.data?.body !== name) continue;
 
-				//HTML.AddCssFile('auctions');
+				await MainParser.sendExtMessage({ type: 'alerts', playerId: ExtPlayerID, action: 'delete', id: alert.id });
 			}
-			MainParser.Inactives.updateSettings();
-		},
-
-		updateSettings:()=>{
-			let t=[];
-			//t.push(`<h2>${i18n('Boxes.InactivesSettings.Ignored')}</h2>`);
-			t.push(`<h2>${i18n('Boxes.InactivesSettings.Toggle')}</h2>`);
-			for (let id of MainParser.Inactives.ignore) {
-				t.push(`<span class="inactivesIgnoreToggle" data-id="${id}" title="${i18n('Boxes.InactivesSettings.NoAlert')}">🤐${MainParser.CityEntities[id].name}</span></br>`);
-			}
-			//t.push(`<h2>${i18n('Boxes.InactivesSettings.ClickToIgnore')}</h2>`);
-
-			for (let id of MainParser.Inactives.list) {
-				t.push(`<span class="inactivesIgnoreToggle" data-id="${id}" title="${i18n('Boxes.InactivesSettings.AlertActive')}">⚠️${MainParser.CityEntities[id].name}</span></br>`);
-			}
-
-
-			$('#inactivesSettingsBoxBody').html(t.join(''));
-
-			$('.inactivesIgnoreToggle').on("click", (e) => {
-				let id = e.target.dataset.id;
-				let i = MainParser.Inactives.ignore.findIndex(x => x==id);
-				if (i>=0) {
-					MainParser.Inactives.ignore.splice(i,1);
-					MainParser.Inactives.list.push(id);
-
-				} else {
-					i = MainParser.Inactives.list.findIndex(x => x==id);
-					MainParser.Inactives.list.splice(i,1);
-					MainParser.Inactives.ignore.push(id);
-
-				};
-				localStorage.setItem("LimitedBuildingsIgnoreList",JSON.stringify(MainParser.Inactives.ignore));
-				MainParser.Inactives.updateSettings();
-			});
 		},
 	},
 

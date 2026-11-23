@@ -304,6 +304,14 @@ let GuildMemberStat = {
 	},
 
 
+	/**
+	 * Reads the guild supporting buildings and the great buildings of a visited city
+	 * and stores them for the member
+	 *
+	 * @param {{city_map: {entities: Object[]}}} Buildings City data of the visited player
+	 * @param {{player_id: number, era: string}} Member Visited member
+	 * @returns {Promise<void>}
+	 */
 	ReadGuildMemberBuildings: async (Buildings, Member) => {
 		let entity = Buildings['city_map']['entities'];
 		let GuildGoodsBuildings = [];
@@ -323,7 +331,7 @@ let GuildMemberStat = {
 				if (entity[i]['type'] === 'greatbuilding') {
 					let lgd = {
 						cityentity_id: entity[i]['cityentity_id'],
-						name: CityEntity['name'],
+						name: CityEntity?.['name'] || EntityID,
 						level: entity[i]['level'],
 						max_level: entity[i]['max_level'],
 						invested_forge_points: entity[i]['state']['invested_forge_points'],
@@ -333,11 +341,13 @@ let GuildMemberStat = {
 					LgBuildings.push(lgd);
 				}
 
+				// a building missing in the metadata must not abort the whole city
+				if (!CityEntity) continue;
+
 				// Check for clan power building (Ruhmeshalle etc.)
 				if (CityEntity['type'] && CityEntity['type'] === 'clan_power_production') {
 					let EntityLevel = EntityEra ? EntityEra : Member.era;
-					let value = CityEntity['entity_levels'].find(data => data.era === EntityLevel);
-					let clan_power = typeof value.clan_power !== 'undefined' ? value.clan_power : 0;
+					let clan_power = CityEntity['entity_levels']?.find(data => data.era === EntityLevel)?.clan_power ?? 0;
 
 					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityEraId, era: Member.era });
 				}
@@ -356,8 +366,8 @@ let GuildMemberStat = {
 							Resources = Object.values(Ability['additionalResources']['AllAge']['resources'])[0];
 
 						// Check for clan power building (Ehrenstatue etc.)
-						if (EntityEra !== null && Ability['additionalResources'][EntityEra] !== undefined && Ability['additionalResources'][EntityEra]['resources'] !== undefined && Ability['additionalResources'][EntityEra]['resources']['clan_power'] !== undefined) {
-							let clan_power = Ability['additionalResources'][EntityEra]['resources']['clan_power'];
+						let clan_power = EntityEra !== null ? Ability['additionalResources']?.[EntityEra]?.['resources']?.['clan_power'] : undefined;
+						if (clan_power !== undefined) {
 							GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityEraId, era: EntityEra });
 						}
 
@@ -2066,6 +2076,13 @@ let GuildMemberStat = {
 	},
 
 
+	/**
+	 * Shows the great buildings of the guild members, grouped per building or as a list.
+	 * Only cities visited at least once are known: "members without" lists only those,
+	 * the members not visited yet are named separately
+	 *
+	 * @returns {Promise<void>}
+	 */
 	ShowGreatBuildings: async () => {
 		helper.preloader.show("#GuildMemberStat");
 		GuildMemberStat.InitSettings();
@@ -2074,9 +2091,19 @@ let GuildMemberStat = {
 		let d = [];
 
 		let GreatBuildings = await GuildMemberStat.GetGuildMemberBuildings('greatbuildings');
-		let allMemberIds = Object.keys(GuildMemberStat.MemberDict);
 
-		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')} <button style="float:right" id="toggleGreatBuildingView" class="btn">${i18n('Boxes.GuildMemberStat.ChangeView')}</button></div>`);
+		// great buildings are known only for members whose city was visited at least once
+		const visitedIds = new Set((await GuildMemberStat.db.player.where({ deleted: 0 }).toArray())
+				.filter(member => Array.isArray(member.greatbuildings))
+				.map(member => String(member.player_id))),
+			currentMemberIds = Object.keys(GuildMemberStat.MemberDict).filter(id => !GuildMemberStat.MemberDict[id].deleted),
+			visitedMemberIds = currentMemberIds.filter(id => visitedIds.has(id)),
+			notVisitedIds = currentMemberIds.filter(id => !visitedIds.has(id))
+				.sort((a, b) => GuildMemberStat.MemberDict[a].name.localeCompare(GuildMemberStat.MemberDict[b].name));
+
+		const visitedInfo = HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.VisitedCities'), { visited: visitedMemberIds.length, total: currentMemberIds.length });
+
+		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')} ${visitedInfo} <button style="float:right" id="toggleGreatBuildingView" class="btn">${i18n('Boxes.GuildMemberStat.ChangeView')}</button></div>`);
 
 		if (GreatBuildings === null) {
 			$("#gmsContentWrapper").html(d.join(''));
@@ -2113,7 +2140,7 @@ let GuildMemberStat = {
 					level: obj.level,
 					max_level: obj.max_level
 				}];
-				res[obj.cityentity_id].NoGbMember = allMemberIds.filter(function (value) {
+				res[obj.cityentity_id].NoGbMember = visitedMemberIds.filter(function (value) {
 					return value != obj.player_id;
 				});
 			}
@@ -2269,6 +2296,13 @@ let GuildMemberStat = {
 							d.push(MainParser.GetPlayerLink(NoGbMember[i], GuildMemberStat.MemberDict[NoGbMember[i]].name));
 							if (i < NoGbMember.length - 1) d.push(', ');
 						}
+						d.push(`</div>`);
+					}
+
+					// members whose city was never visited: unknown whether they have it
+					if (notVisitedIds.length) {
+						d.push(`<div class="no_gb_member copyable"><span class="text-bright"><i>${i18n('Boxes.GuildMemberStat.NotVisitedCities')}</i>: </span>`);
+						d.push(notVisitedIds.map(memberId => MainParser.GetPlayerLink(memberId, GuildMemberStat.MemberDict[memberId].name)).join(', '));
 						d.push(`</div>`);
 					}
 

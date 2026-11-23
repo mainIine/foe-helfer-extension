@@ -1,5 +1,22 @@
 ## Extension Changelog
 
+##### 4.9.2.0
+**Update**
+
+- LG Rechner: Sparschwein-Spalte mit deinem Mäzen-Bonus bei fremden LGs, wie im Kostenrechner
+- Inventar-Übersicht: Größe an jedem Gebäude, Sortierung und Filter nach Größe
+- Erhabene Gebäude: Eine Glocke je Gebäude schaltet seine Ablauf-Alarme stumm, ersetzt die Liste in den Einstellungen
+
+**Bugfixes**
+
+- Armee-Vorschlag: Aufstellungen mit Agenten werden realistischer bewertet
+- Armee-Vorschlag: „Verluste“ zählt nur die Verluste gewonnener Kämpfe
+- Armee-Vorschlag: Das [?] führt zur Anleitung
+- Fenster: ragen auf kleineren Bildschirmen nicht mehr über den Rand
+- Gildenmitglieder-Übersicht: LGs aller besuchten Mitglieder werden gezählt, nicht besuchte stehen extra
+
+---
+
 ##### 4.9.1.0
 **Update**
 

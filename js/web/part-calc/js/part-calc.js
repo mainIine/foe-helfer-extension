@@ -652,6 +652,7 @@ let Parts = {
 		//Calculation Start
 		let arcs = [],
 			FPRewards = [], // FP Maezenboni pro Platz (0 basiertes Array)
+			NettoRewards = [], // FP reward per place without any contribution boost (0-based array)
 			MedalRewards = [], // Medaillen Maezenboni pro Platz (0 basiertes Array)
 			BPRewards = [], // Blaupause Maezenboni pro Platz (0 basiertes Array)
 			BPTierRewards = [], // blueprint rewards per place split by tier: {tier, amount}[] (amount already boosted)
@@ -723,6 +724,7 @@ let Parts = {
 							FPRewards[Place] = 1;
 						}
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
+						NettoRewards[Place] = FPCount;
 
 						// Medals
 						MedalCount = (Parts.CurrentGB.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.CurrentGB.Rankings[i]['reward']['resources']['medals']) : 0);
@@ -762,6 +764,7 @@ let Parts = {
 			// future level: rewards from the reward table (classic) or the level costs (prestige rework)
 			Parts.Maezens = Array(Parts.PlaceCount).fill(0);
 			FPRewards = GreatBuildings.GetPatronRewards(EntityID, Parts.Level, Parts.ArcPercents, Total) || Array(Parts.PlaceCount).fill(0);
+			NettoRewards = GreatBuildings.GetPatronRewards(EntityID, Parts.Level, 0, Total) || [];
 			MedalRewards = Array(Parts.PlaceCount).fill(0);
 			BPRewards = Array(Parts.PlaceCount).fill(0);
 			BPTierRewards = [];
@@ -938,6 +941,15 @@ let Parts = {
 		let minView = (localStorage.getItem('OwnPartMinView') == "true")
 		if (localStorage.getItem('OwnPartMinView') == null) minView = false
 
+		// contribution boost column (piggy bank) like in the cost calculator: only on foreign GBs,
+		// shows the extra FP the own contribution boost grants per place
+		const OwnBoost = MainParser.GetArkBonus(IsGold ? 'gold' : null),
+			ShowBoost = IsForeign && OwnBoost > 0 && localStorage.getItem('CalculatorShowBoostColumn') !== 'false',
+			// columns behind "order", "deposit" and "done"
+			ExtraCols = (printsEnabled ? 1 : 0) + (medalsEnabled ? 1 : 0) + (ShowBoost ? 1 : 0) + (minView ? 0 : 2),
+			// empty cell filling the rest of a row with the given number of cells
+			Filler = (Cells) => (ExtraCols + 3 - Cells > 0 ? `<td colspan="${ExtraCols + 3 - Cells}"></td>` : '');
+
 		h.push('<table id="OwnPartTable" class="foe-table" style="margin-top:2px">');
 		h.push('<thead>');
 
@@ -947,6 +959,7 @@ let Parts = {
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
 		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint"' + GreatBuildings.BlueprintIconStyle(Parts.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
 		if (medalsEnabled) h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
+		if (ShowBoost) h.push('<th class="text-center"><span class="contribution-boost"' + GreatBuildings.ContributionBoostIconStyle(Parts.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Boost')) + '"></span></th>');
 		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
 		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
 		h.push('</tr>');
@@ -972,9 +985,7 @@ let Parts = {
 				h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 				h.push('<td class="text-center"><span class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartStartText + '</span></td>');
 				h.push('<td class="text-center paidFP"><b>' + HTML.Format(EigenStart) + '</b></td>');
-				if (printsEnabled && medalsEnabled) h.push('<td colspan="4"></td>');
-				else if (printsEnabled || medalsEnabled) h.push('<td colspan="3"></td>');
-				else if (!minView) h.push('<td colspan="2"></td>');
+				h.push(Filler(3));
 				h.push('</tr>');
 			}
 			else {
@@ -983,10 +994,7 @@ let Parts = {
 					let OwnPartText = opt(Eigens[i], EigenCounter);
 					h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 					h.push('<td class="text-center ' + (PlayerID === ExtPlayerID ? 'success' : 'yellow-text') + '">' + OwnPartText + '</td>');
-					if (printsEnabled && medalsEnabled) h.push('<td colspan="5"></td>');
-					else if (printsEnabled || medalsEnabled) h.push('<td colspan="4"></td>');
-					else if (!minView) h.push('<td colspan="3"></td>');
-					if (minView) h.push('<td></td>');
+					h.push(Filler(2));
 					h.push('</tr>');
 				}
 			}
@@ -1037,6 +1045,7 @@ let Parts = {
 
 			if (printsEnabled) h.push('<td class="text-center">' + GreatBuildings.FormatBlueprintRewards(BPTierRewards[i], BPRewards[i]) + '</td>');
 			if (medalsEnabled) h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
+			if (ShowBoost) h.push('<td class="text-center"><small>' + HTML.Format(MainParser.round((NettoRewards[i] || 0) * (OwnBoost + 100) / 100) - (NettoRewards[i] || 0)) + '</small></td>');
 			if (!minView) h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input' + i + '" value="' + Parts.Exts[i] + '"></td>');
 			if (!minView) h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="-100" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
 
@@ -1054,7 +1063,7 @@ let Parts = {
 			h.push('<td>#' + (Parts.PlaceCount + 1) + (Parts.Maezens.length > Parts.PlaceCount + 1 ? ('-' + Parts.Maezens.length) : '') + '</td>');
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + HTML.Format(MaezenRest) + '</strong></td>');
-			if (!minView) h.push('<td colspan="4"></td>');
+			h.push(Filler(3));
 			h.push('</tr>');
 		}
 
@@ -1065,7 +1074,7 @@ let Parts = {
 			let OwnPartRestText = opt(Eigens[Parts.PlaceCount], EigenCounter);
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 			h.push('<td class="text-center ' + (PlayerID === ExtPlayerID ? 'success' : 'yellow-text') + '">' + OwnPartRestText + '</td>');
-			h.push('<td colspan="5"></td>');
+			h.push(Filler(2));
 			h.push('</tr>');
 		}
 

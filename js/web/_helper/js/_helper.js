@@ -194,8 +194,8 @@ let HTML = {
 		'CalculatorBox': 'module/gb-cost-calculator',
 		'Castle': 'module/castle',
 		'CityBuilderBox': 'module/city-map',
-		'CityBuilderUnplacedBox': 'module/city-map',
 		'CityBuilderKeepBox': 'module/city-map',
+		'CityBuilderUnplacedBox': 'module/city-map',
 		'CityMapSubmit': 'module/city-map',
 		'CloseBox': 'module/close-all',
 		'DBExport': 'module/import-export',
@@ -239,6 +239,7 @@ let HTML = {
 		'battleAssistAAConfig': 'module/battle-assist',
 		'battleAssistAddAdvice': 'module/battle-assist',
 		'battleAssistArmyAdvice': 'module/battle-assist',
+		'battleAssistLineup': 'module/army-suggestion',
 		'battleAssistNextEraDialog': 'module/battle-assist',
 		'battleAssistRogueDialog': 'module/battle-assist',
 		'betterMusicDialog': 'module/music',
@@ -249,7 +250,6 @@ let HTML = {
 		'citysearch': 'module/city-search',
 		'doubleFPprevention': 'module/double-fp-prevention',
 		'eventCockpit': 'module/event-cockpit',
-		'yearReview': 'module/year-review',
 		'eventchests': 'module/event-chests',
 		'eventpresents': 'module/event-chests',
 		'findGBDialog': 'module/find-gb',
@@ -259,7 +259,6 @@ let HTML = {
 		'greatbuildings': 'module/gb-investments',
 		'idleGameDialog': 'module/idle-game',
 		'idleGameStrategyDialog': 'module/idle-game',
-		'inactivesSettingsBox': 'module/alerts',
 		'inventoryOverview': 'module/inventory',
 		'kits': 'module/kits',
 		'mapScoutingTimesDialog': 'module/scouting',
@@ -276,6 +275,7 @@ let HTML = {
 		'stats': 'module/statistics',
 		'technologies': 'module/technologies',
 		'treasury': 'module/treasury',
+		'yearReview': 'module/year-review',
 		// docs-pages:end
 	},
 
@@ -652,13 +652,15 @@ let HTML = {
 			sizeLS = localStorage.getItem(id + 'Size');
 
 		if (sizeLS !== null) {
-			const s = sizeLS.split('|');
+			const [savedW, savedH] = sizeLS.split('|').map(Number),
+				// a size saved on a larger screen must not exceed the viewport, otherwise the grip is out of reach
+				w = Math.min(savedW, window.innerWidth - 10);
 
 			// if the saved height does not fit into the viewport, only restore the width
-			if ($(window).height() - s[1] < 20) {
-				box.width(s[0]);
+			if (window.innerHeight - savedH < 20) {
+				box.width(w);
 			} else {
-				box.width(s[0]).height(s[1]);
+				box.width(w).height(savedH);
 			}
 		} else {
 			setTimeout(() => {
