@@ -1,5 +1,13 @@
 ## Extension Changelog
 
+##### 4.9.2.1
+**Bugfixes**
+
+- Powerleveln: öffnet deutlich schneller, das Spiel stockt dabei kaum noch
+- Fenster mit großen Tabellen bauen sich schneller auf
+
+---
+
 ##### 4.9.2.0
 **Update**
 
