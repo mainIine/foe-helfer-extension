@@ -5,6 +5,7 @@
 
 - Powerleveln: öffnet deutlich schneller, das Spiel stockt dabei kaum noch
 - Fenster mit großen Tabellen bauen sich schneller auf
+- Blaue Galaxie: Forge-Punkte-Pakete werden mit ihrer tatsächlichen Menge gezählt, wie in der Produktionsübersicht
 
 ---
 
