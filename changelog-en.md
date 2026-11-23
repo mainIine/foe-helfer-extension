@@ -5,6 +5,7 @@
 
 - Power leveling: opens much faster, the game barely stutters meanwhile
 - Boxes with large tables are built faster
+- Blue Galaxy: forge point packages are counted with their actual amount, like in the production overview
 
 ---
 
