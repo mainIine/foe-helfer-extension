@@ -10,6 +10,7 @@
 - Army suggestion: line-ups with rogues are rated more realistically – next to slow units, rogues take the first hits
 - Army suggestion: "Losses" shows the units lost in a won battle, lost battles no longer count as eight losses
 - Army suggestion: the [?] in the box opens the guide
+- Boxes: a box resized on a larger screen no longer sticks out beyond a smaller screen and can be resized again
 
 ---
 
