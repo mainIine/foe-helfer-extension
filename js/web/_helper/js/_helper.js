@@ -653,13 +653,15 @@ let HTML = {
 			sizeLS = localStorage.getItem(id + 'Size');
 
 		if (sizeLS !== null) {
-			const s = sizeLS.split('|');
+			const [savedW, savedH] = sizeLS.split('|').map(Number),
+				// a size saved on a larger screen must not exceed the viewport, otherwise the grip is out of reach
+				w = Math.min(savedW, window.innerWidth - 10);
 
 			// if the saved height does not fit into the viewport, only restore the width
-			if ($(window).height() - s[1] < 20) {
-				box.width(s[0]);
+			if (window.innerHeight - savedH < 20) {
+				box.width(w);
 			} else {
-				box.width(s[0]).height(s[1]);
+				box.width(w).height(savedH);
 			}
 		} else {
 			setTimeout(() => {
