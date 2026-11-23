@@ -4,6 +4,7 @@
 **Update**
 
 - LG Rechner: Bei LGs anderer Spieler zeigt die Tabelle die Sparschwein-Spalte mit den zusätzlichen FP durch deinen Mäzen-Bonus, wie im Kostenrechner (dieselbe Einstellung „Mäzen-Bonus-Spalte anzeigen“); eigene LGs bleiben ohne sie
+- Inventar-Übersicht: Gebäude und Fragmente zeigen ihre Größe; neue Sortierung „Größe“ und ein Größenfilter, der auch Auswahl-Kits mit einem Gebäude dieser Größe findet – praktisch, um eine Lücke zu füllen
 
 **Bugfixes**
 
