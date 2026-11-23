@@ -11,6 +11,7 @@
 - Armee-Vorschlag: „Verluste“ zeigt die verlorenen Einheiten bei einem Sieg, verlorene Kämpfe zählen nicht mehr als acht Verluste
 - Armee-Vorschlag: Das [?] im Fenster führt zur Anleitung
 - Fenster: Ein auf einem größeren Bildschirm vergrößertes Fenster ragt auf einem kleineren nicht mehr über den Rand und lässt sich wieder verkleinern
+- Gildenmitglieder-Übersicht: Die LGs jeder besuchten Stadt werden gezählt, ein dem Helfer unbekanntes Gebäude lässt nicht mehr die ganze Stadt wegfallen; „Mitglieder ohne“ nennt nur besuchte Mitglieder, die übrigen stehen unter „Noch nicht besuchte Städte“, dazu die Zahl der besuchten Städte
 
 ---
 

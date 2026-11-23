@@ -11,6 +11,7 @@
 - Army suggestion: "Losses" shows the units lost in a won battle, lost battles no longer count as eight losses
 - Army suggestion: the [?] in the box opens the guide
 - Boxes: a box resized on a larger screen no longer sticks out beyond a smaller screen and can be resized again
+- Guild member overview: great buildings of every visited city are counted, a building unknown to the helper no longer drops the whole city; "Members without" only lists visited members, the others appear as "Cities not visited yet" together with the number of visited cities
 
 ---
 
