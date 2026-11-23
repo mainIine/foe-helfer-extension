@@ -230,29 +230,31 @@
 	color: var(--sunflower);
 }
 
-/* Bell: expiry alert of the building type on / muted */
-#ascended .alert-bell::after {
-	content: '🔔';
-}
-
-#ascended .alert-bell.muted::after {
-	content: '🔕';
-}
-
+/* Bell: expiry alert of the building type on / muted. The SVG is used as a mask,
+   so the colour follows the theme variables */
 #ascended .alert-bell {
-	opacity: 0.85;
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+	background-color: var(--sunflower);
+	-webkit-mask: url('../../x_img/bell.svg') center / contain no-repeat;
+	mask: url('../../x_img/bell.svg') center / contain no-repeat;
+	opacity: 0.9;
 }
 
 #ascended .alert-bell.muted {
+	background-color: var(--beige);
+	-webkit-mask-image: url('../../x_img/bell-off.svg');
+	mask-image: url('../../x_img/bell-off.svg');
 	opacity: 0.55;
 }
 
 #ascended .alert-bell:not(.disabled):hover {
 	opacity: 1;
-	text-shadow: 0 0 3px var(--sunflower);
 }
 
 #ascended .alert-bell.disabled {
-	opacity: 0.25;
+	opacity: 0.2;
 	cursor: default;
 }
