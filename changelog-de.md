@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.9.4.0
+**Update**
+
+- LG-Güterplaner: schlägt auch Gebäude deiner Stadt vor, die noch in deinem Zeitalter stehen und sich mit Kits umstellen lassen – sobald ihre Güter dort nicht mehr gebraucht werden
+
+---
+
 ##### 4.9.3.0
 **Update**
 
