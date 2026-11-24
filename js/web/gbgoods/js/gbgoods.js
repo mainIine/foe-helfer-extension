@@ -94,9 +94,9 @@
  * eras again. The box lists the placed great buildings by the era of their goods
  * with demand and stock, and ranks the buildings of the inventory by the goods of
  * that era they would yield once brought to the fitting era with One Down Kits
- * (or with a Reversion Kit and One Up Kits). Buildings of the city that already
- * stand in another era than the player's are ranked as well, they can be moved
- * on with One Up Kits.
+ * (or with a Reversion Kit and One Up Kits). Buildings of the city the kits
+ * work on are ranked as well, wherever they stand, unless goods they yield where
+ * they stand are still missing.
  * @namespace
  */
 let GBGoods = {
@@ -457,16 +457,16 @@ let GBGoods = {
 
 
 	/**
-	 * Buildings of the own city that stand in another era than the player's: they
-	 * were brought down with kits (or left behind in an older era) and can be moved
-	 * on to the era whose goods are needed next. Only buildings the kits work on,
-	 * grouped by building and era. A building is busy while goods it yields where
+	 * Buildings of the own city the kits work on, in the player's era or already
+	 * brought to another era, grouped by building and era. They can be moved to the
+	 * era whose goods are needed next. A building is busy while goods it yields where
 	 * it stands are still missing - it is not suggested for another era then.
 	 * @param {Object<string, number>} missing missing goods per era id (see CollectEras)
-	 * @returns {{entityId: string, stock: number, fromEra: number, standing: Object<string, number>, busy: boolean}[]}
+	 * @returns {{entityId: string, stock: number, fromEra: number, shifted: boolean, standing: Object<string, number>, busy: boolean}[]}
+	 *          shifted: stands in another era than the player's,
 	 *          standing: goods the building yields per day where it stands, per era id of the goods
 	 */
-	ShiftedCityBuildings: (missing) => {
+	MovableCityBuildings: (missing) => {
 		const current = Technologies.InnoEras[CurrentEra];
 		const groups = {};
 
@@ -474,7 +474,7 @@ let GBGoods = {
 			const meta = MainParser.CityEntities[entity.cityentity_id];
 			const fromEra = entity.level; // the level of these buildings is their era id
 
-			if (!meta || meta.type === 'greatbuilding' || !(fromEra > 0) || fromEra === current) continue;
+			if (!meta || meta.type === 'greatbuilding' || !(fromEra > 0)) continue;
 			if (!GBGoods.PlaceableEras(meta).changeable) continue;
 
 			const key = `${meta.id}|${fromEra}`;
@@ -485,6 +485,7 @@ let GBGoods = {
 					entityId: meta.id,
 					stock: 0,
 					fromEra: fromEra,
+					shifted: fromEra !== current,
 					standing: standing,
 					busy: Object.entries(standing).some(([eraId, amount]) => amount >= 1 && missing[eraId] > 0)
 				};
@@ -627,7 +628,7 @@ let GBGoods = {
 	 * counts where it would yield more of these goods than it does where it stands.
 	 * @param {number} eraId era id of the goods
 	 * @param {{entityId: string, stock: number, fromEra: (number|undefined), standing: (Object|undefined)}[]} sources
-	 *        buildings from the inventory (see InventoryBuildings) and of the city (see ShiftedCityBuildings, with fromEra and standing)
+	 *        buildings from the inventory (see InventoryBuildings) and of the city (see MovableCityBuildings, with fromEra and standing)
 	 * @param {Object<string, {stock: number}>} kits kit stock (see KitInfo)
 	 * @returns {GBGoodsCandidate[]} best first
 	 */
@@ -717,7 +718,7 @@ let GBGoods = {
 	Render: () => {
 		const kits = GBGoods.KitInfo();
 		const eras = GBGoods.CollectEras();
-		const city = GBGoods.ShiftedCityBuildings(Object.fromEntries(eras.map(era => [era.eraId, era.missing])));
+		const city = GBGoods.MovableCityBuildings(Object.fromEntries(eras.map(era => [era.eraId, era.missing])));
 		const sources = [...GBGoods.InventoryBuildings(), ...city.filter(building => !building.busy)];
 		const production = GBGoods.CityProduction();
 
@@ -735,7 +736,7 @@ let GBGoods = {
 				GBGoods.Candidates(era.eraId, sources, kits),
 				kits,
 				production[era.eraId] || 0,
-				city.filter(building => building.standing[era.eraId] >= 1)
+				city.filter(building => building.shifted && building.standing[era.eraId] >= 1)
 			)).join('')
 			: `<div class="no-data"><em>${i18n(GBGoods.EraFilter === 'missing' ? 'Boxes.GBGoods.NothingMissing' : 'Boxes.GBGoods.NoGBs')}</em></div>`
 		).scrollTop(scroll);
@@ -753,7 +754,7 @@ let GBGoods = {
 	 * @param {GBGoodsCandidate[]} candidates buildings yielding goods of the era, best first
 	 * @param {Object<string, {stock: number, name: string, icon: string}>} kits see KitInfo
 	 * @param {number} production goods of the era the city yields per day
-	 * @param {Object[]} working buildings of the city standing in another era than the player's that yield goods of the era (see ShiftedCityBuildings)
+	 * @param {Object[]} working buildings of the city standing in another era than the player's that yield goods of the era (see MovableCityBuildings)
 	 * @returns {string} HTML
 	 */
 	BuildCard: (era, candidates, kits, production, working) => {

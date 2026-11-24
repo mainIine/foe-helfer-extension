@@ -879,7 +879,7 @@
     "Boxes.GBGoods.BuildingEra": "Bring the building to the era __era__",
     "Boxes.GBGoods.CityProduction": "Your city currently produces __amount__ of these per day.",
     "Boxes.GBGoods.ColBuilding": "Building from inventory and city",
-    "Boxes.GBGoods.ColBuildingTT": "Buildings from the inventory – and buildings of your city that already stand in another era than yours and are no longer needed there",
+    "Boxes.GBGoods.ColBuildingTT": "Buildings from the inventory – and buildings of your city whose era can be changed with kits and whose goods are no longer needed where they stand",
     "Boxes.GBGoods.ColCount": "Count",
     "Boxes.GBGoods.ColDays": "Days",
     "Boxes.GBGoods.ColDaysTT": "Days a single building needs for the missing amount",
