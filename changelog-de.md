@@ -1,5 +1,19 @@
 ## Extension Changelog
 
+##### 4.9.3.0
+**Update**
+
+- Neu: LG-Güterplaner – zeigt je Zeitalter, wie viele Güter deine LGs für die nächsten Stufen brauchen, was im Lager fehlt und welches Gebäude aus dem Inventar die meisten dieser Güter liefert; dazu die nötigen Minus-Eins-, Rückbau-, Plus-Eins- und Renovierungs-Kits. Schon umgestellte Gebäude in der Stadt werden mit vorgeschlagen, sobald sie an ihrem Platz nicht mehr gebraucht werden
+- Erhabene Gebäude: Über das Zahnrad legst du fest, ob Auswahl-Kits (z. B. das Epische Erhabene Auswahl-Kit) und vollständige Fragment-Sätze als Kit mitzählen
+
+**Bugfixes**
+
+- Powerleveln: öffnet deutlich schneller, das Spiel stockt dabei kaum noch
+- Fenster mit großen Tabellen bauen sich schneller auf
+- Blaue Galaxie: Forge-Punkte-Pakete werden mit ihrer tatsächlichen Menge gezählt, wie in der Produktionsübersicht
+
+---
+
 ##### 4.9.2.0
 **Update**
 

@@ -78,6 +78,8 @@ Object.assign(Parts, {
 	 */
 	BuildBoxPowerLeveling: async (event) => {
 		if ($('#PowerLevelingBox').length === 0) {
+			HTML.AddCssFile('part-calc');
+
 			HTML.Box({
 				'id': 'PowerLevelingBox',
 				'title': i18n('Boxes.PowerLeveling.Title'),
@@ -136,11 +138,12 @@ Object.assign(Parts, {
 
 			// Event on the "Copy values" button in each row
 			box.on('click', '.button-powerlevel-copy', function () {
-				let gb_level = parseInt($(this).parent().find(".hidden-text").html());
+				const Level = parseInt($(this).parent().find('.hidden-text').html()),
+					{ Places, EigenNettos } = Parts.PowerLevelingData,
+					PlaceCount = Places[Level].length;
 
-				let PlaceCount = Parts.PowerLevelingData.Places[gb_level].length;
-				let CopyParts = Parts.GetCopyStringEx(Places=Array(PlaceCount).fill(true), Maezens=Parts.PowerLevelingData.Places[gb_level], Level=gb_level, OwnPart=Parts.PowerLevelingData.EigenNettos[gb_level], PlaceAll=true, PlaceAuto=false, PlaceAutoUnsafe=false, DangerPlaces=Array(PlaceCount).fill(0), LeveltLG=Array(PlaceCount).fill(false));
-				helper.str.copyToClipboardLegacy(CopyParts);
+				// all places, no auto mode, no danger or levelled places
+				helper.str.copyToClipboardLegacy(Parts.GetCopyStringEx(Array(PlaceCount).fill(true), Places[Level], Level, EigenNettos[Level], true, false, false, Array(PlaceCount).fill(0), Array(PlaceCount).fill(false)));
 			});
 
 			// unlock cost column and summary on/off
@@ -296,6 +299,31 @@ Object.assign(Parts, {
 
 
 	/**
+	 * Whether costs the game reported for a GB contradict the table of data/unlock-costs.json.
+	 *
+	 * @param {string} EntityID Entity id of the great building
+	 * @returns {boolean}
+	 */
+	HasUnlockCostMismatch: (EntityID) => Object.entries(Parts.GetSeenUnlockCosts()[EntityID] || {}).some(([Target, Costs]) => {
+		const Model = Parts.GetModelUnlockCosts(EntityID, Number(Target));
+
+		return Model !== null && JSON.stringify(Object.entries(Model).sort()) !== JSON.stringify(Object.entries(Costs).sort());
+	}),
+
+
+	/**
+	 * Unlock costs of a single GB level: costs the game reported win over the table,
+	 * a GB whose reported costs contradict the table only has reported costs.
+	 *
+	 * @param {string} EntityID Entity id of the great building
+	 * @param {number} Target Level that gets unlocked
+	 * @returns {?Object<string, number>} Amount per resource id (blueprint_copper / blueprint_gold = sets), null without data
+	 */
+	GetLevelUnlockCosts: (EntityID, Target) => Parts.GetSeenUnlockCosts()[EntityID]?.[Target]
+		|| (Parts.HasUnlockCostMismatch(EntityID) ? null : Parts.GetModelUnlockCosts(EntityID, Target)),
+
+
+	/**
 	 * Unlock costs of the levels of a power leveling range: costs the game reported
 	 * win over the table, levels the GB has already unlocked cost nothing. A GB whose
 	 * reported costs contradict the table only shows reported costs. For own GBs every
@@ -316,11 +344,7 @@ Object.assign(Parts, {
 			OwnLevels = (IsOwn ? [MainParser.CityMapData[Entity['id']]?.['max_level'], Parts.UnlockedLevels[EntityID]] : []),
 			Unlocked = Math.max(...[Entity['level'], Entity['max_level'], ...OwnLevels].map(Level => Level || 0)),
 			Seen = Parts.GetSeenUnlockCosts()[EntityID] || {},
-			Mismatch = Object.keys(Seen).some(Target => {
-				const Model = Parts.GetModelUnlockCosts(EntityID, Number(Target));
-
-				return Model !== null && JSON.stringify(Object.entries(Model).sort()) !== JSON.stringify(Object.entries(Seen[Target]).sort());
-			}),
+			Mismatch = Parts.HasUnlockCostMismatch(EntityID),
 			Rows = [],
 			Sums = {};
 		let Unknown = 0;

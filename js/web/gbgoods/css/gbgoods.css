@@ -1,0 +1,280 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#gbGoods {
+	top: 10%;
+	left: 18%;
+	width: 1040px;
+	height: 600px;
+}
+
+#gbGoodsBody {
+	display: flex;
+	flex-direction: column;
+}
+
+#gbGoods #gbGoodsTopbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 3px 5px;
+	padding: 3px 5px;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#gbGoods #gbGoodsTopbar select {
+	flex: 0 1 auto;
+	max-width: 220px;
+	background-color: var(--text-darker);
+	color: var(--beige);
+	border: 1px solid var(--border-table-bottom);
+	padding: 2px;
+}
+
+#gbGoods #gbGoodsKits {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2px 12px;
+	margin-left: auto;
+	padding-right: 4px;
+}
+
+#gbGoods #gbGoodsInner {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: hidden auto;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#gbGoods #gbGoodsBottombar {
+	padding: 3px 8px;
+	font-size: 11px;
+	font-style: italic;
+	opacity: 0.8;
+}
+
+#gbGoods .no-data {
+	padding: 20px;
+	text-align: center;
+}
+
+#gbGoods .gbg-muted {
+	opacity: 0.6;
+}
+
+/* Kits: icon with amount (topbar stock and the kits of a building) */
+#gbGoods .gbg-kit {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	white-space: nowrap;
+}
+
+#gbGoods .gbg-kit img {
+	width: 20px;
+	height: 20px;
+	object-fit: contain;
+}
+
+#gbGoods .gbg-route {
+	display: block;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+/* direction of a kit, tells the similar sounding One Up and One Down Kit apart */
+#gbGoods .gbg-arrow {
+	font-size: 1.2em;
+	font-weight: bold;
+	line-height: 1;
+}
+
+#gbGoods .gbg-route.gbg-alternative {
+	font-size: 11px;
+	font-weight: normal;
+}
+
+/* Era card header */
+#gbGoods .gbg-card {
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#gbGoods .gbg-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 5px 8px;
+}
+
+#gbGoods .gbg-header:hover {
+	background: var(--bg-table-hover, rgba(255, 255, 255, 0.05));
+}
+
+#gbGoods .gbg-chevron {
+	width: 12px;
+	flex: 0 0 auto;
+	font-size: 10px;
+	opacity: 0.7;
+}
+
+#gbGoods .gbg-era {
+	flex: 0 0 200px;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#gbGoods .gbg-goods {
+	display: flex;
+	flex: 1 1 auto;
+	flex-wrap: wrap;
+	gap: 2px 12px;
+	min-width: 0;
+}
+
+#gbGoods .gbg-good {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	white-space: nowrap;
+}
+
+#gbGoods .gbg-good img {
+	width: 20px;
+	height: 20px;
+	object-fit: contain;
+}
+
+#gbGoods .gbg-state {
+	flex: 0 0 auto;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+#gbGoods .gbg-state.gbg-muted {
+	font-weight: normal;
+	font-style: italic;
+}
+
+/* Era card body: great buildings, city production, inventory buildings */
+#gbGoods .gbg-body {
+	padding: 0 8px 8px 28px;
+}
+
+#gbGoods .gbg-gb {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 1px 0;
+}
+
+#gbGoods .gbg-gb-icon {
+	width: 30px;
+	height: 30px;
+	flex: 0 0 auto;
+	object-fit: contain;
+}
+
+#gbGoods .gbg-gb-name {
+	font-weight: bold;
+}
+
+#gbGoods .gbg-gb-level {
+	opacity: 0.75;
+	white-space: nowrap;
+}
+
+#gbGoods .gbg-gb .lb-tier-icon {
+	width: 20px;
+	vertical-align: middle;
+}
+
+#gbGoods .gbg-gb-plan {
+	margin-left: auto;
+	text-align: right;
+}
+
+#gbGoods .gbg-gb-plan strong {
+	color: var(--sunflower);
+}
+
+#gbGoods .gbg-production,
+#gbGoods .gbg-none {
+	padding: 4px 0;
+	font-size: 11px;
+	opacity: 0.8;
+}
+
+#gbGoods .gbg-table {
+	width: 100%;
+}
+
+#gbGoods .gbg-table td {
+	vertical-align: middle;
+}
+
+#gbGoods .gbg-table th {
+	white-space: nowrap;
+}
+
+#gbGoods .gbg-icon-cell {
+	width: 38px;
+	padding: 1px 2px;
+	text-align: center;
+}
+
+#gbGoods .gbg-building-icon {
+	width: 34px;
+	height: 34px;
+	object-fit: contain;
+	vertical-align: middle;
+}
+
+#gbGoods .gbg-building-name {
+	font-weight: bold;
+}
+
+#gbGoods .gbg-other-era,
+#gbGoods .gbg-others {
+	display: block;
+	font-size: 11px;
+	opacity: 0.7;
+}
+
+/* a building of the city that stands in another era than the player's */
+#gbGoods .gbg-in-city {
+	display: block;
+	font-size: 11px;
+	font-style: italic;
+	color: var(--sunflower);
+}
+
+#gbGoods .gbg-per-day {
+	color: var(--sunflower);
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+#gbGoods .gbg-more {
+	padding: 4px 0 0;
+	font-size: 11px;
+	text-align: center;
+	text-decoration: underline;
+	opacity: 0.8;
+}
+
+#gbGoods .gbg-more:hover {
+	opacity: 1;
+}

@@ -30,6 +30,7 @@ let _menu = {
 
 	Items: [
 		//'calculator',
+		'gbGoods',
 		'yearReview',
 		'eventCockpit',
 		'citySearch',
@@ -376,6 +377,7 @@ let _menu = {
 		{ id: 'checklist', title: i18n('Menu.Checklist.Title'), description: i18n('Menu.Checklist.Desc') },
 		{ id: 'citySearch', title: i18n('Menu.CitySearch.Title'), description: i18n('Menu.CitySearch.Desc') },
 		{ id: 'gbBonuses', title: i18n('Menu.GBBonuses.Title'), description: i18n('Menu.GBBonuses.Desc') },
+		{ id: 'gbGoods', title: i18n('Menu.GBGoods.Title'), description: i18n('Menu.GBGoods.Desc') },
 		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
 		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
 		{ id: 'notice', title: i18n('Menu.Notice.Title'), description: i18n('Menu.Notice.Desc') },
@@ -762,6 +764,19 @@ let _menu = {
 
 		let btn_sp = $('<span />').on('click', function () {
 			GBBonuses.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	/**
+	 * Great building goods planner: goods demand per era and the best inventory buildings for it
+	 */
+	gbGoods_Btn: () => {
+		let btn = _menu.MakeButton('gbGoods');
+
+		let btn_sp = $('<span />').on('click', function () {
+			GBGoods.init();
 		});
 
 		return btn.append(btn_sp);

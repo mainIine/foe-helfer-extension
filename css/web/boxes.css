@@ -723,72 +723,76 @@ p {
     border: 1px solid var(--text-darker);
 }
 
-[id$=market-Btn] span {
+[id$=market-Btn] > span {
 	background-image: url('../images/menu/market.png');
 }
 
-[id$=moppelHelper-Btn] span {
+[id$=moppelHelper-Btn] > span {
 	background-image: url('../images/menu/polivation.png');
 }
 
-[id$=fpCollector-Btn] span {
+[id$=fpCollector-Btn] > span {
 	background-image: url('../images/menu/forgepoints.png');
 }
 
-[id$=greatBuildings-Btn] span {
+[id$=greatBuildings-Btn] > span {
 	background-image: url('../images/menu/greatbuildings.png');
 }
 
-[id$=gbBonuses-Btn] span {
+[id$=gbBonuses-Btn] > span {
 	background-image: url('../images/menu/greatbuildings.png');
 	filter: hue-rotate(180deg);
 }
 
-[id$=productions-Btn] span {
+[id$=gbGoods-Btn] > span {
+	background-image: url('../../js/web/gbgoods/images/gbgoods.png');
+}
+
+[id$=productions-Btn] > span {
 	background-image: url('../images/menu/productions.png');
 }
 
-[id$=productionsRating-Btn] span {
+[id$=productionsRating-Btn] > span {
 	background-image: url('../images/menu/productionsrating.png');
 }
 
-[id$=calculator-Btn] span {
+[id$=calculator-Btn] > span {
 	display: none;
 }
 
-[id$=outpost-Btn] span {
+[id$=outpost-Btn] > span {
 	background-image: url('../images/menu/vikings_ship.png');
 }
 
-[id$=partCalc-Btn] span {
+[id$=partCalc-Btn] > span {
 	background-image: url('../images/menu/calc.png');
 }
 
-[id$=technologies-Btn] span {
+[id$=technologies-Btn] > span {
 	background-image: url('../images/menu/technologies.png');
 }
 
-[id$=hiddenRewards-Btn] span:first-child {
+[id$=hiddenRewards-Btn] > span:first-child {
 	background-image: url('../images/menu/incident_crates.png');
 }
 
-[id$=recurringQuests-Btn] span:first-child {
+[id$=recurringQuests-Btn] > span:first-child {
 	background-image: url('../images/menu/recurringQuests.png');
 }
 
-[id$=cityMap-Btn] span {
+[id$=cityMap-Btn] > span {
 	background-image: url('../images/menu/citymap.png');
 }
 
-[id$=settings-Btn] span {
+[id$=settings-Btn] > span {
 	background-image: url('../images/menu/settings.png');
 }
 
-[id$=shopAssist-Btn] span {
+[id$=shopAssist-Btn] > span {
 	background-image: url('../images/menu/store.png');
 }
 
-[id$=allies-Btn] span {
+[id$=allies-Btn] > span {
 	background-image: url('../images/menu/allies.png');
 }
 
@@ -804,121 +808,121 @@ p {
 	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, var(--menu-btn-bg-red) !important;
 }
 
-[id$=marketOffers-Btn] span {
+[id$=marketOffers-Btn] > span {
 	background-image: url('../images/menu/marketOffers.png');
 }
 
-[id$=stats-Btn] span {
+[id$=stats-Btn] > span {
 	background-image: url('../images/menu/stats.png');
 }
 
-[id$=infobox-Btn] span {
+[id$=infobox-Btn] > span {
 	background-image: url('../images/menu/info.png');
 }
 
-[id$=findGB-Btn] span {
+[id$=findGB-Btn] > span {
 	background-image: url('../images/menu/findGB.png');
 }
 
-[id$=unit-Btn] span {
+[id$=unit-Btn] > span {
 	background-image: url('../images/menu/units.png');
 }
 
-[id$=negotiation-Btn] span {
+[id$=negotiation-Btn] > span {
 	background-image: url('../images/menu/negotation.png');
 }
 
-[id$=kits-Btn] span {
+[id$=kits-Btn] > span {
 	background-image: url('../images/menu/kits.png');
 }
 
-[id$=inventory-Btn] span {
+[id$=inventory-Btn] > span {
 	background-image: url('../../js/web/x_img/inventory.png');
 }
 
-[id$=alerts-Btn] span {
+[id$=alerts-Btn] > span {
 	background-image: url('../images/menu/alerts.png');
 }
 
-[id$=notice-Btn] span {
+[id$=notice-Btn] > span {
 	background-image: url('../images/menu/notices.png');
 }
 
-[id$=blueGalaxy-Btn] span {
+[id$=blueGalaxy-Btn] > span {
 	background-image: url('../images/menu/BlueGalaxy.png');
 }
 
-[id$=unitsGex-Btn] span {
+[id$=unitsGex-Btn] > span {
 	background-image: url('../images/menu/gex.png');
 }
 
-[id$=gildFight-Btn] span {
+[id$=gildFight-Btn] > span {
 	background-image: url('../images/menu/gbg.png');
 }
 
-[id$=investment-Btn] span {
+[id$=investment-Btn] > span {
 	background-image: url('../images/menu/investhistory.png');
 }
 
-[id$=guildMemberstat-Btn] span {
+[id$=guildMemberstat-Btn] > span {
 	background-image: url('../images/menu/guildmemberstat.png');
 }
 
-[id$=gexStat-Btn] span {
+[id$=gexStat-Btn] > span {
 	background-image: url('../images/menu/gex.png');
 }
 
-[id$=dbexport-Btn] span {
+[id$=dbexport-Btn] > span {
 	background-image: url('../images/menu/dbexport.png');
 }
 
-[id$=castle-Btn] span {
+[id$=castle-Btn] > span {
 	background-image: url('../images/menu/castle.png');
 }
 
-[id$=music-Btn] span {
+[id$=music-Btn] > span {
 	background-image: url('../images/menu/music.png');
 }
-[id$=musicControl-Btn] span {
+[id$=musicControl-Btn] > span {
 	background-image: url('../images/menu/musicplay.png');
 }
 [id$=musicControl-Btn].musicmuted span {
 	background-image: url('../images/menu/musicmute.png');
 }
-[id$=minigame_aztecs-Btn] span {
+[id$=minigame_aztecs-Btn] > span {
 	background-image: url('../images/menu/aztecsHelper.png');
 }
-[id$=compare_friends_threads-Btn] span {
+[id$=compare_friends_threads-Btn] > span {
 	background-image: url('../images/menu/comparefriendsthreads.png');
 }
-[id$=discord-Btn] span {
+[id$=discord-Btn] > span {
 	background-image: url('../images/menu/discord.png');
 }
 
-[id$=webRequest-Btn] span {
+[id$=webRequest-Btn] > span {
 	background-image: url('../../js/web/webrequest/images/webrequest.png');
 	background-size: 80%;
 }
 
-[id$=yearReview-Btn] span {
+[id$=yearReview-Btn] > span {
 	background-image: url('../../js/web/yearreview/images/yearreview.png');
 }
 
-[id$=eventCockpit-Btn] span {
+[id$=eventCockpit-Btn] > span {
 	background-image: url('../../js/web/eventcockpit/images/eventcockpit.png');
 }
 
-[id$=ascended-Btn] span {
+[id$=ascended-Btn] > span {
 	background-image: url('../../js/web/ascended/images/ascended.png');
 	background-size: 65%;
 }
 
-[id$=checklist-Btn] span {
+[id$=checklist-Btn] > span {
 	background-image: url('../../js/web/checklist/images/checklist.png');
 	background-size: auto 60%;
 }
 
-[id$=citySearch-Btn] span {
+[id$=citySearch-Btn] > span {
 	background-image: url('../../js/web/citysearch/images/citysearch-menu.png');
 }
 

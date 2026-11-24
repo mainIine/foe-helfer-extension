@@ -190,11 +190,12 @@ const BlueGalaxy = {
 						GoodsSum += amount;
 					}
 				}
-				else if (product.type === 'genericReward' && product.resources?.type === 'forgepoint_package') {
-					FP += parseInt(product.resources.subType);
+				else if (product.type === 'genericReward' && product.resources?.fp) {
+					// forge point packages and package sets, already multiplied by the package count (CityBuildings.getForgePointPackageValue)
+					FP += product.resources.fp;
 				}
-				else if (product.type === 'genericReward' && product.resources?.id === 'large_forgepoint_package_40') {
-					FP += 10 * parseInt(product.resources.amount);
+				else if (product.type === 'genericReward' && product.resources?.type === 'forgepoint_package') {
+					FP += (parseInt(product.resources.subType) || 0) * (parseInt(product.resources.amount) || 1);
 				}
 
 				if (product.type === 'resources' || product.type === 'guildResources') {

@@ -1,5 +1,14 @@
 [
 	{
+		"id": "2026-11-gb-goods-planner",
+		"version": "4.9.3.0",
+		"date": "2026-11-24",
+		"link": {
+			"de": "https://docs.foe-helper.com/de/module/gb-goods/",
+			"en": "https://docs.foe-helper.com/en/module/gb-goods/"
+		}
+	},
+	{
 		"id": "2026-11-army-suggestion",
 		"version": "4.9.0.0",
 		"date": "2026-11-14",
