@@ -91,6 +91,12 @@
 	border-top: 1px solid var(--border-table-top);
 }
 
+/* Settings behind the gear: every kit source stays on one line */
+#ascended #ascendedSettingsBox {
+	max-width: none;
+	white-space: nowrap;
+}
+
 /* Building column */
 #ascended .ascended-icon {
 	width: 56px;

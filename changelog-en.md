@@ -4,6 +4,7 @@
 **Update**
 
 - New: GB Goods Planner – shows per era how many goods your GBs need for their next levels, what your stock lacks and which building from the inventory yields the most of these goods, including the One Down, Reversion, One Up and Renovation Kits needed. Buildings of your city that were already moved to another era are suggested too, once they are no longer needed where they stand
+- Ascended Buildings: the gear lets you choose whether selection kits (e.g. the epic ascended selection kit) and complete fragment sets count as kits
 
 **Bugfixes**
 
