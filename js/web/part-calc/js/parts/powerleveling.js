@@ -299,6 +299,31 @@ Object.assign(Parts, {
 
 
 	/**
+	 * Whether costs the game reported for a GB contradict the table of data/unlock-costs.json.
+	 *
+	 * @param {string} EntityID Entity id of the great building
+	 * @returns {boolean}
+	 */
+	HasUnlockCostMismatch: (EntityID) => Object.entries(Parts.GetSeenUnlockCosts()[EntityID] || {}).some(([Target, Costs]) => {
+		const Model = Parts.GetModelUnlockCosts(EntityID, Number(Target));
+
+		return Model !== null && JSON.stringify(Object.entries(Model).sort()) !== JSON.stringify(Object.entries(Costs).sort());
+	}),
+
+
+	/**
+	 * Unlock costs of a single GB level: costs the game reported win over the table,
+	 * a GB whose reported costs contradict the table only has reported costs.
+	 *
+	 * @param {string} EntityID Entity id of the great building
+	 * @param {number} Target Level that gets unlocked
+	 * @returns {?Object<string, number>} Amount per resource id (blueprint_copper / blueprint_gold = sets), null without data
+	 */
+	GetLevelUnlockCosts: (EntityID, Target) => Parts.GetSeenUnlockCosts()[EntityID]?.[Target]
+		|| (Parts.HasUnlockCostMismatch(EntityID) ? null : Parts.GetModelUnlockCosts(EntityID, Target)),
+
+
+	/**
 	 * Unlock costs of the levels of a power leveling range: costs the game reported
 	 * win over the table, levels the GB has already unlocked cost nothing. A GB whose
 	 * reported costs contradict the table only shows reported costs. For own GBs every
@@ -319,11 +344,7 @@ Object.assign(Parts, {
 			OwnLevels = (IsOwn ? [MainParser.CityMapData[Entity['id']]?.['max_level'], Parts.UnlockedLevels[EntityID]] : []),
 			Unlocked = Math.max(...[Entity['level'], Entity['max_level'], ...OwnLevels].map(Level => Level || 0)),
 			Seen = Parts.GetSeenUnlockCosts()[EntityID] || {},
-			Mismatch = Object.keys(Seen).some(Target => {
-				const Model = Parts.GetModelUnlockCosts(EntityID, Number(Target));
-
-				return Model !== null && JSON.stringify(Object.entries(Model).sort()) !== JSON.stringify(Object.entries(Seen[Target]).sort());
-			}),
+			Mismatch = Parts.HasUnlockCostMismatch(EntityID),
 			Rows = [],
 			Sums = {};
 		let Unknown = 0;

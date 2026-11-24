@@ -1,6 +1,10 @@
 ## Extension Changelog
 
-##### 4.9.2.1
+##### 4.9.3.0
+**Update**
+
+- New: GB Goods Planner – shows per era how many goods your GBs need for their next levels, what your stock lacks and which building from the inventory yields the most of these goods, including the One Down, Reversion, One Up and Renovation Kits needed. Buildings of your city that were already moved to another era are suggested too, once they are no longer needed where they stand
+
 **Bugfixes**
 
 - Power leveling: opens much faster, the game barely stutters meanwhile

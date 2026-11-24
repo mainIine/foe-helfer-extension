@@ -256,6 +256,7 @@ let HTML = {
 		'fp-collector': 'module/fp-collector',
 		'friendsCompareBox': 'module/compare-friends',
 		'gbBonuses': 'module/gb-bonuses',
+		'gbGoods': 'module/gb-goods',
 		'greatbuildings': 'module/gb-investments',
 		'idleGameDialog': 'module/idle-game',
 		'idleGameStrategyDialog': 'module/idle-game',

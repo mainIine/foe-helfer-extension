@@ -744,6 +744,10 @@ p {
 	filter: hue-rotate(180deg);
 }
 
+[id$=gbGoods-Btn] > span {
+	background-image: url('../../js/web/gbgoods/images/gbgoods.png');
+}
+
 [id$=productions-Btn] > span {
 	background-image: url('../images/menu/productions.png');
 }
