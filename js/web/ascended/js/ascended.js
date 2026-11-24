@@ -26,6 +26,10 @@
 	};
 	FoEproxy.addFoeHelperHandler('CityMapUpdated', refresh);
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', refresh);
+	FoEproxy.addHandler('CityMapService', 'placeBuilding', refresh);
+	FoEproxy.addHandler('CityMapService', 'removeBuilding', refresh);
+	FoEproxy.addHandler('InventoryService', 'useItem', refresh);
+	FoEproxy.addHandler('InventoryService', 'updateItem', refresh);
 }
 
 
@@ -44,8 +48,8 @@
  * @property {string} targetName name of the building it decays into
  * @property {?string} kitId upgrade kit id that restores the limited state
  * @property {?string} kitName display name of the kit
- * @property {number} kitStock kits available in the inventory (incl. selection
- *                             kits and complete fragment sets)
+ * @property {number} kitStock kits available in the inventory (incl. the
+ *                             sources switched on in {@link Ascended.KitSources})
  * @property {number} count number of instances of this building in the city
  *                          (active and expired together)
  */
@@ -81,6 +85,13 @@ let Ascended = {
 	/** @type {?Object<string,{id:string,name:string}>} building id => kit restoring it */
 	KitIndex: null,
 
+	/**
+	 * Kit sources counted as stock on top of the kits made for the building
+	 * itself, set via the gear of the box.
+	 * @type {{selection:boolean, fragments:boolean}}
+	 */
+	KitSources: {selection: true, fragments: true, ...JSON.parse(localStorage.getItem('AscendedKitSources') || '{}')},
+
 
 	/**
 	 * Opens the box (or closes an already open one).
@@ -100,6 +111,7 @@ let Ascended = {
 			dragdrop: true,
 			minimize: true,
 			resize: true,
+			settings: () => Ascended.ShowSettings(),
 			popout: () => MainParser.PopOut('ascended', 820, 480),
 		});
 
@@ -176,6 +188,9 @@ let Ascended = {
 			$('<div />').attr('id', 'ascendedBottombar')
 		);
 
+		// settings behind the gear: save and count again at once, the panel stays open
+		$('#ascended').on('change', '#ascendedSettingsBox input', () => Ascended.SaveSettings());
+
 		// tick the countdowns while the box is open
 		Ascended.RefreshTimer = setInterval(() => {
 			if ($('#ascended').length === 0) {
@@ -213,25 +228,22 @@ let Ascended = {
 
 
 	/**
-	 * Counts how many kits are available in the inventory: the kit itself,
-	 * selection kits providing it and complete fragment sets.
+	 * Counts how many kits are available in the inventory: the kit itself and,
+	 * when switched on in {@link Ascended.KitSources}, selection kits providing
+	 * it and complete fragment sets (of the kit and of these selection kits).
 	 * @param {string} kitId upgrade kit id
 	 * @param {Object<string,Object>} inv flattened inventory from {@link Kits.GetInventoryArray}
 	 * @returns {number}
 	 */
 	KitStock: (kitId, inv) => {
-		let stock = inv[kitId]?.inStock || 0;
+		const {selection, fragments} = Ascended.KitSources;
+		const ids = [kitId, ...(selection ? (Kits.selectionOptions?.[kitId] || []) : [])];
 
-		for (const kit of (Kits.selectionOptions?.[kitId] || [])) {
-			stock += inv[kit]?.inStock || 0;
-		}
+		return ids.reduce((stock, id) => {
+			const set = fragments ? inv['fragment#' + id] : null;
 
-		const fragments = inv['fragment#' + kitId];
-		if (fragments?.required) {
-			stock += Math.floor(fragments.inStock / fragments.required);
-		}
-
-		return stock;
+			return stock + (inv[id]?.inStock || 0) + (set?.required ? Math.floor(set.inStock / set.required) : 0);
+		}, 0);
 	},
 
 
@@ -447,6 +459,34 @@ let Ascended = {
 
 
 	/**
+	 * Renders the settings box content: the kit sources counted as stock on top
+	 * of the kits made for the building itself.
+	 */
+	ShowSettings: () => {
+		const checkbox = (source, label) => `<p><input id="ascendedKits-${source}" data-source="${source}" type="checkbox"${Ascended.KitSources[source] ? ' checked' : ''}> <label for="ascendedKits-${source}">${i18n(label)}</label></p>`;
+
+		$('#ascendedSettingsBox').html(
+			`<p><strong>${i18n('Boxes.Ascended.SettingsKitSources')}</strong></p>`
+			+ checkbox('selection', 'Boxes.Ascended.SettingsSelectionKits')
+			+ checkbox('fragments', 'Boxes.Ascended.SettingsFragments')
+		);
+	},
+
+
+	/**
+	 * Persists the kit sources of the settings box and counts the kits again.
+	 */
+	SaveSettings: () => {
+		$('#ascendedSettingsBox input[data-source]').each((i, el) => {
+			Ascended.KitSources[el.dataset.source] = el.checked;
+		});
+
+		localStorage.setItem('AscendedKitSources', JSON.stringify(Ascended.KitSources));
+		Ascended.RenderList();
+	},
+
+
+	/**
 	 * Renders the building table and the counter in the bottombar.
 	 */
 	RenderList: () => {
@@ -517,23 +557,3 @@ let Ascended = {
 		);
 	}
 };
-
-{
-	let boxRefreshTimer = null;
-	const queueBoxRefresh = () => {
-		clearTimeout(boxRefreshTimer);
-		boxRefreshTimer = setTimeout(() => {
-			if ($('#ascended').length === 0) return;
-			Ascended.RenderList();
-		}, 250);
-	};
-
-	const queueAscendedChangeRefresh = () => {
-		queueBoxRefresh();
-	};
-
-	FoEproxy.addHandler('CityMapService', 'placeBuilding', queueAscendedChangeRefresh);
-	FoEproxy.addHandler('CityMapService', 'removeBuilding', queueAscendedChangeRefresh);
-	FoEproxy.addHandler('InventoryService', 'useItem', queueAscendedChangeRefresh);
-	FoEproxy.addHandler('InventoryService', 'updateItem', queueAscendedChangeRefresh);
-}
