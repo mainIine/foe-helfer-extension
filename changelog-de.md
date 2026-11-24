@@ -1,6 +1,10 @@
 ## Extension Changelog
 
-##### 4.9.2.1
+##### 4.9.3.0
+**Update**
+
+- Neu: LG-Güterplaner – zeigt je Zeitalter, wie viele Güter deine LGs für die nächsten Stufen brauchen, was im Lager fehlt und welches Gebäude aus dem Inventar die meisten dieser Güter liefert; dazu die nötigen Minus-Eins-, Rückbau-, Plus-Eins- und Renovierungs-Kits. Schon umgestellte Gebäude in der Stadt werden mit vorgeschlagen, sobald sie an ihrem Platz nicht mehr gebraucht werden
+
 **Bugfixes**
 
 - Powerleveln: öffnet deutlich schneller, das Spiel stockt dabei kaum noch
