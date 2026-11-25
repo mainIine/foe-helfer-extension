@@ -5,6 +5,10 @@
 
 - LG-Güterplaner: schlägt auch Gebäude deiner Stadt vor, die noch in deinem Zeitalter stehen und sich mit Kits umstellen lassen – sobald ihre Güter dort nicht mehr gebraucht werden
 
+**Bugfixes**
+
+- LG-Güterplaner: Gebäude, die erst aus einem Auswahl-Kit oder mit Upgrade-Kits entstehen, sind als solche markiert und nennen die Kits – statt wie Gebäude aus dem Inventar auszusehen
+
 ---
 
 ##### 4.9.3.0
