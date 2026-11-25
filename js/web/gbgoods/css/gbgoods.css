@@ -261,6 +261,14 @@
 	color: var(--sunflower);
 }
 
+/* a building that is still to be made from kits of the inventory */
+#gbGoods .gbg-made-from {
+	display: block;
+	font-size: 11px;
+	font-style: italic;
+	opacity: 0.85;
+}
+
 #gbGoods .gbg-per-day {
 	color: var(--sunflower);
 	font-weight: bold;

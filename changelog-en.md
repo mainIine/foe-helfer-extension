@@ -1,5 +1,16 @@
 ## Extension Changelog
 
+##### 4.9.4.0
+**Update**
+
+- GB Goods Planner: also suggests buildings of your city that still stand in your era and can be moved with kits – once their goods are no longer needed there
+
+**Bugfixes**
+
+- GB Goods Planner: buildings you only get from a selection kit or with upgrade kits say so and name the kits, instead of looking like buildings in your inventory
+
+---
+
 ##### 4.9.3.0
 **Update**
 

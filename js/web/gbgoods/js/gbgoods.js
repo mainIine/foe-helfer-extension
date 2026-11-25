@@ -75,6 +75,7 @@
  * @property {string} name display name
  * @property {string} icon building screenshot url
  * @property {number} stock buildings obtainable from the inventory, for city buildings the number standing in that era
+ * @property {{chain: Object[], count: number}[]} made chains of the buildings still to be made from kits (see GBGoods.InventoryBuildings), empty for city buildings
  * @property {?number} fromEra era id a building of the city stands in, null for buildings from the inventory
  * @property {Object<string, number>} standing goods a building of the city yields where it stands, per era id of the goods
  * @property {number} gain goods of the era per day the building adds to what it already yields
@@ -94,9 +95,9 @@
  * eras again. The box lists the placed great buildings by the era of their goods
  * with demand and stock, and ranks the buildings of the inventory by the goods of
  * that era they would yield once brought to the fitting era with One Down Kits
- * (or with a Reversion Kit and One Up Kits). Buildings of the city that already
- * stand in another era than the player's are ranked as well, they can be moved
- * on with One Up Kits.
+ * (or with a Reversion Kit and One Up Kits). Buildings of the city the kits
+ * work on are ranked as well, wherever they stand, unless goods they yield where
+ * they stand are still missing.
  * @namespace
  */
 let GBGoods = {
@@ -438,18 +439,24 @@ let GBGoods = {
 	 * Buildings obtainable from the inventory: stocked buildings, complete fragment
 	 * sets, selection kits and upgrade chains. Chains that upgrade a building
 	 * standing in the city are left out, they are no additional building.
-	 * @returns {{entityId: string, stock: number}[]}
+	 * @returns {{entityId: string, stock: number, made: {chain: Object[], count: number}[]}[]}
+	 *          made: chains (see Kits.BuildingsFromInventory) of the buildings that are still to be
+	 *          made from kits, i.e. every chain but the building itself lying in the inventory
 	 */
 	InventoryBuildings: () => {
 		if (!Kits.UpgradeSchemes) return [];
 
 		const buildings = [];
 		for (const [entityId, data] of Object.entries(Kits.BuildingsFromInventory())) {
-			const stock = (data.chains || [])
-				.filter(entry => entry.chain[0]?.from !== 'city')
-				.reduce((sum, entry) => sum + entry.count, 0);
+			const chains = (data.chains || []).filter(entry => entry.chain[0]?.from !== 'city');
+			const stock = chains.reduce((sum, entry) => sum + entry.count, 0);
+			if (stock === 0 || !MainParser.CityEntities[entityId]) continue;
 
-			if (stock > 0 && MainParser.CityEntities[entityId]) buildings.push({ entityId, stock });
+			const made = chains
+				.filter(({ chain }) => chain.length > 1 || chain[0].type !== 'building' || chain[0].from !== 'inventory')
+				.sort((a, b) => b.count - a.count);
+
+			buildings.push({ entityId, stock, made });
 		}
 
 		return buildings;
@@ -457,16 +464,16 @@ let GBGoods = {
 
 
 	/**
-	 * Buildings of the own city that stand in another era than the player's: they
-	 * were brought down with kits (or left behind in an older era) and can be moved
-	 * on to the era whose goods are needed next. Only buildings the kits work on,
-	 * grouped by building and era. A building is busy while goods it yields where
+	 * Buildings of the own city the kits work on, in the player's era or already
+	 * brought to another era, grouped by building and era. They can be moved to the
+	 * era whose goods are needed next. A building is busy while goods it yields where
 	 * it stands are still missing - it is not suggested for another era then.
 	 * @param {Object<string, number>} missing missing goods per era id (see CollectEras)
-	 * @returns {{entityId: string, stock: number, fromEra: number, standing: Object<string, number>, busy: boolean}[]}
+	 * @returns {{entityId: string, stock: number, fromEra: number, shifted: boolean, standing: Object<string, number>, busy: boolean}[]}
+	 *          shifted: stands in another era than the player's,
 	 *          standing: goods the building yields per day where it stands, per era id of the goods
 	 */
-	ShiftedCityBuildings: (missing) => {
+	MovableCityBuildings: (missing) => {
 		const current = Technologies.InnoEras[CurrentEra];
 		const groups = {};
 
@@ -474,7 +481,7 @@ let GBGoods = {
 			const meta = MainParser.CityEntities[entity.cityentity_id];
 			const fromEra = entity.level; // the level of these buildings is their era id
 
-			if (!meta || meta.type === 'greatbuilding' || !(fromEra > 0) || fromEra === current) continue;
+			if (!meta || meta.type === 'greatbuilding' || !(fromEra > 0)) continue;
 			if (!GBGoods.PlaceableEras(meta).changeable) continue;
 
 			const key = `${meta.id}|${fromEra}`;
@@ -485,6 +492,7 @@ let GBGoods = {
 					entityId: meta.id,
 					stock: 0,
 					fromEra: fromEra,
+					shifted: fromEra !== current,
 					standing: standing,
 					busy: Object.entries(standing).some(([eraId, amount]) => amount >= 1 && missing[eraId] > 0)
 				};
@@ -626,8 +634,8 @@ let GBGoods = {
 	 * the previous or next era stand one era off). A building of the city only
 	 * counts where it would yield more of these goods than it does where it stands.
 	 * @param {number} eraId era id of the goods
-	 * @param {{entityId: string, stock: number, fromEra: (number|undefined), standing: (Object|undefined)}[]} sources
-	 *        buildings from the inventory (see InventoryBuildings) and of the city (see ShiftedCityBuildings, with fromEra and standing)
+	 * @param {{entityId: string, stock: number, made: (Object[]|undefined), fromEra: (number|undefined), standing: (Object|undefined)}[]} sources
+	 *        buildings from the inventory (see InventoryBuildings, with made) and of the city (see MovableCityBuildings, with fromEra and standing)
 	 * @param {Object<string, {stock: number}>} kits kit stock (see KitInfo)
 	 * @returns {GBGoodsCandidate[]} best first
 	 */
@@ -635,7 +643,7 @@ let GBGoods = {
 		const noKits = { steps: [], total: 0, possible: true, alternative: null };
 		const candidates = [];
 
-		for (const { entityId, stock, fromEra, standing = {} } of sources) {
+		for (const { entityId, stock, made = [], fromEra, standing = {} } of sources) {
 			const yields = GBGoods.BuildingYields(entityId);
 			const inCity = (fromEra !== undefined);
 			const yieldsNow = standing[eraId] || 0;
@@ -663,6 +671,7 @@ let GBGoods = {
 				name: meta.name,
 				icon: GBGoods.BuildingIcon(meta),
 				stock: stock,
+				made: made,
 				fromEra: (inCity ? fromEra : null),
 				standing: standing,
 				size: { label: `${size.length}x${size.width}`, tiles: tiles },
@@ -717,7 +726,7 @@ let GBGoods = {
 	Render: () => {
 		const kits = GBGoods.KitInfo();
 		const eras = GBGoods.CollectEras();
-		const city = GBGoods.ShiftedCityBuildings(Object.fromEntries(eras.map(era => [era.eraId, era.missing])));
+		const city = GBGoods.MovableCityBuildings(Object.fromEntries(eras.map(era => [era.eraId, era.missing])));
 		const sources = [...GBGoods.InventoryBuildings(), ...city.filter(building => !building.busy)];
 		const production = GBGoods.CityProduction();
 
@@ -735,7 +744,7 @@ let GBGoods = {
 				GBGoods.Candidates(era.eraId, sources, kits),
 				kits,
 				production[era.eraId] || 0,
-				city.filter(building => building.standing[era.eraId] >= 1)
+				city.filter(building => building.shifted && building.standing[era.eraId] >= 1)
 			)).join('')
 			: `<div class="no-data"><em>${i18n(GBGoods.EraFilter === 'missing' ? 'Boxes.GBGoods.NothingMissing' : 'Boxes.GBGoods.NoGBs')}</em></div>`
 		).scrollTop(scroll);
@@ -753,7 +762,7 @@ let GBGoods = {
 	 * @param {GBGoodsCandidate[]} candidates buildings yielding goods of the era, best first
 	 * @param {Object<string, {stock: number, name: string, icon: string}>} kits see KitInfo
 	 * @param {number} production goods of the era the city yields per day
-	 * @param {Object[]} working buildings of the city standing in another era than the player's that yield goods of the era (see ShiftedCityBuildings)
+	 * @param {Object[]} working buildings of the city standing in another era than the player's that yield goods of the era (see MovableCityBuildings)
 	 * @returns {string} HTML
 	 */
 	BuildCard: (era, candidates, kits, production, working) => {
@@ -903,6 +912,7 @@ let GBGoods = {
 			}
 			if (others !== '') h.push(`<span class="gbg-others">${others}</span>`);
 			if (inCity !== '') h.push(`<span class="gbg-in-city">${inCity}</span>`);
+			h.push(GBGoods.MadeFromHint(candidate));
 			h.push('</td>');
 			h.push(`<td class="text-center">${candidate.size.label}</td>`);
 			h.push(`<td class="text-center">${GBGoods.Format(candidate.stock)}</td>`);
@@ -922,6 +932,40 @@ let GBGoods = {
 		}
 
 		return h.join('');
+	},
+
+
+	/**
+	 * Hint for buildings that do not lie in the inventory as a building yet: what they
+	 * are made of - a selection kit, or a base building with upgrade kits on top. The
+	 * line names the two most frequent ways, the tooltip lists every way step by step.
+	 * A selection kit counts for every building it offers, so the same kit may show up
+	 * in several rows.
+	 * @param {GBGoodsCandidate} candidate
+	 * @returns {string} HTML, '' when every building lies in the inventory as it is
+	 */
+	MadeFromHint: (candidate) => {
+		if (candidate.made.length === 0) return '';
+
+		const name = (id) => Kits.Names[id] || MainParser.CityEntities[id]?.name || id;
+		const times = (count) => (count > 1 ? `${GBGoods.Format(count)}× ` : '');
+		// short form: what the way starts with plus the number of upgrade kits applied to it
+		const short = ({ chain, count }) => {
+			const upgrades = chain.slice(1).reduce((sum, element) => sum + element.count, 0);
+
+			return times(count) + name(chain[0].id)
+				+ (upgrades > 0 ? ' ' + HTML.i18nReplacer(i18n('Boxes.GBGoods.UpgradeKits'), { count: upgrades }) : '');
+		};
+		const full = ({ chain, count }) => `${GBGoods.Format(count)}× ` + chain.map(element => times(element.count) + name(element.id)).join(' → ');
+
+		const made = candidate.made.reduce((sum, entry) => sum + entry.count, 0);
+		const items = candidate.made.slice(0, 2).map(short).join(', ') + (candidate.made.length > 2 ? ', …' : '');
+		const text = (made < candidate.stock
+			? HTML.i18nReplacer(i18n('Boxes.GBGoods.MadeFromPart'), { count: GBGoods.Format(made), items: items })
+			: HTML.i18nReplacer(i18n('Boxes.GBGoods.MadeFrom'), { items: items }));
+		const title = [i18n('Boxes.GBGoods.MadeFromTT'), ...candidate.made.map(full)].join('\n');
+
+		return `<span class="gbg-made-from" title="${HTML.i18nTooltip(title)}">${HTML.escapeHtml(text)}</span>`;
 	},
 
 
