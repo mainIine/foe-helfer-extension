@@ -77,6 +77,8 @@
  * @property {number} stock buildings obtainable from the inventory, for city buildings the number standing in that era
  * @property {{chain: Object[], count: number}[]} made chains of the buildings still to be made from kits (see GBGoods.InventoryBuildings), empty for city buildings
  * @property {?number} fromEra era id a building of the city stands in, null for buildings from the inventory
+ * @property {(string|number)[]} ids keys of MainParser.CityMapData of the buildings of the city, empty for buildings from the inventory
+ * @property {number[]} remaining seconds each time limited building of the city stands before it decays, empty when unknown or not limited
  * @property {Object<string, number>} standing goods a building of the city yields where it stands, per era id of the goods
  * @property {number} gain goods of the era per day the building adds to what it already yields
  * @property {{label: string, tiles: number}} size footprint
@@ -203,6 +205,12 @@ let GBGoods = {
 				$('<span />').attr('id', 'gbGoodsKits')
 			),
 			$('<div />').attr('id', 'gbGoodsInner')
+				.on('click', '.gbg-show', async (e) => {
+					// mark every building of the row in the city, the city map box where the marker is not supported
+					const ids = String(e.currentTarget.dataset.ids).split(',');
+
+					if (!await BuildingMarker.show(ids)) Productions.ShowOnMap(ids);
+				})
 				.on('click', '.gbg-header', (e) => {
 					const card = $(e.currentTarget).closest('.gbg-card');
 					GBGoods.Expanded[card.data('era')] = !card.hasClass('open');
@@ -469,12 +477,15 @@ let GBGoods = {
 	 * era whose goods are needed next. A building is busy while goods it yields where
 	 * it stands are still missing - it is not suggested for another era then.
 	 * @param {Object<string, number>} missing missing goods per era id (see CollectEras)
-	 * @returns {{entityId: string, stock: number, fromEra: number, shifted: boolean, standing: Object<string, number>, busy: boolean}[]}
+	 * @returns {{entityId: string, stock: number, ids: (string|number)[], remaining: number[], fromEra: number, shifted: boolean, standing: Object<string, number>, busy: boolean}[]}
+	 *          ids: keys of MainParser.CityMapData of the buildings,
+	 *          remaining: seconds each time limited building stands before it decays,
 	 *          shifted: stands in another era than the player's,
 	 *          standing: goods the building yields per day where it stands, per era id of the goods
 	 */
 	MovableCityBuildings: (missing) => {
 		const current = Technologies.InnoEras[CurrentEra];
+		const now = GameTime.get();
 		const groups = {};
 
 		for (const entity of Object.values(MainParser.CityMapData || {})) {
@@ -491,6 +502,8 @@ let GBGoods = {
 				groups[key] = {
 					entityId: meta.id,
 					stock: 0,
+					ids: [],
+					remaining: [],
 					fromEra: fromEra,
 					shifted: fromEra !== current,
 					standing: standing,
@@ -498,6 +511,13 @@ let GBGoods = {
 				};
 			}
 			groups[key].stock++;
+			groups[key].ids.push(entity.id);
+
+			// the game delivers the decay time directly, the end of the construction is only a fallback
+			const expireTime = meta.components?.AllAge?.limited?.config?.expireTime;
+			const expireAt = (expireTime ? (entity.state?.decaysAt
+				|| (entity.state?.constructionFinishedAt ? entity.state.constructionFinishedAt + expireTime : 0)) : 0);
+			if (expireAt > 0) groups[key].remaining.push(Math.max(0, expireAt - now));
 		}
 
 		return Object.values(groups);
@@ -634,8 +654,8 @@ let GBGoods = {
 	 * the previous or next era stand one era off). A building of the city only
 	 * counts where it would yield more of these goods than it does where it stands.
 	 * @param {number} eraId era id of the goods
-	 * @param {{entityId: string, stock: number, made: (Object[]|undefined), fromEra: (number|undefined), standing: (Object|undefined)}[]} sources
-	 *        buildings from the inventory (see InventoryBuildings, with made) and of the city (see MovableCityBuildings, with fromEra and standing)
+	 * @param {{entityId: string, stock: number, made: (Object[]|undefined), ids: (Array|undefined), remaining: (number[]|undefined), fromEra: (number|undefined), standing: (Object|undefined)}[]} sources
+	 *        buildings from the inventory (see InventoryBuildings, with made) and of the city (see MovableCityBuildings, with ids, remaining, fromEra and standing)
 	 * @param {Object<string, {stock: number}>} kits kit stock (see KitInfo)
 	 * @returns {GBGoodsCandidate[]} best first
 	 */
@@ -643,7 +663,7 @@ let GBGoods = {
 		const noKits = { steps: [], total: 0, possible: true, alternative: null };
 		const candidates = [];
 
-		for (const { entityId, stock, made = [], fromEra, standing = {} } of sources) {
+		for (const { entityId, stock, made = [], ids = [], remaining = [], fromEra, standing = {} } of sources) {
 			const yields = GBGoods.BuildingYields(entityId);
 			const inCity = (fromEra !== undefined);
 			const yieldsNow = standing[eraId] || 0;
@@ -672,6 +692,8 @@ let GBGoods = {
 				icon: GBGoods.BuildingIcon(meta),
 				stock: stock,
 				made: made,
+				ids: ids,
+				remaining: remaining,
 				fromEra: (inCity ? fromEra : null),
 				standing: standing,
 				size: { label: `${size.length}x${size.width}`, tiles: tiles },
@@ -791,7 +813,7 @@ let GBGoods = {
 			h.push(`<div class="gbg-production">${HTML.i18nReplacer(i18n('Boxes.GBGoods.CityProduction'), { amount: GBGoods.Format(Math.round(production)) })}`);
 			if (working.length > 0) {
 				h.push(' ' + i18n('Boxes.GBGoods.Working') + ' ' + working.map(building =>
-					`${building.stock}× ${HTML.escapeHtml(MainParser.CityEntities[building.entityId].name)} (${GBGoods.Format(Math.round(building.standing[era.eraId] * building.stock))})`
+					`${GBGoods.MarkerButton(building.ids)}${building.stock}× ${HTML.escapeHtml(MainParser.CityEntities[building.entityId].name)} (${GBGoods.Format(Math.round(building.standing[era.eraId] * building.stock))})`
 				).join(', '));
 			}
 			h.push('</div>');
@@ -871,10 +893,12 @@ let GBGoods = {
 		const showAll = !!GBGoods.ShowAll[era.eraId];
 		const rows = (showAll ? candidates : candidates.slice(0, GBGoods.TopCount));
 		const withDays = (era.missing > 0);
+		// a column of eyes in front of the icons once a listed building stands in the city
+		const withEyes = rows.some(candidate => candidate.ids.length > 0);
 		const h = [];
 
 		h.push('<table class="foe-table gbg-table"><thead><tr>');
-		h.push(`<th colspan="2" title="${HTML.i18nTooltip(i18n('Boxes.GBGoods.ColBuildingTT'))}">${i18n('Boxes.GBGoods.ColBuilding')}</th>`);
+		h.push(`<th colspan="${withEyes ? 3 : 2}" title="${HTML.i18nTooltip(i18n('Boxes.GBGoods.ColBuildingTT'))}">${i18n('Boxes.GBGoods.ColBuilding')}</th>`);
 		h.push(`<th class="text-center">${i18n('Boxes.GBGoods.ColSize')}</th>`);
 		h.push(`<th class="text-center">${i18n('Boxes.GBGoods.ColCount')}</th>`);
 		h.push(`<th class="text-right">${i18n('Boxes.GBGoods.ColPerDay')}</th>`);
@@ -902,10 +926,11 @@ let GBGoods = {
 			}
 
 			h.push(`<tr${candidate.fromEra !== null ? ' class="gbg-city"' : ''}>`);
+			if (withEyes) h.push(`<td class="gbg-eye-cell">${GBGoods.MarkerButton(candidate.ids)}</td>`);
 			h.push(`<td class="gbg-icon-cell"><img class="gbg-building-icon" loading="lazy" src="${candidate.icon}" alt=""></td>`);
 			h.push(`<td class="gbg-building fh-tooltip game-cursor" data-meta_id="${candidate.entityId}" data-era="${eraName}" data-callback_tt="Tooltips.buildingTT">`);
 			h.push(`<span class="gbg-building-name">${HTML.escapeHtml(candidate.name)}</span>`);
-			if (candidate.limited !== '') h.push(`&nbsp;<span class="gbg-limited" title="${HTML.i18nTooltip(candidate.limited)}">⏳</span>`);
+			h.push(GBGoods.LimitedBadge(candidate));
 			// buildings yielding goods of the previous or next era stand one era off
 			if (candidate.buildingEra !== era.eraId) {
 				h.push(`<span class="gbg-other-era text-warning">${HTML.i18nReplacer(i18n('Boxes.GBGoods.BuildingEra'), { era: GBGoods.EraName(candidate.buildingEra) })}</span>`);
@@ -933,6 +958,45 @@ let GBGoods = {
 
 		return h.join('');
 	},
+
+
+	/**
+	 * Hourglass of a time or collection limited building. For time limited buildings
+	 * of the city it also shows how long they still stand before they decay - the
+	 * soonest and the latest of them, coloured by the share of the runtime left; the
+	 * tooltip lists every one of them.
+	 * @param {GBGoodsCandidate} candidate
+	 * @returns {string} HTML, '' for permanent buildings
+	 */
+	LimitedBadge: (candidate) => {
+		if (candidate.limited === '') return '';
+
+		const left = [...candidate.remaining].sort((a, b) => a - b);
+		const title = [candidate.limited];
+		let time = '';
+
+		if (left.length > 0) {
+			const duration = MainParser.CityEntities[candidate.entityId]?.components?.AllAge?.limited?.config?.expireTime || 1;
+			const share = left[0] / duration;
+			const first = Ascended.FormatRemaining(left[0]);
+			const last = Ascended.FormatRemaining(left[left.length - 1]);
+			const state = (share <= 0.1 ? 'text-danger' : (share <= 0.33 ? 'text-warning' : 'text-success'));
+
+			time = ` <span class="gbg-remaining ${state}">${first}${last !== first ? ' – ' + last : ''}</span>`;
+			title.push(HTML.i18nReplacer(i18n('Boxes.GBGoods.TimeLeft'), { times: left.map(Ascended.FormatRemaining).join(', ') }));
+		}
+
+		return `&nbsp;<span class="gbg-limited" title="${HTML.i18nTooltip(title.join('\n'))}">⏳${time}</span>`;
+	},
+
+
+	/**
+	 * Eye button that marks buildings standing in the city with arrows (see BuildingMarker).
+	 * @param {(string|number)[]} ids keys of MainParser.CityMapData
+	 * @returns {string} HTML, '' without buildings
+	 */
+	MarkerButton: (ids) => (ids.length === 0 ? '' :
+		`<span class="gbg-show game-cursor" data-ids="${ids.join(',')}" title="${HTML.i18nTooltip(i18n('Boxes.GBGoods.ShowOnMap'))}"><img class="game-cursor" src="${extUrl}css/images/hud/open-eye.png" alt=""></span>`),
 
 
 	/**

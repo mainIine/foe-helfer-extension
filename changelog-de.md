@@ -1,5 +1,13 @@
 ## Extension Changelog
 
+##### 4.9.5.0
+**Update**
+
+- LG-Güterplaner: Gebäude, die schon in deiner Stadt stehen, haben ein Auge vor dem Bild – ein Klick markiert alle diese Gebäude in der Stadt mit einem Pfeil
+- LG-Güterplaner: Zeitlich begrenzte Gebäude deiner Stadt zeigen an der Sanduhr, wie lange sie noch stehen, bevor sie zurückfallen
+
+---
+
 ##### 4.9.4.0
 **Update**
 

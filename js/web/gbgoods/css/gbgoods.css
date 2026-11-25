@@ -253,6 +253,44 @@
 	opacity: 0.7;
 }
 
+/* eye that marks the buildings of the city with arrows: own column in front of the icons, inline in the production line */
+#gbGoods .gbg-eye-cell {
+	width: 24px;
+	padding: 1px 0 1px 4px;
+	text-align: center;
+}
+
+#gbGoods .gbg-show {
+	display: inline-block;
+	opacity: 0.85;
+}
+
+#gbGoods .gbg-show:hover {
+	opacity: 1;
+}
+
+#gbGoods .gbg-show img {
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+}
+
+#gbGoods .gbg-production .gbg-show {
+	margin-right: 3px;
+}
+
+#gbGoods .gbg-production .gbg-show img {
+	width: 15px;
+	height: 15px;
+}
+
+/* time left of a time limited building of the city */
+#gbGoods .gbg-remaining {
+	font-size: 11px;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
 /* a building of the city that stands in another era than the player's */
 #gbGoods .gbg-in-city {
 	display: block;
