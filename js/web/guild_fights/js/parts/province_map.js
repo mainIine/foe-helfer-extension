@@ -780,7 +780,8 @@ let ProvinceMap = {
 	/**
 	 * Links the pointer on the map to the sector lists of the live fight box:
 	 * hovering marks the rows of a sector, a click toggles its selection for the
-	 * copy/Discord function. The listeners sit on the canvas and go away with it
+	 * copy/Discord function, a double click opens the sector in the game where
+	 * the browser allows it. The listeners sit on the canvas and go away with it
 	 */
 	BindPointer: () => {
 		let pressedAt = null;
@@ -807,7 +808,22 @@ let ProvinceMap = {
 			if ($row.length > 0 && pressedAt && Math.hypot(e.clientX - pressedAt.clientX, e.clientY - pressedAt.clientY) <= 5)
 				Guild_fights.ToggleRowSelection($row);
 		});
+		ProvinceMap.Map.addEventListener('dblclick', e => {
+			const provinceId = sectorAt(e);
+
+			if (ProvinceMap.CanOpenSector() && provinceId !== null)
+				BuildingMarker.openProvince(provinceId);
+		});
 	},
+
+
+	/**
+	 * Whether a double click can open a sector in the game: the game engine is
+	 * only reachable in Chromium based browsers, not in Firefox
+	 *
+	 * @returns {boolean}
+	 */
+	CanOpenSector: () => typeof BuildingMarker !== 'undefined' && BuildingMarker.supported,
 
 
 	/**
@@ -1005,6 +1021,7 @@ let ProvinceMap = {
 			<table class="foe-table">
 				${rows.map(([label, value]) => `<tr><td>${label}</td>${value}</tr>`).join('')}
 				${$row.length > 0 ? `<tr><td colspan="2" class="text-center text-warning">${i18n($row.hasClass('highlight-row') ? 'Boxes.GuildFights.MapDeselect' : 'Boxes.GuildFights.MapSelect')}</td></tr>` : ''}
+				${ProvinceMap.CanOpenSector() ? `<tr><td colspan="2" class="text-center text-warning">${i18n('Boxes.GuildFights.MapOpen')}</td></tr>` : ''}
 			</table>
 		</div>`;
 	},

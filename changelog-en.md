@@ -5,6 +5,7 @@
 
 - GB Goods Planner: buildings already standing in your city have an eye in front of their picture – one click marks all of them in your city with an arrow
 - GB Goods Planner: time limited buildings of your city show at the hourglass how long they still stand before they fall back
+- Guild Battlegrounds map: a double click on a sector opens it in the game, ready to attack or negotiate (Chrome and Edge)
 
 **Bugfixes**
 

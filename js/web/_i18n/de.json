@@ -1011,6 +1011,7 @@
     "Boxes.GuildFights.OpensEarlier": "Öffnet vorher nebenan",
     "Boxes.GuildFights.MapSelect": "Klick: zum Kopieren auswählen",
     "Boxes.GuildFights.MapDeselect": "Klick: aus der Auswahl entfernen",
+    "Boxes.GuildFights.MapOpen": "Doppelklick: Sektor im Spiel öffnen",
     "Boxes.GuildFights.FocusPanelTitle": "Fokus-Ziele",
     "Boxes.GuildFights.ShowFocusPanel": "Nächste Fokus-Ziele auf der Gefechtskarte einblenden",
     "Boxes.GuildFights.FocusPanelCount": "Anzahl der Fokus-Ziele",
