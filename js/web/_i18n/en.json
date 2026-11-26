@@ -1013,6 +1013,7 @@
     "Boxes.GuildFights.OpensEarlier": "Opens earlier next to it",
     "Boxes.GuildFights.MapSelect": "Click: select for copying",
     "Boxes.GuildFights.MapDeselect": "Click: remove from selection",
+    "Boxes.GuildFights.MapOpen": "Double click: open the sector in the game",
     "Boxes.GuildFights.FocusPanelTitle": "Focus targets",
     "Boxes.GuildFights.ShowFocusPanel": "Show the next focus targets on the battleground map",
     "Boxes.GuildFights.FocusPanelCount": "Number of focus targets",

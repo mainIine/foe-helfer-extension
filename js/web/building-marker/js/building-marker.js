@@ -190,6 +190,32 @@ let BuildingMarker = {
 
 
 	/**
+	 * Open a Guild Battlegrounds sector in the game, exactly like a click on it
+	 * on the game's own battlegrounds map (sector window with attack and
+	 * negotiation). Needs the battlegrounds map to be open in the game.
+	 *
+	 * @param {number|string} provinceId Province id from the battlegrounds map data
+	 * @returns {Promise<boolean>} True if the sector window was requested
+	 */
+	openProvince: async (provinceId) => {
+		if (!await BuildingMarker._ensureEngine()) {
+			return false;
+		}
+
+		const mapView = BuildingMarker._resolveGbgMapView(),
+			id = Number(provinceId);
+
+		if (!mapView || typeof mapView._clickProvince !== 'function' || !mapView._provinceViewControllers?.h?.[id]) {
+			return false;
+		}
+
+		mapView._clickProvince(id);
+
+		return true;
+	},
+
+
+	/**
 	 * Check whether a Guild Battlegrounds sector is currently marked.
 	 *
 	 * @param {number|string} provinceId Province id from the battlegrounds map data
