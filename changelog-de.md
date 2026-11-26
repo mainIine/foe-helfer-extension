@@ -6,6 +6,10 @@
 - LG-Güterplaner: Gebäude, die schon in deiner Stadt stehen, haben ein Auge vor dem Bild – ein Klick markiert alle diese Gebäude in der Stadt mit einem Pfeil
 - LG-Güterplaner: Zeitlich begrenzte Gebäude deiner Stadt zeigen an der Sanduhr, wie lange sie noch stehen, bevor sie zurückfallen
 
+**Bugfixes**
+
+- Verhandlungsassistent: meldet nicht mehr ab und zu mitten in einer laufenden Verhandlung „Verhandlung wurde abgebrochen“ – er endet nur noch, wenn du gewinnst, aufgibst oder das Spiel die Verhandlung beendet
+
 ---
 
 ##### 4.9.4.0

@@ -6,6 +6,10 @@
 - GB Goods Planner: buildings already standing in your city have an eye in front of their picture – one click marks all of them in your city with an arrow
 - GB Goods Planner: time limited buildings of your city show at the hourglass how long they still stand before they fall back
 
+**Bugfixes**
+
+- Negotiation helper: no longer reports “Negotiation has been cancelled” in the middle of a running negotiation now and then – it only ends when you win, give up or the game ends the negotiation
+
 ---
 
 ##### 4.9.4.0
