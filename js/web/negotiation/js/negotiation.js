@@ -402,7 +402,9 @@ let Negotiation = {
 				$('#negotiation-Btn').addClass('hud-btn-red');
 				_menu.toolTipp('#negotiation-Btn', i18n('Menu.Negotiation.Title'), `<em id="negotiation-Btn-closed" class="tooltip-error">${i18n('Menu.Negotiation.Warning')}<br></em>${i18n('Menu.Negotiation.Desc')}`);
 			}
-			return; // no negotiation helper for GBG
+			// no negotiation helper for GBG, but a still tracked negotiation is over
+			Negotiation.ExitNegotiation();
+			return;
 		}
 
 		Negotiation.StartNegotiationBackupData = responseData;
@@ -498,7 +500,8 @@ let Negotiation = {
 	 */
 	SubmitTurn: (responseData) => {
 		const currentTry = Negotiation.CurrentTry;
-		if (currentTry === 0) return;
+		// an error answer (no turn result) leaves the game state unchanged
+		if (currentTry === 0 || !responseData?.turnResult?.slots) return;
 
 		const GoodsOrdered = Negotiation.GoodsOrdered;
 		// create a new guess line, default "match": 0 (correct)
@@ -801,9 +804,12 @@ let Negotiation = {
 
 
 	/**
-	 * Negotiation has ended
+	 * Negotiation has ended without being won (given up, surrendered, lost or
+	 * replaced by a negotiation the helper does not support)
 	 */
 	ExitNegotiation: () => {
+		if (Negotiation.CurrentTry === 0) return;
+
 		Negotiation.CurrentTry = 0;
 		Negotiation.View = null;
 		Negotiation.Message = i18n('Boxes.Negotiation.Canceled');
@@ -908,46 +914,25 @@ let Negotiation = {
 // --------------------------------------------------------------------------------------------------
 // Negotiation
 
-// services whose requests can arrive during a negotiation without ending it
-const NEGOTIATION_PASSIVE_SERVICES = [
-	'RankingService',
-	'QuestService',
-	'ResourceService',
-	'ResourceShopService',
-	'TimeService',
-	'MessageService',
-	'WorldChallengeService',
-	'AutoAidService',
-	'TrackingService',
-	'AnnouncementService',
-	'InventoryService',
-	'GuildExpeditionNotificationService',
-	'FriendsTavernService',
-];
-
-FoEproxy.addHandler('all', 'all', (data, postData) => {
-	if (data.requestMethod === 'startNegotiation') {
-		// delay the start so a directly following resource update can flush it early
-		Negotiation.tempStore = data.responseData;
-		Negotiation.timeout = setTimeout(() => {
-			Negotiation.timeout = null;
-			Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} */ (Negotiation.tempStore));
-			Negotiation.tempStore = null;
-		}, 200);
-		return;
-	}
-
-	if ($('#negotiationBox').length === 0) return;
-
-	if (data.requestClass === 'NegotiationGameService' && data.requestMethod === 'submitTurn') {
-		Negotiation.SubmitTurn(/** @type {FoE_Class_NegotiationGameResult} */ (data.responseData));
-		return;
-	}
-
-	if (!NEGOTIATION_PASSIVE_SERVICES.includes(data.requestClass) && data.requestMethod !== 'markContributionNotificationsRead') {
-		Negotiation.ExitNegotiation();
-	}
+FoEproxy.addHandler('all', 'startNegotiation', (data) => {
+	// delay the start so a directly following resource update can flush it early
+	Negotiation.tempStore = data.responseData;
+	Negotiation.timeout = setTimeout(() => {
+		Negotiation.timeout = null;
+		Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} */ (Negotiation.tempStore));
+		Negotiation.tempStore = null;
+	}, 200);
 });
+
+FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data) => {
+	Negotiation.SubmitTurn(/** @type {FoE_Class_NegotiationGameResult} */ (data.responseData));
+});
+
+// the game window of a negotiation cannot be closed: it only ends when it is
+// won, lost, given up or surrendered by the server, so other requests arriving
+// meanwhile (pushes, polls, chat) must not end the tracking
+FoEproxy.addRequestHandler('NegotiationGameService', 'giveUp', () => Negotiation.ExitNegotiation());
+FoEproxy.addHandler('NegotiationGameService', 'autoSurrender', () => Negotiation.ExitNegotiation());
 
 FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
 	if (Negotiation.timeout) {
