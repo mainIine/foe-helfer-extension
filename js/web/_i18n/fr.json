@@ -968,6 +968,7 @@
     "Boxes.GuildFights.IgnoreTarget": "Bloqué par votre guilde",
     "Boxes.GuildFights.LastSnapshot": " - Dernière capture il y a __time__",
     "Boxes.GuildFights.MapDeselect": "Cliquez ici : retirer de la sélection",
+    "Boxes.GuildFights.MapOpen": "Double-Clic : Ouvre le secteur dans le jeu",
     "Boxes.GuildFights.MapSelect": "Cliquez ici : sélectionnez pour copier",
     "Boxes.GuildFights.MarkOnMap": "Marquer le secteur sur la carte",
     "Boxes.GuildFights.Members": "Membres",
