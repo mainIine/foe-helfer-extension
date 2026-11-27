@@ -57,6 +57,18 @@ Object.assign(Parts, {
 	/** @type {string[]} Unlock cost resources apart from blueprints and goods, in display order */
 	UnlockBulkResources: ['money', 'supplies', 'medals'],
 
+	/** @type {number} Table rows added per step, the first step adds twice as many (see RenderPowerLevelingRows) */
+	PowerLevelingChunkRows: 25,
+
+	/** @type {number} Increased by every rendering of the table rows, steps of an older one stop */
+	PowerLevelingRenderID: 0,
+
+	/** @type {?string} HTML of the box head the box was last built with (see CalcBodyPowerLeveling) */
+	PowerLevelingHeadHTML: null,
+
+	/** @type {?string} HTML of the table rows rendered last, including the steps still pending */
+	PowerLevelingRowsHTML: null,
+
 
 	/**
 	 * Opens (or updates) the power leveling box for the GB shown in the own part calculator.
@@ -613,11 +625,11 @@ Object.assign(Parts, {
 
 
 	/**
-	 * Renders the table rows (one per level) from the precalculated Parts.PowerLevelingData.
+	 * Builds the table rows (one per level) from the precalculated Parts.PowerLevelingData.
 	 *
-	 * @param {string[]} h - Array the HTML strings are pushed into
+	 * @returns {string[]} HTML of each row
 	 */
-	CalcTableBodyPowerLeveling: (h) => {
+	GetPowerLevelingRows: () => {
 		const {
 			HasDoubleCollection,
 			Places,
@@ -628,12 +640,11 @@ Object.assign(Parts, {
 			DoubleCollections,
 			EigenNettos,
 			Unlock
-		} = Parts.PowerLevelingData;
-
-
+		} = Parts.PowerLevelingData,
+			Rows = [];
 
 		for (let i = StartLevel; i < EndLevel; i++) {
-			h.push('<tr>');
+			const h = ['<tr>'];
 			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
 			for (let Place = 0; Place < PlaceCount; Place++) {
 				// copper tier levels have fewer reward places than the gold tier ones
@@ -651,8 +662,50 @@ Object.assign(Parts, {
 			if (Unlock) h.push('<td class="no-select unlock-costs">' + Parts.GetUnlockCostCell(Unlock.Rows[i]) + '</td>');
 			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn btn-slim button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
 			h.push('</tr>');
+			Rows.push(h.join(''));
 		}
+
+		return Rows;
 	},
+
+
+	/**
+	 * Puts the table rows into the table body. Large level ranges (a gold GB from a low level
+	 * up to level 500 has about 500 rows with 20,000 elements) block the game for a long time
+	 * when added at once, so only the first rows are added right away and the rest follows in
+	 * small steps the game keeps running between. A newer rendering stops the pending steps.
+	 *
+	 * @param {string[]} Rows HTML of each row (see GetPowerLevelingRows)
+	 */
+	RenderPowerLevelingRows: (Rows) => {
+		const tableBody = document.getElementById('PowerLevelingBoxTableBody'),
+			RenderID = ++Parts.PowerLevelingRenderID,
+			Chunk = Parts.PowerLevelingChunkRows;
+
+		Parts.PowerLevelingRowsHTML = Rows.join('');
+		$(tableBody).html(Rows.slice(0, 2 * Chunk).join(''));
+		Parts.InitPowerLevelingTooltips();
+
+		const Append = (From) => setTimeout(() => {
+			if (RenderID !== Parts.PowerLevelingRenderID || !tableBody.isConnected) return;
+
+			tableBody.insertAdjacentHTML('beforeend', Rows.slice(From, From + Chunk).join(''));
+			Parts.InitPowerLevelingTooltips();
+
+			if (From + Chunk < Rows.length) Append(From + Chunk);
+		});
+
+		if (Rows.length > 2 * Chunk) Append(2 * Chunk);
+	},
+
+
+	/**
+	 * Whether the open box already shows (or is still adding) exactly these table rows.
+	 *
+	 * @param {string[]} Rows HTML of each row (see GetPowerLevelingRows)
+	 * @returns {boolean}
+	 */
+	IsPowerLevelingRendered: (Rows) => (document.getElementById('PowerLevelingBoxTableBody') !== null && Rows.join('') === Parts.PowerLevelingRowsHTML),
 
 
 	/**
@@ -671,12 +724,13 @@ Object.assign(Parts, {
 				return;
 			}
 
-			/** @type {string[]} */
-			const h = [];
+			const Rows = Parts.GetPowerLevelingRows();
 
-			Parts.CalcTableBodyPowerLeveling(h);
+			// the game reports blueprints and unlock costs often without any change for the table
+			if (!Parts.IsPowerLevelingRendered(Rows)) Parts.RenderPowerLevelingRows(Rows);
 
-			$(tableBody).html(h.join(''));
+			// the head gets changed in place below, the next complete build must not be skipped
+			Parts.PowerLevelingHeadHTML = null;
 
 			// Startlevel
 			const startLevel = /** @type {HTMLInputElement} */(document.getElementById('startLevel'));
@@ -781,12 +835,15 @@ Object.assign(Parts, {
 		h.push('</thead>');
 
 		h.push('<tbody id="PowerLevelingBoxTableBody">');
-		Parts.CalcTableBodyPowerLeveling(h);
-		h.push('</tbody>');
 
-		h.push('</table>');
+		const Head = h.join(''),
+			Rows = Parts.GetPowerLevelingRows();
 
-		$('#PowerLevelingBoxBody').html(h.join(''));
-		Parts.InitPowerLevelingTooltips();
+		// the own part calculator rebuilds the box on every change of the opened GB, mostly with the same content
+		if (Head === Parts.PowerLevelingHeadHTML && Parts.IsPowerLevelingRendered(Rows)) return;
+
+		Parts.PowerLevelingHeadHTML = Head;
+		$('#PowerLevelingBoxBody').html(Head + '</tbody></table>');
+		Parts.RenderPowerLevelingRows(Rows);
 	},
 });

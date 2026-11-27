@@ -10,6 +10,7 @@
 **Bugfixes**
 
 - Verhandlungsassistent: meldet nicht mehr ab und zu mitten in einer laufenden Verhandlung „Verhandlung wurde abgebrochen“ – er endet nur noch, wenn du gewinnst, aufgibst oder das Spiel die Verhandlung beendet
+- Powerleveln: friert das Spiel bei langen Listen (z. B. ein LG mit Gold-Stufen auf niedriger Stufe) nicht mehr ein – die ersten Zeilen erscheinen sofort, der Rest folgt in kleinen Schritten, und die Liste wird nicht mehr bei jeder Kleinigkeit neu aufgebaut
 
 ---
 
