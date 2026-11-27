@@ -10,6 +10,7 @@
 **Bugfixes**
 
 - Negotiation helper: no longer reports “Negotiation has been cancelled” in the middle of a running negotiation now and then – it only ends when you win, give up or the game ends the negotiation
+- Power leveling: no longer freezes the game with long lists (e.g. a GB with gold levels on a low level) – the first rows show up at once, the rest follows in small steps, and the list is no longer rebuilt on every little change
 
 ---
 
