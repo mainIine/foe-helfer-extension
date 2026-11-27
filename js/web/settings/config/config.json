@@ -84,7 +84,8 @@
 		"name": "ShowArmyLineup",
 		"status": true,
 		"group": "Auto",
-		"sort": 25
+		"sort": 25,
+		"docs": "module/army-suggestion"
 	},
 	{
 		"name": "ShowGuildTreasuryLogExport",
